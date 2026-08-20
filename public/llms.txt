@@ -1,0 +1,11 @@
+# Titik Temu
+
+> WebGIS Skor Vitalitas Transit untuk kawasan di sekitar titik transportasi massal, pilot Bandung Raya.
+
+Titik Temu menghitung Skor Vitalitas Transit dari empat komponen: pasar properti, kesenjangan layanan transportasi, keragaman aktivitas ekonomi termasuk UMKM, dan aksesibilitas ke titik transit. Satu mesin skor ditampilkan dengan tekanan bobot berbeda untuk investor, pemerintah/operator, dan pelaku UMKM.
+
+## Pages
+
+- [Peta Vitalitas](/): Peta interaktif skor kawasan dengan pemilih peran dan skor dinamis per rentang waktu.
+- [Bandingkan Kawasan](/bandingkan): Diagram radar, grafik batang, dan tabel perbandingan komponen skor antar kawasan.
+- [Metodologi & Sumber Data](/metodologi): Metode indeks berbobot, machine learning ringan, sumber data, dan daftar pustaka.

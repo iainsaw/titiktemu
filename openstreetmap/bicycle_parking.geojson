@@ -1,0 +1,469 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-08-16T00:07:00Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/179267832",
+        "amenity": "bicycle_parking",
+        "capacity": "500",
+        "covered": "yes",
+        "name": "Tempat Parkir Roda 2",
+        "operator": "SMAN 2 Bandung",
+        "source": "Local knowledge"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6033511,
+              -6.8898408
+            ],
+            [
+              107.6033404,
+              -6.8899579
+            ],
+            [
+              107.6033913,
+              -6.8899712
+            ],
+            [
+              107.603445,
+              -6.889934
+            ],
+            [
+              107.6035227,
+              -6.8899153
+            ],
+            [
+              107.6036005,
+              -6.8899233
+            ],
+            [
+              107.6036917,
+              -6.8899393
+            ],
+            [
+              107.6037454,
+              -6.8899553
+            ],
+            [
+              107.6037426,
+              -6.8898239
+            ],
+            [
+              107.6033964,
+              -6.8898391
+            ],
+            [
+              107.6033511,
+              -6.8898408
+            ]
+          ]
+        ]
+      },
+      "id": "way/179267832"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547802074",
+        "amenity": "bicycle_parking"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6372869,
+              -6.8973241
+            ],
+            [
+              107.6371898,
+              -6.8976957
+            ],
+            [
+              107.6374617,
+              -6.8977607
+            ],
+            [
+              107.6375418,
+              -6.8974059
+            ],
+            [
+              107.6375364,
+              -6.8973921
+            ],
+            [
+              107.6375257,
+              -6.8973852
+            ],
+            [
+              107.6372869,
+              -6.8973241
+            ]
+          ]
+        ]
+      },
+      "id": "way/547802074"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/731741972",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "building",
+        "building": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6699665,
+              -6.8905411
+            ],
+            [
+              107.669927,
+              -6.8906612
+            ],
+            [
+              107.6700592,
+              -6.8907041
+            ],
+            [
+              107.6700987,
+              -6.890584
+            ],
+            [
+              107.6699665,
+              -6.8905411
+            ]
+          ]
+        ]
+      },
+      "id": "way/731741972"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2395969497",
+        "amenity": "bicycle_parking",
+        "name": "ITB'88 Bicycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6098888,
+          -6.8887957
+        ]
+      },
+      "id": "node/2395969497"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6631466194",
+        "amenity": "bicycle_parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6092176,
+          -6.9094547
+        ]
+      },
+      "id": "node/6631466194"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6631476435",
+        "amenity": "bicycle_parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6103506,
+          -6.9079124
+        ]
+      },
+      "id": "node/6631476435"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6886999291",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "building"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6648839,
+          -6.8790786
+        ]
+      },
+      "id": "node/6886999291"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7308016682",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "building"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5513431,
+          -6.9687755
+        ]
+      },
+      "id": "node/7308016682"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7499146540",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "building"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.655874,
+          -6.891197
+        ]
+      },
+      "id": "node/7499146540"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11116250208",
+        "amenity": "bicycle_parking",
+        "name": "ITB'88 Bicycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6086518,
+          -6.8906443
+        ]
+      },
+      "id": "node/11116250208"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11116250209",
+        "amenity": "bicycle_parking",
+        "name": "ITB'88 Bicycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6105975,
+          -6.888765
+        ]
+      },
+      "id": "node/11116250209"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11116250210",
+        "amenity": "bicycle_parking",
+        "covered": "yes",
+        "name": "ITB'88 Bicycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6119186,
+          -6.8925436
+        ]
+      },
+      "id": "node/11116250210"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11598322661",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "stands",
+        "covered": "yes",
+        "name": "ITB'88 Bicycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6116199,
+          -6.8903434
+        ]
+      },
+      "id": "node/11598322661"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11917856987",
+        "amenity": "bicycle_parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6161733,
+          -6.9079089
+        ]
+      },
+      "id": "node/11917856987"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12947213771",
+        "amenity": "bicycle_parking"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6028685,
+          -6.9127059
+        ]
+      },
+      "id": "node/12947213771"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13305741846",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "10",
+        "covered": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6076831,
+          -6.8984373
+        ]
+      },
+      "id": "node/13305741846"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620425657",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6353577,
+          -6.9273791
+        ]
+      },
+      "id": "node/13620425657"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620472676",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6349884,
+          -6.9271753
+        ]
+      },
+      "id": "node/13620472676"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620507946",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6340924,
+          -6.9266847
+        ]
+      },
+      "id": "node/13620507946"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620531653",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "stands",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6348471,
+          -6.9270963
+        ]
+      },
+      "id": "node/13620531653"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620534820",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6344995,
+          -6.926895
+        ]
+      },
+      "id": "node/13620534820"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13620535428",
+        "amenity": "bicycle_parking",
+        "bicycle_parking": "wall_loops",
+        "capacity": "1",
+        "covered": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6337453,
+          -6.9264705
+        ]
+      },
+      "id": "node/13620535428"
+    }
+  ]
+}

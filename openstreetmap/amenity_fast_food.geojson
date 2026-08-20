@@ -1,0 +1,5864 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-08-16T00:13:01Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/32388776",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "branch": "Pasir Kaliki",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "cuisine": "burger;chicken",
+        "diet:halal": "only",
+        "drive_through": "yes",
+        "internet_access": "wlan",
+        "name": "McDonald's",
+        "takeaway": "yes",
+        "wikidata": "Q111754759"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5971201,
+              -6.9060974
+            ],
+            [
+              107.5971218,
+              -6.9062244
+            ],
+            [
+              107.5973845,
+              -6.906221
+            ],
+            [
+              107.5973828,
+              -6.906094
+            ],
+            [
+              107.5971201,
+              -6.9060974
+            ]
+          ]
+        ]
+      },
+      "id": "way/32388776"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119452898",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "building:levels": "2",
+        "building:roof": "beton (concrete)",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "burger",
+        "diet:halal": "only",
+        "name": "McDonald's",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6134473,
+              -6.8848739
+            ],
+            [
+              107.6133519,
+              -6.8848616
+            ],
+            [
+              107.613331,
+              -6.8850218
+            ],
+            [
+              107.6134542,
+              -6.8850376
+            ],
+            [
+              107.6134576,
+              -6.885012
+            ],
+            [
+              107.6135052,
+              -6.8850181
+            ],
+            [
+              107.6135484,
+              -6.8849927
+            ],
+            [
+              107.613575,
+              -6.884968
+            ],
+            [
+              107.6135806,
+              -6.8849489
+            ],
+            [
+              107.6135804,
+              -6.8849247
+            ],
+            [
+              107.6135593,
+              -6.8848915
+            ],
+            [
+              107.6134941,
+              -6.8848805
+            ],
+            [
+              107.6134902,
+              -6.8848639
+            ],
+            [
+              107.6134473,
+              -6.8848739
+            ]
+          ]
+        ]
+      },
+      "id": "way/119452898"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119758350",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "building": "yes",
+        "building:levels": "3",
+        "building:roof": "concrete",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "opening_hours": "Mo-Su 08:30-20:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6104018,
+              -6.9076713
+            ],
+            [
+              107.6100071,
+              -6.9076629
+            ],
+            [
+              107.6100041,
+              -6.9078054
+            ],
+            [
+              107.6103987,
+              -6.9078138
+            ],
+            [
+              107.6104018,
+              -6.9076713
+            ]
+          ]
+        ]
+      },
+      "id": "way/119758350"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119758970",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "building": "yes",
+        "building:levels": "2",
+        "building:roof": "concrete",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6100179,
+              -6.9080651
+            ],
+            [
+              107.6100214,
+              -6.9083019
+            ],
+            [
+              107.6101872,
+              -6.9082995
+            ],
+            [
+              107.6101837,
+              -6.9080627
+            ],
+            [
+              107.6100179,
+              -6.9080651
+            ]
+          ]
+        ]
+      },
+      "id": "way/119758970"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119758975",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "building": "yes",
+        "building:levels": "2",
+        "building:roof": "asbestos",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "chicken",
+        "drive_through": "no",
+        "name": "Spill and Bites"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6096726,
+              -6.9082976
+            ],
+            [
+              107.6096744,
+              -6.9084055
+            ],
+            [
+              107.6098823,
+              -6.9084022
+            ],
+            [
+              107.6098832,
+              -6.9084586
+            ],
+            [
+              107.6099705,
+              -6.9084572
+            ],
+            [
+              107.6099678,
+              -6.9082929
+            ],
+            [
+              107.6096726,
+              -6.9082976
+            ]
+          ]
+        ]
+      },
+      "id": "way/119758975"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119759896",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "branch": "Donut",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "building": "yes",
+        "building:levels": "2",
+        "building:roof": "concrete",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6104684,
+              -6.9083415
+            ],
+            [
+              107.6103815,
+              -6.9083412
+            ],
+            [
+              107.610381,
+              -6.9085258
+            ],
+            [
+              107.6104678,
+              -6.9085261
+            ],
+            [
+              107.6104684,
+              -6.9083415
+            ]
+          ]
+        ]
+      },
+      "id": "way/119759896"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119760376",
+        "air_conditioning": "yes",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "branch": "Merdeka",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "building": "yes",
+        "building:levels": "1",
+        "building:roof": "tile",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "donut;coffee_shop",
+        "diet:halal": "only",
+        "drive_through": "no",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6107453,
+              -6.9094065
+            ],
+            [
+              107.6107451,
+              -6.9095581
+            ],
+            [
+              107.6108487,
+              -6.9095582
+            ],
+            [
+              107.6108486,
+              -6.9095822
+            ],
+            [
+              107.6109705,
+              -6.9095824
+            ],
+            [
+              107.6109706,
+              -6.9095182
+            ],
+            [
+              107.6109707,
+              -6.9094421
+            ],
+            [
+              107.6109043,
+              -6.909442
+            ],
+            [
+              107.6109044,
+              -6.9094067
+            ],
+            [
+              107.6107453,
+              -6.9094065
+            ]
+          ]
+        ]
+      },
+      "id": "way/119760376"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/299050938",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:housenumber": "177",
+        "addr:postcode": "40132",
+        "addr:street": "Ir. H. Juanda",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "building": "yes",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "opening_hours": "Mo-Su,PH 10:00-22:00",
+        "phone": "+62 22 2503005",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6133552,
+              -6.8854364
+            ],
+            [
+              107.6133552,
+              -6.885479
+            ],
+            [
+              107.6133283,
+              -6.8854776
+            ],
+            [
+              107.6133242,
+              -6.8855067
+            ],
+            [
+              107.6133216,
+              -6.8855256
+            ],
+            [
+              107.613496,
+              -6.8855349
+            ],
+            [
+              107.6135013,
+              -6.8853964
+            ],
+            [
+              107.6134437,
+              -6.8853365
+            ],
+            [
+              107.6134075,
+              -6.8853325
+            ],
+            [
+              107.6133552,
+              -6.8854364
+            ]
+          ]
+        ]
+      },
+      "id": "way/299050938"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/376352127",
+        "amenity": "fast_food",
+        "building": "commercial",
+        "cuisine": "fried_chicken",
+        "name": "Texas Chicken"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6178481,
+              -6.9182277
+            ],
+            [
+              107.6175862,
+              -6.9181962
+            ],
+            [
+              107.6175809,
+              -6.9182671
+            ],
+            [
+              107.6178481,
+              -6.9183092
+            ],
+            [
+              107.6178481,
+              -6.9182277
+            ]
+          ]
+        ]
+      },
+      "id": "way/376352127"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/383655705",
+        "addr:city": "Bandung",
+        "addr:street": "Venus Raya",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "brand:wikipedia": "en:Domino's Pizza",
+        "building": "yes",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "drive_through": "no",
+        "name": "Domino's",
+        "short_name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6672385,
+              -6.9400891
+            ],
+            [
+              107.6672513,
+              -6.9402354
+            ],
+            [
+              107.6673905,
+              -6.9402246
+            ],
+            [
+              107.6673786,
+              -6.9400738
+            ],
+            [
+              107.6672385,
+              -6.9400891
+            ]
+          ]
+        ]
+      },
+      "id": "way/383655705"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/471362397",
+        "amenity": "fast_food",
+        "building": "commercial",
+        "cuisine": "burger",
+        "delivery": "yes",
+        "name": "BBQ Mountain Boys Burger",
+        "outdoor_seating": "yes",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5929715,
+              -6.9144852
+            ],
+            [
+              107.5931873,
+              -6.9144846
+            ],
+            [
+              107.5931871,
+              -6.9144037
+            ],
+            [
+              107.5929713,
+              -6.9144057
+            ],
+            [
+              107.5929715,
+              -6.9144852
+            ]
+          ]
+        ]
+      },
+      "id": "way/471362397"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/512695000",
+        "addr:city": "Bandung",
+        "addr:full": "Jl. L. L. R.E. Martadinata No. 104, Cihapit, Bandung Wetan",
+        "amenity": "fast_food",
+        "building": "yes",
+        "cuisine": "chicken",
+        "name": "J.Chicken",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6249471,
+              -6.9094268
+            ],
+            [
+              107.6249163,
+              -6.9093984
+            ],
+            [
+              107.6247349,
+              -6.9095921
+            ],
+            [
+              107.6248041,
+              -6.9096559
+            ],
+            [
+              107.6249394,
+              -6.9095113
+            ],
+            [
+              107.6250097,
+              -6.9095762
+            ],
+            [
+              107.6251059,
+              -6.9094735
+            ],
+            [
+              107.6250845,
+              -6.9094537
+            ],
+            [
+              107.6250995,
+              -6.9094376
+            ],
+            [
+              107.6250432,
+              -6.9093856
+            ],
+            [
+              107.6250281,
+              -6.9094017
+            ],
+            [
+              107.6249972,
+              -6.9093732
+            ],
+            [
+              107.6249471,
+              -6.9094268
+            ]
+          ]
+        ]
+      },
+      "id": "way/512695000"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/512704802",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "building": "yes",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6208661,
+              -6.9061728
+            ],
+            [
+              107.6208409,
+              -6.9063138
+            ],
+            [
+              107.6210474,
+              -6.9063501
+            ],
+            [
+              107.6210725,
+              -6.9062091
+            ],
+            [
+              107.6208661,
+              -6.9061728
+            ]
+          ]
+        ]
+      },
+      "id": "way/512704802"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/517298664",
+        "addr:city": "Bandung",
+        "addr:country": "ID",
+        "addr:housenumber": "574",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Soekarno-Hatta",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "brand": "Almaz Fried Chicken",
+        "building": "yes",
+        "cuisine": "chicken",
+        "delivery": "24/7",
+        "drive_through": "yes",
+        "highchair": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "level": "0",
+        "name": "Almaz",
+        "opening_hours": "24/7",
+        "opening_hours:kitchen": "24/7",
+        "outdoor_seating": "yes",
+        "smoking": "outside",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "limited",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6650366,
+              -6.9393471
+            ],
+            [
+              107.6650447,
+              -6.9395168
+            ],
+            [
+              107.6651872,
+              -6.9395102
+            ],
+            [
+              107.6651791,
+              -6.9393404
+            ],
+            [
+              107.6650366,
+              -6.9393471
+            ]
+          ]
+        ]
+      },
+      "id": "way/517298664"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/546598276",
+        "addr:city": "Bandung",
+        "addr:housenumber": "87",
+        "addr:street": "Jalan Dipatiukur",
+        "amenity": "fast_food",
+        "branch": "Dipatiukur",
+        "brand": "Richeese Factory",
+        "brand:wikidata": "Q22915087",
+        "building": "retail",
+        "cuisine": "chicken",
+        "name": "Richeese Factory",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6150327,
+              -6.8877433
+            ],
+            [
+              107.6150725,
+              -6.887854
+            ],
+            [
+              107.6151778,
+              -6.8878127
+            ],
+            [
+              107.6151433,
+              -6.8877187
+            ],
+            [
+              107.6150919,
+              -6.8876941
+            ],
+            [
+              107.6150433,
+              -6.8877152
+            ],
+            [
+              107.6150327,
+              -6.8877433
+            ]
+          ]
+        ]
+      },
+      "id": "way/546598276"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548114601",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "cuisine": "burger",
+        "drive_through": "yes",
+        "layer": "1",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6212468,
+              -6.9013884
+            ],
+            [
+              107.6212468,
+              -6.9014335
+            ],
+            [
+              107.6211659,
+              -6.9014327
+            ],
+            [
+              107.6211667,
+              -6.9014595
+            ],
+            [
+              107.6211267,
+              -6.9014756
+            ],
+            [
+              107.6211282,
+              -6.9015237
+            ],
+            [
+              107.6211998,
+              -6.9016308
+            ],
+            [
+              107.6211613,
+              -6.9016583
+            ],
+            [
+              107.6211328,
+              -6.9016155
+            ],
+            [
+              107.6210828,
+              -6.9016491
+            ],
+            [
+              107.621129,
+              -6.9017203
+            ],
+            [
+              107.6213446,
+              -6.901578
+            ],
+            [
+              107.62135,
+              -6.9013876
+            ],
+            [
+              107.6212468,
+              -6.9013884
+            ]
+          ]
+        ]
+      },
+      "id": "way/548114601"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/632660013",
+        "amenity": "fast_food",
+        "brand": "Subway",
+        "brand:wikidata": "Q244457",
+        "building": "yes",
+        "cuisine": "sandwich",
+        "name": "Subway",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.627381,
+              -6.9414582
+            ],
+            [
+              107.6272673,
+              -6.9413455
+            ],
+            [
+              107.6271602,
+              -6.9414511
+            ],
+            [
+              107.627281,
+              -6.9415497
+            ],
+            [
+              107.627381,
+              -6.9414582
+            ]
+          ]
+        ]
+      },
+      "id": "way/632660013"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/632660234",
+        "amenity": "fast_food",
+        "brand": "Pizza Hut",
+        "building": "retail",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "name": "Pizza Hut Delivery",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "opening_hours:kitchen": "Mo-Su 09:00-22:00",
+        "outdoor_seating": "yes",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6292841,
+              -6.9386149
+            ],
+            [
+              107.6291522,
+              -6.9385588
+            ],
+            [
+              107.629101,
+              -6.9386742
+            ],
+            [
+              107.629233,
+              -6.9387311
+            ],
+            [
+              107.6292841,
+              -6.9386149
+            ]
+          ]
+        ]
+      },
+      "id": "way/632660234"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/632673822",
+        "amenity": "fast_food",
+        "brand": "Richeese Factory",
+        "brand:wikidata": "Q22915087",
+        "building": "commercial",
+        "building:use": "retail",
+        "changing_table": "limited",
+        "cuisine": "chicken",
+        "delivery": "yes",
+        "highchair": "yes",
+        "kids_area": "yes",
+        "level": "2",
+        "name": "Richeese Factory",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "smoking": "separated",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "limited",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6311802,
+              -6.9453318
+            ],
+            [
+              107.6310907,
+              -6.9452377
+            ],
+            [
+              107.6309573,
+              -6.9453651
+            ],
+            [
+              107.6309708,
+              -6.9453779
+            ],
+            [
+              107.6309633,
+              -6.9453862
+            ],
+            [
+              107.6310103,
+              -6.9454318
+            ],
+            [
+              107.6310226,
+              -6.9454215
+            ],
+            [
+              107.6310504,
+              -6.9454493
+            ],
+            [
+              107.6311802,
+              -6.9453318
+            ]
+          ]
+        ]
+      },
+      "id": "way/632673822"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/638388819",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "branch": "Surya Sumantri",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "building": "yes",
+        "cuisine": "chicken",
+        "highchair": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "KFC",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "smoking": "separated",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5812005,
+              -6.8871423
+            ],
+            [
+              107.5810643,
+              -6.8871245
+            ],
+            [
+              107.5810475,
+              -6.8872515
+            ],
+            [
+              107.5811837,
+              -6.8872693
+            ],
+            [
+              107.5812005,
+              -6.8871423
+            ]
+          ]
+        ]
+      },
+      "id": "way/638388819"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/868633535",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Insinyur Haji Juanda",
+        "amenity": "fast_food",
+        "branch": "Dago",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "building": "retail",
+        "cuisine": "pizza",
+        "drive_through": "no",
+        "level": "2",
+        "name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.615996,
+              -6.8803411
+            ],
+            [
+              107.6159839,
+              -6.8803884
+            ],
+            [
+              107.6161053,
+              -6.8804191
+            ],
+            [
+              107.6161175,
+              -6.8803719
+            ],
+            [
+              107.615996,
+              -6.8803411
+            ]
+          ]
+        ]
+      },
+      "id": "way/868633535"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1051943026",
+        "addr:city": "Cimahi",
+        "addr:street": "Jalan Jenderal Haji Amir Machmud",
+        "air_conditioning": "yes",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "building": "yes",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "smoking": "separated",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5499932,
+              -6.8787879
+            ],
+            [
+              107.5500783,
+              -6.8788527
+            ],
+            [
+              107.5501266,
+              -6.8787843
+            ],
+            [
+              107.5500401,
+              -6.8787121
+            ],
+            [
+              107.5499932,
+              -6.8787879
+            ]
+          ]
+        ]
+      },
+      "id": "way/1051943026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1095944984",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "cuisine": "burger",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6426619,
+              -6.9166729
+            ],
+            [
+              107.6425751,
+              -6.9167473
+            ],
+            [
+              107.642684,
+              -6.9168687
+            ],
+            [
+              107.6427646,
+              -6.9167879
+            ],
+            [
+              107.6426619,
+              -6.9166729
+            ]
+          ]
+        ]
+      },
+      "id": "way/1095944984"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1144812268",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "branch": "Summarecon Bandung",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "retail",
+        "cuisine": "burger",
+        "drive_through": "yes",
+        "internet_access": "wlan",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6900814,
+              -6.9572355
+            ],
+            [
+              107.6900635,
+              -6.9574962
+            ],
+            [
+              107.6902556,
+              -6.9575093
+            ],
+            [
+              107.6902735,
+              -6.9572485
+            ],
+            [
+              107.6900814,
+              -6.9572355
+            ]
+          ]
+        ]
+      },
+      "id": "way/1144812268"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1144812765",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "branch": "Summarecon Bandung",
+        "building": "retail",
+        "cuisine": "chicken",
+        "drive_through": "no",
+        "name": "Richeese Factory"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6866211,
+              -6.9562258
+            ],
+            [
+              107.6866689,
+              -6.9563959
+            ],
+            [
+              107.6868455,
+              -6.956347
+            ],
+            [
+              107.6867977,
+              -6.9561769
+            ],
+            [
+              107.6866211,
+              -6.9562258
+            ]
+          ]
+        ]
+      },
+      "id": "way/1144812765"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1147861222",
+        "amenity": "fast_food",
+        "branch": "Cimahi",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "cuisine": "burger",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5345668,
+              -6.869381
+            ],
+            [
+              107.5345101,
+              -6.869556
+            ],
+            [
+              107.5347069,
+              -6.8696188
+            ],
+            [
+              107.5347635,
+              -6.8694438
+            ],
+            [
+              107.5345668,
+              -6.869381
+            ]
+          ]
+        ]
+      },
+      "id": "way/1147861222"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158392271",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "building": "commercial",
+        "building:use": "retail",
+        "changing_table": "no",
+        "cuisine": "donut;coffee_shop",
+        "delivery": "yes",
+        "highchair": "yes",
+        "level": "1",
+        "name": "Dunkin'",
+        "opening_hours": "24/7",
+        "outdoor_seating": "yes",
+        "smoking": "outside",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "limited",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6298917,
+              -6.9442635
+            ],
+            [
+              107.6299583,
+              -6.9443284
+            ],
+            [
+              107.6300788,
+              -6.9441998
+            ],
+            [
+              107.6300065,
+              -6.9441295
+            ],
+            [
+              107.6298917,
+              -6.9442635
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158392271"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158392272",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "building": "commercial",
+        "building:use": "retail",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6292471,
+              -6.943584
+            ],
+            [
+              107.6293145,
+              -6.9436449
+            ],
+            [
+              107.6294083,
+              -6.9435426
+            ],
+            [
+              107.6293409,
+              -6.9434817
+            ],
+            [
+              107.6292471,
+              -6.943584
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158392272"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158408609",
+        "addr:city": "Bandung",
+        "addr:country": "ID",
+        "addr:housenumber": "149",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Buah Batu",
+        "amenity": "fast_food",
+        "building": "commercial",
+        "building:use": "retail",
+        "cuisine": "coffee_shop;donut",
+        "delivery": "yes",
+        "indoor_seating": "yes",
+        "name": "J.Co",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "outdoor_seating": "yes",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6249911,
+              -6.9389153
+            ],
+            [
+              107.6248804,
+              -6.9390298
+            ],
+            [
+              107.624899,
+              -6.9390476
+            ],
+            [
+              107.6249373,
+              -6.939008
+            ],
+            [
+              107.6249768,
+              -6.9390457
+            ],
+            [
+              107.6250493,
+              -6.9389708
+            ],
+            [
+              107.6249911,
+              -6.9389153
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158408609"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158408613",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "commercial",
+        "building:use": "retail",
+        "cuisine": "burger",
+        "delivery": "yes",
+        "drive_through": "yes",
+        "level": "1",
+        "name": "McDonald's",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "outdoor_seating": "yes",
+        "takeaway": "yes",
+        "wheelchair": "designated"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6251347,
+              -6.9389245
+            ],
+            [
+              107.6252443,
+              -6.9390229
+            ],
+            [
+              107.6254144,
+              -6.9388314
+            ],
+            [
+              107.6253094,
+              -6.9387363
+            ],
+            [
+              107.6251347,
+              -6.9389245
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158408613"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158408615",
+        "alt_name": "Domino's Pizza",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "building": "commercial",
+        "building:use": "retail",
+        "cuisine": "pizza",
+        "delivery": "24/7",
+        "level": "2",
+        "name": "Domino's",
+        "opening_hours": "24/7",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "no",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6251546,
+              -6.9392607
+            ],
+            [
+              107.6251911,
+              -6.9392949
+            ],
+            [
+              107.6252706,
+              -6.9392115
+            ],
+            [
+              107.6252341,
+              -6.9391772
+            ],
+            [
+              107.6251546,
+              -6.9392607
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158408615"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1158488685",
+        "amenity": "fast_food",
+        "brand": "Burger King",
+        "brand:wikidata": "Q177054",
+        "building": "yes",
+        "cuisine": "burger",
+        "drive_through": "yes",
+        "layer": "2",
+        "name": "Burger King",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "shop": "supermarket",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6255806,
+              -6.9394238
+            ],
+            [
+              107.6256415,
+              -6.939359
+            ],
+            [
+              107.6255827,
+              -6.9393045
+            ],
+            [
+              107.6253936,
+              -6.9395055
+            ],
+            [
+              107.6254524,
+              -6.93956
+            ],
+            [
+              107.6254764,
+              -6.9395345
+            ],
+            [
+              107.6255481,
+              -6.9396009
+            ],
+            [
+              107.6256522,
+              -6.9394902
+            ],
+            [
+              107.6255806,
+              -6.9394238
+            ]
+          ]
+        ]
+      },
+      "id": "way/1158488685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1172819483",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "delivery": "yes",
+        "diet:halal": "yes",
+        "indoor": "room",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "level": "0",
+        "name": "KFC",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "outdoor_seating": "yes",
+        "payment:cash": "yes",
+        "payment:contactless": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:electronic_purses": "yes",
+        "room": "restaurant",
+        "smoking": "outside",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6672401,
+              -6.9392539
+            ],
+            [
+              107.6672555,
+              -6.9394173
+            ],
+            [
+              107.6674161,
+              -6.9394023
+            ],
+            [
+              107.6674007,
+              -6.9392389
+            ],
+            [
+              107.6672401,
+              -6.9392539
+            ]
+          ]
+        ]
+      },
+      "id": "way/1172819483"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1193684654",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "building": "retail",
+        "cuisine": "japanese",
+        "delivery": "yes",
+        "name": "HokBen",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "payment:cash": "yes",
+        "payment:contactless": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:electronic_purses": "yes",
+        "reservation": "no",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6326162,
+              -6.9144857
+            ],
+            [
+              107.6326408,
+              -6.9145252
+            ],
+            [
+              107.6327211,
+              -6.9144759
+            ],
+            [
+              107.6326965,
+              -6.9144364
+            ],
+            [
+              107.6326162,
+              -6.9144857
+            ]
+          ]
+        ]
+      },
+      "id": "way/1193684654"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1198173630",
+        "addr:housenumber": "11",
+        "addr:state": "JW",
+        "addr:street": "Jalan Magna Raya",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "building": "retail",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "operator": "24/7 closed \"No Service\"",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6890728,
+              -6.9571532
+            ],
+            [
+              107.6890827,
+              -6.957036
+            ],
+            [
+              107.6890252,
+              -6.9570312
+            ],
+            [
+              107.6890153,
+              -6.9571484
+            ],
+            [
+              107.6890728,
+              -6.9571532
+            ]
+          ]
+        ]
+      },
+      "id": "way/1198173630"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1198173688",
+        "addr:city": "Bandung",
+        "addr:housenumber": "73",
+        "addr:postcode": "40295",
+        "addr:state": "JW",
+        "addr:street": "Bulevar Magna",
+        "amenity": "fast_food",
+        "building": "commercial",
+        "name": "Martabak San Francisco",
+        "toilets": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6893798,
+              -6.959066
+            ],
+            [
+              107.6894932,
+              -6.9590753
+            ],
+            [
+              107.6894971,
+              -6.9590289
+            ],
+            [
+              107.6893837,
+              -6.9590196
+            ],
+            [
+              107.6893798,
+              -6.959066
+            ]
+          ]
+        ]
+      },
+      "id": "way/1198173688"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1217233090",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "retail",
+        "cuisine": "burger",
+        "delivery": "yes",
+        "internet_access": "yes",
+        "internet_access:fee": "no",
+        "name": "McDonald's",
+        "opening_hours": "24/7",
+        "payment:cash": "yes",
+        "payment:contactless": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:electronic_purses": "yes",
+        "smoking": "outside",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6628157,
+              -6.9396373
+            ],
+            [
+              107.6627459,
+              -6.939625
+            ],
+            [
+              107.6627532,
+              -6.9395847
+            ],
+            [
+              107.6626521,
+              -6.9395669
+            ],
+            [
+              107.6626486,
+              -6.939586
+            ],
+            [
+              107.6626086,
+              -6.939579
+            ],
+            [
+              107.6625749,
+              -6.9397672
+            ],
+            [
+              107.662615,
+              -6.9397743
+            ],
+            [
+              107.6626777,
+              -6.9397853
+            ],
+            [
+              107.6627207,
+              -6.9397929
+            ],
+            [
+              107.6627434,
+              -6.9397969
+            ],
+            [
+              107.6627532,
+              -6.9397423
+            ],
+            [
+              107.6627956,
+              -6.9397498
+            ],
+            [
+              107.6628157,
+              -6.9396373
+            ]
+          ]
+        ]
+      },
+      "id": "way/1217233090"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1220577834",
+        "amenity": "fast_food",
+        "branch": "Pasirkoja",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "building": "yes",
+        "cuisine": "burger",
+        "drive_through": "yes",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5753796,
+              -6.9299813
+            ],
+            [
+              107.5752333,
+              -6.9301828
+            ],
+            [
+              107.575335,
+              -6.9302555
+            ],
+            [
+              107.5754812,
+              -6.930054
+            ],
+            [
+              107.5753796,
+              -6.9299813
+            ]
+          ]
+        ]
+      },
+      "id": "way/1220577834"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1232571394",
+        "amenity": "fast_food",
+        "brand": "Mister Donut",
+        "brand:en": "Mister Donut",
+        "brand:wikidata": "Q1065819",
+        "cuisine": "donut",
+        "name": "Mister Donut",
+        "name:en": "Mister Donut",
+        "opening_hours": "Mo-Su 09:00-23:00",
+        "room": "shop",
+        "shop": "bakery",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6237931,
+              -6.919416
+            ],
+            [
+              107.6238478,
+              -6.9193878
+            ],
+            [
+              107.6238081,
+              -6.919312
+            ],
+            [
+              107.6237534,
+              -6.9193402
+            ],
+            [
+              107.6237931,
+              -6.919416
+            ]
+          ]
+        ]
+      },
+      "id": "way/1232571394"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1232571395",
+        "amenity": "fast_food",
+        "cuisine": "japanese",
+        "name": "Washoku Sato",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "room": "yes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6239254,
+              -6.9193478
+            ],
+            [
+              107.6238478,
+              -6.9193878
+            ],
+            [
+              107.6237931,
+              -6.919416
+            ],
+            [
+              107.6238258,
+              -6.9194787
+            ],
+            [
+              107.6239581,
+              -6.9194104
+            ],
+            [
+              107.6239254,
+              -6.9193478
+            ]
+          ]
+        ]
+      },
+      "id": "way/1232571395"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/32520411",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "branch": "Donut Dago",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "name:en": "Dunkin Donuts",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6115579,
+          -6.9019586
+        ]
+      },
+      "id": "node/32520411"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1013408385",
+        "amenity": "fast_food",
+        "name": "Sate Hadori"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6028366,
+          -6.9154742
+        ]
+      },
+      "id": "node/1013408385"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1107662817",
+        "amenity": "fast_food",
+        "name": "Dunkin Donut"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5815533,
+          -6.8813231
+        ]
+      },
+      "id": "node/1107662817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1341941777",
+        "amenity": "fast_food",
+        "building": "yes",
+        "building:levels": "2",
+        "building:roof": "concrete",
+        "building:structure": "reinforced_masonry",
+        "building:use": "commercial",
+        "building:walls": "brick",
+        "cuisine": "pizza",
+        "name": "Pizza Place"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6127554,
+          -6.8925163
+        ]
+      },
+      "id": "node/1341941777"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1352122684",
+        "addr:city": "Bandung",
+        "addr:district": "Bandung",
+        "addr:housenumber": "23",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan PH. H. Mustofa",
+        "addr:subdistrict": "Cibeunying Kaler",
+        "amenity": "fast_food",
+        "contact:facebook": "https://www.facebook.com/itenas.official/",
+        "email": "promosi@itenas.ac.id",
+        "internet_access": "yes",
+        "internet_access:fee": "customers",
+        "name": "Itenas Bandung",
+        "phone": "+62 822 1612 7225",
+        "source": "survey;local knowledge",
+        "website": "https://www.itenas.ac.id/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6363552,
+          -6.897292
+        ]
+      },
+      "id": "node/1352122684"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1383698859",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "Ayam Ayaman"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6150326,
+          -6.8840078
+        ]
+      },
+      "id": "node/1383698859"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1655715160",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5934603,
+          -6.8682162
+        ]
+      },
+      "id": "node/1655715160"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1655736890",
+        "addr:street": "Jalan Dokter Setiabudhi",
+        "amenity": "fast_food",
+        "cuisine": "japanese",
+        "name": "HokBen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5979852,
+          -6.8789798
+        ]
+      },
+      "id": "node/1655736890"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1657182090",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5977475,
+          -6.8784018
+        ]
+      },
+      "id": "node/1657182090"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1919646272",
+        "amenity": "fast_food"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.605885,
+          -6.9255337
+        ]
+      },
+      "id": "node/1919646272"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1924435637",
+        "addr:postcode": "40131",
+        "amenity": "fast_food",
+        "cuisine": "sandwich",
+        "name": "Roppan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6043216,
+          -6.8947619
+        ]
+      },
+      "id": "node/1924435637"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1924435638",
+        "addr:housenumber": "160",
+        "addr:postcode": "40131",
+        "addr:street": "Jalan Cihampelas",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "phone": "+62 22 2061060",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6044044,
+          -6.8947276
+        ]
+      },
+      "id": "node/1924435638"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1924435639",
+        "amenity": "fast_food",
+        "brand": "Wendy's",
+        "brand:wikidata": "Q550258",
+        "brand:wikipedia": "en:Wendy's",
+        "cuisine": "burger",
+        "name": "Wendy's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6047504,
+          -6.8942243
+        ]
+      },
+      "id": "node/1924435639"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3030478604",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:street": "Saung Galing",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.611152,
+          -6.9019099
+        ]
+      },
+      "id": "node/3030478604"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3628110744",
+        "addr:housenumber": "134",
+        "addr:street": "Jalan Suniaraja",
+        "amenity": "fast_food",
+        "name": "Perkedel Bondon",
+        "opening_hours": "Mo-Su 23:00-03:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.602779,
+          -6.9159688
+        ]
+      },
+      "id": "node/3628110744"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3806721307",
+        "amenity": "fast_food",
+        "brand": "Pizza Hut",
+        "brand:wikidata": "Q191615",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "name": "Pizza Hut Delivery",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6174599,
+          -6.8775391
+        ]
+      },
+      "id": "node/3806721307"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3808509533",
+        "amenity": "fast_food",
+        "name": "Sambal Mangga"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.617139,
+          -6.8951031
+        ]
+      },
+      "id": "node/3808509533"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3809369316",
+        "amenity": "fast_food",
+        "name": "Martabak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6208379,
+          -6.8665928
+        ]
+      },
+      "id": "node/3809369316"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3869649927",
+        "addr:street": "Venus Raya",
+        "alt_name": "PHD",
+        "amenity": "fast_food",
+        "branch": "Bandung Margahayu Venus",
+        "check_date": "2023-10-06",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "drive_through": "no",
+        "name": "Pizza Hut Delivery",
+        "opening_hours": "24/7",
+        "operator": "Pizza Hut",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6671503,
+          -6.9414117
+        ]
+      },
+      "id": "node/3869649927"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4143035306",
+        "addr:street": "Jalan Terusan Jakarta",
+        "amenity": "fast_food",
+        "name": "MIE AYAM ANTAPANI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.659887,
+          -6.9135741
+        ]
+      },
+      "id": "node/4143035306"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4143042094",
+        "amenity": "fast_food",
+        "name": "BAKSO LOTUS",
+        "name:en": "Bakso Lotus"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6457785,
+          -6.9238746
+        ]
+      },
+      "id": "node/4143042094"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4143047190",
+        "addr:street": "Jenderal Gatot Subroto",
+        "amenity": "fast_food",
+        "name": "MI TEKTEK GATSU",
+        "name:en": "Mi Tektek Gatsu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6409925,
+          -6.9308355
+        ]
+      },
+      "id": "node/4143047190"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4320575449",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:housenumber": "112",
+        "addr:street": "Jln R.E. Martadinata (dekat taman pramuka)",
+        "alt_name": "Marugame Seimen",
+        "amenity": "fast_food",
+        "brand": "Marugame Seimen",
+        "brand:wikidata": "Q10877253",
+        "cuisine": "noodle",
+        "name": "Marugame Udon",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6256233,
+          -6.9100039
+        ]
+      },
+      "id": "node/4320575449"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4327153848",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:street": "Jl. Raya Kopo",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "brand:wikipedia": "en:Dunkin' Donuts",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5772329,
+          -6.9639806
+        ]
+      },
+      "id": "node/4327153848"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4327193261",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:street": "Ruko Taman Kopo Indah Blok A",
+        "amenity": "fast_food",
+        "name": "Aneka Juice"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5629329,
+          -6.9640893
+        ]
+      },
+      "id": "node/4327193261"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4327193341",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:housenumber": "3",
+        "addr:street": "Ruko Taman Kopo Indah Blok A1",
+        "amenity": "fast_food",
+        "name": "PHD Taman Kopo Indah"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.563213,
+          -6.9642277
+        ]
+      },
+      "id": "node/4327193341"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4327999964",
+        "addr:city": "Bandung",
+        "addr:housenumber": "65",
+        "addr:street": "Jalan Pajajaran",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5978417,
+          -6.9067623
+        ]
+      },
+      "id": "node/4327999964"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4329429670",
+        "addr:city": "Bandung",
+        "addr:housenumber": "19",
+        "addr:postcode": "40122",
+        "addr:street": "Jalan Pahlawan",
+        "amenity": "fast_food",
+        "branch": "Pahlawan",
+        "brand": "Richeese Factory",
+        "brand:wikidata": "Q22915087",
+        "cuisine": "chicken",
+        "diet:halal": "yes",
+        "email": "rf-comments@richeesefactory.com",
+        "name": "Richeese Factory",
+        "opening_hours": "Mo-Su 10:00-24:00",
+        "phone": "+62 22 85880097",
+        "takeaway": "yes",
+        "website": "http://richeesefactory.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6340985,
+          -6.9002713
+        ]
+      },
+      "id": "node/4329429670"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4333447016",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Melong Kaler",
+        "amenity": "fast_food",
+        "name": "Martabak Sari Sunda"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6144025,
+          -6.930002
+        ]
+      },
+      "id": "node/4333447016"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4340655706",
+        "addr:housenumber": "50",
+        "addr:street": "Jalan Anggrek",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "name": "Bakso Rudal",
+        "opening_hours": "Mo-Su 09:00-18:00",
+        "operator": "Karmi",
+        "phone": "+62 857 2010 0301"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6314897,
+          -6.9101164
+        ]
+      },
+      "id": "node/4340655706"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4367454595",
+        "addr:city": "Bandung",
+        "addr:housenumber": "81",
+        "addr:postcode": "40251",
+        "addr:street": "Jalan Otto Iskandardinata",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6044197,
+          -6.9175752
+        ]
+      },
+      "id": "node/4367454595"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4374171589",
+        "addr:city": "Bandung",
+        "addr:housenumber": "40",
+        "addr:postcode": "40116",
+        "addr:street": "Jalan Ir. H. Juanda",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "branch": "Dago",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "name:en": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6122673,
+          -6.9018694
+        ]
+      },
+      "id": "node/4374171589"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4375073435",
+        "air_conditioning": "no",
+        "amenity": "fast_food",
+        "brand": "Roti'O",
+        "brand:wikidata": "Q124354233",
+        "diet:halal": "only",
+        "name": "Roti'O",
+        "shop": "bakery"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6024432,
+          -6.9136423
+        ]
+      },
+      "id": "node/4375073435"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4468560326",
+        "amenity": "fast_food",
+        "name": "Cireng Cipaganti"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6021008,
+          -6.8873682
+        ]
+      },
+      "id": "node/4468560326"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4991473023",
+        "amenity": "fast_food",
+        "name": "Nasi Goreng Calakan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.57791,
+          -6.877199
+        ]
+      },
+      "id": "node/4991473023"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4991473024",
+        "amenity": "fast_food",
+        "name": "D'BestO"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5779728,
+          -6.8771028
+        ]
+      },
+      "id": "node/4991473024"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5028291124",
+        "amenity": "fast_food",
+        "name": "Ayam bakar penyet",
+        "name:it": "Ajam Bakar Penyet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182983,
+          -6.8923683
+        ]
+      },
+      "id": "node/5028291124"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5119339732",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "internet_access": "wlan",
+        "name": "KFC",
+        "name:en": "KFC",
+        "opening_hours": "Mo-Fr 09:00-23:00; Sa-Su 09:00-00:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5965618,
+          -6.8902188
+        ]
+      },
+      "id": "node/5119339732"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5119339738",
+        "amenity": "fast_food",
+        "name": "Raffel's"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5960888,
+          -6.888327
+        ]
+      },
+      "id": "node/5119339738"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5119340024",
+        "amenity": "fast_food",
+        "brand": "Burger King",
+        "brand:wikidata": "Q177054",
+        "brand:wikipedia": "en:Burger King",
+        "cuisine": "burger",
+        "name": "Burger King",
+        "name:en": "Burger King",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.596655,
+          -6.8901094
+        ]
+      },
+      "id": "node/5119340024"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5123534325",
+        "amenity": "fast_food",
+        "name": "Kedai 66"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6246483,
+          -6.9612467
+        ]
+      },
+      "id": "node/5123534325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5141323923",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.555465,
+          -6.8875601
+        ]
+      },
+      "id": "node/5141323923"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5188434313",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "brand:wikipedia": "en:Dunkin' Donuts",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6022856,
+          -6.9162324
+        ]
+      },
+      "id": "node/5188434313"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5190103161",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "Bagelicious",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6179806,
+          -6.9058775
+        ]
+      },
+      "id": "node/5190103161"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5482213258",
+        "amenity": "fast_food",
+        "name": "Nasi Goreng Pak Ale"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6438913,
+          -6.9065581
+        ]
+      },
+      "id": "node/5482213258"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5600347123",
+        "addr:city": "Bandung",
+        "addr:street": "Jl. Cisirung",
+        "amenity": "fast_food",
+        "name": "Warung Nasi Riska Rahayu Alengka",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6116341,
+          -6.9751867
+        ]
+      },
+      "id": "node/5600347123"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5600347731",
+        "addr:city": "Bandung",
+        "addr:street": "Jl. Cisirung",
+        "amenity": "fast_food",
+        "name": "Karedok Riska Rahayu Alengka",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.610969,
+          -6.9750829
+        ]
+      },
+      "id": "node/5600347731"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5803815253",
+        "amenity": "fast_food",
+        "brand": "Wendy's",
+        "brand:wikidata": "Q550258",
+        "cuisine": "burger",
+        "name": "Wendy's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6091646,
+          -6.9171592
+        ]
+      },
+      "id": "node/5803815253"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5803815357",
+        "amenity": "fast_food",
+        "name": "Pizza Braga"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.609001,
+          -6.9169273
+        ]
+      },
+      "id": "node/5803815357"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5838169185",
+        "addr:housenumber": "37",
+        "addr:postcode": "40285",
+        "addr:street": "Jalan Sukapura",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "name": "Seblak Teh Ani",
+        "name:en": "Seblak Teh Ani",
+        "opening_hours": "Mo-Su 10:00-21:00",
+        "operator": "Yani Winingsih",
+        "phone": "+62 877 2624 8680"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6534638,
+          -6.9296914
+        ]
+      },
+      "id": "node/5838169185"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5841783503",
+        "amenity": "fast_food",
+        "name": "Bakso Ikah Asgar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6303781,
+          -6.9157907
+        ]
+      },
+      "id": "node/5841783503"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6162921900",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5973672,
+          -6.9054835
+        ]
+      },
+      "id": "node/6162921900"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6173024686",
+        "amenity": "fast_food",
+        "name": "baso Ayub"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6187864,
+          -6.8888338
+        ]
+      },
+      "id": "node/6173024686"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6246470585",
+        "amenity": "fast_food",
+        "name": "Macdonald"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.601412,
+          -6.8853011
+        ]
+      },
+      "id": "node/6246470585"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6377242184",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:street": "Jalan Dr. Setiabudi",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "brand:wikipedia": "en:McDonald's",
+        "check_date": "2025-09-08",
+        "cuisine": "burger",
+        "drive_through": "yes",
+        "name": "McDonald's",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5981433,
+          -6.8785631
+        ]
+      },
+      "id": "node/6377242184"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6711528941",
+        "amenity": "fast_food",
+        "brand": "Yoshinoya",
+        "brand:en": "Yoshinoya",
+        "brand:wikidata": "Q776272",
+        "cuisine": "beef_bowl",
+        "name": "Yoshinoya",
+        "name:en": "Yoshinoya",
+        "name:ja": "吉野家",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6060117,
+          -6.9239658
+        ]
+      },
+      "id": "node/6711528941"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6714908056",
+        "amenity": "fast_food",
+        "name": "Rice Bowl"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5976963,
+          -6.9062496
+        ]
+      },
+      "id": "node/6714908056"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6714964113",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.597695,
+          -6.9059507
+        ]
+      },
+      "id": "node/6714964113"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6936444985",
+        "amenity": "fast_food",
+        "name": "Warkop 99 Kubasari 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6172569,
+          -6.8882177
+        ]
+      },
+      "id": "node/6936444985"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7081712522",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6103382,
+          -6.9091896
+        ]
+      },
+      "id": "node/7081712522"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7094927598",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "brand:wikipedia": "en:KFC",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5854356,
+          -6.8932546
+        ]
+      },
+      "id": "node/7094927598"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7301581252",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6025779,
+          -6.913752
+        ]
+      },
+      "id": "node/7301581252"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/8097693648",
+        "addr:housenumber": "5b",
+        "addr:street": "Jl. Baranang Siang",
+        "amenity": "fast_food",
+        "name": "Odading Mang Soleh",
+        "opening_hours": "24/7",
+        "phone": "+62 855-2094-6327"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6214102,
+          -6.9194121
+        ]
+      },
+      "id": "node/8097693648"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9816319417",
+        "amenity": "fast_food",
+        "name": "Lomie Mie Baso Pangsit Enak se Bandung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5966434,
+          -6.9473382
+        ]
+      },
+      "id": "node/9816319417"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9933910372",
+        "amenity": "fast_food",
+        "name": "CFC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5971582,
+          -6.8963513
+        ]
+      },
+      "id": "node/9933910372"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9933933555",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "dish": "martabak",
+        "name": "Queen Martabak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5967457,
+          -6.9004348
+        ]
+      },
+      "id": "node/9933933555"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10207815284",
+        "addr:city": "Bandung",
+        "addr:housenumber": "Komplek Bapindo Kavling 16",
+        "addr:postcode": "40267",
+        "addr:street": "Jalan Sukaati IX",
+        "amenity": "fast_food",
+        "cuisine": "chicken;fried_chicken;korean;japanese;american",
+        "delivery": "yes",
+        "diet:chicken": "yes",
+        "diet:halal": "yes",
+        "diet:local": "yes",
+        "internet_access": "wlan",
+        "name": "Vibes Chicken",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "Private companies",
+        "phone": "+6289523915040",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6205361,
+          -6.9538241
+        ]
+      },
+      "id": "node/10207815284"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10308592325",
+        "addr:city": "Bandung",
+        "addr:housenumber": "63",
+        "addr:postcode": "40164",
+        "addr:street": "Jalan Surya Sumantri",
+        "alt_name": "McDonald's Surya Sumantri",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "brand:wikipedia": "en:McDonald's",
+        "cuisine": "burger",
+        "delivery": "yes",
+        "name": "McDonald's",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5811612,
+          -6.8859298
+        ]
+      },
+      "id": "node/10308592325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10308729438",
+        "addr:city": "Bandung",
+        "addr:housenumber": "13-15",
+        "addr:postcode": "40117",
+        "addr:street": "Jalan Purnawarman",
+        "alt_name": "McDonald;s Bandung Electronic Center",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "brand:wikipedia": "en:McDonald's",
+        "cuisine": "burger",
+        "delivery": "yes",
+        "level": "0",
+        "name": "McDonald's",
+        "opening_hours": "Mo-Su 10:00-20:00",
+        "phone": "+628111953371",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6092025,
+          -6.9085952
+        ]
+      },
+      "id": "node/10308729438"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10742702052",
+        "amenity": "fast_food",
+        "name": "Tahu Susu Cihurip"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.627886,
+          -6.9155713
+        ]
+      },
+      "id": "node/10742702052"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10772813665",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "outdoor_seating": "yes",
+        "takeaway": "yes",
+        "toilets": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6271417,
+          -6.9411889
+        ]
+      },
+      "id": "node/10772813665"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10772813670",
+        "amenity": "fast_food",
+        "brand": "Wingstop",
+        "brand:wikidata": "Q8025339",
+        "cuisine": "wings",
+        "name": "Wingstop",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "yes",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6295651,
+          -6.9438553
+        ]
+      },
+      "id": "node/10772813670"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10793008343",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "drive_through": "no",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6088789,
+          -6.9090193
+        ]
+      },
+      "id": "node/10793008343"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10996519145",
+        "amenity": "fast_food",
+        "branch": "Buah Batu",
+        "cuisine": "chicken",
+        "drive_through": "no",
+        "internet_access": "wlan",
+        "name": "Wingz o'Wingz",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "self_service": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6389655,
+          -6.9662954
+        ]
+      },
+      "id": "node/10996519145"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10996519146",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "brand": "Wendy's",
+        "brand:wikidata": "Q550258",
+        "cuisine": "burger",
+        "name": "Wendy's",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6382085,
+          -6.9670416
+        ]
+      },
+      "id": "node/10996519146"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10996519152",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "cuisine": "chicken",
+        "name": "Richeese Factory",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6383517,
+          -6.9670765
+        ]
+      },
+      "id": "node/10996519152"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10996519154",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "delivery": "yes",
+        "name": "Domino's",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6379316,
+          -6.9672339
+        ]
+      },
+      "id": "node/10996519154"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10996519155",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "delivery": "yes",
+        "name": "KFC",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6380992,
+          -6.9662954
+        ]
+      },
+      "id": "node/10996519155"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11024204314",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "cuisine": "chicken",
+        "name": "Shihlin",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6385662,
+          -6.9667058
+        ]
+      },
+      "id": "node/11024204314"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11024204318",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "opening_hours": "Mo-Su 10:00-21:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6387251,
+          -6.9667327
+        ]
+      },
+      "id": "node/11024204318"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11028962711",
+        "addr:city": "Kabupaten Bandung",
+        "addr:district": "Margaasih",
+        "addr:postcode": "40217",
+        "addr:province": "Jawa barat",
+        "addr:street": "Jl. Nanjung",
+        "addr:subdistrict": "Nanjung",
+        "amenity": "fast_food",
+        "cuisine": "kue;roti;donat;brownies;birthday_cake;kue_ulang_tahun;garlic_cheese_bread;roti_tawar;doughnut;cake;bread",
+        "name": "Runabiya Cake Shop",
+        "opening_hours": "Mo-Sa 07:00-20:00",
+        "phone": "+62895616544300",
+        "website": "https://www.instagram.com/runabiya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5380345,
+          -6.9385994
+        ]
+      },
+      "id": "node/11028962711"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11047768623",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6087787,
+          -6.9090282
+        ]
+      },
+      "id": "node/11047768623"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11047778344",
+        "amenity": "fast_food",
+        "brand": "Yoshinoya",
+        "brand:en": "Yoshinoya",
+        "brand:wikidata": "Q776272",
+        "cuisine": "beef_bowl",
+        "name": "Yoshinoya",
+        "name:en": "Yoshinoya",
+        "name:ja": "吉野家",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6092704,
+          -6.9088049
+        ]
+      },
+      "id": "node/11047778344"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11061392207",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6347607,
+          -6.9268025
+        ]
+      },
+      "id": "node/11061392207"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11064408338",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6455184,
+          -6.9072563
+        ]
+      },
+      "id": "node/11064408338"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11065332413",
+        "amenity": "fast_food",
+        "name": "Martabak San Francisco"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6192541,
+          -6.9273391
+        ]
+      },
+      "id": "node/11065332413"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11079291352",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "cuisine": "burger",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6362685,
+          -6.9754411
+        ]
+      },
+      "id": "node/11079291352"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11086819350",
+        "amenity": "fast_food",
+        "brand": "Subway",
+        "brand:wikidata": "Q244457",
+        "cuisine": "sandwich",
+        "delivery": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "name": "Subway",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "outdoor_seating": "yes",
+        "smoking": "outside",
+        "takeaway": "yes",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6167743,
+          -6.8961105
+        ]
+      },
+      "id": "node/11086819350"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11107825846",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "Kegeprek"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6121023,
+          -6.8798623
+        ]
+      },
+      "id": "node/11107825846"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11898812735",
+        "amenity": "fast_food",
+        "cuisine": "regional",
+        "name": "Bacang Panas Braga",
+        "payment:cash": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6098876,
+          -6.9219678
+        ]
+      },
+      "id": "node/11898812735"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11898859973",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "cuisine": "burger",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6051186,
+          -6.9230943
+        ]
+      },
+      "id": "node/11898859973"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11953684969",
+        "addr:housenumber": "8",
+        "addr:postcode": "40117",
+        "addr:street": "Jalan Purnawarman",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "name": "AYAM DOUBLE DISC",
+        "name:en": "DOUBLE DISC CHICKEN",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6093385,
+          -6.9092065
+        ]
+      },
+      "id": "node/11953684969"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987472730",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6111712,
+          -6.9089077
+        ]
+      },
+      "id": "node/11987472730"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987477019",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "brand": "Burger King",
+        "brand:wikidata": "Q177054",
+        "brand:wikipedia": "en:Burger King",
+        "cuisine": "burger",
+        "diet:halal": "only",
+        "name": "Burger King",
+        "opening_hours": "24/7",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6109418,
+          -6.9089623
+        ]
+      },
+      "id": "node/11987477019"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987497231",
+        "amenity": "fast_food",
+        "name": "Kakori Bento"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6114447,
+          -6.9085629
+        ]
+      },
+      "id": "node/11987497231"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987518594",
+        "amenity": "fast_food",
+        "name": "A&W"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6112959,
+          -6.9083392
+        ]
+      },
+      "id": "node/11987518594"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987524030",
+        "amenity": "fast_food",
+        "name": "Panties Pizza"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.611489,
+          -6.9085483
+        ]
+      },
+      "id": "node/11987524030"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11987566465",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "Hokben Express",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6022629,
+          -6.9137994
+        ]
+      },
+      "id": "node/11987566465"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989008353",
+        "amenity": "fast_food",
+        "name": "Beard Papa's"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6368627,
+          -6.9254816
+        ]
+      },
+      "id": "node/11989008353"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989032089",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6365703,
+          -6.9259795
+        ]
+      },
+      "id": "node/11989032089"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989056374",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6367581,
+          -6.9261792
+        ]
+      },
+      "id": "node/11989056374"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989061357",
+        "amenity": "fast_food",
+        "brand": "Wendy's",
+        "brand:wikidata": "Q550258",
+        "cuisine": "burger",
+        "name": "Wendy's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6364228,
+          -6.9264002
+        ]
+      },
+      "id": "node/11989061357"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989065461",
+        "amenity": "fast_food",
+        "brand": "Yoshinoya",
+        "brand:en": "Yoshinoya",
+        "brand:wikidata": "Q776272",
+        "cuisine": "beef_bowl",
+        "name": "Yoshinoya",
+        "name:en": "Yoshinoya",
+        "name:ja": "吉野家",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6368386,
+          -6.9257851
+        ]
+      },
+      "id": "node/11989065461"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989065463",
+        "amenity": "fast_food",
+        "name": "Shihlin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6366132,
+          -6.9257133
+        ]
+      },
+      "id": "node/11989065463"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989083593",
+        "alt_name": "Marugame Seimen",
+        "amenity": "fast_food",
+        "brand": "Marugame Seimen",
+        "brand:wikidata": "Q10877253",
+        "cuisine": "noodle",
+        "name": "Marugame Udon",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.636978,
+          -6.9249837
+        ]
+      },
+      "id": "node/11989083593"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989085594",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6370183,
+          -6.9254017
+        ]
+      },
+      "id": "node/11989085594"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989235273",
+        "amenity": "fast_food",
+        "name": "Ayam Goong"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.612645,
+          -6.9347728
+        ]
+      },
+      "id": "node/11989235273"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989256543",
+        "amenity": "fast_food",
+        "name": "HokBen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6091152,
+          -6.9079638
+        ]
+      },
+      "id": "node/11989256543"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989519841",
+        "amenity": "fast_food",
+        "name": "Bolu Bakar Tunggal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182334,
+          -6.918138
+        ]
+      },
+      "id": "node/11989519841"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989519842",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.618397,
+          -6.9179862
+        ]
+      },
+      "id": "node/11989519842"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989537684",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182321,
+          -6.9180821
+        ]
+      },
+      "id": "node/11989537684"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989541218",
+        "amenity": "fast_food",
+        "name": "Chicken Sumo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182696,
+          -6.9184096
+        ]
+      },
+      "id": "node/11989541218"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989880659",
+        "amenity": "fast_food",
+        "name": "Shihlin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.596541,
+          -6.8903761
+        ]
+      },
+      "id": "node/11989880659"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989904857",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.597162,
+          -6.9058296
+        ]
+      },
+      "id": "node/11989904857"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989905619",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5957444,
+          -6.8886892
+        ]
+      },
+      "id": "node/11989905619"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989938691",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.596989,
+          -6.9059294
+        ]
+      },
+      "id": "node/11989938691"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11989975574",
+        "amenity": "fast_food",
+        "name": "Shihlin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5970574,
+          -6.9058442
+        ]
+      },
+      "id": "node/11989975574"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990163724",
+        "amenity": "fast_food",
+        "name": "Chicken Sumo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6059905,
+          -6.9237083
+        ]
+      },
+      "id": "node/11990163724"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990174859",
+        "air_conditioning": "yes",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6057531,
+          -6.9236524
+        ]
+      },
+      "id": "node/11990174859"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990192718",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "Hokben Express",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6056726,
+          -6.9236923
+        ]
+      },
+      "id": "node/11990192718"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990918139",
+        "amenity": "fast_food",
+        "name": "Takiyo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6050168,
+          -6.9230533
+        ]
+      },
+      "id": "node/11990918139"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990961065",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.604703,
+          -6.9230346
+        ]
+      },
+      "id": "node/11990961065"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990961495",
+        "amenity": "fast_food",
+        "name": "Laka Laka Tofu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6047727,
+          -6.9226885
+        ]
+      },
+      "id": "node/11990961495"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990962673",
+        "amenity": "fast_food",
+        "name": "D'Penyetz"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6048774,
+          -6.9226432
+        ]
+      },
+      "id": "node/11990962673"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990972775",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6048063,
+          -6.9229574
+        ]
+      },
+      "id": "node/11990972775"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990973386",
+        "amenity": "fast_food",
+        "name": "Belgian Wafel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.605041,
+          -6.9229055
+        ]
+      },
+      "id": "node/11990973386"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990977129",
+        "amenity": "fast_food",
+        "name": "Ayam Keprabon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.604994,
+          -6.9228802
+        ]
+      },
+      "id": "node/11990977129"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990977529",
+        "alt_name": "Church's Chicken",
+        "amenity": "fast_food",
+        "brand": "Texas Chicken",
+        "brand:wikidata": "Q1089932",
+        "cuisine": "chicken",
+        "name": "Texas Chicken",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6050195,
+          -6.9226459
+        ]
+      },
+      "id": "node/11990977529"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11990979467",
+        "amenity": "fast_food",
+        "name": "CrunChick"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.604872,
+          -6.922763
+        ]
+      },
+      "id": "node/11990979467"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991142999",
+        "amenity": "fast_food",
+        "name": "Salad Point"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6085091,
+          -6.9172353
+        ]
+      },
+      "id": "node/11991142999"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991163406",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6082851,
+          -6.9171355
+        ]
+      },
+      "id": "node/11991163406"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991335395",
+        "amenity": "fast_food",
+        "name": "Old Chang Kee"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6050758,
+          -6.8932959
+        ]
+      },
+      "id": "node/11991335395"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991340274",
+        "amenity": "fast_food",
+        "name": "Ppang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6055184,
+          -6.8930176
+        ]
+      },
+      "id": "node/11991340274"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991340275",
+        "amenity": "fast_food",
+        "name": "Shihlin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6055707,
+          -6.8932812
+        ]
+      },
+      "id": "node/11991340275"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991342394",
+        "amenity": "fast_food",
+        "name": "Chikuro"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6052676,
+          -6.8937951
+        ]
+      },
+      "id": "node/11991342394"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991342784",
+        "amenity": "fast_food",
+        "name": "Papalicious"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6051965,
+          -6.8930016
+        ]
+      },
+      "id": "node/11991342784"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991342786",
+        "amenity": "fast_food",
+        "name": "Red Dog"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6052234,
+          -6.8934942
+        ]
+      },
+      "id": "node/11991342786"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991350399",
+        "amenity": "fast_food",
+        "name": "Cakue Sekolahan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6051027,
+          -6.8929564
+        ]
+      },
+      "id": "node/11991350399"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991350601",
+        "amenity": "fast_food",
+        "name": "Bakpao Djakarta"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6054634,
+          -6.8937632
+        ]
+      },
+      "id": "node/11991350601"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991352475",
+        "amenity": "fast_food",
+        "name": "Tahu Brintik"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6055479,
+          -6.8937765
+        ]
+      },
+      "id": "node/11991352475"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991352477",
+        "amenity": "fast_food",
+        "name": "Macaron by Fachoco"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6050866,
+          -6.8932626
+        ]
+      },
+      "id": "node/11991352477"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991375205",
+        "amenity": "fast_food",
+        "name": "D'Crepes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6053897,
+          -6.8938311
+        ]
+      },
+      "id": "node/11991375205"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991379120",
+        "amenity": "fast_food",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6055385,
+          -6.8933971
+        ]
+      },
+      "id": "node/11991379120"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11991379661",
+        "amenity": "fast_food",
+        "name": "Hokben"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6052743,
+          -6.8928831
+        ]
+      },
+      "id": "node/11991379661"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12039813119",
+        "addr:city": "Cimahi",
+        "addr:district": "Cimahi Utara",
+        "addr:housenumber": "8",
+        "addr:postcode": "40511",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Purbasari",
+        "addr:subdistrict": "Cipageran",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "delivery": "yes",
+        "diet:halal": "yes",
+        "diet:local": "yes",
+        "name": "Aromanina Cimahi",
+        "opening_hours": "Mo-Su 08:00-20:00",
+        "operator": "Aromanina"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5352208,
+          -6.8674088
+        ]
+      },
+      "id": "node/12039813119"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12039825591",
+        "addr:city": "Cimahi",
+        "addr:district": "Cimahi Utara",
+        "addr:housenumber": "205",
+        "addr:postcode": "40511",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Kolonel Masturi",
+        "addr:subdistrict": "Cipageran",
+        "amenity": "fast_food",
+        "cuisine": "asian",
+        "diet:halal": "yes",
+        "diet:local": "yes",
+        "drive_through": "no",
+        "name": "Nyomi Thai Tea",
+        "opening_hours": "Mo-Su 10:00-17:00",
+        "operator": "Nyomi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5449911,
+          -6.8592291
+        ]
+      },
+      "id": "node/12039825591"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12429557641",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "brand": "Es Teler 77",
+        "cuisine": "indonesian",
+        "name": "Es Teler 77",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6385189,
+          -6.9671742
+        ]
+      },
+      "id": "node/12429557641"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12429557643",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "indoor_seating": "no",
+        "name": "D'Crepes",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6386104,
+          -6.9668164
+        ]
+      },
+      "id": "node/12429557643"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12429557648",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "name": "Puyo",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6385001,
+          -6.9668017
+        ]
+      },
+      "id": "node/12429557648"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12429557652",
+        "amenity": "fast_food",
+        "branch": "Transmart Buahbatu",
+        "indoor_seating": "no",
+        "name": "Tahu Brintik",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.638581,
+          -6.966833
+        ]
+      },
+      "id": "node/12429557652"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12482391291",
+        "amenity": "fast_food",
+        "cuisine": "juice",
+        "name": "Juice For You"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6045809,
+          -6.8741614
+        ]
+      },
+      "id": "node/12482391291"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12482476018",
+        "amenity": "fast_food",
+        "cuisine": "burger",
+        "name": "Brother Jonn & Sons"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6035871,
+          -6.8787541
+        ]
+      },
+      "id": "node/12482476018"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12624634819",
+        "addr:city": "Bandung",
+        "addr:housenumber": "887",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jl. A. Yani , Pasirlayung, Kec. Cibeunying Kidul",
+        "amenity": "fast_food",
+        "cuisine": "noodle",
+        "diet:meat": "yes",
+        "name": "Baso Padasuka",
+        "opening_hours": "Mo-Su 08:00-22:00",
+        "phone": "+62 22-7200914"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6529317,
+          -6.9031736
+        ]
+      },
+      "id": "node/12624634819"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12625139759",
+        "addr:city": "Bandung",
+        "addr:postcode": "40191",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Cikadut",
+        "amenity": "fast_food",
+        "cuisine": "asian",
+        "diet:raw": "yes",
+        "diet:vegetarian": "yes",
+        "name": "Seblak Mang Baji",
+        "opening_hours": "Mo-Su 10:00-22:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6649926,
+          -6.9029678
+        ]
+      },
+      "id": "node/12625139759"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12625159717",
+        "addr:city": "Kel. Cikutra",
+        "addr:street": "Jalan Pahlawan",
+        "amenity": "fast_food",
+        "cuisine": "indonesian",
+        "diet:halal": "yes",
+        "name": "SEBLAK PAHLAWAN",
+        "opening_hours": "Mo-Su 10:00-22:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6340568,
+          -6.8990525
+        ]
+      },
+      "id": "node/12625159717"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12640498404",
+        "amenity": "fast_food",
+        "name": "Burgerbandung",
+        "opening_hours": "Mo-Su 12:00-12:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6028374,
+          -6.9124733
+        ]
+      },
+      "id": "node/12640498404"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12660109845",
+        "addr:city": "Bandung",
+        "addr:district": "Coblong",
+        "addr:housenumber": "204",
+        "addr:province": "Jawa Barat",
+        "addr:street": "Jalan Ir. H. Djuanda",
+        "amenity": "fast_food",
+        "cuisine": "japanese;korean;indonesian",
+        "diet:halal": "yes",
+        "drive_through": "yes",
+        "name": "Siomay Mii x Dimsum Moii",
+        "opening_hours": "Mo-Su 13:00-20:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6140509,
+          -6.8844753
+        ]
+      },
+      "id": "node/12660109845"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13058939140",
+        "amenity": "fast_food",
+        "cuisine": "kebab",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6155054,
+          -6.887948
+        ]
+      },
+      "id": "node/13058939140"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13061721307",
+        "amenity": "fast_food",
+        "cuisine": "kebab",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5338902,
+          -6.8693106
+        ]
+      },
+      "id": "node/13061721307"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13067825597",
+        "amenity": "fast_food",
+        "cuisine": "juice",
+        "name": "Shary Juice"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6117848,
+          -6.8812498
+        ]
+      },
+      "id": "node/13067825597"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13093298535",
+        "addr:housename": "Blok B",
+        "addr:housenumber": "24",
+        "addr:street": "Jalan Paripurna Raya",
+        "amenity": "fast_food",
+        "cuisine": "arab;cake",
+        "drive_through": "yes",
+        "name": "Alfahim Frozen",
+        "phone": "+6289968340221",
+        "website": "https//haidarvm.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.676151,
+          -6.9309559
+        ]
+      },
+      "id": "node/13093298535"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13455908140",
+        "amenity": "fast_food",
+        "brand": "McDonald's",
+        "brand:wikidata": "Q38076",
+        "cuisine": "burger",
+        "name": "McDonald's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5799942,
+          -6.9595771
+        ]
+      },
+      "id": "node/13455908140"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13455908146",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5805535,
+          -6.9598461
+        ]
+      },
+      "id": "node/13455908146"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13455908147",
+        "alt_name": "Kentucky Fried Chicken",
+        "amenity": "fast_food",
+        "brand": "KFC",
+        "brand:wikidata": "Q524757",
+        "cuisine": "chicken",
+        "name": "KFC",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5805696,
+          -6.960119
+        ]
+      },
+      "id": "node/13455908147"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13480961694",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5813035,
+          -6.9178815
+        ]
+      },
+      "id": "node/13480961694"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13516038447",
+        "amenity": "fast_food",
+        "cuisine": "juice",
+        "name": "Seliter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6168953,
+          -6.8782672
+        ]
+      },
+      "id": "node/13516038447"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13542439443",
+        "amenity": "fast_food",
+        "name": "Jatinangor House"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6087958,
+          -6.9127986
+        ]
+      },
+      "id": "node/13542439443"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13580286927",
+        "amenity": "fast_food",
+        "cuisine": "kebab",
+        "name": "Kebab Turki Baba Rafi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6132228,
+          -6.8898697
+        ]
+      },
+      "id": "node/13580286927"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13595480019",
+        "amenity": "fast_food",
+        "cuisine": "pizza",
+        "name": "Richeese Pizza"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6134771,
+          -6.8927142
+        ]
+      },
+      "id": "node/13595480019"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13613935483",
+        "amenity": "fast_food",
+        "name": "Almaz"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6142741,
+          -6.8856391
+        ]
+      },
+      "id": "node/13613935483"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13629109192",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "cuisine": "donut;coffee_shop",
+        "indoor_seating": "bar_table",
+        "name": "Dunkin'",
+        "opening_hours": "Mo-Su 06:00-21:00",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6362062,
+          -6.971117
+        ]
+      },
+      "id": "node/13629109192"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13629259960",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "indoor_seating": "no",
+        "name": "Arum Sari",
+        "official_name": "Ayam Bakar & Ayam Goreng Arum Sari",
+        "takeaway": "only"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5400406,
+          -6.931317
+        ]
+      },
+      "id": "node/13629259960"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13630128349",
+        "amenity": "fast_food",
+        "name": "Ayam Keprabon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.606648,
+          -6.9534019
+        ]
+      },
+      "id": "node/13630128349"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13727432737",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "Ayam Geprek Pangeran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6135622,
+          -6.8845767
+        ]
+      },
+      "id": "node/13727432737"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13734831924",
+        "amenity": "fast_food",
+        "name": "Bandung Cheesecuit"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6243466,
+          -6.9384125
+        ]
+      },
+      "id": "node/13734831924"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13734868265",
+        "amenity": "fast_food",
+        "cuisine": "kebab",
+        "name": "Kabobs"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6265764,
+          -6.9406925
+        ]
+      },
+      "id": "node/13734868265"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13742262469",
+        "amenity": "fast_food",
+        "name": "A&W"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6450839,
+          -6.9138853
+        ]
+      },
+      "id": "node/13742262469"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13742316332",
+        "alt_name": "J.Co Donuts and Coffee",
+        "amenity": "fast_food",
+        "brand": "J.Co Donuts'",
+        "brand:wikidata": "Q4260444",
+        "cuisine": "donut;coffee_shop",
+        "name": "J.Co",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6448969,
+          -6.9137891
+        ]
+      },
+      "id": "node/13742316332"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13742316339",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6490196,
+          -6.912805
+        ]
+      },
+      "id": "node/13742316339"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13742340056",
+        "amenity": "fast_food",
+        "brand": "Domino's",
+        "brand:wikidata": "Q839466",
+        "cuisine": "pizza",
+        "name": "Domino's",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6537021,
+          -6.9122734
+        ]
+      },
+      "id": "node/13742340056"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13794953177",
+        "amenity": "fast_food",
+        "cuisine": "mexican",
+        "name": "Pablo Burrito"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6161804,
+          -6.9061428
+        ]
+      },
+      "id": "node/13794953177"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13795057250",
+        "alt_name": "Hoka Hoka Bento",
+        "amenity": "fast_food",
+        "brand": "HokBen",
+        "brand:wikidata": "Q5877948",
+        "cuisine": "japanese",
+        "name": "HokBen",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6184481,
+          -6.9058918
+        ]
+      },
+      "id": "node/13795057250"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13801459587",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "Dikichi",
+        "opening_hours": "Mo-Su 08:00-23:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6292476,
+          -6.914557
+        ]
+      },
+      "id": "node/13801459587"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13807809759",
+        "amenity": "fast_food",
+        "cuisine": "mexican",
+        "name": "Pablo Burrito"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6158755,
+          -6.8965441
+        ]
+      },
+      "id": "node/13807809759"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13832160388",
+        "alt_name": "Dunkin' Donuts",
+        "amenity": "fast_food",
+        "brand": "Dunkin'",
+        "brand:wikidata": "Q847743",
+        "cuisine": "donut;coffee_shop",
+        "name": "Dunkin'",
+        "takeaway": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6060186,
+          -6.9221992
+        ]
+      },
+      "id": "node/13832160388"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13877005323",
+        "amenity": "fast_food",
+        "name": "d'BestO Dipatiukur",
+        "wikidata": "Q137858705"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6168822,
+          -6.8904694
+        ]
+      },
+      "id": "node/13877005323"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13968078001",
+        "amenity": "fast_food",
+        "check_date": "2026-06-26",
+        "name": "Pizza Hut Delivery (PHD)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6436149,
+          -6.9546856
+        ]
+      },
+      "id": "node/13968078001"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13968078102",
+        "amenity": "fast_food",
+        "check_date": "2026-06-26",
+        "name": "Kebab Monster"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6404191,
+          -6.9540686
+        ]
+      },
+      "id": "node/13968078102"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14003837259",
+        "amenity": "fast_food",
+        "cuisine": "juice",
+        "name": "Seliter",
+        "opening_hours": "Mo-Sa 09:00-21:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182403,
+          -6.8889156
+        ]
+      },
+      "id": "node/14003837259"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14003911099",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "Dkriuk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6182083,
+          -6.8889393
+        ]
+      },
+      "id": "node/14003911099"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14023779872",
+        "amenity": "fast_food",
+        "cuisine": "chicken",
+        "name": "D'okeh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6118428,
+          -6.8808402
+        ]
+      },
+      "id": "node/14023779872"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14070635606",
+        "amenity": "fast_food",
+        "cuisine": "nasi_goreng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6438935,
+          -6.9065558
+        ]
+      },
+      "id": "node/14070635606"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14074679953",
+        "amenity": "fast_food",
+        "name": "Pang Waffle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6435206,
+          -6.9166054
+        ]
+      },
+      "id": "node/14074679953"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14097352189",
+        "amenity": "fast_food",
+        "name": "Regall Pizza & Gyros"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6193595,
+          -6.8953329
+        ]
+      },
+      "id": "node/14097352189"
+    }
+  ]
+}

@@ -1,0 +1,1188 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-08-16T00:24:17Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/155190115",
+        "addr:street": "Jalan Dr. Setiabudi",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Ledeng",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5950041,
+              -6.8588524
+            ],
+            [
+              107.5949209,
+              -6.8594196
+            ],
+            [
+              107.5952481,
+              -6.8594832
+            ],
+            [
+              107.5952917,
+              -6.8591892
+            ],
+            [
+              107.5952588,
+              -6.8591539
+            ],
+            [
+              107.5952824,
+              -6.858926
+            ],
+            [
+              107.5952619,
+              -6.8588906
+            ],
+            [
+              107.5950041,
+              -6.8588524
+            ]
+          ]
+        ]
+      },
+      "id": "way/155190115"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/217843186",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Antapani",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6660271,
+              -6.91512
+            ],
+            [
+              107.6657609,
+              -6.9150559
+            ],
+            [
+              107.6655539,
+              -6.9157606
+            ],
+            [
+              107.6657502,
+              -6.9158807
+            ],
+            [
+              107.6660271,
+              -6.91512
+            ]
+          ]
+        ]
+      },
+      "id": "way/217843186"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/257227468",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Suniaraja",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "internet_access": "no",
+        "landuse": "commercial",
+        "name": "Terminal Stasiun Hall",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6028039,
+              -6.9160311
+            ],
+            [
+              107.6028073,
+              -6.9153314
+            ],
+            [
+              107.6023102,
+              -6.9153145
+            ],
+            [
+              107.6022846,
+              -6.9158079
+            ],
+            [
+              107.6022217,
+              -6.9158156
+            ],
+            [
+              107.6022339,
+              -6.9160812
+            ],
+            [
+              107.6028039,
+              -6.9160311
+            ]
+          ]
+        ]
+      },
+      "id": "way/257227468"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/299062906",
+        "amenity": "bus_station",
+        "building": "garage",
+        "bus": "yes",
+        "name": "Jackal Holidays Dipatiukur",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6146713,
+              -6.8876057
+            ],
+            [
+              107.6149638,
+              -6.8875244
+            ],
+            [
+              107.6149974,
+              -6.887445
+            ],
+            [
+              107.6149585,
+              -6.8873227
+            ],
+            [
+              107.614583,
+              -6.8874292
+            ],
+            [
+              107.6146713,
+              -6.8876057
+            ]
+          ]
+        ]
+      },
+      "id": "way/299062906"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/321073551",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Leuwi Panjang",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Bus Leuwipanjang",
+        "name:en": "Leuwipanjang Bus Terminal",
+        "operator": "Kementerian Perhubungan",
+        "public_transport": "station",
+        "wikidata": "Q25463944",
+        "wikimedia_commons": "Category:Leuwipanjang Bus Terminal",
+        "wikipedia": "id:Terminal Leuwipanjang"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5929708,
+              -6.944634
+            ],
+            [
+              107.5927877,
+              -6.9447354
+            ],
+            [
+              107.5928495,
+              -6.944997
+            ],
+            [
+              107.5928136,
+              -6.9452388
+            ],
+            [
+              107.5927632,
+              -6.9452595
+            ],
+            [
+              107.5927916,
+              -6.9453734
+            ],
+            [
+              107.5927621,
+              -6.9453863
+            ],
+            [
+              107.592901,
+              -6.9458598
+            ],
+            [
+              107.5929755,
+              -6.9461164
+            ],
+            [
+              107.5931959,
+              -6.9461761
+            ],
+            [
+              107.5932383,
+              -6.9460357
+            ],
+            [
+              107.5937846,
+              -6.9461856
+            ],
+            [
+              107.5937897,
+              -6.9461449
+            ],
+            [
+              107.5937949,
+              -6.9460948
+            ],
+            [
+              107.5952123,
+              -6.9462521
+            ],
+            [
+              107.5952613,
+              -6.9457462
+            ],
+            [
+              107.5947578,
+              -6.9456446
+            ],
+            [
+              107.5947994,
+              -6.9453783
+            ],
+            [
+              107.5939957,
+              -6.9452683
+            ],
+            [
+              107.593792,
+              -6.9452453
+            ],
+            [
+              107.5932802,
+              -6.9451876
+            ],
+            [
+              107.5931884,
+              -6.945118
+            ],
+            [
+              107.5931324,
+              -6.9450059
+            ],
+            [
+              107.5930897,
+              -6.9449128
+            ],
+            [
+              107.5929708,
+              -6.944634
+            ]
+          ]
+        ]
+      },
+      "id": "way/321073551"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/383052677",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Margahayu Raya",
+        "operator": "Kobanter Baru",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6622658,
+              -6.9463983
+            ],
+            [
+              107.6622351,
+              -6.9466276
+            ],
+            [
+              107.6627326,
+              -6.9466934
+            ],
+            [
+              107.6627634,
+              -6.9464641
+            ],
+            [
+              107.6622658,
+              -6.9463983
+            ]
+          ]
+        ]
+      },
+      "id": "way/383052677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/530164013",
+        "addr:full": "Jalan Cihampelas No.64, Tamansari, Bandung Wetan, Kota Bandung, Jawa Barat 40116",
+        "amenity": "bus_station",
+        "building": "yes",
+        "name": "Day Trans"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6043634,
+              -6.9018677
+            ],
+            [
+              107.6044549,
+              -6.9018794
+            ],
+            [
+              107.6044683,
+              -6.9017915
+            ],
+            [
+              107.6044106,
+              -6.9017782
+            ],
+            [
+              107.6043634,
+              -6.9018677
+            ]
+          ]
+        ]
+      },
+      "id": "way/530164013"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/800957566",
+        "amenity": "bus_station",
+        "building": "yes",
+        "bus": "yes",
+        "name": "Terminal Cibaduyut",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.5939284,
+              -6.9617894
+            ],
+            [
+              107.5939095,
+              -6.9618648
+            ],
+            [
+              107.5939697,
+              -6.9618796
+            ],
+            [
+              107.5939886,
+              -6.9618042
+            ],
+            [
+              107.5939284,
+              -6.9617894
+            ]
+          ]
+        ]
+      },
+      "id": "way/800957566"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1162962080",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Tegallega",
+        "public_transport": "station",
+        "shelter": "yes",
+        "source": "POI_WRI_Survey_2023",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6025546,
+              -6.933745
+            ],
+            [
+              107.6025639,
+              -6.9338675
+            ],
+            [
+              107.6025921,
+              -6.9339494
+            ],
+            [
+              107.6028402,
+              -6.9341032
+            ],
+            [
+              107.6030655,
+              -6.9342496
+            ],
+            [
+              107.6030736,
+              -6.9338981
+            ],
+            [
+              107.6030776,
+              -6.933781
+            ],
+            [
+              107.6025546,
+              -6.933745
+            ]
+          ]
+        ]
+      },
+      "id": "way/1162962080"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/25433963",
+        "amenity": "bus_station",
+        "bench": "yes",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Elang",
+        "pole": "traffic_sign",
+        "public_transport": "platform",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5756825,
+          -6.9133505
+        ]
+      },
+      "id": "node/25433963"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2500443118",
+        "addr:street": "Jalan Soekarno Hatta",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Primajasa Batununggal",
+        "opening_hours": "Mo-Su 23:00-17:00",
+        "phone": "+62 22 87526886",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6246762,
+          -6.9613952
+        ]
+      },
+      "id": "node/2500443118"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3029960606",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Cititrans Dipatiukur",
+        "public_transport": "station",
+        "shelter": "yes",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6168181,
+          -6.8908699
+        ]
+      },
+      "id": "node/3029960606"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3029965483",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Lintas Shuttle",
+        "public_transport": "station",
+        "shelter": "yes",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6138915,
+          -6.8854853
+        ]
+      },
+      "id": "node/3029965483"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3029967052",
+        "addr:city": "Bandung, Jawa Barat",
+        "addr:housenumber": "107",
+        "addr:postcode": "40132",
+        "addr:street": "Jalan Dipatiukur",
+        "amenity": "bus_station",
+        "name": "DayTrans Dipatiukur",
+        "shelter": "yes",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6142058,
+          -6.8855429
+        ]
+      },
+      "id": "node/3029967052"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3249461528",
+        "amenity": "bus_station",
+        "bin": "no",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Pangkalan Angkot Cimindi",
+        "pole": "flag",
+        "public_transport": "station",
+        "shelter": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5602144,
+          -6.8953708
+        ]
+      },
+      "id": "node/3249461528"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3256049561",
+        "amenity": "bus_station",
+        "name": "Ciburial"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6437029,
+          -6.8580785
+        ]
+      },
+      "id": "node/3256049561"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3373712058",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Dago",
+        "network": "Angkot Kota Bandung",
+        "public_transport": "station",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6212499,
+          -6.8670976
+        ]
+      },
+      "id": "node/3373712058"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3374033509",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Abdul Muis/Kebon Kalapa",
+        "public_transport": "stop_position",
+        "source": "TfB_UPIYM_2025"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6058322,
+          -6.9276428
+        ]
+      },
+      "id": "node/3374033509"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3375793676",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Dipatiukur",
+        "amenity": "bus_station",
+        "bench": "no",
+        "bin": "no",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "lit": "no",
+        "name": "UNPAD Dipatiukur",
+        "pole": "traffic_sign",
+        "public_transport": "station",
+        "route_ref": "5",
+        "shelter": "yes",
+        "source": "S2City_POI_2022",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6180829,
+          -6.892885
+        ]
+      },
+      "id": "node/3375793676"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3380023434",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Sadang Serang",
+        "pole": "no",
+        "public_transport": "station",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6249697,
+          -6.8912725
+        ]
+      },
+      "id": "node/3380023434"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3385219354",
+        "amenity": "bus_station",
+        "bench": "no",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Bumi Asri",
+        "public_transport": "platform",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5508136,
+          -6.9325142
+        ]
+      },
+      "id": "node/3385219354"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3464313655",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Pangkalan Angkot Sayati",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5747759,
+          -6.9717362
+        ]
+      },
+      "id": "node/3464313655"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3468354467",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Pasar Atas Cimahi",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5434667,
+          -6.8698637
+        ]
+      },
+      "id": "node/3468354467"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3468354470",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Citeureup",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.54349,
+          -6.8617178
+        ]
+      },
+      "id": "node/3468354470"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3889011982",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Pangkalan Angkot Palasari",
+        "public_transport": "platform",
+        "ref": "Palasari, Dayeuh Kolot"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6171325,
+          -6.9738427
+        ]
+      },
+      "id": "node/3889011982"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4099275953",
+        "amenity": "bus_station",
+        "name": "CitiTrans"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.58633,
+          -6.8939183
+        ]
+      },
+      "id": "node/4099275953"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4243841169",
+        "addr:housenumber": "181",
+        "addr:street": "Jalan Soekarno-Hatta",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Primajasa Caringin",
+        "opening_hours": "Mo-Su 23:00-17:00",
+        "phone": "+62 22 6074545",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5820406,
+          -6.9402095
+        ]
+      },
+      "id": "node/4243841169"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4327237840",
+        "addr:city": "Bandung",
+        "addr:housenumber": "35",
+        "addr:street": "Jalan Pasteur, Pamoyanan, Cicendo",
+        "amenity": "bus_station",
+        "name": "Xtrans - Pasteur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5929335,
+          -6.898017
+        ]
+      },
+      "id": "node/4327237840"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4366522973",
+        "addr:city": "Bandung",
+        "addr:housenumber": "210",
+        "addr:postcode": "40131",
+        "addr:street": "Jalan Cihampelas",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "DayTrans Cihampelas",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6042797,
+          -6.8907645
+        ]
+      },
+      "id": "node/4366522973"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4373194455",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Geulis Indonesia Travel",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.616584,
+          -6.8905403
+        ]
+      },
+      "id": "node/4373194455"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4375049547",
+        "addr:city": "Bandung",
+        "addr:housenumber": "55B",
+        "addr:postcode": "40173",
+        "addr:street": "Jalan Doktor Djunjunan",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "DayTrans Dr. Djunjunan",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5917527,
+          -6.8971934
+        ]
+      },
+      "id": "node/4375049547"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5568874042",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "internet_access": "wlan",
+        "name": "Jackal Holidays",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5898873,
+          -6.8961563
+        ]
+      },
+      "id": "node/5568874042"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6970421185",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Pahala Kencana",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6286907,
+          -6.9130493
+        ]
+      },
+      "id": "node/6970421185"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7095130078",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Lintas",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5835456,
+          -6.8921317
+        ]
+      },
+      "id": "node/7095130078"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9819738793",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Cimindi",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5588082,
+          -6.8971464
+        ]
+      },
+      "id": "node/9819738793"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10793101502",
+        "addr:city": "Bandung",
+        "addr:street": "Jalan Kebon Kawung",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "DAMRI Kebon Kawung",
+        "operator": "DAMRI",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.602509,
+          -6.9124371
+        ]
+      },
+      "id": "node/10793101502"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10814583285",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Angkot Cicaheum",
+        "public_transport": "station",
+        "shelter": "yes",
+        "source": "POI_WRI_Survey_2023",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6562115,
+          -6.9024362
+        ]
+      },
+      "id": "node/10814583285"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11132625987",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "DAMRI Gedebage",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6858715,
+          -6.9371844
+        ]
+      },
+      "id": "node/11132625987"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12646576013",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Terminal Riung Bandung",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6832181,
+          -6.9493655
+        ]
+      },
+      "id": "node/12646576013"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12695368306",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "name": "Jackal Holidays Kiaracondong",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6430208,
+          -6.9445834
+        ]
+      },
+      "id": "node/12695368306"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12816121760",
+        "amenity": "bus_station",
+        "bench": "no",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Ledeng Sersan Bajuri",
+        "public_transport": "station",
+        "shelter": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5945252,
+          -6.8582467
+        ]
+      },
+      "id": "node/12816121760"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13240185824",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Angkot Buah Batu-GBA",
+        "pole": "no",
+        "public_transport": "station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6402652,
+          -6.9544015
+        ]
+      },
+      "id": "node/13240185824"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13382601417",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Terminal Ciroyom",
+        "public_transport": "station",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.587723,
+          -6.9139427
+        ]
+      },
+      "id": "node/13382601417"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/14023360229",
+        "amenity": "bus_station",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Ciateul",
+        "network": "Metro Jabar Trans",
+        "network:wikidata": "Q112132170",
+        "public_transport": "platform",
+        "ref": "BS-07",
+        "shelter": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6064215,
+          -6.9337334
+        ]
+      },
+      "id": "node/14023360229"
+    }
+  ]
+}

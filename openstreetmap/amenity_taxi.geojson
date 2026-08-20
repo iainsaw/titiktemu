@@ -1,0 +1,396 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-08-16T00:26:21Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/637408056",
+        "amenity": "taxi",
+        "building": "roof",
+        "motorcycle": "yes",
+        "name": "Pangkalan Ojek Sangkurinag",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.6119871,
+              -6.8847619
+            ],
+            [
+              107.6121214,
+              -6.8849315
+            ],
+            [
+              107.612137,
+              -6.8849191
+            ],
+            [
+              107.6121484,
+              -6.8849105
+            ],
+            [
+              107.612014,
+              -6.8847409
+            ],
+            [
+              107.6120021,
+              -6.8847529
+            ],
+            [
+              107.6119871,
+              -6.8847619
+            ]
+          ]
+        ]
+      },
+      "id": "way/637408056"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5123534324",
+        "amenity": "taxi",
+        "name": "Taxi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6248874,
+          -6.9614777
+        ]
+      },
+      "id": "node/5123534324"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9737632689",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6281629,
+          -6.9041747
+        ]
+      },
+      "id": "node/9737632689"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9740576264",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6088457,
+          -6.8951459
+        ]
+      },
+      "id": "node/9740576264"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9740578868",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6166522,
+          -6.8902945
+        ]
+      },
+      "id": "node/9740578868"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9740578869",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6205844,
+          -6.8911902
+        ]
+      },
+      "id": "node/9740578869"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9740578870",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.618533,
+          -6.8898686
+        ]
+      },
+      "id": "node/9740578870"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9742623879",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6095197,
+          -6.880312
+        ]
+      },
+      "id": "node/9742623879"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9742623880",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6097796,
+          -6.8830467
+        ]
+      },
+      "id": "node/9742623880"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9742623881",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6126193,
+          -6.8792828
+        ]
+      },
+      "id": "node/9742623881"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9742623882",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6138003,
+          -6.8844104
+        ]
+      },
+      "id": "node/9742623882"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9754746418",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6234161,
+          -6.8939742
+        ]
+      },
+      "id": "node/9754746418"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9761496315",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6209746,
+          -6.8668393
+        ]
+      },
+      "id": "node/9761496315"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9761496316",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6208751,
+          -6.8671146
+        ]
+      },
+      "id": "node/9761496316"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9761502717",
+        "amenity": "taxi",
+        "motorcycle": "yes",
+        "source": "S2City_POI_2022"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5936946,
+          -6.9390193
+        ]
+      },
+      "id": "node/9761502717"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10811881700",
+        "amenity": "taxi",
+        "name": "Pangkalan Ojek",
+        "source": "POI_WRI_Survey_2023",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6474085,
+          -6.9064399
+        ]
+      },
+      "id": "node/10811881700"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10814583284",
+        "amenity": "taxi",
+        "name": "Pangkalan Ojek",
+        "source": "POI_WRI_Survey_2023",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6560619,
+          -6.9022016
+        ]
+      },
+      "id": "node/10814583284"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10814664325",
+        "amenity": "taxi",
+        "name": "Pangkalan Ojek",
+        "source": "POI_WRI_Survey_2023",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6442448,
+          -6.9296107
+        ]
+      },
+      "id": "node/10814664325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10815894054",
+        "amenity": "taxi",
+        "source": "POI_WRI_Survey_2023",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6114327,
+          -6.9548057
+        ]
+      },
+      "id": "node/10815894054"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12806309252",
+        "amenity": "taxi",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6803071,
+          -6.9049215
+        ]
+      },
+      "id": "node/12806309252"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12814754616",
+        "amenity": "taxi",
+        "taxi_vehicle": "motorcycle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6776592,
+          -6.9046698
+        ]
+      },
+      "id": "node/12814754616"
+    }
+  ]
+}

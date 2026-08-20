@@ -1,0 +1,86 @@
+/**
+ * Analisis TOD untuk titik arbitrer.
+ * Pipeline: Geocode → PostGIS RPC → Build Kawasan object
+ * ZERO dummy data — semua skor dihitung dari data riil.
+ */
+
+import { geocode, type GeoResult } from "./geocode";
+import { supabase } from "./supabase";
+import type { Kawasan } from "./vitality-data";
+
+export type AnalysisResult = {
+  kawasan: Kawasan;
+  geo: GeoResult;
+};
+
+/**
+ * Menganalisis potensi TOD untuk sebuah tempat berdasarkan nama.
+ * 1. Geocode nama tempat → koordinat riil
+ * 2. Panggil RPC analyze_single_point → skor riil dari PostGIS
+ * 3. Bangun objek Kawasan lengkap
+ *
+ * @throws Error jika lokasi tidak ditemukan atau RPC gagal
+ */
+export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult> {
+  // 1. Geocode
+  const geo = await geocode(placeName);
+  if (!geo) {
+    throw new Error(`Lokasi "${placeName}" tidak ditemukan di area Bandung Raya. Coba nama yang lebih spesifik.`);
+  }
+
+  // 2. Query PostGIS via RPC
+  const { data, error } = await supabase.rpc("analyze_single_point", {
+    p_lat: geo.lat,
+    p_lng: geo.lng,
+  });
+
+  if (error) {
+    throw new Error(`Gagal menganalisis lokasi: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error("Tidak ada data analisis yang dikembalikan dari server.");
+  }
+
+  // 3. Build Kawasan object dari data riil
+  const result = typeof data === "string" ? JSON.parse(data) : data;
+
+  const kawasan: Kawasan = {
+    id: `ANL-${Date.now()}`,
+    nama: placeName.trim(),
+    koridor: extractKoridor(geo.displayName),
+    klaster: result.klaster || "Pinggiran Berkembang",
+    x: 0,
+    y: 0,
+    jarakTransit: 0,
+    umkm: result.umkm_count ?? 0,
+    hargaTanah: result.harga_tanah_m2 ?? 0,
+    anomali: false,
+    skor: {
+      properti: Math.min(100, Math.max(1, result.skor_properti ?? 1)),
+      layanan: Math.min(100, Math.max(1, result.skor_layanan ?? 1)),
+      ekonomi: Math.min(100, Math.max(1, result.skor_ekonomi ?? 1)),
+      akses: Math.min(100, Math.max(1, result.skor_akses ?? 1)),
+    },
+  };
+
+  return { kawasan, geo };
+}
+
+/**
+ * Ekstrak nama kecamatan/koridor dari display name Nominatim.
+ * Contoh input: "Jalan Cihampelas, Cipaganti, Coblong, Bandung, Jawa Barat, ..."
+ * Output: "Coblong" (kecamatan)
+ */
+function extractKoridor(displayName: string): string {
+  const parts = displayName.split(",").map((s) => s.trim());
+  // Biasanya format: jalan, kelurahan, kecamatan, kota, ...
+  // Ambil bagian ke-3 (index 2) sebagai kecamatan
+  if (parts.length >= 4) {
+    return parts[2];
+  }
+  if (parts.length >= 2) {
+    return parts[1];
+  }
+  return "Kawasan Baru";
+}

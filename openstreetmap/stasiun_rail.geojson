@@ -1,0 +1,406 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-08-15T23:55:51Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1228644985",
+        "addr:city": "Bandung",
+        "addr:postcode": "40294",
+        "alt_name": "Stasiun Cimekar",
+        "ele": "668",
+        "name": "Cimekar",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "CMK",
+        "train": "yes",
+        "wikidata": "Q12516241",
+        "wikipedia": "id:Stasiun Cimekar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.7121869,
+          -6.9489636
+        ]
+      },
+      "id": "node/1228644985"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1228645035",
+        "addr:city": "Bandung",
+        "addr:postcode": "40294",
+        "addr:street": "Jalan Stasiun Gedebage",
+        "alt_name": "Stasiun Gedebage",
+        "ele": "672",
+        "name": "Gedebage",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "GDB",
+        "ref": "GDB",
+        "train": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q12516256",
+        "wikipedia": "id:Stasiun Gedebage"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6897991,
+          -6.940825
+        ]
+      },
+      "id": "node/1228645035"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1228700016",
+        "addr:city": "Bandung Regency",
+        "addr:postcode": "40394",
+        "alt_name": "Stasiun Haurpugur",
+        "ele": "689",
+        "name": "Haurpugur",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "HRP",
+        "train": "yes",
+        "wikidata": "Q13097258",
+        "wikipedia": "id:Stasiun Haurpugur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.7991676,
+          -6.9805496
+        ]
+      },
+      "id": "node/1228700016"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3370786793",
+        "addr:city": "Cimahi",
+        "addr:housenumber": "1",
+        "addr:postcode": "40521",
+        "addr:street": "Jalan Stasiun",
+        "alt_name": "Stasiun Cimahi",
+        "ele": "723",
+        "name": "Cimahi",
+        "network": "KAI",
+        "network:wikidata": "Q2745027",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "CMI",
+        "train": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q2612346",
+        "wikipedia": "id:Stasiun Cimahi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5360371,
+          -6.8858788
+        ]
+      },
+      "id": "node/3370786793"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5298718924",
+        "addr:city": "Bandung",
+        "addr:postcode": "40283",
+        "addr:street": "Jalan Ibrahim Adjie",
+        "alt_name": "Stasiun Kiaracondong;Stasiun Kircon;Kircon",
+        "ele": "681",
+        "name": "Kiaracondong",
+        "network": "KAI",
+        "network:wikidata": "Q2745027",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "KAC",
+        "train": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q2406887",
+        "wikipedia": "id:Stasiun Kiaracondong"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6462773,
+          -6.9247499
+        ]
+      },
+      "id": "node/5298718924"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5299765139",
+        "addr:city": "Bandung City",
+        "addr:street": "Jalan Ciroyom",
+        "alt_name": "Stasiun Andir",
+        "ele": "750",
+        "name": "Andir",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "AND",
+        "train": "yes",
+        "wikidata": "Q12516214",
+        "wikipedia": "id:Stasiun Andir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5796513,
+          -6.9083055
+        ]
+      },
+      "id": "node/5299765139"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5851210256",
+        "name": "Tegalluar Summarecon",
+        "name:ja": "テガルアール",
+        "name:zh": "德卡鲁瓦",
+        "network": "Whoosh",
+        "operator": "Kereta Cepat Indonesia China",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "TGR",
+        "train": "yes",
+        "wikidata": "Q111590563",
+        "wikipedia": "id:Stasiun Tegalluar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.7146978,
+          -6.963812
+        ]
+      },
+      "id": "node/5851210256"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693460260",
+        "addr:city": "West Bandung Regency",
+        "addr:postcode": "40552",
+        "alt_name": "Halte Gadobangkong",
+        "ele": "695",
+        "name": "Gadobangkong",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "GK",
+        "train": "yes",
+        "wheelchair": "no",
+        "wikidata": "Q19740943",
+        "wikipedia": "id:Stasiun Gadobangkong"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5152605,
+          -6.8648135
+        ]
+      },
+      "id": "node/10693460260"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693460263",
+        "addr:city": "Bandung",
+        "addr:postcode": "40184",
+        "alt_name": "Stasiun Cimindi",
+        "ele": "736",
+        "name": "Cimindi",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "CMD",
+        "train": "yes",
+        "wikidata": "Q12516242",
+        "wikipedia": "id:Stasiun Cimindi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.561158,
+          -6.8961097
+        ]
+      },
+      "id": "node/10693460263"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693460292",
+        "addr:city": "Bandung City",
+        "ele": "709",
+        "name": "Ciroyom",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "CIR",
+        "train": "yes",
+        "wikidata": "Q3944662",
+        "wikipedia": "en:Ciroyom railway station"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5903057,
+          -6.9140149
+        ]
+      },
+      "id": "node/10693460292"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693460294",
+        "addr:city": "Bandung",
+        "addr:housenumber": "43",
+        "addr:postcode": "40181",
+        "addr:street": "Jalan Kebon Kawung",
+        "alt_name": "Stasiun Bandung;Stasiun Bandung Hall;Bandung Hall",
+        "ele": "709",
+        "name": "Bandung",
+        "name:ja": "バンドン",
+        "network": "KAI",
+        "network:wikidata": "Q2745027",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "BD",
+        "toilets:wheelchair": "yes",
+        "train": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q2571158",
+        "wikipedia": "id:Stasiun Bandung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6021243,
+          -6.914258
+        ]
+      },
+      "id": "node/10693460294"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693460296",
+        "addr:city": "Bandung",
+        "addr:street": "Kembang Sapatu",
+        "alt_name": "Stasiun Cikudapateuh",
+        "ele": "691",
+        "name": "Cikudapateuh",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "CTH",
+        "train": "yes",
+        "wheelchair": "no",
+        "wikidata": "Q12516239",
+        "wikipedia": "id:Stasiun Cikudapateuh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.6260505,
+          -6.9188047
+        ]
+      },
+      "id": "node/10693460296"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10693478234",
+        "addr:city": "Bandung Regency",
+        "addr:postcode": "40394",
+        "alt_name": "Stasiun Rancaekek",
+        "ele": "668",
+        "name": "Rancaekek",
+        "network": "KAI Commuter",
+        "network:wikidata": "Q12501611",
+        "operator": "PT Kereta Api Indonesia",
+        "operator:website": "https://www.kai.id",
+        "operator:wikidata": "Q2745027",
+        "public_transport": "station",
+        "railway": "station",
+        "railway:ref": "RCK",
+        "train": "yes",
+        "wikidata": "Q2791772",
+        "wikipedia": "id:Stasiun Rancaekek"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.7559578,
+          -6.9648801
+        ]
+      },
+      "id": "node/10693478234"
+    }
+  ]
+}
