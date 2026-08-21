@@ -35,7 +35,7 @@ const SUMBER = [
 ];
 
 const PUSTAKA = [
-  "Singh (2015). Metode indeks Transit Oriented Development.",
+  "Singh, Y.J., et al. (2017). Measuring TOD around transit nodes - Towards TOD policy.",
   "Siburian dkk. (2020) & Legowo. TOD Jakarta dan koridor Bogor–Jakarta Kota.",
   "Hasibuan (2014). TOD dan keberlanjutan Jabodetabek.",
   "Kezia (2021). Aksesibilitas dan skala layanan angkutan massal DKI Jakarta.",
@@ -73,12 +73,18 @@ function Metodologi() {
             ))}
           </ul>
           <p className="mt-3">
-            Skor Vitalitas Transit dihitung sebagai indeks berbobot, adaptasi metode TOD Singh
-            (2015) — bukan machine learning berat.
+            Skor Vitalitas Transit dihitung sebagai indeks berbobot, mengadaptasi secara langsung metode <strong>Measuring TOD around transit nodes (Singh et al., 2017)</strong>. Prosesnya meliputi:
           </p>
+          <ul className="list-disc space-y-1.5 pl-5 mt-2">
+            <li><strong>Maximum Standardisation Method:</strong> Menyeragamkan semua nilai metrik ke dalam skala 0–100 berdasarkan nilai maksimum kawasan.</li>
+            <li><strong>Weighted Linear Combination (WLC):</strong> Skor akhir kawasan didapatkan dengan mengalikan skor standar setiap indikator dengan bobot kepentingannya, lalu dijumlahkan.</li>
+          </ul>
         </Section>
 
-        <Section title="3. Bobot per peran pengguna">
+        <Section title="3. Pembobotan Berbasis Peran (Multi-Criteria Analysis)">
+          <p className="mb-3">
+            Menggunakan prinsip <strong>Multi-Criteria Analysis (MCA)</strong>, bobot indikator tidak dikunci secara kaku. Dasbor interaktif memungkinkan penyesuaian bobot secara dinamis berdasarkan <em>stakeholder</em> atau peran pengguna (misal: Pemerintah vs Developer Properti).
+          </p>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="text-muted-foreground">
@@ -107,28 +113,43 @@ function Metodologi() {
           </div>
         </Section>
 
-        <Section title="4. Skor dinamis berbasis waktu">
+        <Section title="4. Ekstraksi Harga Tanah (Extraction Method)">
           <p>
-            Data Menu Go dan Community Activity memuat kolom waktu, sehingga skor dikelompokkan ke
+            Nilai tanah pada setiap kawasan TOD tidak ditebak, melainkan dihitung menggunakan <strong>Metode Ekstraksi (Extraction Method)</strong> yang merupakan standar Penilaian Properti (Appraisal). Mengingat di kawasan TOD bangunan lama sering kali tidak memiliki nilai ekonomis (atau bahkan menjadi beban pembongkaran), formulanya adalah:
+          </p>
+          <ul className="list-disc space-y-1.5 pl-5 mt-2">
+            <li><strong>Nilai Bangunan:</strong> Luas Bangunan (m²) × Biaya Bangun Baru (Rp 5.000.000/m²).</li>
+            <li><strong>Total Nilai Tanah:</strong> Harga Jual Properti - Nilai Bangunan. <em>(Jika negatif, harga jual dianggap murni nilai lahan karena bangunan dianggap tear-down).</em></li>
+            <li><strong>Skor Properti:</strong> Dihitung berdasarkan nilai tanah per m² dengan batas atas Rp 25.000.000/m² sebagai Skor 100.</li>
+          </ul>
+        </Section>
+
+        <Section title="5. Simulasi Dampak Penambahan Layanan (Vitality Twin)">
+          <p>
+            Fitur simulasi tidak menggunakan *machine learning black-box*, melainkan menggunakan model matematika deterministik spasial:
+          </p>
+          <ul className="list-disc space-y-1.5 pl-5 mt-2">
+            <li><strong>Peluruhan Linear (Linear Decay):</strong> Dampak intervensi akan semakin mengecil seiring bertambahnya jarak kawasan dari titik pusat intervensi (radius 12-26 grid semu).</li>
+            <li><strong>Diminishing Returns:</strong> Kawasan yang skor layanannya sudah tinggi akan mendapat penambahan skor yang lebih sedikit dibandingkan kawasan tertinggal, mendorong pemerataan fasilitas.</li>
+            <li><strong>Estimasi Biaya:</strong> Didasarkan pada standar harga satuan infrastruktur dasar lokal. Misalnya, Halte/Stasiun baru (Rp 3,5 Miliar/unit), Rute Feeder (Rp 5,2 Miliar/unit), Penambahan Armada (Rp 2,4 Miliar/unit), dan Jalur Pedestrian (Rp 1,3 Miliar/unit intensitas).</li>
+          </ul>
+        </Section>
+
+        <Section title="6. Skor dinamis berbasis waktu">
+          <p>
+            Data pergerakan memuat kolom waktu, sehingga skor dikelompokkan ke
             rentang pagi, siang, sore, dan malam lalu dihitung ulang. Tidak memerlukan machine
-            learning, cukup pengelompokan dan agregasi berbasis waktu.
+            learning, cukup pengelompokan dan agregasi spasial.
           </p>
         </Section>
 
-        <Section title="5. Machine learning ringan">
+        <Section title="7. Machine learning ringan & Peran AI">
           <ul className="list-disc space-y-1.5 pl-5">
-            <li>Clustering k-means untuk menentukan tipe kawasan secara otomatis.</li>
-            <li>Regresi linear sederhana untuk proyeksi tren skor 12 bulan ke depan.</li>
-            <li>Deteksi anomali untuk menemukan peluang tersembunyi.</li>
+            <li>Clustering k-means untuk menentukan tipe kawasan secara otomatis (Inti Komersial, Permukiman, dsb).</li>
+            <li>Deteksi anomali spasial untuk menemukan kantong peluang tersembunyi.</li>
           </ul>
-          <p className="mt-3">Semua menggunakan scikit-learn, ringan, tanpa GPU dan tanpa model gambar.</p>
-        </Section>
-
-        <Section title="6. Peran AI">
-          <p>
-            Panel insight dan chat assistant memakai large language model melalui API untuk mengubah
-            baris data kawasan menjadi ringkasan bahasa natural dan jawaban interaktif. Tahap ini
-            belum aktif pada prototipe frontend.
+          <p className="mt-3">
+            Untuk interaksi, panel insight dan chat assistant menggunakan <em>Large Language Model (LLM)</em> melalui API guna menerjemahkan tabel data geospasial menjadi ringkasan bahasa natural dan tanya-jawab interaktif secara real-time.
           </p>
         </Section>
 

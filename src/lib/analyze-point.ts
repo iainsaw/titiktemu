@@ -42,22 +42,46 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
     throw new Error("Tidak ada data analisis yang dikembalikan dari server.");
   }
 
-  // 3. Build Kawasan object dari data riil
+  // 3. Fetch land prices to inject real harga tanah for any location
+  let landPrices: Record<string, number> = {};
+  try {
+    const res = await fetch("/harga-tanah-ekstraksi.json");
+    if (res.ok) landPrices = await res.json();
+  } catch (e) {
+    console.warn("Gagal fetch harga tanah:", e);
+  }
+
+  // 4. Build Kawasan object dari data riil
   const result = typeof data === "string" ? JSON.parse(data) : data;
+  
+  const kecamatan = extractKoridor(geo.displayName);
+  let hargaTanah = result.harga_tanah_m2 ?? 0;
+  let skorProperti = result.skor_properti ?? 1;
+
+  // Coba cari harga tanah berdasarkan nama kecamatan
+  const nameToMatch = geo.displayName.toLowerCase();
+  for (const [key, rawPrice] of Object.entries(landPrices)) {
+    const kecName = key.split(',')[0].trim().toLowerCase();
+    if (nameToMatch.includes(kecName)) {
+      hargaTanah = Math.round((rawPrice / 1000000) * 10) / 10;
+      skorProperti = Math.min(100, Math.max(1, Math.round((hargaTanah / 25) * 100)));
+      break;
+    }
+  }
 
   const kawasan: Kawasan = {
     id: `ANL-${Date.now()}`,
     nama: placeName.trim(),
-    koridor: extractKoridor(geo.displayName),
+    koridor: kecamatan,
     klaster: result.klaster || "Pinggiran Berkembang",
     x: 0,
     y: 0,
     jarakTransit: 0,
     umkm: result.umkm_count ?? 0,
-    hargaTanah: result.harga_tanah_m2 ?? 0,
+    hargaTanah: hargaTanah,
     anomali: false,
     skor: {
-      properti: Math.min(100, Math.max(1, result.skor_properti ?? 1)),
+      properti: skorProperti,
       layanan: Math.min(100, Math.max(1, result.skor_layanan ?? 1)),
       ekonomi: Math.min(100, Math.max(1, result.skor_ekonomi ?? 1)),
       akses: Math.min(100, Math.max(1, result.skor_akses ?? 1)),

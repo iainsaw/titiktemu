@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { analyzeNewPlace } from "@/lib/analyze-point";
 import { addDynamicKoordinat, KOORDINAT } from "@/components/VitalityMap";
+import { fetchAllMAPIDMissions, createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
 
 type Search = { peran?: RoleId };
 
@@ -80,6 +81,32 @@ function PetaInteraktif() {
   const [searchNewPlace, setSearchNewPlace] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeError, setAnalyzeError] = useState("");
+  const [missions, setMissions] = useState<MissionFeature[]>([]);
+  const [missionsLoading, setMissionsLoading] = useState(false);
+
+  useEffect(() => {
+    const coord = KOORDINAT[selectedId];
+    if (!coord) return;
+    const apiKey = import.meta.env.VITE_MAPID_API_KEY;
+    if (!apiKey) return;
+
+    let isMounted = true;
+    setMissions([]);
+    setMissionsLoading(true);
+
+    const polygon = createCirclePolygon(coord[0], coord[1], 800);
+    fetchAllMAPIDMissions(polygon, apiKey).then(data => {
+      if (isMounted) {
+        setMissions([...data.properti, ...data.menu, ...data.struk]);
+        setMissionsLoading(false);
+      }
+    }).catch(err => {
+      console.error(err);
+      if (isMounted) setMissionsLoading(false);
+    });
+
+    return () => { isMounted = false; };
+  }, [selectedId]);
 
   const handleAnalisis = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,6 +162,7 @@ function PetaInteraktif() {
         const combined = new Map<string, Kawasan>();
 
         const parsedData = data.map(dbData => {
+          
           const kws: Kawasan = {
             id: dbData.id,
             nama: dbData.nama,
@@ -248,9 +276,15 @@ function PetaInteraktif() {
         <div className="relative flex flex-col gap-4 lg:block lg:h-[calc(100vh-112px)] lg:min-h-[680px]">
           <div className="h-[440px] overflow-hidden sm:h-[520px] lg:h-full">
             <VitalityMap
+              className="size-full"
               fill
               kawasan={kawasans}
               role={role}
+              selectedId={selectedId}
+              onSelect={(id) => {
+                setSelectedId(id);
+                setTab(null);
+              }}
               layer={layer}
               tampilkanKoridor={koridor}
               tampilkanSensus={sensus}
@@ -262,9 +296,8 @@ function PetaInteraktif() {
               poiHiburan={poiHiburan}
               poiTransit={poiTransit}
               tampilkanPedestrian={pedestrian}
-              tampilkanAnomali={layer === "total"}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
+              tampilkanAnomali={anomaliLayer}
+              missions={missions}
             />
           </div>
 

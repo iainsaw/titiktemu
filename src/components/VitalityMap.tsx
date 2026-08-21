@@ -34,6 +34,7 @@ type Props = {
   poiTransit?: boolean;
   tampilkanPedestrian?: boolean;
   className?: string;
+  missions?: any[];
 };
 
 /**
@@ -78,6 +79,7 @@ export function VitalityMap({
   compact = false,
   fill = false,
   className,
+  missions = [],
 }: Props) {
   const mapRef = useRef<MLMap | null>(null);
   const markersRef = useRef<Map<string, HTMLButtonElement>>(new Map());
@@ -222,6 +224,88 @@ export function VitalityMap({
       map.setLayoutProperty("pedestrian-line", "visibility", tampilkanPedestrian ? "visible" : "none");
     }
   }, [ready, tampilkanPedestrian]);
+
+  // Handle MAPID Missions
+  useEffect(() => {
+    if (!ready || !mapRef.current) return;
+    const map = mapRef.current;
+
+    const sourceData = {
+      type: "FeatureCollection",
+      features: missions || []
+    };
+
+    if (map.getSource("mapid-missions")) {
+      (map.getSource("mapid-missions") as any).setData(sourceData);
+    } else {
+      map.addSource("mapid-missions", {
+        type: "geojson",
+        data: sourceData as any,
+      });
+
+      map.addLayer({
+        id: "missions-circle",
+        type: "circle",
+        source: "mapid-missions",
+        paint: {
+          "circle-radius": 6,
+          "circle-color": [
+            "match",
+            ["get", "mission"],
+            "properti", "#3b82f6", // blue
+            "menu", "#f59e0b", // amber
+            "struk", "#10b981", // emerald
+            "#94a3b8" // default slate
+          ],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "#ffffff"
+        }
+      });
+
+      // Add popup on click
+      map.on("click", "missions-circle", (e) => {
+        if (!e.features || e.features.length === 0) return;
+        const feature = e.features[0];
+        const props = feature.properties;
+        const coordinates = (feature.geometry as any).coordinates.slice();
+        
+        let content = `<div style="font-family:sans-serif; padding:4px;">`;
+        if (props.mission === "properti") {
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">Properti: ${props.jenis_properti || '-'}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Kategori: ${props.kategori_properti || '-'}</p>`;
+          if (props.foto_tampak_depan) {
+             content += `<img src="${props.foto_tampak_depan}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+          }
+        } else if (props.mission === "menu") {
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || '-'}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Menu: ${props.menu_utama || '-'}</p>`;
+          if (props.foto_tempat) {
+             content += `<img src="${props.foto_tempat}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+          }
+        } else if (props.mission === "struk") {
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || '-'}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Tipe: ${props.kategori_tempat || '-'} (Struk)</p>`;
+          if (props.foto_struk) {
+             content += `<img src="${props.foto_struk}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+          }
+        }
+        content += `</div>`;
+
+        const maplibregl = (window as any).maplibregl;
+        new maplibregl.Popup({ offset: 10, closeButton: false })
+          .setLngLat(coordinates as [number, number])
+          .setHTML(content)
+          .addTo(map);
+      });
+
+      map.on("mouseenter", "missions-circle", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "missions-circle", () => {
+        map.getCanvas().style.cursor = "";
+      });
+    }
+  }, [ready, missions]);
 
 
 
