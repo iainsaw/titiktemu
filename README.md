@@ -1,4 +1,4 @@
-# Titik Temu: Transit Vitality WebGIS 🚆🏙️
+# Titik Temu: Transit Vitality WebGIS 
 
 Titik Temu adalah platform **WebGIS (Sistem Informasi Geografis Berbasis Web)** interaktif yang mengukur dan memvisualisasikan **Skor Vitalitas Transit (Transit Vitality Score)** pada kawasan-kawasan di sekitar titik transportasi massal (TOD - *Transit Oriented Development*).
 
@@ -6,16 +6,16 @@ Proyek percontohan (pilot) ini berfokus pada wilayah **Bandung Raya**, membantu 
 
 ---
 
-## ✨ Fitur Utama (Core Features)
+## Fitur Utama (Core Features)
 
 ### 1. Peta Interaktif (Interactive WebGIS)
 Memvisualisasikan skor vitalitas kawasan dalam bentuk poligon geospasial. Warna kawasan akan berubah secara dinamis berdasarkan performa skor (Merah untuk tertinggal, Hijau untuk sangat baik).
 
 ### 2. Multi-Criteria Analysis (Pembobotan Berbasis Peran)
 Tidak semua orang memiliki prioritas pembangunan yang sama. Titik Temu menerapkan prinsip *Multi-Criteria Analysis* di mana bobot skor akan disesuaikan berdasarkan peran pengguna:
-- 🏛️ **Pemerintah / Dishub:** Mengutamakan aksesibilitas dan pemerataan fasilitas publik.
-- 🏢 **Developer / Investor:** Mengutamakan valuasi properti dan potensi kawasan.
-- 👥 **Warga / UMKM:** Mengutamakan keragaman ekonomi lokal dan akses sehari-hari.
+- **Pemerintah / Dishub:** Mengutamakan aksesibilitas dan pemerataan fasilitas publik.
+- **Developer / Investor:** Mengutamakan valuasi properti dan potensi kawasan.
+- **Warga / UMKM:** Mengutamakan keragaman ekonomi lokal dan akses sehari-hari.
 
 ### 3. Vitality Twin (Simulasi Dampak Penambahan Layanan)
 Platform ini memiliki mesin simulasi deterministik spasial. Pengguna dapat menyimulasikan dampak penambahan **Halte Baru, Rute Feeder, Armada, atau Jalur Pedestrian** dan melihat bagaimana skor kesenjangan layanan suatu kawasan akan membaik. Mesin ini menggunakan logika *Linear Decay* dan *Diminishing Returns* secara *real-time*.
@@ -28,7 +28,7 @@ Pengguna dapat mencari kawasan mana pun di luar stasiun yang sudah dipetakan. Si
 
 ---
 
-## 🏗️ Metodologi & Sumber Data
+## Metodologi & Sumber Data
 
 Titik Temu mengadaptasi metode saintifik dari jurnal **Measuring TOD around transit nodes - Towards TOD policy (Singh et al., 2017)**. 
 
@@ -42,7 +42,7 @@ Seluruh agregasi data dihitung menggunakan *Haversine Distance* pada radius peja
 
 ---
 
-## 🛠️ Teknologi yang Digunakan (Tech Stack)
+## Teknologi yang Digunakan (Tech Stack)
 
 ### Frontend
 - **React 18** (UI Library)
@@ -59,7 +59,7 @@ Seluruh agregasi data dihitung menggunakan *Haversine Distance* pada radius peja
 
 ---
 
-## 🚀 Panduan Instalasi (Development Setup)
+## Panduan Instalasi (Development Setup)
 
 Pastikan Anda telah menginstal **Node.js** (versi 18+) dan `npm`.
 
@@ -89,7 +89,7 @@ Pastikan Anda telah menginstal **Node.js** (versi 18+) dan `npm`.
 
 ---
 
-## 👥 Target Pengguna
+## Target Pengguna
 Aplikasi ini dirancang sebagai *Decision Support System* (DSS) untuk:
 - Kementerian Perhubungan & Dinas Perhubungan Daerah.
 - Operator Transportasi (PT KAI, Trans Metro Pasundan, TransJakarta).
