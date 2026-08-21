@@ -10,13 +10,13 @@ export const Route = createFileRoute("/metodologi")({
       {
         name: "description",
         content:
-          "Penjelasan transparan metode indeks berbobot Skor Vitalitas Transit, agregasi grid 200 m, peran machine learning ringan, dan seluruh sumber data yang dipakai.",
+          "Penjelasan transparan metode indeks berbobot Skor Vitalitas Transit, agregasi radius 800m, metode ekstraksi harga tanah, dan seluruh sumber data yang dipakai.",
       },
       { property: "og:title", content: "Metodologi & Sumber Data — Titik Temu" },
       {
         property: "og:description",
         content:
-          "Metode indeks TOD berbobot, clustering k-means, regresi linear sederhana, deteksi anomali, serta daftar sumber data resmi dan pustaka akademik.",
+          "Metode indeks TOD berbobot, agregasi spasial radius pejalan kaki, serta daftar sumber data resmi dan pustaka akademik.",
       },
     ],
   }),
@@ -51,16 +51,12 @@ function Metodologi() {
         <h1 className="headline text-[clamp(28px,8vw,52px)]">Metodologi & Sumber Data</h1>
 
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Seluruh angka pada prototipe ini masih data dummy realistis untuk pilot Bandung Raya.
-          Struktur perhitungannya sudah mengikuti rencana akhir sehingga bisa langsung diganti
-          dengan hasil agregasi survei lapangan.
+          Seluruh angka pada prototipe ini sudah menggunakan <strong>ekstraksi data riil</strong> untuk kawasan percontohan (pilot) Bandung Raya yang disalurkan melalui basis data PostgreSQL (Supabase).
         </p>
 
-        <Section title="1. Agregasi data">
+        <Section title="1. Agregasi Spasial (Radius Pejalan Kaki 800m)">
           <p>
-            Seluruh sumber data disatukan pada grid lokasi berukuran sekitar 200 meter di sekitar
-            titik transit. Hasil akhirnya satu tabel dengan satu baris per kawasan, memuat nilai
-            minimum dan maksimum tiap variabel sebelum dinormalisasi ke rentang 0–100.
+            Sumber data spasial diagregasi secara dinamis menggunakan kalkulasi jarak <em>Haversine</em> dengan batas radius 800 meter (atau setara ~10 menit berjalan kaki santai) dari titik pusat transit. Titik data poin (seperti UMKM atau POI Fasilitas) yang masuk ke dalam radius tersebut kemudian dijumlahkan secara komulatif.
           </p>
         </Section>
 
@@ -133,24 +129,6 @@ function Metodologi() {
             <li><strong>Diminishing Returns:</strong> Kawasan yang skor layanannya sudah tinggi akan mendapat penambahan skor yang lebih sedikit dibandingkan kawasan tertinggal, mendorong pemerataan fasilitas.</li>
             <li><strong>Estimasi Biaya:</strong> Didasarkan pada standar harga satuan infrastruktur dasar lokal. Misalnya, Halte/Stasiun baru (Rp 3,5 Miliar/unit), Rute Feeder (Rp 5,2 Miliar/unit), Penambahan Armada (Rp 2,4 Miliar/unit), dan Jalur Pedestrian (Rp 1,3 Miliar/unit intensitas).</li>
           </ul>
-        </Section>
-
-        <Section title="6. Skor dinamis berbasis waktu">
-          <p>
-            Data pergerakan memuat kolom waktu, sehingga skor dikelompokkan ke
-            rentang pagi, siang, sore, dan malam lalu dihitung ulang. Tidak memerlukan machine
-            learning, cukup pengelompokan dan agregasi spasial.
-          </p>
-        </Section>
-
-        <Section title="7. Machine learning ringan & Peran AI">
-          <ul className="list-disc space-y-1.5 pl-5">
-            <li>Clustering k-means untuk menentukan tipe kawasan secara otomatis (Inti Komersial, Permukiman, dsb).</li>
-            <li>Deteksi anomali spasial untuk menemukan kantong peluang tersembunyi.</li>
-          </ul>
-          <p className="mt-3">
-            Untuk interaksi, panel insight dan chat assistant menggunakan <em>Large Language Model (LLM)</em> melalui API guna menerjemahkan tabel data geospasial menjadi ringkasan bahasa natural dan tanya-jawab interaktif secara real-time.
-          </p>
         </Section>
 
         <Section title="Sumber data">
