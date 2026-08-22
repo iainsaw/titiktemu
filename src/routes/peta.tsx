@@ -374,7 +374,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         isMapMaximized ? "opacity-0 -translate-x-full" : "opacity-100 translate-x-0"
       )}>
         {/* Dynamic Island Style Role Selector & Search */}
-        <div className="pointer-events-auto flex w-full flex-col gap-3 rounded-2xl bg-white/80 p-4 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/60 dark:border-white/10">
+        <div className="pointer-events-auto flex w-full flex-col gap-3 rounded-2xl bg-white/40 p-4 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/40 dark:border-white/10">
           
           <div className="flex w-full items-center gap-1 rounded-xl bg-black/5 p-1 dark:bg-white/10">
             {ROLES.map((r) => (
@@ -400,7 +400,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
               value={searchNewPlace}
               onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
               disabled={analyzing}
-              className="h-10 w-full rounded-xl bg-white/70 pl-10 pr-4 text-xs font-medium shadow-sm backdrop-blur-md transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:bg-black/40 disabled:opacity-50"
+              className="h-10 w-full rounded-xl bg-white/40 pl-10 pr-4 text-xs font-medium shadow-sm backdrop-blur-md transition-all placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:bg-black/40 disabled:opacity-50"
             />
             <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
@@ -415,7 +415,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         </div>
 
         {/* Floating Layer Controls (Collapsible or visible) */}
-        <div className="pointer-events-auto w-full rounded-2xl bg-white/80 p-4 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/60 dark:border-white/10 max-h-[calc(100vh-280px)] overflow-y-auto">
+        <div className="pointer-events-auto w-full rounded-2xl bg-white/40 p-4 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/40 dark:border-white/10 max-h-[calc(100vh-280px)] overflow-y-auto">
           <h3 className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             <Layers className="size-3 text-primary" /> Pengaturan Layer
           </h3>
@@ -478,7 +478,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         "absolute left-6 bottom-6 z-20 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] print:hidden pointer-events-auto",
         isMapMaximized ? "opacity-0 translate-y-12" : "opacity-100 translate-y-0"
       )}>
-        <div className="flex flex-col gap-2 rounded-2xl bg-white/80 p-3 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/60 dark:border-white/10">
+        <div className="flex flex-col gap-2 rounded-2xl bg-white/40 p-3 shadow-xl backdrop-blur-3xl border border-white/50 dark:bg-black/40 dark:border-white/10">
           <h4 className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground flex justify-between items-center">
             <span>Legenda Skor</span>
             <span className="opacity-50">Radius 800m</span>
@@ -497,7 +497,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
 
       {/* SUPPORTING ZONE (Data Area - Kanan) */}
       <aside className={cn(
-        "absolute right-4 top-24 bottom-4 z-30 flex w-[380px] flex-col overflow-hidden rounded-3xl bg-white/85 dark:bg-black/85 backdrop-blur-3xl shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] border border-white/50 dark:border-white/10 print:static print:w-full print:shadow-none print:border-none",
+        "absolute right-4 top-24 bottom-4 z-30 flex w-[380px] flex-col overflow-hidden rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-3xl shadow-2xl transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] border border-white/50 dark:border-white/10 print:static print:w-full print:shadow-none print:border-none",
         isMapMaximized ? "translate-x-[120%] opacity-0" : "translate-x-0 opacity-100"
       )}>
         <div className="flex flex-col overflow-y-auto p-6 min-h-full">
@@ -624,29 +624,29 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             )}
 
             {/* Kalkulator Potensi Usaha LLM */}
-            <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-5 shadow-sm print:border-gray-300 print:bg-white">
+            <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-5 shadow-sm print:border-gray-300 print:bg-white">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-bold tracking-tight text-orange-600">
-                  <Lightbulb className="size-4" /> Peluang Usaha AI
+                <div className="flex items-center gap-1.5 text-xs font-bold tracking-tight text-primary">
+                  <img src={aiStar.url} alt="AI" className="size-4 drop-shadow-sm" /> Peluang Usaha AI
                 </div>
                 {!aiRecommendation && !isAiLoading && (
                   <button 
                     onClick={() => handleAskAI(terpilih)}
-                    className="flex items-center gap-1 rounded-full bg-orange-500 px-3 py-1.5 text-[10px] font-bold text-white shadow-md hover:bg-orange-600 transition-all hover:scale-105 active:scale-95 print:hidden"
+                    className="flex items-center gap-1 rounded-full bg-primary/15 px-3 py-1.5 text-[10px] font-bold text-primary shadow-sm hover:bg-primary/25 transition-all hover:scale-105 active:scale-95 print:hidden"
                   >
-                    <Bot className="size-3" /> Tanya AI
+                    <img src={aiStar.url} alt="AI" className="size-3" /> Tanya AI
                   </button>
                 )}
               </div>
               
               {isAiLoading && (
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-orange-600/70 mt-1">
+                <div className="flex items-center gap-1.5 text-[10px] font-medium text-primary/70 mt-1">
                   <Loader2 className="size-3 animate-spin" /> AI sedang menganalisis pasar...
                 </div>
               )}
               
               {aiRecommendation && (
-                <p className="mt-1 text-xs font-medium leading-relaxed tracking-tight text-orange-800 dark:text-orange-200">
+                <p className="mt-1 text-xs font-medium leading-relaxed tracking-tight text-foreground/90 dark:text-foreground/90">
                   {aiRecommendation}
                 </p>
               )}
@@ -698,7 +698,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
       {/* Maximize Button */}
       <button
         onClick={() => setIsMapMaximized(!isMapMaximized)}
-        className="absolute bottom-6 right-6 z-40 flex size-12 items-center justify-center rounded-full bg-white/90 text-foreground shadow-2xl backdrop-blur-2xl border border-white/50 transition-all hover:scale-105 hover:bg-white dark:bg-black/90 dark:border-white/10 dark:text-white"
+        className="absolute bottom-6 right-6 z-40 flex size-12 items-center justify-center rounded-full bg-white/40 text-foreground shadow-2xl backdrop-blur-2xl border border-white/50 transition-all hover:scale-105 hover:bg-white/60 dark:bg-black/50 dark:border-white/10 dark:text-white"
         title={isMapMaximized ? "Tampilkan Data Panel" : "Layar Penuh (Peta Saja)"}
       >
         {isMapMaximized ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
