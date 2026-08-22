@@ -640,10 +640,10 @@ function PetaInteraktif() {
             </div>
           </div>
 
-          {/* Floating: Toggle Sidebar (Moved to right since left has cards) */}
+          {/* Floating: Toggle Sidebar (Moved to right above legend) */}
           <button
             onClick={() => setIsMapMaximized(!isMapMaximized)}
-            className="absolute bottom-4 left-4 z-20 flex size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
+            className="absolute bottom-[80px] right-4 z-50 flex size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
             title={isMapMaximized ? "Tampilkan Cards" : "Sembunyikan Cards"}
           >
             {isMapMaximized ? <Shrink className="size-4" /> : <Expand className="size-4" />}
