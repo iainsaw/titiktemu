@@ -29,9 +29,10 @@ Tugas Anda:
 Berikan TEPAT 1 (satu) insight berupa kalimat observasi tajam berdasarkan data di atas.
 Fokus pada perbandingan, anomali, kesenjangan layanan, atau potensi ekonomi (UMKM/Properti).
 Insight harus ringkas (maksimal 180 karakter) dan ditulis dengan bahasa Indonesia baku yang mengalir, mudah dipahami investor atau pemerintah (seperti kutipan pengamat). 
+Gunakan format **tebal** untuk menyoroti nama lokasi atau angka kunci, dan *miring* untuk penekanan agar kalimat lebih dinamis.
 Jangan memakai nomor atau bullet points pada awal kalimat, langsung tulis teks kalimatnya saja.
 Contoh output:
-Kawasan sekitar Stasiun Kiaracondong punya keragaman usaha sangat tinggi (78) namun skor layanan hanya 52 — sinyal peluang tersembunyi bagi UMKM dan operator feeder.
+Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*78*) namun skor layanan hanya *52* — sinyal peluang tersembunyi bagi UMKM dan operator feeder.
 `;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {

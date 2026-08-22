@@ -320,9 +320,14 @@ function Beranda() {
                       <div className="h-2 w-1/2 rounded bg-muted-foreground/30"></div>
                     </div>
                   ) : (
-                    insights?.map((insight: string, idx: number) => (
-                      <p key={idx}>{insight}</p>
-                    ))
+                    insights?.map((insight: string, idx: number) => {
+                      const formattedHTML = insight
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>');
+                      return (
+                        <p key={idx} dangerouslySetInnerHTML={{ __html: formattedHTML }} />
+                      );
+                    })
                   )}
                 </div>
               </div>
