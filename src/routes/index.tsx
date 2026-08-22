@@ -295,6 +295,7 @@ function Beranda() {
                 compact
                 selectedId={selectedId}
                 onSelect={setSelectedId}
+                className="overflow-hidden rounded-xl border border-border/40 shadow-inner"
               />
               <Link
                 to="/peta"
