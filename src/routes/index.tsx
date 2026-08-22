@@ -194,14 +194,14 @@ function Beranda() {
             return (
               <div
                 key={c.tag}
-                className="panel hero-rise flex flex-col p-6 rounded-[20px] sm:p-8 shadow-xl shadow-black/5"
+                className="panel hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5"
                 style={{ animationDelay: `${0.55 + i * 0.12}s` }}
               >
                 <p className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground sm:text-[12px]">
                   {c.tag}
                 </p>
-                <p className="mt-4 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]">{c.judul}</p>
-                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground sm:text-[15px]">{c.teks}</p>
+                <p className="mt-2 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]">{c.judul}</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-[15px]">{c.teks}</p>
               </div>
             );
           })}
