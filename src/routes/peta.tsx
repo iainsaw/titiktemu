@@ -640,49 +640,7 @@ function PetaInteraktif() {
 
             </div>
 
-            {/* CARD 4: Rankings */}
-            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden print:hidden">
-              <div className="px-5 pt-5 pb-3 border-b border-border/10 shrink-0 flex items-center justify-between">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
-                  <BarChart3 className="size-3.5" /> Peringkat Kawasan
-                </h3>
-                <Link
-                  to="/analisis"
-                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
-                >
-                  Bandingkan ›
-                </Link>
-              </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
-                <ol className="space-y-0.5">
-                  {peringkat.map(({ k, skor }, i) => (
-                    <li key={k.id}>
-                      <button
-                        onClick={() => setSelectedId(k.id)}
-                        className={cn(
-                          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all",
-                          k.id === selectedId
-                            ? "bg-secondary font-medium text-foreground shadow-sm"
-                            : "text-foreground/70 hover:bg-secondary/50"
-                        )}
-                      >
-                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
-                        <span className="flex-1 truncate">{k.nama}</span>
-                        <span
-                          className="rounded-lg px-2 py-0.5 font-mono text-[11px] font-semibold"
-                          style={{
-                            color: warnaSkor(skor),
-                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
-                          }}
-                        >
-                          {skor}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
+
           </div>
 
           {/* Floating: Toggle Sidebar (Moved to right since left has cards) */}
