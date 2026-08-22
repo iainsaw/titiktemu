@@ -15,19 +15,19 @@ const KARTU = [
   {
     icon: Building2,
     judul: "Investor & Properti",
-    teks: "Temukan kawasan dengan pasar properti kuat dan potensi kenaikan nilai di sekitar titik transit.",
+    teks: "Mengidentifikasi simpul transit dengan fundamental properti yang kuat untuk optimalisasi alokasi investasi.",
     peran: "investor" as const,
   },
   {
     icon: Landmark,
-    judul: "Pemerintah & Operator",
-    teks: "Lihat di mana kesenjangan layanan paling lebar dan intervensi mana yang paling berdampak.",
+    judul: "Pemerintah & Perencana",
+    teks: "Memetakan kesenjangan aksesibilitas dan memprioritaskan intervensi infrastruktur spasial yang paling berdampak.",
     peran: "pemerintah" as const,
   },
   {
     icon: Store,
-    judul: "Pelaku UMKM",
-    teks: "Cari lokasi dengan keramaian ekonomi tinggi dan akses transit terbaik sesuai jam operasional.",
+    judul: "Aktivitas Ekonomi Mikro",
+    teks: "Menganalisis pola pergerakan kawasan untuk menentukan kelayakan penetrasi pasar dan lokasi operasional.",
     peran: "umkm" as const,
   },
 ];
@@ -35,17 +35,17 @@ const KARTU = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Titik Temu — Skor Vitalitas Transit Bandung Raya" },
+      { title: "Titik Temu — Indeks Vitalitas Transit Bandung Raya" },
       {
         name: "description",
         content:
-          "WebGIS Skor Vitalitas Transit: peta interaktif, insight AI, dan simulasi layanan untuk kawasan sekitar titik transportasi massal Bandung Raya.",
+          "Platform Sistem Pendukung Keputusan Spasial (WebGIS) untuk mengukur Indeks Vitalitas Transit di kawasan Bandung Raya.",
       },
-      { property: "og:title", content: "Titik Temu — Skor Vitalitas Transit" },
+      { property: "og:title", content: "Titik Temu — Indeks Vitalitas Transit" },
       {
         property: "og:description",
         content:
-          "Satu peta, tiga sudut pandang: investor, pemerintah, dan pelaku UMKM. Dilengkapi AI Insight dan chat assistant.",
+          "Menganalisis potensi TOD melalui integrasi data properti, aksesibilitas transportasi, dan aktivitas ekonomi mikro.",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:type", content: "website" },
@@ -132,8 +132,7 @@ function Beranda() {
             className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
             style={{ animationDelay: "0.3s" }}
           >
-            Satu skor untuk menilai vitalitas kawasan di sekitar titik transportasi massal — dari
-            sudut pandang investor, pemerintah, dan pelaku UMKM.
+            Sistem pendukung keputusan spasial untuk mengukur vitalitas ekonomi kawasan transit. Mengubah big data menjadi matriks yang dapat ditindaklanjuti oleh pemerintah, investor, dan UMKM.
           </p>
           <div
             className="hero-rise mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:mt-9 sm:gap-3"
@@ -158,19 +157,19 @@ function Beranda() {
         <div className="relative mx-auto grid max-w-[1100px] grid-cols-2 gap-2.5 px-4 pb-10 sm:grid-cols-3 sm:gap-3 sm:px-5 sm:pb-14">
           {[
             {
-              tag: "SKOR PILOT",
+              tag: "METRIK TERUKUR",
               judul: `Rata-rata ${rata}`,
-              teks: "Skor Vitalitas Transit kawasan pilot, peran investor.",
+              teks: "Indeks Vitalitas Transit berbasis pembobotan dinamis multi-stakeholder.",
             },
             {
-              tag: "SURVEI LAPANGAN",
-              judul: `${RINGKASAN_SURVEI.totalTitik} titik`,
-              teks: `Data primer dari ${RINGKASAN_SURVEI.totalLokasi} lokasi — traffic count & kuesioner UMKM.`,
+              tag: "VALIDASI LAPANGAN",
+              judul: `${RINGKASAN_SURVEI.totalTitik} observasi`,
+              teks: `Data primer dari ${RINGKASAN_SURVEI.totalLokasi} simpul — verifikasi algoritma melalui traffic count & UMKM.`,
             },
             {
-              tag: "LAPISAN AI",
-              judul: "Insight, bukan data mentah",
-              teks: "AI Insight per kawasan dan chat assistant yang paham konteks dashboard.",
+              tag: "SINTESIS DATA",
+              judul: "Intelegensi Spasial",
+              teks: "Memproses variabel keruangan menjadi rekomendasi strategis yang siap dieksekusi.",
             },
           ].map((c, i) => (
             <div
@@ -192,14 +191,9 @@ function Beranda() {
 
       <main className="mx-auto max-w-[1100px] px-4 py-12 sm:px-5 sm:py-16">
         <section className="mx-auto max-w-[760px] text-center">
-          <h2 className="headline text-[clamp(24px,7vw,40px)]">Kenapa produk ini ada</h2>
+          <h2 className="headline text-[clamp(24px,7vw,40px)]">Menjembatani Celah Analisis Spasial</h2>
           <p className="mt-4 text-[14.5px] leading-relaxed text-muted-foreground sm:text-[16px]">
-
-            Pasar properti, kualitas layanan transportasi, dan denyut ekonomi kecil selama ini
-            dipelajari terpisah, padahal ketiganya menentukan nasib satu kawasan yang sama. Transit
-            Vitality menyatukannya menjadi satu Skor Vitalitas Transit per grid 200 m, lalu
-            menjelaskan angkanya dengan lapisan AI agar bisa dipakai untuk mengambil keputusan —
-            bukan sekadar menampilkan data mentah.
+            Keputusan tata ruang dan investasi kerap terkendala oleh data yang terfragmentasi—antara nilai properti, aksesibilitas transportasi, dan aktivitas ekonomi mikronya. Titik Temu hadir mensintesis beragam lapisan data tersebut ke dalam satu indeks spasial komprehensif, memberikan landasan empiris yang kuat bagi Bappeda, Dinas Perhubungan, hingga pengembang properti dalam merumuskan strategi Kawasan Berorientasi Transit (TOD).
           </p>
         </section>
 
