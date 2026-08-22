@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Maximize, Minimize, Menu, X } from "lucide-react";
+import { ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Maximize, Minimize } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
+
 import { VitalityMap } from "@/components/VitalityMap";
 const aiStar = { url: "/titik-temu-ai-star.png" };
 import {
@@ -242,9 +242,7 @@ function PetaInteraktif() {
   }, []);
 
 
-  const [isMapMaximized, setIsMapMaximized] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 1024 : false
-  );
+  const [isMapMaximized, setIsMapMaximized] = useState(false);
   const [aiRecommendation, setAiRecommendation] = useState<string>("");
   const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -334,375 +332,378 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
   }, [selectedId]);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background font-sans text-foreground">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
 
-      {/* ═══════════════════════════════════════════════════
-          LEFT SIDEBAR — Control + Supporting Combined
-          macOS-style vibrancy panel, fixed width
-          ═══════════════════════════════════════════════════ */}
-      <aside className={cn(
-        "absolute lg:relative z-40 flex h-full shrink-0 flex-col border-r border-border/40 bg-white/70 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] dark:bg-black/60 print:static print:w-full print:border-none",
-        isMapMaximized ? "-translate-x-full opacity-0 lg:w-0 lg:-ml-[380px]" : "translate-x-0 opacity-100 lg:w-[380px] lg:ml-0",
-        "w-full sm:w-[380px]"
-      )}>
+      {/* ── GLOBAL NAV — always visible, full width ── */}
+      <div className="shrink-0 z-50 print:hidden">
+        <SiteHeader />
+      </div>
 
-        {/* ── Sidebar Header (site nav) ── */}
-        <div className="shrink-0 print:hidden">
-          <SiteHeader variant="sidebar" />
-        </div>
+      {/* ── BODY: Sidebar + Map ── */}
+      <div className="flex flex-1 overflow-hidden">
 
-        {/* ── CONTROL ZONE (Search, Role, Filters) ── */}
-        <div className="shrink-0 border-b border-border/30 p-5 print:hidden">
+        {/* ═══════════════════════════════════════════════════
+            LEFT SIDEBAR — Control + Supporting Combined
+            macOS vibrancy, border-right separator
+            ═══════════════════════════════════════════════════ */}
+        <aside className={cn(
+          "relative z-30 flex h-full shrink-0 flex-col border-r border-border/30 bg-white/70 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] dark:bg-black/60 print:static print:w-full print:border-none",
+          isMapMaximized ? "w-0 -ml-[380px] opacity-0" : "w-[380px] ml-0 opacity-100"
+        )}>
 
-          {/* Role Segmented Control */}
-          <div className="flex w-full items-center gap-0.5 rounded-lg bg-secondary/60 p-0.5 dark:bg-white/10">
-            {ROLES.map((r) => (
-              <button
-                key={r.id}
-                onClick={() => setRole(r.id)}
-                className={cn(
-                  "flex-1 rounded-md px-3 py-1.5 text-[11px] font-semibold transition-all duration-200",
-                  role === r.id
-                    ? "bg-white text-foreground shadow-sm dark:bg-white/15 dark:text-white"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
+          {/* ── CONTROL ZONE ── */}
+          <div className="shrink-0 border-b border-border/20 px-5 py-4 print:hidden">
 
-          {/* Search Bar */}
-          <form onSubmit={handleAnalisis} className="relative mt-3 w-full">
-            <input
-              type="text"
-              placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
-              value={searchNewPlace}
-              onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
-              disabled={analyzing}
-              className="h-9 w-full rounded-lg bg-secondary/50 pl-9 pr-4 text-[13px] font-medium transition-all placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:bg-white/8 disabled:opacity-50"
-            />
-            <div className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/60">
-              {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
-            </div>
-            {analyzeError && (
-              <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-[11px] font-medium text-destructive backdrop-blur-xl">
-                {analyzeError}
-              </div>
-            )}
-          </form>
-
-          {/* Layer Selector — Pill Chips */}
-          <div className="mt-3.5 flex flex-wrap gap-1.5">
-            {LAYERS.map((l) => (
-              <button
-                key={l.id}
-                onClick={() => setLayer(l.id)}
-                className={cn(
-                  "rounded-full px-2.5 py-1 text-[11px] font-medium transition-all duration-200",
-                  layer === l.id
-                    ? "bg-blue-500 text-white shadow-sm"
-                    : "bg-secondary/50 text-muted-foreground hover:bg-secondary/80 dark:bg-white/8 dark:hover:bg-white/12"
-                )}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Overlay Toggles — Compact Grid */}
-          <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] text-muted-foreground">
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3 rounded accent-blue-500" />
-              Koridor
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3 rounded accent-amber-500" />
-              Angkot
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3 rounded accent-emerald-500" />
-              Bus (BRT)
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3 rounded accent-blue-500" />
-              Pendidikan
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3 rounded accent-red-500" />
-              Kesehatan
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3 rounded accent-yellow-500" />
-              Komersial
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3 rounded accent-pink-500" />
-              Hiburan
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-              <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3 rounded accent-violet-500" />
-              Transit
-            </label>
-          </div>
-        </div>
-
-        {/* ── SUPPORTING ZONE (Scrollable Content) ── */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-5">
-
-            {/* Selected Kawasan Header */}
-            <div className="flex items-center justify-between mb-1 print:hidden">
-              <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5">
-                <MapPin className="size-3 text-blue-500" /> {terpilih.klaster}
-              </span>
-              <div className="flex items-center gap-1.5">
-                <Link
-                  to="/temudata"
-                  search={{ peran: role, kawasan: terpilih.id }}
-                  className="flex items-center gap-1 rounded-md bg-blue-500/10 px-2 py-1 text-[10px] font-semibold text-blue-600 transition-colors hover:bg-blue-500/20 dark:text-blue-400"
-                >
-                  <img src={aiStar.url} alt="" className="size-3" />
-                  Chat
-                </Link>
+            {/* Role Segmented Control */}
+            <div className="flex w-full items-center gap-0.5 rounded-[10px] bg-secondary/50 p-[3px] dark:bg-white/8">
+              {ROLES.map((r) => (
                 <button
-                  onClick={() => window.print()}
-                  className="flex items-center gap-1 rounded-md bg-secondary/60 px-2 py-1 text-[10px] font-semibold transition-colors hover:bg-secondary"
+                  key={r.id}
+                  onClick={() => setRole(r.id)}
+                  className={cn(
+                    "flex-1 rounded-lg px-3 py-[7px] text-[13px] font-medium transition-all duration-200",
+                    role === r.id
+                      ? "bg-white text-foreground shadow-sm dark:bg-white/15 dark:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
-                  <Printer className="size-3" />
-                  PDF
+                  {r.label}
                 </button>
-              </div>
-            </div>
-
-            {/* Title + Score Badge */}
-            <div className="flex items-start justify-between gap-3 mt-3 mb-4">
-              <div className="min-w-0">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
-                  {terpilih.id} · {terpilih.koridor}
-                </p>
-                <h2 className="mt-0.5 truncate text-xl font-bold tracking-tight text-foreground">{terpilih.nama}</h2>
-                <p className="mt-1 text-[11px] font-semibold" style={{ color: warnaSkor(skorTerpilih) }}>
-                  Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
-                </p>
-              </div>
-              <div
-                className="flex size-12 shrink-0 items-center justify-center rounded-xl border-2 text-lg font-black"
-                style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih), backgroundColor: `color-mix(in oklab, ${warnaSkor(skorTerpilih)} 6%, transparent)` }}
-              >
-                {skorTerpilih}
-              </div>
-            </div>
-
-            {/* Score Bars Card */}
-            <div className="rounded-xl bg-secondary/30 p-4 dark:bg-white/5">
-              <div className="space-y-3">
-                {COMPONENTS.map((c) => {
-                  const nilai = terpilih.skor[c.id];
-                  return (
-                    <div key={c.id}>
-                      <div className="mb-1 flex items-baseline justify-between">
-                        <span className="text-[11px] font-medium text-foreground/70">{c.label}</span>
-                        <span className="font-mono text-[11px] font-bold text-foreground">
-                          {nilai}
-                          <span className="ml-1 text-[9px] text-muted-foreground">
-                            ×{peran.weights[c.id].toFixed(2)}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-secondary/60 dark:bg-white/10">
-                        <div
-                          className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-                          style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Demographics Grid */}
-            {terpilih.penduduk && (
-              <div className="mt-4 grid grid-cols-2 gap-3 rounded-xl bg-secondary/30 p-4 dark:bg-white/5">
-                <div>
-                  <span className="block text-[10px] font-medium text-muted-foreground mb-0.5">Penduduk (2024)</span>
-                  <span className="font-mono text-[13px] font-bold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
-                </div>
-                <div>
-                  <span className="block text-[10px] font-medium text-muted-foreground mb-0.5">Kepadatan</span>
-                  <span className="font-mono text-[13px] font-bold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} /km²</span>
-                </div>
-                <div>
-                  <span className="block text-[10px] font-medium text-muted-foreground mb-0.5">Pelajar & Mhs</span>
-                  <span className="font-mono text-[13px] font-bold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
-                </div>
-                <div>
-                  <span className="block text-[10px] font-medium text-muted-foreground mb-0.5">Total Fasilitas</span>
-                  <span className="font-mono text-[13px] font-bold">{terpilih.totalFasilitas || 0} POI</span>
-                </div>
-              </div>
-            )}
-
-            {/* Quick Facts Row */}
-            <dl className="mt-4 grid grid-cols-3 gap-2 rounded-xl bg-secondary/30 p-3 text-center dark:bg-white/5">
-              <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
-              <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
-              <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/60" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
-                <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Harga <Edit2 className="size-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
-                </dt>
-                <dd className="mt-0.5 font-mono text-[11px] font-bold">
-                  {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
-                </dd>
-                {customPrices[terpilih.id] && (
-                  <span className="absolute top-0.5 right-0.5 flex h-1.5 w-1.5 rounded-full bg-blue-500" />
-                )}
-              </div>
-            </dl>
-
-            {/* Anomaly Alert */}
-            {terpilih.anomali && (
-              <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-blue-500/15 bg-blue-500/5 p-3.5 text-[11px] text-blue-700 dark:text-blue-300">
-                <img src={aiStar.url} alt="" className="mt-0.5 size-3.5 shrink-0" />
-                <span className="leading-relaxed">
-                  <strong className="font-semibold block mb-0.5">Anomali peluang tersembunyi</strong>
-                  Aktivitas ekonomi di atas ekspektasi dibanding harga tanah dan kualitas layanan.
-                </span>
-              </div>
-            )}
-
-            {/* AI Recommendation */}
-            <div className="mt-4 rounded-xl border border-blue-500/10 bg-blue-500/[0.03] p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
-                  <img src={aiStar.url} alt="" className="size-3.5" /> Peluang Usaha AI
-                </div>
-                {!aiRecommendation && !isAiLoading && (
-                  <button
-                    onClick={() => handleAskAI(terpilih)}
-                    className="flex items-center gap-1 rounded-md bg-blue-500 px-2.5 py-1 text-[10px] font-semibold text-white transition-all hover:bg-blue-600 active:scale-95 print:hidden"
-                  >
-                    <img src={aiStar.url} alt="" className="size-3 brightness-0 invert" /> Tanya AI
-                  </button>
-                )}
-              </div>
-
-              {isAiLoading && (
-                <div className="flex items-center gap-1.5 text-[10px] text-blue-500/70 mt-2">
-                  <Loader2 className="size-3 animate-spin" /> Menganalisis pasar...
-                </div>
-              )}
-
-              {aiRecommendation && (
-                <p className="mt-2 text-[11px] leading-relaxed text-foreground/80">
-                  {aiRecommendation}
-                </p>
-              )}
-            </div>
-
-            {/* Compare CTA */}
-            <Link
-              to="/analisis"
-              className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg bg-blue-500/10 py-2.5 text-[11px] font-semibold text-blue-600 transition-all hover:bg-blue-500/15 active:scale-[0.98] dark:text-blue-400 print:hidden"
-            >
-              Bandingkan di Vitality Twin <ArrowRight className="size-3.5" />
-            </Link>
-
-            {/* Rankings */}
-            <div className="mt-6 border-t border-border/30 pt-5 print:hidden">
-              <h3 className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
-                <BarChart3 className="size-3" /> Peringkat Kawasan
-              </h3>
-              <ol className="space-y-0.5">
-                {peringkat.map(({ k, skor }, i) => (
-                  <li key={k.id}>
-                    <button
-                      onClick={() => setSelectedId(k.id)}
-                      className={cn(
-                        "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[11px] font-medium transition-all",
-                        k.id === selectedId
-                          ? "bg-blue-500/10 text-foreground"
-                          : "text-foreground/70 hover:bg-secondary/50"
-                      )}
-                    >
-                      <span className="w-4 font-mono text-[10px] text-muted-foreground/50">{i + 1}</span>
-                      <span className="flex-1 truncate">{k.nama}</span>
-                      <span
-                        className="rounded-md px-1.5 py-0.5 font-mono text-[10px] font-semibold"
-                        style={{
-                          color: warnaSkor(skor),
-                          backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 10%, transparent)`,
-                        }}
-                      >
-                        {skor}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-          </div>
-        </div>
-      </aside>
-
-      {/* ═══════════════════════════════════════════════════
-          MAIN AREA — Map (flex-1)
-          ═══════════════════════════════════════════════════ */}
-      <main className="relative flex-1 bg-muted/10 print:static print:w-full">
-        <VitalityMap
-          className="size-full"
-          fill
-          kawasan={kawasans}
-          role={role}
-          selectedId={selectedId}
-          onSelect={(id) => {
-            setSelectedId(id);
-            setIsMapMaximized(false);
-          }}
-          layer={layer}
-          tampilkanKoridor={koridor}
-          tampilkanSensus={sensus}
-          tampilkanAngkot={angkot}
-          tampilkanBus={bus}
-          poiPendidikan={poiPendidikan}
-          poiKesehatan={poiKesehatan}
-          poiKomersial={poiKomersial}
-          poiHiburan={poiHiburan}
-          poiTransit={poiTransit}
-          tampilkanPedestrian={pedestrian}
-          tampilkanAnomali={anomaliLayer}
-          missions={missions}
-        />
-
-        {/* ── Floating: Toggle Sidebar (Top-Right) ── */}
-        <button
-          onClick={() => setIsMapMaximized(!isMapMaximized)}
-          className="absolute top-4 right-4 z-50 flex size-9 items-center justify-center rounded-lg bg-white/70 text-foreground/80 shadow-sm backdrop-blur-xl border border-border/30 transition-all hover:bg-white hover:shadow-md dark:bg-black/50 dark:text-white dark:border-white/10 print:hidden"
-          title={isMapMaximized ? "Tampilkan Sidebar" : "Layar Penuh"}
-        >
-          {isMapMaximized ? <Menu className="size-4" /> : <X className="size-4" />}
-        </button>
-
-        {/* ── Floating: Legend (Bottom-Right) ── */}
-        <div className="absolute bottom-4 right-4 z-20 rounded-lg bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-xl border border-border/30 dark:bg-black/50 dark:border-white/10 print:hidden">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">Legenda Skor</span>
-            <span className="text-[9px] text-muted-foreground/50">r=800m</span>
-          </div>
-          <div className="flex items-center gap-1.5 w-36">
-            <span className="text-[9px] text-muted-foreground">0</span>
-            <div className="flex-1 flex h-1.5 rounded-full overflow-hidden">
-              {[20, 48, 60, 72, 88].map((s) => (
-                <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
               ))}
             </div>
-            <span className="text-[9px] text-muted-foreground">100</span>
-          </div>
-        </div>
-      </main>
 
+            {/* Search */}
+            <form onSubmit={handleAnalisis} className="relative mt-3">
+              <input
+                type="text"
+                placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
+                value={searchNewPlace}
+                onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
+                disabled={analyzing}
+                className="h-[34px] w-full rounded-[10px] bg-secondary/40 pl-9 pr-4 text-[14px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
+              />
+              <div className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
+              </div>
+              {analyzeError && (
+                <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full rounded-[10px] border border-destructive/15 bg-destructive/8 px-3 py-2 text-[12px] text-destructive backdrop-blur-xl">
+                  {analyzeError}
+                </div>
+              )}
+            </form>
+
+            {/* Layer Pill Chips */}
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {LAYERS.map((l) => (
+                <button
+                  key={l.id}
+                  onClick={() => setLayer(l.id)}
+                  className={cn(
+                    "rounded-full px-3 py-[5px] text-[12px] font-medium transition-all duration-200",
+                    layer === l.id
+                      ? "bg-blue-500 text-white shadow-sm"
+                      : "bg-secondary/40 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
+                  )}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Overlay Toggles */}
+            <div className="mt-3.5 grid grid-cols-2 gap-x-4 gap-y-2 text-[12px] text-muted-foreground">
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+                Koridor
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
+                Angkot
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
+                Bus (BRT)
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+                Pendidikan
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
+                Kesehatan
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
+                Komersial
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
+                Hiburan
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
+                Transit
+              </label>
+            </div>
+          </div>
+
+          {/* ── SUPPORTING ZONE (Scrollable) ── */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-5 py-5">
+
+              {/* Kawasan Header */}
+              <div className="flex items-center justify-between mb-2 print:hidden">
+                <span className="text-[12px] text-muted-foreground flex items-center gap-1.5">
+                  <MapPin className="size-3.5 text-blue-500" /> {terpilih.klaster}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <Link
+                    to="/temudata"
+                    search={{ peran: role, kawasan: terpilih.id }}
+                    className="flex items-center gap-1 rounded-lg bg-blue-500/8 px-2.5 py-1 text-[11px] font-medium text-blue-600 transition-colors hover:bg-blue-500/15 dark:text-blue-400"
+                  >
+                    <img src={aiStar.url} alt="" className="size-3" />
+                    Chat
+                  </Link>
+                  <button
+                    onClick={() => window.print()}
+                    className="flex items-center gap-1 rounded-lg bg-secondary/50 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
+                  >
+                    <Printer className="size-3" />
+                    PDF
+                  </button>
+                </div>
+              </div>
+
+              {/* Title + Score */}
+              <div className="flex items-start justify-between gap-4 mt-2 mb-5">
+                <div className="min-w-0">
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground/50">
+                    {terpilih.id} · {terpilih.koridor}
+                  </p>
+                  <h2 className="mt-1 truncate text-[22px] font-semibold tracking-tight">{terpilih.nama}</h2>
+                  <p className="mt-1.5 text-[13px] font-medium" style={{ color: warnaSkor(skorTerpilih) }}>
+                    Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
+                  </p>
+                </div>
+                <div
+                  className="flex size-[52px] shrink-0 items-center justify-center rounded-2xl border-[2.5px] text-[20px] font-extrabold"
+                  style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih), backgroundColor: `color-mix(in oklab, ${warnaSkor(skorTerpilih)} 6%, transparent)` }}
+                >
+                  {skorTerpilih}
+                </div>
+              </div>
+
+              {/* Score Bars */}
+              <div className="rounded-2xl bg-secondary/25 p-5 dark:bg-white/5">
+                <div className="space-y-3.5">
+                  {COMPONENTS.map((c) => {
+                    const nilai = terpilih.skor[c.id];
+                    return (
+                      <div key={c.id}>
+                        <div className="mb-1.5 flex items-baseline justify-between">
+                          <span className="text-[13px] font-medium text-foreground/70">{c.label}</span>
+                          <span className="font-mono text-[13px] font-semibold text-foreground">
+                            {nilai}
+                            <span className="ml-1 text-[10px] text-muted-foreground/60">
+                              ×{peran.weights[c.id].toFixed(2)}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="h-[6px] overflow-hidden rounded-full bg-secondary/50 dark:bg-white/8">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                            style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Demographics */}
+              {terpilih.penduduk && (
+                <div className="mt-4 grid grid-cols-2 gap-4 rounded-2xl bg-secondary/25 p-5 dark:bg-white/5">
+                  <div>
+                    <span className="block text-[11px] text-muted-foreground mb-1">Penduduk (2024)</span>
+                    <span className="font-mono text-[15px] font-semibold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
+                  </div>
+                  <div>
+                    <span className="block text-[11px] text-muted-foreground mb-1">Kepadatan</span>
+                    <span className="font-mono text-[15px] font-semibold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} /km²</span>
+                  </div>
+                  <div>
+                    <span className="block text-[11px] text-muted-foreground mb-1">Pelajar & Mhs</span>
+                    <span className="font-mono text-[15px] font-semibold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
+                  </div>
+                  <div>
+                    <span className="block text-[11px] text-muted-foreground mb-1">Total Fasilitas</span>
+                    <span className="font-mono text-[15px] font-semibold">{terpilih.totalFasilitas || 0} POI</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Facts */}
+              <dl className="mt-4 grid grid-cols-3 gap-3 rounded-2xl bg-secondary/25 p-4 text-center dark:bg-white/5">
+                <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
+                <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
+                <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-xl p-2 transition-colors hover:bg-secondary/40" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+                  <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Harga <Edit2 className="size-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
+                  </dt>
+                  <dd className="mt-0.5 font-mono text-[13px] font-semibold">
+                    {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
+                  </dd>
+                  {customPrices[terpilih.id] && (
+                    <span className="absolute top-1 right-1 flex h-1.5 w-1.5 rounded-full bg-blue-500" />
+                  )}
+                </div>
+              </dl>
+
+              {/* Anomaly */}
+              {terpilih.anomali && (
+                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-blue-500/10 bg-blue-500/[0.03] p-4 text-[13px] text-blue-700 dark:text-blue-300">
+                  <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0" />
+                  <span className="leading-relaxed">
+                    <strong className="font-semibold block mb-0.5">Anomali peluang tersembunyi</strong>
+                    Aktivitas ekonomi di atas ekspektasi dibanding harga tanah dan kualitas layanan.
+                  </span>
+                </div>
+              )}
+
+              {/* AI Recommendation */}
+              <div className="mt-4 rounded-2xl border border-blue-500/10 bg-blue-500/[0.03] p-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-[13px] font-semibold text-blue-600 dark:text-blue-400">
+                    <img src={aiStar.url} alt="" className="size-4" /> Peluang Usaha AI
+                  </div>
+                  {!aiRecommendation && !isAiLoading && (
+                    <button
+                      onClick={() => handleAskAI(terpilih)}
+                      className="flex items-center gap-1.5 rounded-full bg-blue-500 px-3 py-[5px] text-[11px] font-medium text-white transition-all hover:bg-blue-600 active:scale-95 print:hidden"
+                    >
+                      <img src={aiStar.url} alt="" className="size-3 brightness-0 invert" /> Tanya AI
+                    </button>
+                  )}
+                </div>
+
+                {isAiLoading && (
+                  <div className="flex items-center gap-1.5 text-[12px] text-blue-500/60 mt-3">
+                    <Loader2 className="size-3.5 animate-spin" /> Menganalisis pasar...
+                  </div>
+                )}
+
+                {aiRecommendation && (
+                  <p className="mt-3 text-[13px] leading-relaxed text-foreground/75">
+                    {aiRecommendation}
+                  </p>
+                )}
+              </div>
+
+              {/* Compare CTA */}
+              <Link
+                to="/analisis"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500/8 py-3 text-[13px] font-medium text-blue-600 transition-all hover:bg-blue-500/12 active:scale-[0.98] dark:text-blue-400 print:hidden"
+              >
+                Bandingkan di Vitality Twin <ArrowRight className="size-4" />
+              </Link>
+
+              {/* Rankings */}
+              <div className="mt-7 border-t border-border/20 pt-5 print:hidden">
+                <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70 flex items-center gap-1.5">
+                  <BarChart3 className="size-3.5" /> Peringkat Kawasan
+                </h3>
+                <ol className="space-y-0.5">
+                  {peringkat.map(({ k, skor }, i) => (
+                    <li key={k.id}>
+                      <button
+                        onClick={() => setSelectedId(k.id)}
+                        className={cn(
+                          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all",
+                          k.id === selectedId
+                            ? "bg-secondary font-medium text-foreground"
+                            : "text-foreground/60 hover:bg-secondary/40"
+                        )}
+                      >
+                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="flex-1 truncate">{k.nama}</span>
+                        <span
+                          className="rounded-lg px-2 py-0.5 font-mono text-[11px] font-semibold"
+                          style={{
+                            color: warnaSkor(skor),
+                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
+                          }}
+                        >
+                          {skor}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </aside>
+
+        {/* ═══════════════════════════════════════════════════
+            MAP AREA (flex-1)
+            ═══════════════════════════════════════════════════ */}
+        <main className="relative flex-1 bg-muted/10 print:static print:w-full">
+          <VitalityMap
+            className="size-full"
+            fill
+            kawasan={kawasans}
+            role={role}
+            selectedId={selectedId}
+            onSelect={(id) => {
+              setSelectedId(id);
+              setIsMapMaximized(false);
+            }}
+            layer={layer}
+            tampilkanKoridor={koridor}
+            tampilkanSensus={sensus}
+            tampilkanAngkot={angkot}
+            tampilkanBus={bus}
+            poiPendidikan={poiPendidikan}
+            poiKesehatan={poiKesehatan}
+            poiKomersial={poiKomersial}
+            poiHiburan={poiHiburan}
+            poiTransit={poiTransit}
+            tampilkanPedestrian={pedestrian}
+            tampilkanAnomali={anomaliLayer}
+            missions={missions}
+          />
+
+          {/* Floating: Toggle Sidebar */}
+          <button
+            onClick={() => setIsMapMaximized(!isMapMaximized)}
+            className="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-[10px] bg-white/70 text-foreground/60 shadow-sm backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-md dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
+            title={isMapMaximized ? "Tampilkan Sidebar" : "Layar Penuh"}
+          >
+            {isMapMaximized ? <Minimize className="size-[14px]" /> : <Maximize className="size-[14px]" />}
+          </button>
+
+          {/* Floating: Legend */}
+          <div className="absolute bottom-3 right-3 z-20 rounded-[10px] bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-xl border border-border/20 dark:bg-black/50 dark:border-white/10 print:hidden">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Legenda Skor</span>
+              <span className="text-[10px] text-muted-foreground/40 ml-3">r=800m</span>
+            </div>
+            <div className="flex items-center gap-1.5 w-36">
+              <span className="text-[10px] text-muted-foreground/50">0</span>
+              <div className="flex-1 flex h-[5px] rounded-full overflow-hidden">
+                {[20, 48, 60, 72, 88].map((s) => (
+                  <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
+                ))}
+              </div>
+              <span className="text-[10px] text-muted-foreground/50">100</span>
+            </div>
+          </div>
+        </main>
+
+      </div>
     </div>
   );
 }
@@ -710,8 +711,8 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col items-center justify-center">
-      <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{label}</dt>
-      <dd className="mt-1.5 font-mono text-sm font-bold">{value}</dd>
+      <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</dt>
+      <dd className="mt-1 font-mono text-[14px] font-semibold">{value}</dd>
     </div>
   );
 }
