@@ -99,10 +99,16 @@ function PetaInteraktif() {
     setAnalyzeError("");
     try {
       const { kawasan, geo } = await analyzeNewPlace(searchNewPlace);
-      // Register koordinat riil untuk marker peta
-      addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
-      setKawasans(prev => [kawasan, ...prev].slice(0, 16));
-      setSelectedId(kawasan.id);
+      const normalizedNewName = kawasan.nama.toLowerCase().replace(/\s+/g, '');
+      const existing = kawasans.find(k => k.nama.toLowerCase().replace(/\s+/g, '') === normalizedNewName);
+      
+      if (existing) {
+        setSelectedId(existing.id);
+      } else {
+        addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
+        setKawasans(prev => [kawasan, ...prev].slice(0, 16));
+        setSelectedId(kawasan.id);
+      }
       setSearchNewPlace("");
     } catch (err) {
       setAnalyzeError(err instanceof Error ? err.message : "Gagal menganalisis lokasi");
