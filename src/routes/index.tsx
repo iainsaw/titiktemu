@@ -18,18 +18,21 @@ const KARTU = [
     judul: "Investor & Properti",
     teks: "Temukan kawasan transit dengan fundamental properti yang kuat dan potensi keuntungan terbaik untuk investasi Anda.",
     peran: "investor" as const,
+    tombol: "Investor",
   },
   {
     icon: Landmark,
     judul: "Pemerintah & Perencana",
     teks: "Lihat di mana masyarakat paling membutuhkan akses transportasi, dan prioritaskan pembangunan fasilitas yang tepat sasaran.",
     peran: "pemerintah" as const,
+    tombol: "Pemerintah",
   },
   {
     icon: Store,
     judul: "Aktivitas Ekonomi Mikro",
     teks: "Analisis pergerakan keramaian warga untuk menemukan lokasi jualan dan jam operasional paling strategis bagi bisnis Anda.",
     peran: "umkm" as const,
+    tombol: "UMKM",
   },
 ];
 
@@ -253,7 +256,7 @@ function Beranda() {
                     isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
                   )}
                 >
-                  Pilih {k.peran}
+                  Pilih {k.tombol}
                 </Link>
               </div>
             );
