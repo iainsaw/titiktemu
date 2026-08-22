@@ -562,9 +562,14 @@ function PetaInteraktif() {
                 )}
 
                 {aiRecommendation && (
-                  <p className="mt-3 text-[13px] leading-relaxed text-foreground/75">
-                    {aiRecommendation}
-                  </p>
+                  <p 
+                    className="mt-3 text-[13px] leading-relaxed text-foreground/75"
+                    dangerouslySetInnerHTML={{
+                      __html: aiRecommendation
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    }}
+                  />
                 )}
               </div>
 
