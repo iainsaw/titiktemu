@@ -308,24 +308,22 @@ function Beranda() {
                 fill
               />
 
-              {/* Floating AI Insights Section */}
-              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:max-w-[420px]">
-                <div className="overflow-hidden rounded-2xl border border-white/20 bg-background/70 p-4 shadow-2xl backdrop-blur-xl supports-[backdrop-filter]:bg-background/40">
-                  <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary sm:text-[12px]">
-                    <AiIcon /> Highlight Insight AI
-                  </h2>
-                  <div className="mt-2.5 text-[12.5px] leading-relaxed text-foreground sm:text-[13.5px]">
-                    {isInsightsLoading ? (
-                      <div className="animate-pulse space-y-2">
-                        <div className="h-2 w-3/4 rounded bg-muted-foreground/30"></div>
-                        <div className="h-2 w-1/2 rounded bg-muted-foreground/30"></div>
-                      </div>
-                    ) : (
-                      insights?.map((insight: string, idx: number) => (
-                        <p key={idx}>“{insight}”</p>
-                      ))
-                    )}
-                  </div>
+              {/* Floating AI Insights Section (Chat Bubble) */}
+              <div className="absolute bottom-3 left-3 right-3 flex items-end gap-3 sm:bottom-4 sm:left-4 sm:max-w-[420px]">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                  <AiIcon className="size-5" />
+                </div>
+                <div className="rounded-2xl rounded-bl-sm bg-primary p-3.5 text-[13px] leading-relaxed text-primary-foreground shadow-2xl sm:p-4 sm:text-[14px]">
+                  {isInsightsLoading ? (
+                    <div className="animate-pulse space-y-2.5">
+                      <div className="h-2 w-3/4 rounded bg-primary-foreground/30"></div>
+                      <div className="h-2 w-1/2 rounded bg-primary-foreground/30"></div>
+                    </div>
+                  ) : (
+                    insights?.map((insight: string, idx: number) => (
+                      <p key={idx}>“{insight}”</p>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
