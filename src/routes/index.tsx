@@ -63,7 +63,6 @@ export const Route = createFileRoute("/")({
 function Beranda() {
   const [kawasans, setKawasans] = useState<Kawasan[]>(STATIC_KAWASAN);
   const [selectedId, setSelectedId] = useState<string>(STATIC_KAWASAN[0].id);
-  const [typedTitle, setTypedTitle] = useState("");
   const fullTitle = "Titik Temu";
 
   const { data: insights, isLoading: isInsightsLoading } = useQuery({
@@ -71,22 +70,6 @@ function Beranda() {
     queryFn: () => generateInsights({ data: kawasans }),
     staleTime: Infinity,
   });
-
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    const timeout = setTimeout(() => {
-      let i = 0;
-      interval = setInterval(() => {
-        setTypedTitle(fullTitle.slice(0, i + 1));
-        i++;
-        if (i >= fullTitle.length) clearInterval(interval);
-      }, 100);
-    }, 600);
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, []);
 
   // Fetch 100% real computed analytics dari PostGIS Supabase
   useEffect(() => {
@@ -154,9 +137,9 @@ function Beranda() {
 
           <h1
             className="headline hero-rise mt-5 text-[clamp(38px,12vw,76px)] text-ink-foreground sm:mt-6"
-            style={{ animationDelay: "0.18s", minHeight: "1.1em" }}
+            style={{ animationDelay: "0.18s" }}
           >
-            {typedTitle}<span className="animate-pulse text-primary font-light">|</span>
+            {fullTitle}
           </h1>
           <p
             className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
