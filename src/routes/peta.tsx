@@ -349,7 +349,7 @@ function PetaInteraktif() {
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
-                Pilih {r.label}
+                {r.label}
               </button>
             ))}
           </div>
