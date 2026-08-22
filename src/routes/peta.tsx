@@ -17,6 +17,7 @@ import {
   type ComponentId,
   type RoleId,
 } from "@/lib/vitality-data";
+import { generateInsights, generateOpportunityInsight } from "@/lib/ai.functions";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { analyzeNewPlace } from "@/lib/analyze-point";
@@ -259,43 +260,9 @@ function PetaInteraktif() {
 
   const handleAskAI = async (kws: Kawasan) => {
     setIsAiLoading(true);
-    setAiRecommendation("");
     try {
-      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-      if (!apiKey) {
-        setAiRecommendation("API Key OpenRouter tidak ditemukan di .env.");
-        setIsAiLoading(false);
-        return;
-      }
-
-      const prompt = `Anda adalah ahli tata kota dan penasihat bisnis UMKM profesional. 
-Kawasan ${kws.nama} memiliki skor (0-100):
-Layanan Umum: ${kws.skor.layanan}
-Akses Transportasi: ${kws.skor.akses}
-Pasar Properti: ${kws.skor.properti}
-Keragaman Ekonomi: ${kws.skor.ekonomi}
-Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' : 'Tidak diketahui'}.
-
-Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha yang paling menguntungkan untuk dibuka di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
-
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
-
-      const data = await res.json();
-      if (data.choices && data.choices[0]) {
-        setAiRecommendation(data.choices[0].message.content);
-      } else {
-        setAiRecommendation("Gagal mendapatkan rekomendasi AI.");
-      }
+      const insight = await generateOpportunityInsight({ data: { kws } });
+      setAiRecommendation(insight);
     } catch (e) {
       setAiRecommendation("Terjadi kesalahan koneksi saat memanggil AI.");
     } finally {

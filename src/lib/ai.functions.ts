@@ -72,3 +72,45 @@ Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*7
     
     return [insight];
   });
+
+export const generateOpportunityInsight = createServerFn({ method: "POST" })
+  .validator((data: { kws: Kawasan }) => data)
+  .handler(async ({ data: { kws } }) => {
+    const apiKey = process.env.VITE_OPENROUTER_API_KEY;
+    if (!apiKey) {
+      throw new Error("Missing OpenRouter API Key");
+    }
+
+    const prompt = `Anda adalah ahli tata kota dan penasihat bisnis UMKM profesional. 
+Kawasan ${kws.nama} memiliki skor (0-100):
+Layanan Umum: ${kws.skor.layanan}
+Akses Transportasi: ${kws.skor.akses}
+Pasar Properti: ${kws.skor.properti}
+Keragaman Ekonomi: ${kws.skor.ekonomi}
+Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' : 'Tidak diketahui'}.
+
+Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha yang paling menguntungkan untuk dibuka di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:3000",
+        "X-Title": "Titik Temu AI"
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+        max_tokens: 150
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch AI insights");
+    }
+
+    const json = await response.json();
+    return json.choices?.[0]?.message?.content || "Gagal memproses rekomendasi AI.";
+  });
