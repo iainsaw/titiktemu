@@ -332,12 +332,12 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
   }, [selectedId]);
 
   return (
-    <div className="flex h-[100dvh] w-screen overflow-hidden bg-background font-sans text-foreground">
+    <div className="flex flex-row-reverse h-[100dvh] w-screen overflow-hidden bg-background font-sans text-foreground">
       
-      {/* SUPPORTING ZONE (Data Area - Kiri) */}
+      {/* SUPPORTING ZONE (Data Area - Kanan) */}
       <aside className={cn(
-        "z-30 flex shrink-0 flex-col border-r border-border/40 bg-background/80 backdrop-blur-2xl shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] print:static print:w-full print:shadow-none print:border-none",
-        isMapMaximized ? "-ml-[380px] w-[380px]" : "w-[380px]"
+        "z-30 flex shrink-0 flex-col border-l border-border/40 bg-background/80 backdrop-blur-2xl shadow-[-4px_0_24px_rgba(0,0,0,0.02)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] print:static print:w-full print:shadow-none print:border-none",
+        isMapMaximized ? "-mr-[380px] w-[380px]" : "w-[380px]"
       )}>
         {/* Header mini */}
         <div className="flex items-center justify-between border-b border-border/30 p-4 print:hidden">
@@ -362,7 +362,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         </div>
 
         {/* Scrollable details */}
-        <div className="flex-1 overflow-y-auto p-5 print:p-0">
+        <div className="flex-1 overflow-y-auto p-3.5 print:p-0">
           
           <div className="animate-in fade-in-50 duration-300">
             <div className="flex items-start justify-between gap-3">
@@ -388,7 +388,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             </p>
 
             {/* Bar Components */}
-            <div className="mt-5 space-y-3">
+            <div className="mt-4 space-y-2.5">
               {COMPONENTS.map((c) => {
                 const nilai = terpilih.skor[c.id];
                 return (
@@ -415,7 +415,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
 
             {/* Demographics */}
             {terpilih.penduduk && (
-              <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl bg-secondary/30 p-4 text-[11px]">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 rounded-2xl bg-secondary/30 p-3 text-[11px]">
                 <div>
                   <span className="block text-muted-foreground mb-1">Penduduk (2024)</span>
                   <span className="font-mono font-semibold text-sm">{terpilih.penduduk.toLocaleString('id-ID')} jiwa</span>
@@ -436,7 +436,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             )}
 
             {/* Quick Facts */}
-            <dl className="mt-4 grid grid-cols-3 gap-2 border-y border-border/40 py-4 text-center">
+            <dl className="mt-3 grid grid-cols-3 gap-1.5 border-y border-border/40 py-3 text-center">
               <Fact label="Jarak transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit} m` : "N/A"} />
               <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
               <div className="group relative flex flex-col items-center justify-center cursor-pointer hover:bg-secondary/50 rounded-xl p-1.5 transition-colors" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
@@ -453,7 +453,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             </dl>
 
             {terpilih.anomali && (
-              <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-primary/20 bg-primary/5 p-3.5 text-[11.5px] text-primary/90 shadow-sm transition-colors hover:bg-primary/10">
+              <div className="mt-3 flex items-start gap-2 rounded-2xl border border-primary/20 bg-primary/5 p-3 text-[11.5px] text-primary/90 shadow-sm transition-colors hover:bg-primary/10">
                 <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0 drop-shadow-sm" />
                 <span className="leading-relaxed">
                   <strong>Anomali peluang tersembunyi:</strong> aktivitas ekonomi jauh di atas ekspektasi dibanding
@@ -463,7 +463,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             )}
 
             {/* Kalkulator Potensi Usaha LLM */}
-            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-4 shadow-sm print:border-gray-300 print:bg-white">
+            <div className="mt-3 flex flex-col gap-1.5 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-3 shadow-sm print:border-gray-300 print:bg-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-[11.5px] font-semibold text-orange-600">
                   <Lightbulb className="size-4" /> Peluang Usaha AI
@@ -499,7 +499,7 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
             </Link>
 
             {/* Peringkat List in Sidebar */}
-            <div className="mt-8 border-t border-border/30 pt-6 print:hidden">
+            <div className="mt-6 border-t border-border/30 pt-4 print:hidden">
               <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <BarChart3 className="size-3.5" /> Peringkat Kawasan
               </h3>
