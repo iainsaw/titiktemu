@@ -8,6 +8,8 @@ import { geocode, type GeoResult } from "./geocode";
 import { supabase } from "./supabase";
 import type { Kawasan } from "./vitality-data";
 
+import { parseSearchQuery } from "./ai.functions";
+
 export type AnalysisResult = {
   kawasan: Kawasan;
   geo: GeoResult;
@@ -15,17 +17,35 @@ export type AnalysisResult = {
 
 /**
  * Menganalisis potensi TOD untuk sebuah tempat berdasarkan nama.
- * 1. Geocode nama tempat → koordinat riil
- * 2. Panggil RPC analyze_single_point → skor riil dari PostGIS
- * 3. Bangun objek Kawasan lengkap
+ * 1. AI Parse Query -> Normalisasi & filter luar kota
+ * 2. Geocode nama tempat → koordinat riil
+ * 3. Panggil RPC analyze_single_point → skor riil dari PostGIS
+ * 4. Bangun objek Kawasan lengkap
  *
  * @throws Error jika lokasi tidak ditemukan atau RPC gagal
  */
 export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult> {
-  // 1. Geocode
-  const geo = await geocode(placeName);
+  // 1. Parse Query via AI (typo fix + Kota Bandung validation)
+  let searchQuery = placeName;
+  try {
+    const aiRes = await parseSearchQuery({ data: { query: placeName } });
+    if (aiRes.error === "OUTSIDE") {
+      throw new Error(`Lokasi "${placeName}" berada di luar Kota Bandung (Coming Soon!). Saat ini kami hanya melayani area Kota Bandung.`);
+    }
+    if (aiRes.query) {
+      searchQuery = aiRes.query;
+    }
+  } catch (e) {
+    if (e instanceof Error && e.message.includes("di luar Kota Bandung")) {
+      throw e; // re-throw if it's the expected OUTSIDE error
+    }
+    // if AI fails for other reasons (e.g. rate limit), just fallback to the raw query
+  }
+
+  // 2. Geocode
+  const geo = await geocode(searchQuery);
   if (!geo) {
-    throw new Error(`Lokasi "${placeName}" tidak ditemukan di area Bandung Raya. Coba nama yang lebih spesifik.`);
+    throw new Error(`Lokasi "${searchQuery}" tidak ditemukan di area Bandung Raya. Coba nama yang lebih spesifik.`);
   }
 
   // 2. Query PostGIS via RPC

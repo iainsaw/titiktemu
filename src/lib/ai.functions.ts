@@ -125,3 +125,60 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik ${task} di area
     const json = await response.json();
     return json.choices?.[0]?.message?.content || "Gagal memproses rekomendasi AI.";
   });
+
+export const parseSearchQuery = createServerFn({ method: "POST" })
+  .validator((data: { query: string }) => data)
+  .handler(async ({ data: { query } }) => {
+    const apiKey = process.env.VITE_OPENROUTER_API_KEY;
+    if (!apiKey) {
+      throw new Error("Missing OpenRouter API Key");
+    }
+
+    const prompt = `Anda adalah asisten pencarian cerdas untuk sistem GIS Kota Bandung.
+Pengguna mencari lokasi: "${query}".
+
+Tugas Anda:
+1. Perbaiki jika ada salah ketik (typo).
+2. Tentukan apakah lokasi ini masuk atau bersinggungan dengan wilayah Kota Bandung (misalnya Kopo, Pasteur, Cibiru, Buah Batu, Dago).
+3. Jika lokasinya jelas-jelas SAMA SEKALI BUKAN di Kota Bandung (misal: Jakarta, Lembang, Soreang, Cimahi, Surabaya), balas HANYA dengan kata: OUTSIDE
+4. Jika lokasinya di atau bersinggungan dengan Kota Bandung, berikan query pencarian yang bersih dan optimal untuk OpenStreetMap Nominatim agar akurat mengarah ke Kota Bandung. Balas HANYA dengan query tersebut (tanpa tanda kutip, tanpa penjelasan apapun).
+
+Contoh:
+Input: kopo
+Output: Jalan Kopo, Kota Bandung
+
+Input: cmahi
+Output: OUTSIDE
+
+Input: buh btu
+Output: Buahbatu, Kota Bandung`;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:3000",
+        "X-Title": "Titik Temu AI"
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.1,
+        max_tokens: 50
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to parse search query via AI");
+    }
+
+    const json = await response.json();
+    const result = json.choices?.[0]?.message?.content?.trim() || "";
+    
+    if (result.includes("OUTSIDE")) {
+      return { error: "OUTSIDE" };
+    }
+    
+    return { query: result || query };
+  });
