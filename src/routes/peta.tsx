@@ -438,56 +438,46 @@ function PetaInteraktif() {
             </div>
 
             {/* CARD 4: Rankings */}
-            <div className="flex flex-col flex-1 min-h-0 rounded-[28px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
-              <div className="px-5 pt-5 pb-3 shrink-0 flex items-center justify-between">
-                <h3 className="text-[15px] font-bold tracking-tight text-foreground">
+            <div className="flex flex-col min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
+              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
                   Peringkat Kawasan
                 </h3>
                 <Link
                   to="/analisis"
-                  className="rounded-full bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-secondary"
+                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
                 >
-                  Bandingkan
+                  Bandingkan ›
                 </Link>
               </div>
-              <div className="flex-1 overflow-y-auto floating-scrollbar px-3 pb-4">
-                <ul className="flex flex-col gap-2">
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+                <ol className="space-y-0.5">
                   {peringkat.map(({ k, skor }, i) => (
                     <li key={k.id}>
                       <button
                         onClick={() => setSelectedId(k.id)}
                         className={cn(
-                          "group flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-200",
+                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
                           k.id === selectedId
-                            ? "bg-ink text-white dark:bg-white dark:text-black shadow-md scale-[0.98]"
-                            : "bg-secondary/40 hover:bg-secondary/60 dark:bg-white/5 dark:hover:bg-white/10"
+                            ? "bg-secondary font-medium text-foreground shadow-sm"
+                            : "text-foreground/70 hover:bg-secondary/50"
                         )}
                       >
-                        <span className={cn(
-                          "w-5 text-[15px] font-bold text-right shrink-0",
-                          k.id === selectedId ? "text-white/50 dark:text-black/50" : "text-muted-foreground/40"
-                        )}>
-                          {i + 1}
-                        </span>
-                        <span className={cn(
-                          "flex-1 truncate text-[14px]",
-                          k.id === selectedId ? "font-semibold" : "font-semibold text-foreground/90"
-                        )}>
-                          {k.nama}
-                        </span>
+                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="flex-1 truncate">{k.nama}</span>
                         <span
-                          className={cn(
-                            "text-[14px] font-bold",
-                            k.id === selectedId && "text-white dark:text-black" // Override color if selected
-                          )}
-                          style={k.id !== selectedId ? { color: warnaSkor(skor) } : undefined}
+                          className="rounded-md px-1.5 py-0.5 font-mono text-[11px] font-semibold"
+                          style={{
+                            color: warnaSkor(skor),
+                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
+                          }}
                         >
                           {skor}
                         </span>
                       </button>
                     </li>
                   ))}
-                </ul>
+                </ol>
               </div>
             </div>
           </div>
@@ -499,7 +489,7 @@ function PetaInteraktif() {
           )}>
             
             {/* CARD 3: Selected Details & AI */}
-            <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4 overflow-y-auto floating-scrollbar">
+            <div className="flex flex-col min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4 overflow-y-auto floating-scrollbar">
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-1.5 print:hidden">
                 <span className="text-[11px] font-semibold tracking-wide text-ink dark:text-white uppercase">
