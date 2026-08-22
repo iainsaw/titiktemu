@@ -121,8 +121,7 @@ function Analisis() {
         <h1 className="headline text-[clamp(28px,8vw,50px)]">Analisis & Perbandingan</h1>
         <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
 
-          Bedah kekuatan dan kelemahan tiap kawasan lewat Vitality Twin, lalu uji skenario
-          penambahan layanan transit dan lihat perubahan skornya secara langsung.
+          Bandingkan potensi tiap kawasan secara berdampingan. Anda juga bisa menguji simulasi: lihat bagaimana skor kawasan melonjak naik saat Anda menambahkan rute angkot, halte, atau jalur pejalan kaki baru.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center gap-2">

@@ -51,12 +51,12 @@ function Metodologi() {
         <h1 className="headline text-[clamp(28px,8vw,52px)]">Metodologi & Sumber Data</h1>
 
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Seluruh angka pada prototipe ini sudah menggunakan <strong>ekstraksi data riil</strong> untuk kawasan percontohan (pilot) Bandung Raya yang disalurkan melalui basis data PostgreSQL (Supabase).
+          Semua data di dalam platform ini menggunakan <strong>data asli</strong> dari wilayah percontohan Bandung Raya yang ditarik secara real-time melalui basis data PostgreSQL (Supabase).
         </p>
 
-        <Section title="1. Agregasi Spasial (Radius Pejalan Kaki 800m)">
+        <Section title="1. Jangkauan Pejalan Kaki (Radius 800m)">
           <p>
-            Sumber data spasial diagregasi secara dinamis menggunakan kalkulasi jarak <em>Haversine</em> dengan batas radius 800 meter (atau setara ~10 menit berjalan kaki santai) dari titik pusat transit. Titik data poin (seperti UMKM atau POI Fasilitas) yang masuk ke dalam radius tersebut kemudian dijumlahkan secara komulatif.
+            Kami mengumpulkan data keramaian dan fasilitas dalam radius 800 meter (sekitar 10 menit berjalan kaki santai) dari stasiun atau halte. Semua titik penting seperti UMKM, sekolah, dan rumah sakit yang berada dalam lingkaran ini akan dihitung sebagai fasilitas kawasan tersebut.
           </p>
         </Section>
 
@@ -72,14 +72,14 @@ function Metodologi() {
             Skor Vitalitas Transit dihitung sebagai indeks berbobot, mengadaptasi secara langsung metode <strong>Measuring TOD around transit nodes (Singh et al., 2017)</strong>. Prosesnya meliputi:
           </p>
           <ul className="list-disc space-y-1.5 pl-5 mt-2">
-            <li><strong>Maximum Standardisation Method:</strong> Menyeragamkan semua nilai metrik ke dalam skala 0–100 berdasarkan nilai maksimum kawasan.</li>
-            <li><strong>Weighted Linear Combination (WLC):</strong> Skor akhir kawasan didapatkan dengan mengalikan skor standar setiap indikator dengan bobot kepentingannya, lalu dijumlahkan.</li>
+            <li><strong>Penyeragaman Skala (Standardisasi):</strong> Mengubah semua metrik ke dalam skala 0–100 agar mudah dibandingkan satu sama lain.</li>
+            <li><strong>Penggabungan Bobot (Weighted Combination):</strong> Skor akhir kawasan didapatkan dengan mengalikan skor setiap indikator dengan tingkat kepentingannya, lalu dijumlahkan menjadi satu skor bulat.</li>
           </ul>
         </Section>
 
-        <Section title="3. Pembobotan Berbasis Peran (Multi-Criteria Analysis)">
+        <Section title="3. Fokus Sesuai Kebutuhan Anda (Sistem Pembobotan)">
           <p className="mb-3">
-            Menggunakan prinsip <strong>Multi-Criteria Analysis (MCA)</strong>, bobot indikator tidak dikunci secara kaku. Dasbor interaktif memungkinkan penyesuaian bobot secara dinamis berdasarkan <em>stakeholder</em> atau peran pengguna (misal: Pemerintah vs Developer Properti).
+            Prioritas setiap orang berbeda. Dasbor interaktif ini menyesuaikan perhitungan skor secara otomatis berdasarkan peran Anda. Misalnya, Pemerintah mungkin lebih mementingkan pemerataan layanan publik, sementara Investor lebih fokus pada nilai properti dan akses keramaian.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -109,9 +109,9 @@ function Metodologi() {
           </div>
         </Section>
 
-        <Section title="4. Ekstraksi Harga Tanah (Extraction Method)">
+        <Section title="4. Perhitungan Nilai Lahan Murni">
           <p>
-            Nilai tanah pada setiap kawasan TOD tidak ditebak, melainkan dihitung menggunakan <strong>Metode Ekstraksi (Extraction Method)</strong> yang merupakan standar Penilaian Properti (Appraisal). Mengingat di kawasan TOD bangunan lama sering kali tidak memiliki nilai ekonomis (atau bahkan menjadi beban pembongkaran), formulanya adalah:
+            Harga properti sering kali menyesatkan karena termasuk harga bangunan. Kami menghitung <strong>Nilai Lahan Murni</strong> dengan memisahkan harga bangunan dari harga jual properti. Di kawasan strategis, bangunan lama sering dibongkar oleh investor untuk dibangun ulang, sehingga nilai utamanya ada pada lokasi tanahnya:
           </p>
           <ul className="list-disc space-y-1.5 pl-5 mt-2">
             <li><strong>Nilai Bangunan:</strong> Luas Bangunan (m²) × Biaya Bangun Baru (Rp 5.000.000/m²).</li>

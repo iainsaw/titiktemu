@@ -15,19 +15,19 @@ const KARTU = [
   {
     icon: Building2,
     judul: "Investor & Properti",
-    teks: "Mengidentifikasi simpul transit dengan fundamental properti yang kuat untuk optimalisasi alokasi investasi.",
+    teks: "Temukan kawasan transit dengan fundamental properti yang kuat dan potensi keuntungan terbaik untuk investasi Anda.",
     peran: "investor" as const,
   },
   {
     icon: Landmark,
     judul: "Pemerintah & Perencana",
-    teks: "Memetakan kesenjangan aksesibilitas dan memprioritaskan intervensi infrastruktur spasial yang paling berdampak.",
+    teks: "Lihat di mana masyarakat paling membutuhkan akses transportasi, dan prioritaskan pembangunan fasilitas yang tepat sasaran.",
     peran: "pemerintah" as const,
   },
   {
     icon: Store,
     judul: "Aktivitas Ekonomi Mikro",
-    teks: "Menganalisis pola pergerakan kawasan untuk menentukan kelayakan penetrasi pasar dan lokasi operasional.",
+    teks: "Analisis pergerakan keramaian warga untuk menemukan lokasi jualan dan jam operasional paling strategis bagi bisnis Anda.",
     peran: "umkm" as const,
   },
 ];
@@ -132,7 +132,7 @@ function Beranda() {
             className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
             style={{ animationDelay: "0.3s" }}
           >
-            Sistem pendukung keputusan spasial untuk mengukur vitalitas ekonomi kawasan transit. Mengubah big data menjadi matriks yang dapat ditindaklanjuti oleh pemerintah, investor, dan UMKM.
+            Peta pintar untuk melihat potensi ekonomi di sekitar stasiun dan halte. Mengubah jutaan data menjadi satu skor yang mudah dipahami oleh pemerintah, investor, dan UMKM.
           </p>
           <div
             className="hero-rise mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:mt-9 sm:gap-3"
@@ -157,19 +157,19 @@ function Beranda() {
         <div className="relative mx-auto grid max-w-[1100px] grid-cols-2 gap-2.5 px-4 pb-10 sm:grid-cols-3 sm:gap-3 sm:px-5 sm:pb-14">
           {[
             {
-              tag: "METRIK TERUKUR",
+              tag: "SKOR BERBASIS DATA",
               judul: `Rata-rata ${rata}`,
-              teks: "Indeks Vitalitas Transit berbasis pembobotan dinamis multi-stakeholder.",
+              teks: "Skor akurat yang dihitung berdasarkan sudut pandang masing-masing peran.",
             },
             {
-              tag: "VALIDASI LAPANGAN",
+              tag: "TERUJI DI LAPANGAN",
               judul: `${RINGKASAN_SURVEI.totalTitik} observasi`,
-              teks: `Data primer dari ${RINGKASAN_SURVEI.totalLokasi} simpul — verifikasi algoritma melalui traffic count & UMKM.`,
+              teks: `Algoritma diverifikasi dengan menghitung kendaraan dan mewawancarai UMKM di ${RINGKASAN_SURVEI.totalLokasi} lokasi riil.`,
             },
             {
-              tag: "SINTESIS DATA",
+              tag: "REKOMENDASI CERDAS",
               judul: "Intelegensi Spasial",
-              teks: "Memproses variabel keruangan menjadi rekomendasi strategis yang siap dieksekusi.",
+              teks: "Tidak sekadar menampilkan angka, tapi memberikan rekomendasi bisnis dan tata ruang yang siap dieksekusi.",
             },
           ].map((c, i) => (
             <div
@@ -191,9 +191,9 @@ function Beranda() {
 
       <main className="mx-auto max-w-[1100px] px-4 py-12 sm:px-5 sm:py-16">
         <section className="mx-auto max-w-[760px] text-center">
-          <h2 className="headline text-[clamp(24px,7vw,40px)]">Menjembatani Celah Analisis Spasial</h2>
+          <h2 className="headline text-[clamp(24px,7vw,40px)]">Mengapa Titik Temu Dibangun?</h2>
           <p className="mt-4 text-[14.5px] leading-relaxed text-muted-foreground sm:text-[16px]">
-            Keputusan tata ruang dan investasi kerap terkendala oleh data yang terfragmentasi—antara nilai properti, aksesibilitas transportasi, dan aktivitas ekonomi mikronya. Titik Temu hadir mensintesis beragam lapisan data tersebut ke dalam satu indeks spasial komprehensif, memberikan landasan empiris yang kuat bagi Bappeda, Dinas Perhubungan, hingga pengembang properti dalam merumuskan strategi Kawasan Berorientasi Transit (TOD).
+            Seringkali, keputusan bisnis atau tata ruang dibuat berdasarkan insting karena data properti, akses transportasi, dan ekonomi warga tersebar di mana-mana. Titik Temu menggabungkan semua data tersebut ke dalam satu peta interaktif, memberikan panduan yang jelas bagi Bappeda, Dinas Perhubungan, pengembang properti, hingga pelaku UMKM.
           </p>
         </section>
 
