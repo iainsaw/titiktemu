@@ -60,7 +60,6 @@ function PetaInteraktif() {
   
   const [kawasans, setKawasans] = useState<Kawasan[]>(STATIC_KAWASAN);
   const [selectedId, setSelectedId] = useState<string>(STATIC_KAWASAN[0].id);
-  const [tab, setTab] = useState<PanelTab>(null);
   const [searchNewPlace, setSearchNewPlace] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeError, setAnalyzeError] = useState("");
@@ -247,10 +246,6 @@ function PetaInteraktif() {
   const [aiRecommendation, setAiRecommendation] = useState<string>("");
   const [isAiLoading, setIsAiLoading] = useState(false);
 
-
-  const [isMapMaximized, setIsMapMaximized] = useState(false);
-  const [aiRecommendation, setAiRecommendation] = useState<string>("");
-  const [isAiLoading, setIsAiLoading] = useState(false);
 
   const handleEditHarga = (id: string, currentVal: number) => {
     const val = window.prompt(`Masukkan benchmark Harga Tanah pasar riil (Juta/m²) untuk ${id}:`, currentVal.toString());
