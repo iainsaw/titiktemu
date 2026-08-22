@@ -288,7 +288,7 @@ function Beranda() {
           <div className="panel flex flex-col overflow-hidden">
             {/* Map Section */}
             <div className="flex-1 p-4 sm:p-5">
-              <h2 className="mb-3 text-sm font-semibold">Cuplikan peta vitalitas</h2>
+              <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">Cuplikan peta vitalitas</h2>
               <VitalityMap
                 kawasan={kawasans}
                 role="investor"
@@ -307,7 +307,7 @@ function Beranda() {
 
             {/* AI Insights Section */}
             <div className="w-full border-t border-border/40 bg-secondary/20 p-4 sm:p-5">
-              <h2 className="flex items-center gap-2 text-sm font-semibold text-primary">
+              <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary sm:text-[12px]">
                 <AiIcon /> Highlight Insight AI
               </h2>
               <div className="mt-4 space-y-3 text-[13px] leading-relaxed">
