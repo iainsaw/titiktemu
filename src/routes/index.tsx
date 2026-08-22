@@ -18,18 +18,21 @@ const KARTU = [
     judul: "Investor & Properti",
     teks: "Temukan kawasan transit dengan fundamental properti yang kuat dan potensi keuntungan terbaik untuk investasi Anda.",
     peran: "investor" as const,
+    image: "/investor_bg.png",
   },
   {
     icon: Landmark,
     judul: "Pemerintah & Perencana",
     teks: "Lihat di mana masyarakat paling membutuhkan akses transportasi, dan prioritaskan pembangunan fasilitas yang tepat sasaran.",
     peran: "pemerintah" as const,
+    image: "/pemerintah_bg.png",
   },
   {
     icon: Store,
     judul: "Aktivitas Ekonomi Mikro",
     teks: "Analisis pergerakan keramaian warga untuk menemukan lokasi jualan dan jam operasional paling strategis bagi bisnis Anda.",
     peran: "umkm" as const,
+    image: "/umkm_bg.png",
   },
 ];
 
@@ -217,53 +220,55 @@ function Beranda() {
           </p>
         </section>
 
-        <section className="tinted-section mt-10 grid grid-cols-1 gap-4 rounded-[24px] p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 md:grid-cols-3 lg:mt-14">
-          {KARTU.map((k, i) => {
-            const isDark = i === 1;
-            const isGray = i === 2;
-            
-            return (
-              <div 
-                key={k.judul} 
-                className={cn(
-                  "flex flex-col p-6 rounded-[20px] sm:p-8 shadow-xl shadow-black/5 transition-transform hover:-translate-y-1",
-                  isDark ? "bg-ink text-ink-foreground" : isGray ? "bg-secondary/50" : "bg-background border border-border/40"
-                )}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <span className={cn(
-                    "grid size-10 place-items-center rounded-full",
-                    isDark ? "bg-white/10 text-white" : "bg-secondary text-primary"
-                  )}>
-                    <k.icon className="size-4" />
+        <section className="mt-10 grid grid-cols-1 gap-5 p-4 sm:grid-cols-2 sm:p-6 md:grid-cols-3 lg:mt-14">
+          {KARTU.map((k) => (
+            <div 
+              key={k.judul} 
+              className="group relative flex h-[420px] flex-col overflow-hidden rounded-[24px] shadow-xl shadow-black/10 transition-all hover:-translate-y-1 hover:shadow-2xl sm:h-[480px]"
+            >
+              {/* Background Image */}
+              <img 
+                src={k.image} 
+                alt={k.judul} 
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+              />
+              
+              {/* Heavy Dark Gradient Overlay (Bottom Half) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-transparent" />
+
+              {/* Floating Badge Top Left */}
+              <div className="absolute left-4 top-4 sm:left-5 sm:top-5">
+                <div className="flex items-center gap-2 rounded-full bg-background/95 px-3 py-1.5 shadow-sm backdrop-blur-md">
+                  <span className="grid size-5 place-items-center rounded-full bg-primary/10 text-primary">
+                    <k.icon className="size-3" />
                   </span>
-                  <span className={cn(
-                    "text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]",
-                    isDark ? "text-white/50" : "text-muted-foreground"
-                  )}>
-                    Akses Peran
-                  </span>
+                  <span className="text-[11px] font-semibold text-foreground">Akses Peran</span>
                 </div>
-                
-                <h3 className="font-display text-[22px] font-semibold tracking-tight leading-tight sm:text-[26px]">{k.judul}</h3>
-                <p className={cn(
-                  "mt-3 flex-1 text-[14px] leading-relaxed sm:text-[16px]",
-                  isDark ? "text-white/70" : "text-muted-foreground"
-                )}>{k.teks}</p>
-                
-                <Link
-                  to="/peta"
-                  search={{ peran: k.peran }}
-                  className={cn(
-                    "mt-8 block w-full rounded-full py-3.5 text-center text-[14px] font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] sm:text-[15px]",
-                    isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
-                  )}
-                >
-                  Pilih {k.peran}
-                </Link>
               </div>
-            );
-          })}
+
+              {/* Content at Bottom */}
+              <div className="relative mt-auto flex flex-col p-5 text-ink-foreground sm:p-6">
+                <h3 className="font-display text-[22px] font-semibold tracking-tight leading-tight sm:text-[26px]">
+                  {k.judul}
+                </h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/80 sm:text-[14px]">
+                  {k.teks}
+                </p>
+                
+                {/* Divider and Action Link */}
+                <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-4">
+                  <span className="text-[11px] font-medium text-white/50">Peta Interaktif</span>
+                  <Link
+                    to="/peta"
+                    search={{ peran: k.peran }}
+                    className="flex items-center gap-1.5 text-[14px] font-semibold text-white transition-colors hover:text-primary sm:text-[15px]"
+                  >
+                    Pilih {k.peran} <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </section>
 
         <section className="mt-10 grid grid-cols-2 gap-2.5 sm:gap-3 lg:mt-14 lg:grid-cols-4">
