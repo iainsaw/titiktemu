@@ -453,7 +453,7 @@ function PetaInteraktif() {
                   Bandingkan ›
                 </Link>
               </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar max-h-[380px]">
                 <ol className="space-y-0.5">
                   {peringkat.map(({ k, skor }, i) => (
                     <li key={k.id}>
