@@ -111,6 +111,15 @@ function PetaInteraktif() {
     }
   };
 
+  useEffect(() => {
+    if (analyzeError) {
+      const timer = setTimeout(() => {
+        setAnalyzeError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [analyzeError]);
+
   // Fetch 100% real computed analytics dari PostGIS Supabase dan dataset tambahan
   useEffect(() => {
     async function loadRealData() {
@@ -318,6 +327,17 @@ function PetaInteraktif() {
       {/* ── BODY: Map as background, Cards floating ── */}
       <div className="relative flex-1 overflow-hidden">
         
+        {/* Toast Error Floating */}
+        {analyzeError && (
+          <div className="absolute bottom-6 left-6 z-[100] max-w-sm rounded-xl border border-destructive/20 bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-xl dark:bg-black/95 dark:border-destructive/30 animate-in fade-in slide-in-from-bottom-5">
+            <div className="flex items-start">
+              <p className="text-[13px] font-medium leading-relaxed text-foreground">
+                {analyzeError}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* MAP AREA */}
         <main className="absolute inset-0 bg-muted/10 print:static print:w-full">
           <VitalityMap
@@ -387,11 +407,6 @@ function PetaInteraktif() {
                 <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
                   {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
                 </div>
-                {analyzeError && (
-                  <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full rounded-[10px] border border-destructive/15 bg-destructive/8 px-3 py-2 text-[12px] text-destructive backdrop-blur-xl">
-                    {analyzeError}
-                  </div>
-                )}
               </form>
 
               {/* Layer Pill Chips */}
