@@ -339,16 +339,16 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         <SiteHeader />
       </div>
 
-      {/* ── BODY: Sidebar + Map ── */}
-      <div className="flex flex-1 overflow-hidden">
+      {/* ── BODY: Map as background, Sidebar floating ── */}
+      <div className="relative flex-1 overflow-hidden">
 
         {/* ═══════════════════════════════════════════════════
             LEFT SIDEBAR — Control + Supporting Combined
             macOS vibrancy, border-right separator
             ═══════════════════════════════════════════════════ */}
         <aside className={cn(
-          "relative z-30 flex h-full shrink-0 flex-col border-r border-border/30 bg-white/70 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] dark:bg-black/60 print:static print:w-full print:border-none",
-          isMapMaximized ? "w-0 -ml-[380px] opacity-0" : "w-[380px] ml-0 opacity-100"
+          "absolute top-4 bottom-4 z-30 flex flex-col floating-card transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full print:border-none",
+          isMapMaximized ? "left-[-400px] opacity-0" : "left-4 w-[380px] opacity-100"
         )}>
 
           {/* ── CONTROL ZONE ── */}
@@ -648,9 +648,9 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         </aside>
 
         {/* ═══════════════════════════════════════════════════
-            MAP AREA (flex-1)
+            MAP AREA (absolute inset-0)
             ═══════════════════════════════════════════════════ */}
-        <main className="relative flex-1 bg-muted/10 print:static print:w-full">
+        <main className="absolute inset-0 bg-muted/10 print:static print:w-full">
           <VitalityMap
             className="size-full"
             fill
