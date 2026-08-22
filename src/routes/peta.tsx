@@ -356,7 +356,7 @@ function PetaInteraktif() {
 
           {/* RIGHT CARDS CONTAINER */}
           <div className={cn(
-            "absolute top-4 right-4 bottom-24 z-40 flex w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            "absolute top-4 right-4 z-40 flex max-h-[calc(100vh-32px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
           )}>
             
@@ -438,7 +438,7 @@ function PetaInteraktif() {
             </div>
 
             {/* CARD 4: Rankings */}
-            <div className="flex flex-col min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
+            <div className="flex flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
               <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
                   Peringkat Kawasan
@@ -484,12 +484,12 @@ function PetaInteraktif() {
 
           {/* LEFT CARDS CONTAINER */}
           <div className={cn(
-            "absolute top-4 bottom-24 left-4 z-40 flex w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+            "absolute top-4 left-4 z-40 flex max-h-[calc(100vh-32px)] w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
             isMapMaximized ? "left-[-400px] opacity-0" : "opacity-100"
           )}>
             
             {/* CARD 3: Selected Details & AI */}
-            <div className="flex flex-col min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4 overflow-y-auto floating-scrollbar">
+            <div className="flex flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4">
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-1.5 print:hidden">
                 <span className="text-[11px] font-semibold tracking-wide text-ink dark:text-white uppercase">
