@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Lightbulb } from "lucide-react";
+import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Lightbulb, Maximize, Minimize, Bot } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -24,7 +24,6 @@ import { addDynamicKoordinat, KOORDINAT } from "@/components/VitalityMap";
 import { fetchAllMAPIDMissions, createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
 
 type Search = { peran?: RoleId };
-
 const PERAN_VALID: RoleId[] = ["investor", "pemerintah", "umkm"];
 
 export const Route = createFileRoute("/peta")({
@@ -34,19 +33,6 @@ export const Route = createFileRoute("/peta")({
   head: () => ({
     meta: [
       { title: "Peta Interaktif — Titik Temu" },
-      {
-        name: "description",
-        content:
-          "Peta interaktif Skor Vitalitas Transit Bandung Raya dengan pemilih peran, kontrol layer, panel AI Insight, dan chat assistant berbasis data kawasan.",
-      },
-      { property: "og:title", content: "Peta Interaktif — Titik Temu" },
-      {
-        property: "og:description",
-        content:
-          "Jelajahi kawasan pilot Bandung Raya: layer komponen skor, insight AI, dan asisten tanya-jawab data.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: PetaInteraktif,
@@ -56,23 +42,6 @@ const LAYERS: { id: ComponentId | "total"; label: string }[] = [
   { id: "total", label: "Skor total" },
   ...COMPONENTS.map((c) => ({ id: c.id as ComponentId, label: c.short })),
 ];
-
-type PanelTab = "peringkat" | null;
-
-function getRekomendasiUsaha(kws: Kawasan) {
-  const { layanan, akses, properti, ekonomi } = kws.skor;
-  if (layanan < 50 && ((kws.penduduk && kws.penduduk > 20000) || akses > 60)) {
-    return "Apotek, Minimarket, atau Klinik (Kebutuhan dasar kurang di area padat/aksesibel).";
-  }
-  if (properti < 40 && akses > 70) {
-    return "Kos-kosan komuter atau Kedai Kopi (Lahan masih murah tapi akses ke stasiun sangat mudah).";
-  }
-  if (ekonomi < 40 && layanan > 70) {
-    return "F&B / Restoran atau Jasa Fotokopi (Fasilitas umum banyak tapi minim ritel komersial).";
-  }
-  return "Warung kelontong atau Jasa titip motor (Layanan dasar esensial pendukung stasiun).";
-}
-
 function PetaInteraktif() {
   const { peran: peranAwal } = Route.useSearch();
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
@@ -273,6 +242,11 @@ function PetaInteraktif() {
     loadRealData();
   }, []);
 
+
+  const [isMapMaximized, setIsMapMaximized] = useState(false);
+  const [aiRecommendation, setAiRecommendation] = useState<string>("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
   const handleEditHarga = (id: string, currentVal: number) => {
     const val = window.prompt(`Masukkan benchmark Harga Tanah pasar riil (Juta/m²) untuk ${id}:`, currentVal.toString());
     if (val !== null) {
@@ -280,6 +254,52 @@ function PetaInteraktif() {
       if (!isNaN(num) && num > 0) {
         setCustomPrices(prev => ({ ...prev, [id]: num }));
       }
+    }
+  };
+
+  const handleAskAI = async (kws: Kawasan) => {
+    setIsAiLoading(true);
+    setAiRecommendation("");
+    try {
+      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+      if (!apiKey) {
+        setAiRecommendation("API Key OpenRouter tidak ditemukan di .env.");
+        setIsAiLoading(false);
+        return;
+      }
+
+      const prompt = `Anda adalah ahli tata kota dan penasihat bisnis UMKM profesional. 
+Kawasan ${kws.nama} memiliki skor (0-100):
+Layanan Umum: ${kws.skor.layanan}
+Akses Transportasi: ${kws.skor.akses}
+Pasar Properti: ${kws.skor.properti}
+Keragaman Ekonomi: ${kws.skor.ekonomi}
+Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' : 'Tidak diketahui'}.
+
+Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha yang paling menguntungkan untuk dibuka di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
+
+      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      const data = await res.json();
+      if (data.choices && data.choices[0]) {
+        setAiRecommendation(data.choices[0].message.content);
+      } else {
+        setAiRecommendation("Gagal mendapatkan rekomendasi AI.");
+      }
+    } catch (e) {
+      setAiRecommendation("Terjadi kesalahan koneksi saat memanggil AI.");
+    } finally {
+      setIsAiLoading(false);
     }
   };
 
@@ -306,447 +326,369 @@ function PetaInteraktif() {
     .map((k) => ({ k, skor: hitungSkor(k, role) }))
     .sort((a, b) => b.skor - a.skor);
 
+  // Jika terpilih berubah, reset rekomendasi AI
+  useEffect(() => {
+    setAiRecommendation("");
+  }, [selectedId]);
+
   return (
-    <div className="min-h-screen bg-background print:bg-white print:min-h-0">
-      <div className="print:hidden">
-        <SiteHeader />
-      </div>
-
-      <main className="mx-auto max-w-[1400px] px-3 pb-8 pt-4 sm:px-5 print:p-0 print:m-0 print:max-w-none">
-        <h1 className="sr-only">Peta Interaktif Skor Vitalitas Transit Bandung Raya</h1>
-
-        <div className="relative flex flex-col gap-4 lg:block lg:h-[calc(100vh-112px)] lg:min-h-[680px] print:h-auto print:block">
-          <div className="h-[440px] overflow-hidden sm:h-[520px] lg:h-full print:hidden">
-            <VitalityMap
-              className="size-full"
-              fill
-              kawasan={kawasans}
-              role={role}
-              selectedId={selectedId}
-              onSelect={(id) => {
-                setSelectedId(id);
-                setTab(null);
-              }}
-              layer={layer}
-              tampilkanKoridor={koridor}
-              tampilkanSensus={sensus}
-              tampilkanAngkot={angkot}
-              tampilkanBus={bus}
-              poiPendidikan={poiPendidikan}
-              poiKesehatan={poiKesehatan}
-              poiKomersial={poiKomersial}
-              poiHiburan={poiHiburan}
-              poiTransit={poiTransit}
-              tampilkanPedestrian={pedestrian}
-              tampilkanAnomali={anomaliLayer}
-              missions={missions}
-            />
+    <div className="flex h-[100dvh] w-screen overflow-hidden bg-background font-sans text-foreground">
+      
+      {/* SUPPORTING ZONE (Data Area - Kiri) */}
+      <aside className={cn(
+        "z-30 flex shrink-0 flex-col border-r border-border/40 bg-background/80 backdrop-blur-2xl shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] print:static print:w-full print:shadow-none print:border-none",
+        isMapMaximized ? "-ml-[380px] w-[380px]" : "w-[380px]"
+      )}>
+        {/* Header mini */}
+        <div className="flex items-center justify-between border-b border-border/30 p-4 print:hidden">
+          <Link to="/" className="text-lg font-bold tracking-tight transition-opacity hover:opacity-80">Titik Temu.</Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/temudata"
+              search={{ peran: role, kawasan: terpilih.id }}
+              className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary transition-colors hover:bg-primary/20"
+            >
+              <img src={aiStar.url} alt="" className="size-3" />
+              Chat
+            </Link>
+            <button
+              onClick={() => window.print()}
+              className="flex items-center gap-1.5 rounded-full bg-secondary/70 px-3 py-1.5 text-[11px] font-semibold transition-colors hover:bg-secondary"
+            >
+              <Printer className="size-3" />
+              PDF
+            </button>
           </div>
+        </div>
 
-          {/* Toolbar mengambang: peran */}
-          <div className="floating-card z-20 flex flex-wrap items-center gap-2 p-2 lg:absolute lg:left-5 lg:top-5 lg:max-w-[62%] print:hidden">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-              <img src={aiStar.url} alt="Titik Temu AI" className="size-5 drop-shadow-sm" />
-            </span>
-            <div className="flex flex-wrap items-center gap-1">
-              {ROLES.map((r) => (
-                <button
-                  key={r.id}
-                  onClick={() => setRole(r.id)}
-                  className={cn(
-                    "pill px-3 py-1.5 text-[12px] font-medium transition-colors",
-                    role === r.id
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
-                  )}
-                >
-                  {r.label}
-                </button>
-              ))}
-            </div>
-            
-            <div className="ml-auto flex-1 md:flex-none">
-              <form onSubmit={handleAnalisis} className="relative">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder={analyzing ? "Menganalisis..." : "Analisis tempat baru..."}
-                    value={searchNewPlace}
-                    onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
-                    disabled={analyzing}
-                    className="pill h-8 w-full min-w-[200px] bg-surface/50 pl-8 pr-3 text-[12px] placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary shadow-sm disabled:opacity-50"
-                  />
-                  <div className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
-                    {analyzing ? <Loader2 className="size-3.5 animate-spin" /> : <SearchIcon className="size-3.5" />}
-                  </div>
-                </div>
-                {analyzeError && (
-                  <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-xl border border-destructive/30 bg-background/95 px-3 py-2 text-[11px] text-destructive shadow-lg backdrop-blur">
-                    {analyzeError}
-                  </div>
-                )}
-              </form>
-            </div>
-          </div>
-
-          {/* Panel layer kanan atas */}
-          <div className="floating-card z-20 w-full overflow-y-auto p-4 lg:absolute lg:right-5 lg:top-5 lg:max-h-[85%] lg:w-[280px] print:hidden">
-            <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              <Layers className="size-3.5 text-primary" /> Layer
-            </p>
-            <div className="flex flex-wrap gap-1 lg:flex-col lg:items-stretch">
-              {LAYERS.map((l) => (
-                <button
-                  key={l.id}
-                  onClick={() => setLayer(l.id)}
-                  className={cn(
-                    "pill px-3 py-1.5 text-left text-[12px] font-medium transition-colors",
-                    layer === l.id
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary/70 text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {l.label}
-                </button>
-              ))}
-            </div>
-            <div className="mt-3 space-y-1.5 border-t border-border pt-2.5 text-[11.5px]">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={koridor}
-                  onChange={(e) => setKoridor(e.target.checked)}
-                  className="size-3.5 accent-[var(--primary)]"
-                />
-                Garis koridor
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={angkot}
-                  onChange={(e) => setAngkot(e.target.checked)}
-                  className="size-3.5 accent-[#f59e0b]"
-                />
-                Rute Angkot
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={bus}
-                  onChange={(e) => setBus(e.target.checked)}
-                  className="size-3.5 accent-[#10b981]"
-                />
-                Rute Bus (BRT)
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={poiPendidikan}
-                  onChange={(e) => setPoiPendidikan(e.target.checked)}
-                  className="size-3.5 accent-[#3b82f6]"
-                />
-                Pendidikan
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={poiKesehatan}
-                  onChange={(e) => setPoiKesehatan(e.target.checked)}
-                  className="size-3.5 accent-[#ef4444]"
-                />
-                Kesehatan
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={poiKomersial}
-                  onChange={(e) => setPoiKomersial(e.target.checked)}
-                  className="size-3.5 accent-[#eab308]"
-                />
-                Komersial
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={poiHiburan}
-                  onChange={(e) => setPoiHiburan(e.target.checked)}
-                  className="size-3.5 accent-[#ec4899]"
-                />
-                Hiburan & Makanan
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={poiTransit}
-                  onChange={(e) => setPoiTransit(e.target.checked)}
-                  className="size-3.5 accent-[#8b5cf6]"
-                />
-                Transit
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={pedestrian}
-                  onChange={(e) => setPedestrian(e.target.checked)}
-                  className="size-3.5 accent-[#06b6d4]"
-                />
-                Jalur Pejalan Kaki
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={sensus}
-                  onChange={(e) => setSensus(e.target.checked)}
-                  className="size-3.5 accent-[var(--primary)]"
-                />
-                Wilayah sensus
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={anomaliLayer}
-                  onChange={(e) => setAnomaliLayer(e.target.checked)}
-                  className="size-3.5 accent-[var(--primary)]"
-                />
-                Anomali peluang
-              </label>
-            </div>
-            <div className="mt-3 flex items-center gap-1 border-t border-border pt-2.5 text-[10px] text-muted-foreground">
-              <span>Rendah</span>
-              {[20, 48, 60, 72, 88].map((s) => (
-                <span
-                  key={s}
-                  className="h-3 flex-1 rounded-sm"
-                  style={{ backgroundColor: warnaSkor(s) }}
-                />
-              ))}
-              <span>Tinggi</span>
-            </div>
-          </div>
-
-          {/* Kartu detail kawasan kiri bawah */}
-          <div className="floating-card z-20 w-full overflow-y-auto p-4 lg:absolute lg:bottom-5 lg:left-5 lg:max-h-[65%] lg:w-[380px] print:static print:w-full print:max-h-none print:shadow-none print:border-none print:bg-white print:p-0">
-            <div className="animate-in fade-in-50 duration-300">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                    {terpilih.id} · {terpilih.koridor}
-                  </p>
-                  <h2 className="mt-0.5 truncate text-lg font-bold">{terpilih.nama}</h2>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">
-                    Klaster otomatis: {terpilih.klaster}
-                  </p>
-                </div>
-                <div
-                  className="flex size-14 shrink-0 items-center justify-center rounded-xl border-2 font-display text-xl font-bold"
-                  style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih) }}
-                >
-                  {skorTerpilih}
-                </div>
+        {/* Scrollable details */}
+        <div className="flex-1 overflow-y-auto p-5 print:p-0">
+          
+          <div className="animate-in fade-in-50 duration-300">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {terpilih.id} · {terpilih.koridor}
+                </p>
+                <h2 className="mt-0.5 truncate text-xl font-bold tracking-tight">{terpilih.nama}</h2>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Klaster otomatis: {terpilih.klaster}
+                </p>
               </div>
-
-              <p className="mt-2 text-[11px] font-semibold" style={{ color: warnaSkor(skorTerpilih) }}>
-                Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
-              </p>
-
-              <div className="mt-3 space-y-2.5">
-                {COMPONENTS.map((c) => {
-                  const nilai = terpilih.skor[c.id];
-                  return (
-                    <div key={c.id}>
-                      <div className="mb-1 flex items-baseline justify-between text-[11px]">
-                        <span className="text-muted-foreground">{c.label}</span>
-                        <span className="font-mono">
-                          {nilai}
-                          <span className="ml-1 text-[10px] text-muted-foreground">
-                            ×{peran.weights[c.id].toFixed(2)}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {terpilih.penduduk && (
-                <div className="mt-4 grid grid-cols-2 gap-2 border-t border-border pt-3 text-[11px]">
-                  <div>
-                    <span className="block text-muted-foreground mb-0.5">Penduduk (2024)</span>
-                    <span className="font-mono font-semibold">{terpilih.penduduk.toLocaleString('id-ID')} jiwa</span>
-                  </div>
-                  <div>
-                    <span className="block text-muted-foreground mb-0.5">Kepadatan</span>
-                    <span className="font-mono font-semibold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} / km²</span>
-                  </div>
-                  <div>
-                    <span className="block text-muted-foreground mb-0.5">Pelajar & Mahasiswa</span>
-                    <span className="font-mono font-semibold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
-                  </div>
-                  <div>
-                    <span className="block text-muted-foreground mb-0.5">Total Fasilitas (POI)</span>
-                    <span className="font-mono font-semibold">{terpilih.totalFasilitas || 0}</span>
-                  </div>
-                </div>
-              )}
-
-              <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
-                <Fact label="Jarak transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit} m` : "N/A"} />
-                <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
-                <div className="group relative cursor-pointer hover:bg-secondary/50 rounded-lg p-1 transition-colors" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
-                  <dt className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wide text-muted-foreground">
-                    Harga tanah <Edit2 className="size-2.5 opacity-50 group-hover:opacity-100" />
-                  </dt>
-                  <dd className="mt-0.5 font-mono text-xs font-semibold">
-                    {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt/m²` : "N/A"}
-                  </dd>
-                  {customPrices[terpilih.id] && (
-                    <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-orange-500"></span>
-                  )}
-                </div>
-              </dl>
-              <p className="mt-1 text-center text-[9px] text-muted-foreground italic print:hidden">Estimasi via Extraction Method. Klik untuk override nilai patokan.</p>
-
-              {terpilih.anomali && (
-                <div className="mt-2 flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3 text-[11.5px] text-primary/90 shadow-sm transition-colors hover:bg-primary/10">
-                  <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0 drop-shadow-sm" />
-                  <span className="leading-relaxed">
-                    <strong>Anomali peluang tersembunyi:</strong> aktivitas ekonomi jauh di atas ekspektasi dibanding
-                    harga tanah dan kualitas layanan kawasan.
-                  </span>
-                </div>
-              )}
-
-              {/* Kalkulator Potensi Usaha */}
-              <div className="mt-2 flex items-start gap-2 rounded-xl border border-orange-500/20 bg-orange-500/5 p-3 text-[11.5px] text-orange-700 shadow-sm print:border-gray-300 print:bg-white print:text-black">
-                <Lightbulb className="mt-0.5 size-4 shrink-0 text-orange-500" />
-                <span className="leading-relaxed">
-                  <strong>Peluang Usaha Warga:</strong> {getRekomendasiUsaha(terpilih)}
-                </span>
-              </div>
-
-              <Link
-                to="/analisis"
-                className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline print:hidden"
+              <div
+                className="flex size-14 shrink-0 items-center justify-center rounded-2xl border-2 font-display text-xl font-bold shadow-sm"
+                style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih), backgroundColor: `color-mix(in oklab, ${warnaSkor(skorTerpilih)} 5%, transparent)` }}
               >
-                Bandingkan &amp; simulasikan <ArrowRight className="size-3.5" />
-              </Link>
+                {skorTerpilih}
+              </div>
             </div>
-          </div>
 
-          {/* Panel peringkat + pintasan TemuData AI */}
-          <div className="z-20 flex w-full flex-col items-stretch gap-2 lg:absolute lg:bottom-5 lg:right-5 lg:w-[380px] lg:items-end print:hidden">
-            {tab === "peringkat" && (
-              <div className="floating-card max-h-[50vh] w-full overflow-y-auto p-1 lg:max-h-[52vh]">
-                <div className="p-4">
-                  <h3 className="mb-2 text-sm font-semibold">Peringkat kawasan</h3>
-                  <ol className="space-y-1">
-                    {peringkat.map(({ k, skor }, i) => (
-                      <li key={k.id}>
-                        <button
-                          onClick={() => setSelectedId(k.id)}
-                          className={cn(
-                            "flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left text-xs transition-colors hover:bg-secondary",
-                            k.id === selectedId && "bg-secondary",
-                          )}
-                        >
-                          <span className="w-4 font-mono text-muted-foreground">{i + 1}</span>
-                          <span className="flex-1 truncate">{k.nama}</span>
-                          <span
-                            className="rounded-lg px-1.5 py-0.5 font-mono text-[11px] font-semibold"
-                            style={{
-                              color: warnaSkor(skor),
-                              backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 15%, transparent)`,
-                            }}
-                          >
-                            {skor}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
+            <p className="mt-2 text-[11px] font-semibold" style={{ color: warnaSkor(skorTerpilih) }}>
+              Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
+            </p>
+
+            {/* Bar Components */}
+            <div className="mt-5 space-y-3">
+              {COMPONENTS.map((c) => {
+                const nilai = terpilih.skor[c.id];
+                return (
+                  <div key={c.id}>
+                    <div className="mb-1.5 flex items-baseline justify-between text-[11px]">
+                      <span className="font-medium text-foreground/80">{c.label}</span>
+                      <span className="font-mono font-semibold">
+                        {nilai}
+                        <span className="ml-1 text-[10px] text-muted-foreground font-normal">
+                          ×{peran.weights[c.id].toFixed(2)}
+                        </span>
+                      </span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-secondary/50">
+                      <div
+                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Demographics */}
+            {terpilih.penduduk && (
+              <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl bg-secondary/30 p-4 text-[11px]">
+                <div>
+                  <span className="block text-muted-foreground mb-1">Penduduk (2024)</span>
+                  <span className="font-mono font-semibold text-sm">{terpilih.penduduk.toLocaleString('id-ID')} jiwa</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground mb-1">Kepadatan</span>
+                  <span className="font-mono font-semibold text-sm">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} / km²</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground mb-1">Pelajar & Mahasiswa</span>
+                  <span className="font-mono font-semibold text-sm">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground mb-1">Total Fasilitas (POI)</span>
+                  <span className="font-mono font-semibold text-sm">{terpilih.totalFasilitas || 0}</span>
                 </div>
               </div>
             )}
 
-            <div className="floating-card flex items-center gap-1.5 p-1.5">
-              <Link
-                to="/temudata"
-                search={{ peran: role, kawasan: terpilih.id }}
-                className="group relative flex items-center gap-2 rounded-full bg-foreground px-4 py-1.5 text-[12px] font-semibold text-background shadow-md transition-all hover:scale-105 hover:bg-foreground/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <div className="flex size-5 items-center justify-center rounded-full bg-background/20">
-                  <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert" />
+            {/* Quick Facts */}
+            <dl className="mt-4 grid grid-cols-3 gap-2 border-y border-border/40 py-4 text-center">
+              <Fact label="Jarak transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit} m` : "N/A"} />
+              <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
+              <div className="group relative flex flex-col items-center justify-center cursor-pointer hover:bg-secondary/50 rounded-xl p-1.5 transition-colors" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+                <dt className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                  Harga <Edit2 className="size-2.5 opacity-40 group-hover:opacity-100 transition-opacity" />
+                </dt>
+                <dd className="mt-1 font-mono text-xs font-semibold">
+                  {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt/m²` : "N/A"}
+                </dd>
+                {customPrices[terpilih.id] && (
+                  <span className="absolute top-1 right-1 flex h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"></span>
+                )}
+              </div>
+            </dl>
+
+            {terpilih.anomali && (
+              <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-primary/20 bg-primary/5 p-3.5 text-[11.5px] text-primary/90 shadow-sm transition-colors hover:bg-primary/10">
+                <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0 drop-shadow-sm" />
+                <span className="leading-relaxed">
+                  <strong>Anomali peluang tersembunyi:</strong> aktivitas ekonomi jauh di atas ekspektasi dibanding
+                  harga tanah dan kualitas layanan kawasan.
+                </span>
+              </div>
+            )}
+
+            {/* Kalkulator Potensi Usaha LLM */}
+            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-4 shadow-sm print:border-gray-300 print:bg-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-[11.5px] font-semibold text-orange-600">
+                  <Lightbulb className="size-4" /> Peluang Usaha AI
                 </div>
-                TemuData AI
-              </Link>
-
-              <button
-                onClick={() => window.print()}
-                className="group relative flex items-center gap-2 rounded-full bg-surface px-4 py-1.5 text-[12px] font-semibold shadow-md transition-all hover:scale-105 hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-              >
-                <Printer className="size-3.5" />
-                Cetak Laporan PDF
-              </button>
-
-              <TabButton
-                aktif={tab === "peringkat"}
-                onClick={() => setTab(tab === "peringkat" ? null : "peringkat")}
-              >
-                <BarChart3 className="size-4" /> Peringkat
-              </TabButton>
+                {!aiRecommendation && !isAiLoading && (
+                  <button 
+                    onClick={() => handleAskAI(terpilih)}
+                    className="flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-1 text-[10px] font-bold text-white shadow hover:bg-orange-600 transition-colors print:hidden"
+                  >
+                    <Bot className="size-3" /> Tanya AI
+                  </button>
+                )}
+              </div>
+              
+              {isAiLoading && (
+                <div className="flex items-center gap-2 text-[11px] text-orange-600/70 mt-1">
+                  <Loader2 className="size-3.5 animate-spin" /> AI sedang menganalisis pasar...
+                </div>
+              )}
+              
+              {aiRecommendation && (
+                <p className="mt-1 text-[11.5px] leading-relaxed text-orange-800 dark:text-orange-200">
+                  {aiRecommendation}
+                </p>
+              )}
             </div>
+
+            <Link
+              to="/analisis"
+              className="mt-6 flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary/10 py-2.5 text-[12px] font-semibold text-primary transition-colors hover:bg-primary/20 print:hidden"
+            >
+              Bandingkan di Vitality Twin <ArrowRight className="size-3.5" />
+            </Link>
+
+            {/* Peringkat List in Sidebar */}
+            <div className="mt-8 border-t border-border/30 pt-6 print:hidden">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <BarChart3 className="size-3.5" /> Peringkat Kawasan
+              </h3>
+              <ol className="space-y-1.5">
+                {peringkat.map(({ k, skor }, i) => (
+                  <li key={k.id}>
+                    <button
+                      onClick={() => setSelectedId(k.id)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left text-[11.5px] font-medium transition-colors hover:bg-secondary/70",
+                        k.id === selectedId && "bg-secondary shadow-sm ring-1 ring-border"
+                      )}
+                    >
+                      <span className="w-4 font-mono text-muted-foreground/60">{i + 1}</span>
+                      <span className="flex-1 truncate">{k.nama}</span>
+                      <span
+                        className="rounded-lg px-2 py-0.5 font-mono text-[11px] font-bold shadow-sm"
+                        style={{
+                          color: warnaSkor(skor),
+                          backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 15%, transparent)`,
+                        }}
+                      >
+                        {skor}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
           </div>
-
         </div>
+      </aside>
 
-        <p className="mt-4 flex items-center gap-1.5 text-[12px] text-muted-foreground print:hidden">
-          <MapPin className="size-3.5" /> 5 kawasan pilot di sekitar titik transportasi massal
-          Bandung — klik kawasan untuk melihat rincian dan penjelasan AI.
-        </p>
-      </main>
+      {/* SISA LAYAR (Map & Control) */}
+      <div className="relative flex flex-1 flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] print:static print:h-auto print:block">
+        
+        {/* CONTROL ZONE (Top Floating Bar) */}
+        <header className={cn(
+          "pointer-events-none absolute left-4 right-4 top-4 z-20 flex items-start justify-between gap-4 transition-all duration-500 print:hidden",
+          isMapMaximized ? "opacity-0 translate-y-[-20px]" : "opacity-100 translate-y-0"
+        )}>
+           {/* Kiri: Role Filter & Search */}
+           <div className="pointer-events-auto flex flex-col gap-2 w-full max-w-[320px]">
+              <div className="flex items-center p-1 rounded-full bg-white/70 backdrop-blur-2xl border border-white/40 shadow-sm dark:bg-black/70 dark:border-white/10">
+                {ROLES.map((r) => (
+                  <button
+                    key={r.id}
+                    onClick={() => setRole(r.id)}
+                    className={cn(
+                      "flex-1 rounded-full px-3 py-1.5 text-[11.5px] font-semibold transition-all",
+                      role === r.id
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+              
+              <form onSubmit={handleAnalisis} className="relative w-full">
+                <input
+                  type="text"
+                  placeholder={analyzing ? "Menganalisis..." : "Analisis tempat baru..."}
+                  value={searchNewPlace}
+                  onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
+                  disabled={analyzing}
+                  className="w-full rounded-full bg-white/70 backdrop-blur-2xl border border-white/40 h-10 pl-10 pr-4 text-[12px] shadow-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary dark:bg-black/70 dark:border-white/10 disabled:opacity-50"
+                />
+                <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
+                </div>
+                {analyzeError && (
+                  <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-destructive/30 bg-background/95 px-4 py-3 text-[11px] text-destructive shadow-xl backdrop-blur-md">
+                    {analyzeError}
+                  </div>
+                )}
+              </form>
+           </div>
+           
+           {/* Kanan: Layers */}
+           <div className="pointer-events-auto flex flex-col items-end gap-2">
+              <div className="rounded-2xl bg-white/70 backdrop-blur-2xl border border-white/40 shadow-sm p-4 w-[240px] dark:bg-black/70 dark:border-white/10 max-h-[70vh] overflow-y-auto hidden md:block">
+                <p className="mb-3 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <Layers className="size-3.5 text-primary" /> Pengaturan Layer
+                </p>
+                <div className="flex flex-col gap-1.5">
+                  {LAYERS.map((l) => (
+                    <button
+                      key={l.id}
+                      onClick={() => setLayer(l.id)}
+                      className={cn(
+                        "rounded-xl px-3 py-2 text-left text-[11px] font-semibold transition-all",
+                        layer === l.id
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "hover:bg-secondary/70 text-muted-foreground"
+                      )}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="mt-4 space-y-2.5 border-t border-border/30 pt-4 text-[11px] font-medium text-muted-foreground">
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded-sm accent-[var(--primary)]" />
+                    Batas Koridor
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded-sm accent-[#f59e0b]" />
+                    Rute Angkot
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded-sm accent-[#10b981]" />
+                    Rute Bus (BRT)
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded-sm accent-[#3b82f6]" />
+                    Pendidikan
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded-sm accent-[#ef4444]" />
+                    Kesehatan
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded-sm accent-[#eab308]" />
+                    Komersial
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded-sm accent-[#ec4899]" />
+                    Hiburan & F&B
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded-sm accent-[#8b5cf6]" />
+                    Titik Transit
+                  </label>
+                </div>
+              </div>
+           </div>
+        </header>
 
-      <div className="print:hidden">
-        <SiteFooter />
+        {/* PRIMARY ZONE (Map Area) */}
+        <main className="relative flex-1 z-10 bg-muted/20 print:hidden">
+          <VitalityMap
+            className="size-full"
+            fill
+            kawasan={kawasans}
+            role={role}
+            selectedId={selectedId}
+            onSelect={(id) => {
+              setSelectedId(id);
+              setIsMapMaximized(false);
+            }}
+            layer={layer}
+            tampilkanKoridor={koridor}
+            tampilkanSensus={sensus}
+            tampilkanAngkot={angkot}
+            tampilkanBus={bus}
+            poiPendidikan={poiPendidikan}
+            poiKesehatan={poiKesehatan}
+            poiKomersial={poiKomersial}
+            poiHiburan={poiHiburan}
+            poiTransit={poiTransit}
+            tampilkanPedestrian={pedestrian}
+            tampilkanAnomali={anomaliLayer}
+            missions={missions}
+          />
+          
+          {/* Maximize Button */}
+          <button
+            onClick={() => setIsMapMaximized(!isMapMaximized)}
+            className="absolute bottom-6 right-6 z-30 flex size-12 items-center justify-center rounded-full bg-white/80 text-foreground shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl transition-all hover:scale-110 hover:bg-white dark:bg-black/80 dark:text-white"
+            title={isMapMaximized ? "Tampilkan Data Panel" : "Layar Penuh (Peta Saja)"}
+          >
+            {isMapMaximized ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+          </button>
+        </main>
+        
       </div>
     </div>
   );
 }
 
-function TabButton({
-  aktif,
-  onClick,
-  children,
-}: {
-  aktif: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "pill flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium transition-colors",
-        aktif
-          ? "bg-foreground text-background"
-          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
-
 function Fact({ label, value }: { label: string; value: string }) {
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</dt>
-      <dd className="mt-0.5 font-mono text-xs font-semibold">{value}</dd>
+      <dd className="mt-1 font-mono text-xs font-semibold">{value}</dd>
     </div>
   );
 }
