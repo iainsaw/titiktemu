@@ -341,7 +341,10 @@ function PetaInteraktif() {
             {ROLES.map((r) => (
               <button
                 key={r.id}
-                onClick={() => setRole(r.id)}
+                onClick={() => {
+                  setRole(r.id);
+                  setAiRecommendation("");
+                }}
                 className={cn(
                   "rounded-lg px-4 py-2 text-[12px] font-medium transition-all duration-200",
                   role === r.id
