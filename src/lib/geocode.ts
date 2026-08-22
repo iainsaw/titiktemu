@@ -45,9 +45,15 @@ export async function geocode(query: string): Promise<GeoResult | null> {
   }
 
   const result = data[0];
+  const displayName = result.display_name;
+  
+  if (!displayName.toLowerCase().includes("kota bandung")) {
+    throw new Error(`Lokasi "${query}" berada di luar Kota Bandung (Coming Soon!). Saat ini kami hanya melayani area Kota Bandung.`);
+  }
+
   return {
     lat: parseFloat(result.lat),
     lng: parseFloat(result.lon),
-    displayName: result.display_name,
+    displayName: displayName,
   };
 }

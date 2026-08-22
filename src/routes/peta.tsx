@@ -145,7 +145,16 @@ function PetaInteraktif() {
         const baseIds = ["KWS-01", "KWS-02", "KWS-03", "KWS-04", "KWS-05"];
         const combined = new Map<string, Kawasan>();
 
-        const parsedData = data.map(dbData => {
+        // Deduplikasi nama kawasan (misal: "Buah Batu" vs "Buahbatu")
+        const seenNames = new Set<string>();
+        const deduplicatedData = data.filter(dbData => {
+          const normalizedName = dbData.nama.toLowerCase().replace(/\s+/g, '');
+          if (seenNames.has(normalizedName)) return false;
+          seenNames.add(normalizedName);
+          return true;
+        });
+
+        const parsedData = deduplicatedData.map(dbData => {
           
           const kws: Kawasan = {
             id: dbData.id,
