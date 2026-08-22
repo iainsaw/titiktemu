@@ -285,44 +285,48 @@ function Beranda() {
         </section>
 
         <section className="mt-10 lg:mt-14">
-          <div className="panel flex flex-col overflow-hidden">
+          <div className="panel relative flex flex-col overflow-hidden p-4 sm:p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">Cuplikan peta vitalitas</h2>
+              <Link
+                to="/peta"
+                className="text-[11px] font-medium text-primary hover:underline sm:text-[12px]"
+              >
+                Buka Peta Penuh ›
+              </Link>
+            </div>
+            
             {/* Map Section */}
-            <div className="flex-1 p-4 sm:p-5">
-              <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">Cuplikan peta vitalitas</h2>
+            <div className="relative w-full overflow-hidden rounded-[20px] border border-border/40 bg-muted/30 shadow-inner">
               <VitalityMap
                 kawasan={kawasans}
                 role="investor"
                 compact
                 selectedId={selectedId}
                 onSelect={setSelectedId}
-                className="overflow-hidden rounded-xl border border-border/40 shadow-inner"
+                className="h-[320px] w-full sm:h-[440px]"
+                fill
               />
-              <Link
-                to="/peta"
-                className="pill mt-4 inline-block bg-primary px-5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                Buka Peta Penuh
-              </Link>
-            </div>
 
-            {/* AI Insights Section */}
-            <div className="w-full border-t border-border/40 bg-secondary/20 p-4 sm:p-5">
-              <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary sm:text-[12px]">
-                <AiIcon /> Highlight Insight AI
-              </h2>
-              <div className="mt-4 space-y-3 text-[13px] leading-relaxed">
-                {isInsightsLoading ? (
-                  <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
-                    <div className="h-2 w-3/4 rounded bg-muted"></div>
-                    <div className="mt-2 h-2 w-1/2 rounded bg-muted"></div>
+              {/* Floating AI Insights Section */}
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:max-w-[420px]">
+                <div className="overflow-hidden rounded-2xl border border-white/20 bg-background/70 p-4 shadow-2xl backdrop-blur-xl supports-[backdrop-filter]:bg-background/40">
+                  <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary sm:text-[12px]">
+                    <AiIcon /> Highlight Insight AI
+                  </h2>
+                  <div className="mt-2.5 text-[12.5px] leading-relaxed text-foreground sm:text-[13.5px]">
+                    {isInsightsLoading ? (
+                      <div className="animate-pulse space-y-2">
+                        <div className="h-2 w-3/4 rounded bg-muted-foreground/30"></div>
+                        <div className="h-2 w-1/2 rounded bg-muted-foreground/30"></div>
+                      </div>
+                    ) : (
+                      insights?.map((insight: string, idx: number) => (
+                        <p key={idx}>“{insight}”</p>
+                      ))
+                    )}
                   </div>
-                ) : (
-                  insights?.map((insight: string, idx: number) => (
-                    <div key={idx} className="rounded-lg border border-border/50 bg-background/80 p-3.5 shadow-sm">
-                      “{insight}”
-                    </div>
-                  ))
-                )}
+                </div>
               </div>
             </div>
           </div>
