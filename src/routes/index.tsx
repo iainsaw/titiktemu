@@ -148,7 +148,7 @@ function Beranda() {
             {typedTitle}<span className="animate-pulse text-primary font-light">|</span>
           </h1>
           <p
-            className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
+            className="hero-rise mx-auto mt-4 max-w-[640px] text-[10px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[14px]"
             style={{ animationDelay: "0.3s" }}
           >
             Peta pintar untuk melihat potensi ekonomi di sekitar stasiun dan halte. Mengubah jutaan data menjadi satu skor yang mudah dipahami oleh pemerintah, investor, dan UMKM.
