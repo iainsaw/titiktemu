@@ -148,7 +148,7 @@ function Beranda() {
             {typedTitle}<span className="animate-pulse text-primary font-light">|</span>
           </h1>
           <p
-            className="hero-rise mx-auto mt-4 max-w-[640px] text-[10px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[14px]"
+            className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
             style={{ animationDelay: "0.3s" }}
           >
             Peta pintar untuk melihat potensi ekonomi di sekitar stasiun dan halte. Mengubah jutaan data menjadi satu skor yang mudah dipahami oleh pemerintah, investor, dan UMKM.
@@ -197,11 +197,11 @@ function Beranda() {
                 className="panel hero-rise flex flex-col p-6 rounded-[20px] sm:p-8 shadow-xl shadow-black/5"
                 style={{ animationDelay: `${0.55 + i * 0.12}s` }}
               >
-                <p className="text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
+                <p className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground sm:text-[12px]">
                   {c.tag}
                 </p>
-                <p className="mt-4 font-display text-[20px] font-semibold tracking-tight leading-tight">{c.judul}</p>
-                <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground">{c.teks}</p>
+                <p className="mt-4 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]">{c.judul}</p>
+                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground sm:text-[15px]">{c.teks}</p>
               </div>
             );
           })}
@@ -238,16 +238,16 @@ function Beranda() {
                     <k.icon className="size-4" />
                   </span>
                   <span className={cn(
-                    "text-[10px] font-semibold uppercase tracking-widest",
+                    "text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]",
                     isDark ? "text-white/50" : "text-muted-foreground"
                   )}>
                     Akses Peran
                   </span>
                 </div>
                 
-                <h3 className="font-display text-[20px] font-semibold tracking-tight leading-tight">{k.judul}</h3>
+                <h3 className="font-display text-[22px] font-semibold tracking-tight leading-tight sm:text-[26px]">{k.judul}</h3>
                 <p className={cn(
-                  "mt-3 flex-1 text-[12px] leading-relaxed",
+                  "mt-3 flex-1 text-[14px] leading-relaxed sm:text-[16px]",
                   isDark ? "text-white/70" : "text-muted-foreground"
                 )}>{k.teks}</p>
                 
@@ -255,7 +255,7 @@ function Beranda() {
                   to="/peta"
                   search={{ peran: k.peran }}
                   className={cn(
-                    "mt-8 block w-full rounded-full py-3.5 text-center text-[12px] font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]",
+                    "mt-8 block w-full rounded-full py-3.5 text-center text-[14px] font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] sm:text-[15px]",
                     isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
                   )}
                 >
@@ -363,13 +363,13 @@ function Stat({ icon: Icon, label, value, sub }: any) {
         <span className="grid size-9 place-items-center rounded-full bg-secondary text-primary">
           <Icon className="size-4" />
         </span>
-        <p className="text-[10px] font-semibold uppercase tracking-widest">{label}</p>
+        <p className="text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]">{label}</p>
       </div>
       <div>
-        <p className="font-display text-[32px] font-semibold tracking-tight leading-none">
+        <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
           {value}
         </p>
-        <p className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground leading-relaxed">{sub}</p>
+        <p className="mt-3 text-[11px] uppercase tracking-widest text-muted-foreground leading-relaxed sm:text-[12px]">{sub}</p>
       </div>
     </div>
   );
