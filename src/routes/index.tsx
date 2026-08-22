@@ -313,15 +313,15 @@ function Beranda() {
                 <div className="shrink-0 drop-shadow-md">
                   <AiIcon className="size-8 text-primary" />
                 </div>
-                <div className="rounded-2xl rounded-bl-sm bg-primary p-3.5 text-[13px] leading-relaxed text-primary-foreground shadow-2xl sm:p-4 sm:text-[14px]">
+                <div className="rounded-2xl rounded-bl-sm border border-border/40 bg-background p-3.5 text-[13px] leading-relaxed text-foreground shadow-2xl sm:p-4 sm:text-[14px]">
                   {isInsightsLoading ? (
                     <div className="animate-pulse space-y-2.5">
-                      <div className="h-2 w-3/4 rounded bg-primary-foreground/30"></div>
-                      <div className="h-2 w-1/2 rounded bg-primary-foreground/30"></div>
+                      <div className="h-2 w-3/4 rounded bg-muted-foreground/30"></div>
+                      <div className="h-2 w-1/2 rounded bg-muted-foreground/30"></div>
                     </div>
                   ) : (
                     insights?.map((insight: string, idx: number) => (
-                      <p key={idx}>“{insight}”</p>
+                      <p key={idx}>{insight}</p>
                     ))
                   )}
                 </div>
