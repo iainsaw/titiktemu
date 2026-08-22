@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Loader2, Search as SearchIcon, Navigation, Expand, Shrink } from "lucide-react";
+import { Loader2, Search as SearchIcon, Expand, Shrink } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -492,8 +492,8 @@ function PetaInteraktif() {
             <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4 overflow-y-auto floating-scrollbar">
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-1.5 print:hidden">
-                <span className="text-[11px] text-muted-foreground flex items-center gap-1.5">
-                  <Navigation className="size-3 text-ink dark:text-white fill-ink dark:fill-white rotate-45" /> {terpilih.klaster}
+                <span className="text-[11px] font-semibold tracking-wide text-ink dark:text-white uppercase">
+                  {terpilih.klaster}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
