@@ -337,15 +337,15 @@ function PetaInteraktif() {
           />
 
           {/* CARD 1: Role Selector (Bottom Center) */}
-          <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-[16px] bg-white/90 p-1.5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+          <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
             {ROLES.map((r) => (
               <button
                 key={r.id}
                 onClick={() => setRole(r.id)}
                 className={cn(
-                  "rounded-[12px] px-6 py-2.5 text-[13px] font-medium transition-all duration-200",
+                  "rounded-lg px-4 py-2 text-[12px] font-medium transition-all duration-200",
                   role === r.id
-                    ? "bg-ink text-ink-foreground shadow-md dark:bg-white dark:text-black"
+                    ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
@@ -356,12 +356,12 @@ function PetaInteraktif() {
 
           {/* RIGHT CARDS CONTAINER */}
           <div className={cn(
-            "absolute top-4 right-4 bottom-24 z-40 flex w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            "absolute top-4 right-4 bottom-24 z-40 flex w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
           )}>
             
             {/* CARD 2: Search & Layers */}
-            <div className="shrink-0 flex flex-col rounded-[24px] bg-white/90 p-5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10">
+            <div className="shrink-0 flex flex-col rounded-2xl bg-white/90 p-4 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10">
               {/* Search */}
               <form onSubmit={handleAnalisis} className="relative">
                 <input
@@ -370,7 +370,7 @@ function PetaInteraktif() {
                   value={searchNewPlace}
                   onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
                   disabled={analyzing}
-                  className="h-[38px] w-full rounded-[12px] bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
+                  className="h-[36px] w-full rounded-xl bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
                 />
                 <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
                   {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
@@ -383,13 +383,13 @@ function PetaInteraktif() {
               </form>
 
               {/* Layer Pill Chips */}
-              <div className="mt-4 flex flex-wrap gap-1.5">
+              <div className="mt-3.5 flex flex-wrap gap-1.5">
                 {LAYERS.map((l) => (
                   <button
                     key={l.id}
                     onClick={() => setLayer(l.id)}
                     className={cn(
-                      "rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200",
+                      "rounded-full px-3 py-1 text-[12px] font-medium transition-all duration-200",
                       layer === l.id
                         ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
                         : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
@@ -401,36 +401,36 @@ function PetaInteraktif() {
               </div>
 
               {/* Overlay Toggles */}
-              <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12px] text-muted-foreground">
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+              <div className="mt-3.5 grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-muted-foreground">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
                   Koridor
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
                   Angkot
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
                   Bus (BRT)
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
                   Pendidikan
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
                   Kesehatan
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
                   Komersial
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
                   Hiburan
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
                   Transit
                 </label>
@@ -438,8 +438,8 @@ function PetaInteraktif() {
             </div>
 
             {/* CARD 4: Rankings */}
-            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
-              <div className="px-5 pt-5 pb-3 border-b border-border/10 shrink-0 flex items-center justify-between">
+            <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
+              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
                   <BarChart3 className="size-3.5" /> Peringkat Kawasan
                 </h3>
@@ -457,7 +457,7 @@ function PetaInteraktif() {
                       <button
                         onClick={() => setSelectedId(k.id)}
                         className={cn(
-                          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all",
+                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
                           k.id === selectedId
                             ? "bg-secondary font-medium text-foreground shadow-sm"
                             : "text-foreground/70 hover:bg-secondary/50"
@@ -466,7 +466,7 @@ function PetaInteraktif() {
                         <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
                         <span className="flex-1 truncate">{k.nama}</span>
                         <span
-                          className="rounded-lg px-2 py-0.5 font-mono text-[11px] font-semibold"
+                          className="rounded-md px-1.5 py-0.5 font-mono text-[11px] font-semibold"
                           style={{
                             color: warnaSkor(skor),
                             backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
@@ -484,15 +484,15 @@ function PetaInteraktif() {
 
           {/* LEFT CARDS CONTAINER */}
           <div className={cn(
-            "absolute top-4 bottom-24 left-4 z-40 flex w-[380px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+            "absolute top-4 bottom-24 left-4 z-40 flex w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
             isMapMaximized ? "left-[-400px] opacity-0" : "opacity-100"
           )}>
             
             {/* CARD 3: Selected Details & AI */}
-            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-5 overflow-y-auto floating-scrollbar">
+            <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4 overflow-y-auto floating-scrollbar">
               {/* Kawasan Header */}
-              <div className="flex items-center justify-between mb-2 print:hidden">
-                <span className="text-[12px] text-muted-foreground flex items-center gap-1.5">
+              <div className="flex items-center justify-between mb-1.5 print:hidden">
+                <span className="text-[11px] text-muted-foreground flex items-center gap-1.5">
                   <MapPin className="size-3.5 text-ink dark:text-white" /> {terpilih.klaster}
                 </span>
                 <div className="flex items-center gap-1.5">
@@ -507,18 +507,18 @@ function PetaInteraktif() {
               </div>
 
               {/* Title + Score */}
-              <div className="flex items-start justify-between gap-4 mt-2 mb-5">
+              <div className="flex items-start justify-between gap-3 mt-1.5 mb-4">
                 <div className="min-w-0">
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground/50">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
                     {terpilih.id} · {terpilih.koridor}
                   </p>
-                  <h2 className="mt-1 truncate text-[22px] font-semibold tracking-tight">{terpilih.nama}</h2>
-                  <p className="mt-1.5 text-[13px] font-medium" style={{ color: warnaSkor(skorTerpilih) }}>
+                  <h2 className="mt-1 truncate text-[18px] font-semibold tracking-tight">{terpilih.nama}</h2>
+                  <p className="mt-1 text-[12px] font-medium leading-snug" style={{ color: warnaSkor(skorTerpilih) }}>
                     Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
                   </p>
                 </div>
                 <div
-                  className="flex size-[52px] shrink-0 items-center justify-center rounded-2xl border-[2.5px] text-[20px] font-extrabold"
+                  className="flex size-[44px] shrink-0 items-center justify-center rounded-xl border-[2px] text-[18px] font-extrabold"
                   style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih), backgroundColor: `color-mix(in oklab, ${warnaSkor(skorTerpilih)} 6%, transparent)` }}
                 >
                   {skorTerpilih}
@@ -526,22 +526,22 @@ function PetaInteraktif() {
               </div>
 
               {/* Score Bars */}
-              <div className="rounded-2xl bg-secondary/30 p-5 dark:bg-white/5">
-                <div className="space-y-3.5">
+              <div className="rounded-xl bg-secondary/30 p-3.5 dark:bg-white/5">
+                <div className="space-y-3">
                   {COMPONENTS.map((c) => {
                     const nilai = terpilih.skor[c.id];
                     return (
                       <div key={c.id}>
-                        <div className="mb-1.5 flex items-baseline justify-between">
-                          <span className="text-[13px] font-medium text-foreground/70">{c.label}</span>
-                          <span className="font-mono text-[13px] font-semibold text-foreground">
+                        <div className="mb-1 flex items-baseline justify-between">
+                          <span className="text-[12px] font-medium text-foreground/70">{c.label}</span>
+                          <span className="font-mono text-[12px] font-semibold text-foreground">
                             {nilai}
-                            <span className="ml-1 text-[10px] text-muted-foreground/60">
+                            <span className="ml-1 text-[9px] text-muted-foreground/60">
                               ×{peran.weights[c.id].toFixed(2)}
                             </span>
                           </span>
                         </div>
-                        <div className="h-[6px] overflow-hidden rounded-full bg-secondary/60 dark:bg-white/8">
+                        <div className="h-[5px] overflow-hidden rounded-full bg-secondary/60 dark:bg-white/8">
                           <div
                             className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
                             style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
@@ -555,47 +555,47 @@ function PetaInteraktif() {
 
               {/* Demographics */}
               {terpilih.penduduk && (
-                <div className="mt-4 grid grid-cols-2 gap-4 rounded-2xl bg-secondary/30 p-5 dark:bg-white/5">
+                <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-secondary/30 p-3.5 dark:bg-white/5">
                   <div>
-                    <span className="block text-[11px] text-muted-foreground mb-1">Penduduk (2024)</span>
-                    <span className="font-mono text-[15px] font-semibold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
+                    <span className="block text-[10px] text-muted-foreground mb-0.5">Penduduk (2024)</span>
+                    <span className="font-mono text-[13px] font-semibold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] text-muted-foreground mb-1">Kepadatan</span>
-                    <span className="font-mono text-[15px] font-semibold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} /km²</span>
+                    <span className="block text-[10px] text-muted-foreground mb-0.5">Kepadatan</span>
+                    <span className="font-mono text-[13px] font-semibold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} /km²</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] text-muted-foreground mb-1">Pelajar & Mhs</span>
-                    <span className="font-mono text-[15px] font-semibold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
+                    <span className="block text-[10px] text-muted-foreground mb-0.5">Pelajar & Mhs</span>
+                    <span className="font-mono text-[13px] font-semibold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
                   </div>
                   <div>
-                    <span className="block text-[11px] text-muted-foreground mb-1">Total Fasilitas</span>
-                    <span className="font-mono text-[15px] font-semibold">{terpilih.totalFasilitas || 0} POI</span>
+                    <span className="block text-[10px] text-muted-foreground mb-0.5">Total Fasilitas</span>
+                    <span className="font-mono text-[13px] font-semibold">{terpilih.totalFasilitas || 0} POI</span>
                   </div>
                 </div>
               )}
 
               {/* Quick Facts */}
-              <dl className="mt-4 grid grid-cols-3 gap-3 rounded-2xl bg-secondary/30 p-4 text-center dark:bg-white/5">
+              <dl className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-secondary/30 p-3 text-center dark:bg-white/5">
                 <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
                 <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
-                <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-xl p-2 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
-                  <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    Harga <Edit2 className="size-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
+                <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+                  <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Harga <Edit2 className="size-2 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
                   </dt>
-                  <dd className="mt-0.5 font-mono text-[13px] font-semibold">
+                  <dd className="mt-0.5 font-mono text-[12px] font-semibold">
                     {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
                   </dd>
                   {customPrices[terpilih.id] && (
-                    <span className="absolute top-1 right-1 flex h-1.5 w-1.5 rounded-full bg-blue-500" />
+                    <span className="absolute top-1 right-1 flex h-1 w-1 rounded-full bg-blue-500" />
                   )}
                 </div>
               </dl>
 
               {/* Anomaly */}
               {terpilih.anomali && (
-                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-ink/10 bg-ink/[0.03] p-4 text-[13px] text-ink dark:text-white/80">
-                  <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0" />
+                <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-ink/10 bg-ink/[0.03] p-3 text-[12px] text-ink dark:text-white/80">
+                  <img src={aiStar.url} alt="" className="mt-0.5 size-3.5 shrink-0" />
                   <span className="leading-relaxed">
                     <strong className="font-semibold block mb-0.5">Anomali peluang tersembunyi</strong>
                     Aktivitas ekonomi di atas ekspektasi dibanding harga tanah dan kualitas layanan.
@@ -604,11 +604,11 @@ function PetaInteraktif() {
               )}
 
               {/* AI Recommendation (Integrated into Card 3) */}
-              <div className="mt-4 rounded-2xl border border-ink/10 bg-ink/[0.03] p-5">
+              <div className="mt-3 rounded-xl border border-ink/10 bg-ink/[0.03] p-4">
                 {!aiRecommendation && !isAiLoading && (
                   <button
                     onClick={() => handleAskAI(terpilih)}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-[13px] font-medium text-ink-foreground transition-all hover:opacity-90 active:scale-95 print:hidden shadow-sm dark:bg-white dark:text-black"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-[12px] font-medium text-ink-foreground transition-all hover:opacity-90 active:scale-95 print:hidden shadow-sm dark:bg-white dark:text-black"
                   >
                     <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert dark:invert-0" /> 
                     Analisis Usaha dengan TemuData AI
@@ -616,18 +616,18 @@ function PetaInteraktif() {
                 )}
 
                 {isAiLoading && (
-                  <div className="flex items-center justify-center gap-2 text-[13px] text-ink/80 py-2 dark:text-white/80">
-                    <Loader2 className="size-4 animate-spin" /> Menganalisis pasar...
+                  <div className="flex items-center justify-center gap-2 text-[12px] text-ink/80 py-2 dark:text-white/80">
+                    <Loader2 className="size-3.5 animate-spin" /> Menganalisis pasar...
                   </div>
                 )}
 
                 {aiRecommendation && (
                   <div>
-                    <div className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-ink dark:text-white mb-2">
-                      <img src={aiStar.url} alt="" className="size-3.5" /> Analisis TemuData AI
+                    <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ink dark:text-white mb-2">
+                      <img src={aiStar.url} alt="" className="size-3" /> Analisis TemuData AI
                     </div>
                     <p 
-                      className="text-[13px] leading-relaxed text-foreground/85"
+                      className="text-[12px] leading-relaxed text-foreground/85"
                       dangerouslySetInnerHTML={{
                         __html: aiRecommendation
                           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -639,8 +639,6 @@ function PetaInteraktif() {
               </div>
 
             </div>
-
-
           </div>
 
           {/* Floating: Toggle Sidebar (Moved to right since left has cards) */}
