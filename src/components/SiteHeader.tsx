@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 const logoMark = { url: "/titik-temu-mark-v2.png" };
 
 const nav = [
@@ -13,19 +14,22 @@ const nav = [
   { to: "/tim", label: "Tentang Tim" },
 ] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ variant = "default" }: { variant?: "default" | "sidebar" }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="glass-nav sticky top-0 z-40 border-b border-border/60">
-      <div className="mx-auto grid h-16 max-w-[1180px] grid-cols-[minmax(0,auto)_1fr_auto] items-center gap-3 px-4 text-[12px] sm:h-14 sm:px-5 lg:h-12">
+    <header className={cn("glass-nav sticky top-0 z-40 border-b border-border/60", variant === "sidebar" && "bg-transparent backdrop-blur-none border-border/30")}>
+      <div className={cn(
+        "mx-auto grid items-center gap-3 px-4 text-[12px] sm:px-5",
+        variant === "sidebar" ? "h-14 grid-cols-[auto_1fr_auto]" : "h-16 max-w-[1180px] grid-cols-[minmax(0,auto)_1fr_auto] sm:h-14 lg:h-12"
+      )}>
         <Link to="/" className="flex min-w-0 items-center gap-2 font-display text-[15px] font-semibold tracking-tight sm:text-[13px]">
           <img src={logoMark.url} alt="Logo Titik Temu" className="size-7 shrink-0 sm:size-5" />
           <span className="truncate">Titik Temu</span>
         </Link>
 
 
-        <nav className="hidden flex-1 items-center justify-center gap-5 lg:flex">
+        <nav className={cn("hidden flex-1 items-center justify-center gap-5", variant === "sidebar" ? "hidden" : "lg:flex")}>
           {nav.map((item) => (
             <Link
               key={item.to}

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Maximize, Minimize } from "lucide-react";
+import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Maximize, Minimize, Menu, X } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -242,7 +242,9 @@ function PetaInteraktif() {
   }, []);
 
 
-  const [isMapMaximized, setIsMapMaximized] = useState(false);
+  const [isMapMaximized, setIsMapMaximized] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 1024 : false
+  );
   const [aiRecommendation, setAiRecommendation] = useState<string>("");
   const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -339,13 +341,14 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
           macOS-style vibrancy panel, fixed width
           ═══════════════════════════════════════════════════ */}
       <aside className={cn(
-        "relative z-40 flex h-full shrink-0 flex-col border-r border-border/40 bg-white/70 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] dark:bg-black/60 print:static print:w-full print:border-none",
-        isMapMaximized ? "w-0 -ml-[380px] opacity-0" : "w-[380px] ml-0 opacity-100"
+        "absolute lg:relative z-40 flex h-full shrink-0 flex-col border-r border-border/40 bg-white/70 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] dark:bg-black/60 print:static print:w-full print:border-none",
+        isMapMaximized ? "-translate-x-full opacity-0 lg:w-0 lg:-ml-[380px]" : "translate-x-0 opacity-100 lg:w-[380px] lg:ml-0",
+        "w-full sm:w-[380px]"
       )}>
 
         {/* ── Sidebar Header (site nav) ── */}
         <div className="shrink-0 print:hidden">
-          <SiteHeader />
+          <SiteHeader variant="sidebar" />
         </div>
 
         {/* ── CONTROL ZONE (Search, Role, Filters) ── */}
@@ -676,10 +679,10 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
         {/* ── Floating: Toggle Sidebar (Top-Right) ── */}
         <button
           onClick={() => setIsMapMaximized(!isMapMaximized)}
-          className="absolute top-4 right-4 z-20 flex size-9 items-center justify-center rounded-lg bg-white/70 text-foreground/80 shadow-sm backdrop-blur-xl border border-border/30 transition-all hover:bg-white hover:shadow-md dark:bg-black/50 dark:text-white dark:border-white/10 print:hidden"
+          className="absolute top-4 right-4 z-50 flex size-9 items-center justify-center rounded-lg bg-white/70 text-foreground/80 shadow-sm backdrop-blur-xl border border-border/30 transition-all hover:bg-white hover:shadow-md dark:bg-black/50 dark:text-white dark:border-white/10 print:hidden"
           title={isMapMaximized ? "Tampilkan Sidebar" : "Layar Penuh"}
         >
-          {isMapMaximized ? <Minimize className="size-4" /> : <Maximize className="size-4" />}
+          {isMapMaximized ? <Menu className="size-4" /> : <X className="size-4" />}
         </button>
 
         {/* ── Floating: Legend (Bottom-Right) ── */}
