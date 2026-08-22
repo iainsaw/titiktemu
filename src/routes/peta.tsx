@@ -301,55 +301,72 @@ function PetaInteraktif() {
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
 
-      {/* ── GLOBAL NAV — always visible, full width ── */}
+      {/* ── GLOBAL NAV ── */}
       <div className="shrink-0 z-50 print:hidden">
         <SiteHeader />
       </div>
 
-      {/* ── BODY: Map as background, Sidebar floating ── */}
+      {/* ── BODY: Map as background, Cards floating ── */}
       <div className="relative flex-1 overflow-hidden">
+        
+        {/* MAP AREA */}
+        <main className="absolute inset-0 bg-muted/10 print:static print:w-full">
+          <VitalityMap
+            className="size-full"
+            fill
+            kawasan={kawasans}
+            role={role}
+            selectedId={selectedId}
+            onSelect={(id) => {
+              setSelectedId(id);
+              setIsMapMaximized(false);
+            }}
+            layer={layer}
+            tampilkanKoridor={koridor}
+            tampilkanSensus={sensus}
+            tampilkanAngkot={angkot}
+            tampilkanBus={bus}
+            poiPendidikan={poiPendidikan}
+            poiKesehatan={poiKesehatan}
+            poiKomersial={poiKomersial}
+            poiHiburan={poiHiburan}
+            poiTransit={poiTransit}
+            tampilkanPedestrian={pedestrian}
+            tampilkanAnomali={anomaliLayer}
+            missions={missions}
+          />
 
-        {/* ═══════════════════════════════════════════════════
-            LEFT SIDEBAR — Control + Supporting Combined
-            macOS vibrancy, border-right separator
-            ═══════════════════════════════════════════════════ */}
-        <aside className={cn(
-          "absolute top-4 bottom-4 z-30 flex flex-col floating-card transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full print:border-none",
-          isMapMaximized ? "left-[-400px] opacity-0" : "left-4 w-[380px] opacity-100"
-        )}>
+          {/* CARD 1: Role Selector (Bottom Center) */}
+          <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-[16px] bg-white/90 p-1.5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+            {ROLES.map((r) => (
+              <button
+                key={r.id}
+                onClick={() => setRole(r.id)}
+                className={cn(
+                  "rounded-[12px] px-6 py-2.5 text-[13px] font-medium transition-all duration-200",
+                  role === r.id
+                    ? "bg-ink text-ink-foreground shadow-md dark:bg-white dark:text-black"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                )}
+              >
+                Pilih {r.label}
+              </button>
+            ))}
+          </div>
 
-          {/* ── CONTROL ZONE ── */}
-          <div className="shrink-0 border-b border-border/20 px-5 py-4 print:hidden">
-
-            {/* Role Segmented Control */}
-            <div className="flex w-full items-center gap-0.5 rounded-[10px] bg-secondary/50 p-[3px] dark:bg-white/8">
-              {ROLES.map((r) => (
-                <button
-                  key={r.id}
-                  onClick={() => setRole(r.id)}
-                  className={cn(
-                    "flex-1 rounded-lg px-3 py-[7px] text-[13px] font-medium transition-all duration-200",
-                    role === r.id
-                      ? "bg-white text-foreground shadow-sm dark:bg-white/15 dark:text-white"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {r.label}
-                </button>
-              ))}
-            </div>
-
+          {/* CARD 2: Search & Layers (Top Right) */}
+          <div className="absolute top-4 right-4 z-40 flex w-[320px] flex-col rounded-[24px] bg-white/90 p-5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
             {/* Search */}
-            <form onSubmit={handleAnalisis} className="relative mt-3">
+            <form onSubmit={handleAnalisis} className="relative">
               <input
                 type="text"
                 placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
                 value={searchNewPlace}
                 onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
                 disabled={analyzing}
-                className="h-[34px] w-full rounded-[10px] bg-secondary/40 pl-9 pr-4 text-[14px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
+                className="h-[38px] w-full rounded-[12px] bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
               />
-              <div className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
                 {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
               </div>
               {analyzeError && (
@@ -360,16 +377,16 @@ function PetaInteraktif() {
             </form>
 
             {/* Layer Pill Chips */}
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-4 flex flex-wrap gap-1.5">
               {LAYERS.map((l) => (
                 <button
                   key={l.id}
                   onClick={() => setLayer(l.id)}
                   className={cn(
-                    "rounded-full px-3 py-[5px] text-[12px] font-medium transition-all duration-200",
+                    "rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200",
                     layer === l.id
-                      ? "bg-blue-500 text-white shadow-sm"
-                      : "bg-secondary/40 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
+                      ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
+                      : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
                   )}
                 >
                   {l.label}
@@ -378,9 +395,9 @@ function PetaInteraktif() {
             </div>
 
             {/* Overlay Toggles */}
-            <div className="mt-3.5 grid grid-cols-2 gap-x-4 gap-y-2 text-[12px] text-muted-foreground">
+            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12px] text-muted-foreground">
               <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+                <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
                 Koridor
               </label>
               <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
@@ -414,27 +431,23 @@ function PetaInteraktif() {
             </div>
           </div>
 
-          {/* ── SUPPORTING ZONE (Scrollable) ── */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="px-5 py-5">
-
+          {/* LEFT CARDS CONTAINER */}
+          <div className={cn(
+            "absolute top-4 bottom-24 left-4 z-40 flex w-[380px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+            isMapMaximized ? "left-[-400px] opacity-0" : "opacity-100"
+          )}>
+            
+            {/* CARD 3: Selected Details & AI */}
+            <div className="flex flex-col shrink-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-5 max-h-[60vh] overflow-y-auto floating-scrollbar">
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-2 print:hidden">
                 <span className="text-[12px] text-muted-foreground flex items-center gap-1.5">
-                  <MapPin className="size-3.5 text-blue-500" /> {terpilih.klaster}
+                  <MapPin className="size-3.5 text-ink dark:text-white" /> {terpilih.klaster}
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <Link
-                    to="/temudata"
-                    search={{ peran: role, kawasan: terpilih.id }}
-                    className="flex items-center gap-1 rounded-lg bg-blue-500/8 px-2.5 py-1 text-[11px] font-medium text-blue-600 transition-colors hover:bg-blue-500/15 dark:text-blue-400"
-                  >
-                    <img src={aiStar.url} alt="" className="size-3" />
-                    Chat
-                  </Link>
                   <button
                     onClick={() => window.print()}
-                    className="flex items-center gap-1 rounded-lg bg-secondary/50 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
+                    className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
                   >
                     <Printer className="size-3" />
                     PDF
@@ -462,7 +475,7 @@ function PetaInteraktif() {
               </div>
 
               {/* Score Bars */}
-              <div className="rounded-2xl bg-secondary/25 p-5 dark:bg-white/5">
+              <div className="rounded-2xl bg-secondary/30 p-5 dark:bg-white/5">
                 <div className="space-y-3.5">
                   {COMPONENTS.map((c) => {
                     const nilai = terpilih.skor[c.id];
@@ -477,7 +490,7 @@ function PetaInteraktif() {
                             </span>
                           </span>
                         </div>
-                        <div className="h-[6px] overflow-hidden rounded-full bg-secondary/50 dark:bg-white/8">
+                        <div className="h-[6px] overflow-hidden rounded-full bg-secondary/60 dark:bg-white/8">
                           <div
                             className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
                             style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
@@ -491,7 +504,7 @@ function PetaInteraktif() {
 
               {/* Demographics */}
               {terpilih.penduduk && (
-                <div className="mt-4 grid grid-cols-2 gap-4 rounded-2xl bg-secondary/25 p-5 dark:bg-white/5">
+                <div className="mt-4 grid grid-cols-2 gap-4 rounded-2xl bg-secondary/30 p-5 dark:bg-white/5">
                   <div>
                     <span className="block text-[11px] text-muted-foreground mb-1">Penduduk (2024)</span>
                     <span className="font-mono text-[15px] font-semibold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
@@ -512,10 +525,10 @@ function PetaInteraktif() {
               )}
 
               {/* Quick Facts */}
-              <dl className="mt-4 grid grid-cols-3 gap-3 rounded-2xl bg-secondary/25 p-4 text-center dark:bg-white/5">
+              <dl className="mt-4 grid grid-cols-3 gap-3 rounded-2xl bg-secondary/30 p-4 text-center dark:bg-white/5">
                 <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
                 <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
-                <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-xl p-2 transition-colors hover:bg-secondary/40" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+                <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-xl p-2 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
                   <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Harga <Edit2 className="size-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
                   </dt>
@@ -530,7 +543,7 @@ function PetaInteraktif() {
 
               {/* Anomaly */}
               {terpilih.anomali && (
-                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-blue-500/10 bg-blue-500/[0.03] p-4 text-[13px] text-blue-700 dark:text-blue-300">
+                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-ink/10 bg-ink/[0.03] p-4 text-[13px] text-ink dark:text-white/80">
                   <img src={aiStar.url} alt="" className="mt-0.5 size-4 shrink-0" />
                   <span className="leading-relaxed">
                     <strong className="font-semibold block mb-0.5">Anomali peluang tersembunyi</strong>
@@ -539,53 +552,57 @@ function PetaInteraktif() {
                 </div>
               )}
 
-              {/* AI Recommendation */}
-              <div className="mt-4 rounded-2xl border border-blue-500/10 bg-blue-500/[0.03] p-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-[13px] font-semibold text-blue-600 dark:text-blue-400">
-                    <img src={aiStar.url} alt="" className="size-4" /> Peluang Usaha AI
-                  </div>
-                  {!aiRecommendation && !isAiLoading && (
-                    <button
-                      onClick={() => handleAskAI(terpilih)}
-                      className="flex items-center gap-1.5 rounded-full bg-blue-500 px-3 py-[5px] text-[11px] font-medium text-white transition-all hover:bg-blue-600 active:scale-95 print:hidden"
-                    >
-                      <img src={aiStar.url} alt="" className="size-3 brightness-0 invert" /> Tanya AI
-                    </button>
-                  )}
-                </div>
+              {/* AI Recommendation (Integrated into Card 3) */}
+              <div className="mt-4 rounded-2xl border border-ink/10 bg-ink/[0.03] p-5">
+                {!aiRecommendation && !isAiLoading && (
+                  <button
+                    onClick={() => handleAskAI(terpilih)}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-[13px] font-medium text-ink-foreground transition-all hover:opacity-90 active:scale-95 print:hidden shadow-sm dark:bg-white dark:text-black"
+                  >
+                    <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert dark:invert-0" /> 
+                    Analisis Usaha dengan TemuData AI
+                  </button>
+                )}
 
                 {isAiLoading && (
-                  <div className="flex items-center gap-1.5 text-[12px] text-blue-500/60 mt-3">
-                    <Loader2 className="size-3.5 animate-spin" /> Menganalisis pasar...
+                  <div className="flex items-center justify-center gap-2 text-[13px] text-ink/80 py-2 dark:text-white/80">
+                    <Loader2 className="size-4 animate-spin" /> Menganalisis pasar...
                   </div>
                 )}
 
                 {aiRecommendation && (
-                  <p 
-                    className="mt-3 text-[13px] leading-relaxed text-foreground/75"
-                    dangerouslySetInnerHTML={{
-                      __html: aiRecommendation
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    }}
-                  />
+                  <div>
+                    <div className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-ink dark:text-white mb-2">
+                      <img src={aiStar.url} alt="" className="size-3.5" /> Analisis TemuData AI
+                    </div>
+                    <p 
+                      className="text-[13px] leading-relaxed text-foreground/85"
+                      dangerouslySetInnerHTML={{
+                        __html: aiRecommendation
+                          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                      }}
+                    />
+                  </div>
                 )}
               </div>
 
-              {/* Compare CTA */}
-              <Link
-                to="/analisis"
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500/8 py-3 text-[13px] font-medium text-blue-600 transition-all hover:bg-blue-500/12 active:scale-[0.98] dark:text-blue-400 print:hidden"
-              >
-                Bandingkan di Vitality Twin <ArrowRight className="size-4" />
-              </Link>
+            </div>
 
-              {/* Rankings */}
-              <div className="mt-7 border-t border-border/20 pt-5 print:hidden">
-                <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70 flex items-center gap-1.5">
+            {/* CARD 4: Rankings */}
+            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden print:hidden">
+              <div className="px-5 pt-5 pb-3 border-b border-border/10 shrink-0 flex items-center justify-between">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
                   <BarChart3 className="size-3.5" /> Peringkat Kawasan
                 </h3>
+                <Link
+                  to="/analisis"
+                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+                >
+                  Bandingkan ›
+                </Link>
+              </div>
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
                 <ol className="space-y-0.5">
                   {peringkat.map(({ k, skor }, i) => (
                     <li key={k.id}>
@@ -594,8 +611,8 @@ function PetaInteraktif() {
                         className={cn(
                           "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all",
                           k.id === selectedId
-                            ? "bg-secondary font-medium text-foreground"
-                            : "text-foreground/60 hover:bg-secondary/40"
+                            ? "bg-secondary font-medium text-foreground shadow-sm"
+                            : "text-foreground/70 hover:bg-secondary/50"
                         )}
                       >
                         <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
@@ -614,67 +631,35 @@ function PetaInteraktif() {
                   ))}
                 </ol>
               </div>
-
             </div>
           </div>
-        </aside>
 
-        {/* ═══════════════════════════════════════════════════
-            MAP AREA (absolute inset-0)
-            ═══════════════════════════════════════════════════ */}
-        <main className="absolute inset-0 bg-muted/10 print:static print:w-full">
-          <VitalityMap
-            className="size-full"
-            fill
-            kawasan={kawasans}
-            role={role}
-            selectedId={selectedId}
-            onSelect={(id) => {
-              setSelectedId(id);
-              setIsMapMaximized(false);
-            }}
-            layer={layer}
-            tampilkanKoridor={koridor}
-            tampilkanSensus={sensus}
-            tampilkanAngkot={angkot}
-            tampilkanBus={bus}
-            poiPendidikan={poiPendidikan}
-            poiKesehatan={poiKesehatan}
-            poiKomersial={poiKomersial}
-            poiHiburan={poiHiburan}
-            poiTransit={poiTransit}
-            tampilkanPedestrian={pedestrian}
-            tampilkanAnomali={anomaliLayer}
-            missions={missions}
-          />
-
-          {/* Floating: Toggle Sidebar */}
+          {/* Floating: Toggle Sidebar (Moved to right since left has cards) */}
           <button
             onClick={() => setIsMapMaximized(!isMapMaximized)}
-            className="absolute top-3 right-3 z-20 flex size-8 items-center justify-center rounded-[10px] bg-white/70 text-foreground/60 shadow-sm backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-md dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
-            title={isMapMaximized ? "Tampilkan Sidebar" : "Layar Penuh"}
+            className="absolute bottom-4 left-4 z-20 flex size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
+            title={isMapMaximized ? "Tampilkan Cards" : "Sembunyikan Cards"}
           >
-            {isMapMaximized ? <Minimize className="size-[14px]" /> : <Maximize className="size-[14px]" />}
+            {isMapMaximized ? <Maximize className="size-4" /> : <Minimize className="size-4" />}
           </button>
 
           {/* Floating: Legend */}
-          <div className="absolute bottom-3 right-3 z-20 rounded-[10px] bg-white/70 px-3 py-2.5 shadow-sm backdrop-blur-xl border border-border/20 dark:bg-black/50 dark:border-white/10 print:hidden">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Legenda Skor</span>
-              <span className="text-[10px] text-muted-foreground/40 ml-3">r=800m</span>
+          <div className="absolute bottom-4 right-4 z-20 rounded-[14px] bg-white/90 px-3.5 py-3 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">Legenda Skor</span>
+              <span className="text-[10px] text-muted-foreground/50 ml-3">r=800m</span>
             </div>
-            <div className="flex items-center gap-1.5 w-36">
-              <span className="text-[10px] text-muted-foreground/50">0</span>
-              <div className="flex-1 flex h-[5px] rounded-full overflow-hidden">
+            <div className="flex items-center gap-1.5 w-40">
+              <span className="font-mono text-[10px] text-muted-foreground/60">0</span>
+              <div className="flex-1 flex h-[6px] rounded-full overflow-hidden shadow-inner">
                 {[20, 48, 60, 72, 88].map((s) => (
                   <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
                 ))}
               </div>
-              <span className="text-[10px] text-muted-foreground/50">100</span>
+              <span className="font-mono text-[10px] text-muted-foreground/60">100</span>
             </div>
           </div>
         </main>
-
       </div>
     </div>
   );
