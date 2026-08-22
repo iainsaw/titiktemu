@@ -9,6 +9,7 @@ import { VitalityMap } from "@/components/VitalityMap";
 import { KAWASAN as STATIC_KAWASAN, hitungSkor, type Kawasan } from "@/lib/vitality-data";
 import { supabase } from "@/lib/supabase";
 import { RINGKASAN_SURVEI } from "@/lib/survei-data";
+import { cn } from "@/lib/utils";
 const heroVideo = { url: "/hero-transit.mp4" };
 
 const KARTU = [
@@ -172,7 +173,7 @@ function Beranda() {
         </div>
 
 
-        <div className="relative mx-auto grid max-w-[1100px] grid-cols-2 gap-2.5 px-4 pb-10 sm:grid-cols-3 sm:gap-3 sm:px-5 sm:pb-14">
+        <div className="relative mx-auto grid max-w-[1100px] grid-cols-1 gap-4 px-4 pb-10 sm:grid-cols-3 sm:gap-5 sm:px-5 sm:pb-14">
           {[
             {
               tag: "SKOR BERBASIS DATA",
@@ -189,20 +190,33 @@ function Beranda() {
               judul: "Intelegensi Spasial",
               teks: "Tidak sekadar menampilkan angka, tapi memberikan rekomendasi bisnis dan tata ruang yang siap dieksekusi.",
             },
-          ].map((c, i) => (
-            <div
-              key={c.tag}
-              className="panel hero-rise p-3.5 text-left last:col-span-2 sm:p-5 sm:last:col-span-1"
-              style={{ animationDelay: `${0.55 + i * 0.12}s` }}
-            >
-              <p className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground sm:text-[11px]">
-                {c.tag}
-              </p>
-              <p className="mt-1.5 font-display text-[16px] font-semibold tracking-tight sm:mt-2 sm:text-[20px]">{c.judul}</p>
-              <p className="mt-1 text-[11.5px] leading-relaxed text-muted-foreground sm:mt-1.5 sm:text-[12px]">{c.teks}</p>
-            </div>
-          ))}
+          ].map((c, i) => {
+            const isDark = i === 2;
+            const isGray = i === 1;
 
+            return (
+              <div
+                key={c.tag}
+                className={cn(
+                  "flex flex-col p-6 rounded-[32px] sm:p-8 shadow-xl shadow-black/5 hero-rise",
+                  isDark ? "bg-ink text-ink-foreground" : isGray ? "bg-secondary/50" : "bg-background border border-border/40"
+                )}
+                style={{ animationDelay: `${0.55 + i * 0.12}s` }}
+              >
+                <p className={cn(
+                  "text-[10px] font-semibold tracking-widest uppercase",
+                  isDark ? "text-white/50" : "text-muted-foreground"
+                )}>
+                  {c.tag}
+                </p>
+                <p className="mt-4 font-display text-[26px] font-semibold tracking-tight leading-tight">{c.judul}</p>
+                <p className={cn(
+                  "mt-3 text-[16px] leading-relaxed",
+                  isDark ? "text-white/70" : "text-muted-foreground"
+                )}>{c.teks}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -215,23 +229,53 @@ function Beranda() {
           </p>
         </section>
 
-        <section className="tinted-section mt-10 grid grid-cols-1 gap-3 rounded-[28px] p-4 sm:grid-cols-2 sm:gap-4 sm:p-6 md:grid-cols-3 lg:mt-14">
-          {KARTU.map((k) => (
-            <div key={k.judul} className="panel flex flex-col p-4 last:sm:col-span-2 last:md:col-span-1 sm:p-6">
-              <span className="grid size-9 place-items-center rounded-full bg-secondary text-primary sm:size-10">
-                <k.icon className="size-4.5 sm:size-5" />
-              </span>
-              <h3 className="mt-3 text-[15px] font-semibold sm:mt-4 sm:text-[17px]">{k.judul}</h3>
-              <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-muted-foreground sm:text-[13px]">{k.teks}</p>
-              <Link
-                to="/peta"
-                search={{ peran: k.peran }}
-                className="pill mt-4 inline-block self-start bg-secondary px-3.5 py-2 text-[12px] font-medium transition-colors hover:bg-primary hover:text-primary-foreground sm:px-4"
+        <section className="tinted-section mt-10 grid grid-cols-1 gap-4 rounded-[40px] p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 md:grid-cols-3 lg:mt-14">
+          {KARTU.map((k, i) => {
+            const isDark = i === 1;
+            const isGray = i === 2;
+            
+            return (
+              <div 
+                key={k.judul} 
+                className={cn(
+                  "flex flex-col p-6 rounded-[32px] sm:p-8 shadow-xl shadow-black/5 transition-transform hover:-translate-y-1",
+                  isDark ? "bg-ink text-ink-foreground" : isGray ? "bg-secondary/50" : "bg-background border border-border/40"
+                )}
               >
-                Buka peta sebagai peran ini ›
-              </Link>
-            </div>
-          ))}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className={cn(
+                    "grid size-12 place-items-center rounded-full",
+                    isDark ? "bg-white/10 text-white" : "bg-secondary text-primary"
+                  )}>
+                    <k.icon className="size-5" />
+                  </span>
+                  <span className={cn(
+                    "text-[10px] font-semibold uppercase tracking-widest",
+                    isDark ? "text-white/50" : "text-muted-foreground"
+                  )}>
+                    Akses Peran
+                  </span>
+                </div>
+                
+                <h3 className="font-display text-[26px] font-semibold tracking-tight leading-tight">{k.judul}</h3>
+                <p className={cn(
+                  "mt-3 flex-1 text-[16px] leading-relaxed",
+                  isDark ? "text-white/70" : "text-muted-foreground"
+                )}>{k.teks}</p>
+                
+                <Link
+                  to="/peta"
+                  search={{ peran: k.peran }}
+                  className={cn(
+                    "mt-8 block w-full rounded-full py-4 text-center text-[16px] font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]",
+                    isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
+                  )}
+                >
+                  Pilih {k.peran}
+                </Link>
+              </div>
+            );
+          })}
         </section>
 
         <section className="mt-10 grid grid-cols-2 gap-2.5 sm:gap-3 lg:mt-14 lg:grid-cols-4">
@@ -324,28 +368,21 @@ function Beranda() {
   );
 }
 
-function Stat({
-  icon: Icon,
-  label,
-  value,
-  sub,
-}: {
-  icon: typeof MapPin;
-  label: string;
-  value: string;
-  sub: string;
-}) {
+function Stat({ icon: Icon, label, value, sub }: any) {
   return (
-    <div className="panel flex items-center gap-2.5 p-3.5 sm:gap-3 sm:p-5">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-primary sm:size-10">
-        <Icon className="size-4.5 sm:size-5" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground sm:text-[12px]">{label}</p>
-        <p className="font-display text-[18px] font-semibold tracking-tight sm:text-[22px]">{value}</p>
-        <p className="text-[10.5px] text-muted-foreground sm:text-[11px]">{sub}</p>
+    <div className="flex flex-col justify-between p-6 rounded-[32px] sm:p-8 bg-background shadow-xl shadow-black/5 border border-border/40">
+      <div className="flex items-center gap-3 text-muted-foreground mb-6">
+        <span className="grid size-10 place-items-center rounded-full bg-secondary text-primary">
+          <Icon className="size-4" />
+        </span>
+        <p className="text-[10px] font-semibold uppercase tracking-widest">{label}</p>
       </div>
-
+      <div>
+        <p className="font-display text-[42px] font-semibold tracking-tight leading-none">
+          {value}
+        </p>
+        <p className="mt-3 text-[10px] uppercase tracking-widest text-muted-foreground leading-relaxed">{sub}</p>
+      </div>
     </div>
   );
 }
