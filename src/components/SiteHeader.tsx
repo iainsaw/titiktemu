@@ -54,7 +54,10 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "sid
             type="button"
             aria-label={open ? "Tutup menu" : "Buka menu"}
             onClick={() => setOpen((v) => !v)}
-            className="grid size-10 shrink-0 place-items-center rounded-md text-foreground sm:size-8 lg:hidden"
+            className={cn(
+              "grid size-10 shrink-0 place-items-center rounded-md text-foreground sm:size-8",
+              variant === "sidebar" ? "grid" : "lg:hidden"
+            )}
           >
             {open ? <X className="size-5 sm:size-4" /> : <Menu className="size-5 sm:size-4" />}
           </button>
@@ -63,7 +66,10 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "sid
       </div>
 
       {open && (
-        <nav className="border-t border-border/60 bg-background/95 px-5 py-3 lg:hidden">
+        <nav className={cn(
+          "border-t border-border/60 bg-background/95 px-5 py-3",
+          variant === "sidebar" ? "absolute top-full left-0 w-full rounded-b-lg shadow-xl border border-t-0 border-border/30" : "lg:hidden"
+        )}>
           <ul className="space-y-1">
             {nav.map((item) => (
               <li key={item.to}>
