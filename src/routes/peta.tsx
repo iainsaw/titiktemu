@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Maximize, Minimize } from "lucide-react";
+import { Loader2, Search as SearchIcon, Navigation, Expand, Shrink } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -441,7 +441,7 @@ function PetaInteraktif() {
             <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
               <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
-                  <BarChart3 className="size-3.5" /> Peringkat Kawasan
+                  Peringkat Kawasan
                 </h3>
                 <Link
                   to="/analisis"
@@ -493,14 +493,13 @@ function PetaInteraktif() {
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-1.5 print:hidden">
                 <span className="text-[11px] text-muted-foreground flex items-center gap-1.5">
-                  <MapPin className="size-3.5 text-ink dark:text-white" /> {terpilih.klaster}
+                  <Navigation className="size-3 text-ink dark:text-white fill-ink dark:fill-white rotate-45" /> {terpilih.klaster}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => window.print()}
                     className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
                   >
-                    <Printer className="size-3" />
                     PDF
                   </button>
                 </div>
@@ -580,8 +579,8 @@ function PetaInteraktif() {
                 <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
                 <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
                 <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
-                  <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    Harga <Edit2 className="size-2 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500" />
+                  <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
+                    Harga
                   </dt>
                   <dd className="mt-0.5 font-mono text-[12px] font-semibold">
                     {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
@@ -647,7 +646,7 @@ function PetaInteraktif() {
             className="absolute bottom-4 left-4 z-20 flex size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
             title={isMapMaximized ? "Tampilkan Cards" : "Sembunyikan Cards"}
           >
-            {isMapMaximized ? <Maximize className="size-4" /> : <Minimize className="size-4" />}
+            {isMapMaximized ? <Shrink className="size-4" /> : <Expand className="size-4" />}
           </button>
 
           {/* Floating: Legend */}
