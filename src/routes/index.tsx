@@ -285,7 +285,7 @@ function Beranda() {
         </section>
 
         <section className="mt-10 lg:mt-14">
-          <div className="panel flex flex-col overflow-hidden lg:flex-row">
+          <div className="panel flex flex-col overflow-hidden">
             {/* Map Section */}
             <div className="flex-1 p-4 sm:p-5">
               <h2 className="mb-3 text-sm font-semibold">Cuplikan peta vitalitas</h2>
@@ -305,22 +305,16 @@ function Beranda() {
             </div>
 
             {/* AI Insights Section */}
-            <div className="w-full border-t border-border/40 bg-secondary/20 p-4 sm:p-5 lg:w-[360px] lg:border-l lg:border-t-0">
+            <div className="w-full border-t border-border/40 bg-secondary/20 p-4 sm:p-5">
               <h2 className="flex items-center gap-2 text-sm font-semibold text-primary">
                 <AiIcon /> Highlight Insight AI
               </h2>
               <div className="mt-4 space-y-3 text-[13px] leading-relaxed">
                 {isInsightsLoading ? (
-                  <>
-                    <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
-                      <div className="h-2 w-3/4 rounded bg-muted"></div>
-                      <div className="mt-2 h-2 w-1/2 rounded bg-muted"></div>
-                    </div>
-                    <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
-                      <div className="h-2 w-full rounded bg-muted"></div>
-                      <div className="mt-2 h-2 w-2/3 rounded bg-muted"></div>
-                    </div>
-                  </>
+                  <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
+                    <div className="h-2 w-3/4 rounded bg-muted"></div>
+                    <div className="mt-2 h-2 w-1/2 rounded bg-muted"></div>
+                  </div>
                 ) : (
                   insights?.map((insight: string, idx: number) => (
                     <div key={idx} className="rounded-lg border border-border/50 bg-background/80 p-3.5 shadow-sm">
@@ -329,12 +323,6 @@ function Beranda() {
                   ))
                 )}
               </div>
-              <Link
-                to="/peta"
-                className="mt-5 inline-block text-[12px] font-medium text-primary hover:underline"
-              >
-                Eksplorasi TemuData AI ›
-              </Link>
             </div>
           </div>
         </section>

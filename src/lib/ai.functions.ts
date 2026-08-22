@@ -26,12 +26,12 @@ Analisis data kawasan transit berikut di Bandung Raya:
 ${JSON.stringify(dataSummary, null, 2)}
 
 Tugas Anda:
-Berikan TEPAT 2 (dua) insight berupa kalimat observasi tajam berdasarkan data di atas.
+Berikan TEPAT 1 (satu) insight berupa kalimat observasi tajam berdasarkan data di atas.
 Fokus pada perbandingan, anomali, kesenjangan layanan, atau potensi ekonomi (UMKM/Properti).
-Setiap insight harus ringkas (maksimal 180 karakter) dan ditulis dengan bahasa Indonesia baku yang mengalir, mudah dipahami investor atau pemerintah (seperti kutipan pengamat). 
-Jangan memakai nomor atau bullet points pada awal kalimat, langsung tulis teks kalimatnya saja. Pisahkan kedua insight dengan karakter pipa '|'.
+Insight harus ringkas (maksimal 180 karakter) dan ditulis dengan bahasa Indonesia baku yang mengalir, mudah dipahami investor atau pemerintah (seperti kutipan pengamat). 
+Jangan memakai nomor atau bullet points pada awal kalimat, langsung tulis teks kalimatnya saja.
 Contoh output:
-Kawasan sekitar Stasiun Kiaracondong punya keragaman usaha sangat tinggi (78) namun skor layanan hanya 52 — sinyal peluang tersembunyi.|Gedebage mencatat kesenjangan layanan terlebar di pilot (28). Satu rute feeder baru diperkirakan menaikkan skor totalnya secara signifikan.
+Kawasan sekitar Stasiun Kiaracondong punya keragaman usaha sangat tinggi (78) namun skor layanan hanya 52 — sinyal peluang tersembunyi bagi UMKM dan operator feeder.
 `;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -60,16 +60,14 @@ Kawasan sekitar Stasiun Kiaracondong punya keragaman usaha sangat tinggi (78) na
     const json = await response.json();
     const content = json.choices?.[0]?.message?.content || "";
     
-    // Split by pipe character, clean up quotes or whitespace
-    const insights = content.split("|").map((s: string) => s.trim().replace(/^["“]+|["”]+$/g, '')).filter(Boolean);
+    const insight = content.trim().replace(/^["“]+|["”]+$/g, '');
     
     // Fallback if the AI didn't format correctly
-    if (insights.length < 2) {
+    if (!insight) {
       return [
-        "Analisis AI tidak tersedia saat ini. Silakan coba lagi.",
-        "Menunggu pemrosesan data..."
+        "Analisis AI tidak tersedia saat ini. Silakan coba lagi."
       ];
     }
     
-    return insights.slice(0, 2);
+    return [insight];
   });
