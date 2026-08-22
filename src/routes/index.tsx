@@ -310,8 +310,8 @@ function Beranda() {
 
               {/* Floating AI Insights Section (Chat Bubble) */}
               <div className="absolute bottom-3 left-3 right-3 flex items-end gap-3 sm:bottom-4 sm:left-4 sm:max-w-[420px]">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
-                  <AiIcon className="size-5" />
+                <div className="shrink-0 drop-shadow-md">
+                  <AiIcon className="size-8 text-primary" />
                 </div>
                 <div className="rounded-2xl rounded-bl-sm bg-primary p-3.5 text-[13px] leading-relaxed text-primary-foreground shadow-2xl sm:p-4 sm:text-[14px]">
                   {isInsightsLoading ? (
