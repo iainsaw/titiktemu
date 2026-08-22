@@ -329,7 +329,9 @@ Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha y
   // Jika terpilih berubah, reset rekomendasi AI
   useEffect(() => {
     setAiRecommendation("");
-   return (
+  }, [selectedId]);
+
+  return (
     <div className="relative h-screen w-screen overflow-hidden bg-background font-sans text-foreground">
       {/* PRIMARY ZONE (Map) - Absolute Background */}
       <div className="absolute inset-0 z-0 bg-muted/20 print:static print:w-full print:block">
