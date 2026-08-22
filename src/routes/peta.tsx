@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon } from "lucide-react";
+import { Layers, ArrowRight, BarChart3, MapPin, Loader2, Search as SearchIcon, Printer, Edit2, Lightbulb } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -59,6 +59,20 @@ const LAYERS: { id: ComponentId | "total"; label: string }[] = [
 
 type PanelTab = "peringkat" | null;
 
+function getRekomendasiUsaha(kws: Kawasan) {
+  const { layanan, akses, properti, ekonomi } = kws.skor;
+  if (layanan < 50 && ((kws.penduduk && kws.penduduk > 20000) || akses > 60)) {
+    return "Apotek, Minimarket, atau Klinik (Kebutuhan dasar kurang di area padat/aksesibel).";
+  }
+  if (properti < 40 && akses > 70) {
+    return "Kos-kosan komuter atau Kedai Kopi (Lahan masih murah tapi akses ke stasiun sangat mudah).";
+  }
+  if (ekonomi < 40 && layanan > 70) {
+    return "F&B / Restoran atau Jasa Fotokopi (Fasilitas umum banyak tapi minim ritel komersial).";
+  }
+  return "Warung kelontong atau Jasa titip motor (Layanan dasar esensial pendukung stasiun).";
+}
+
 function PetaInteraktif() {
   const { peran: peranAwal } = Route.useSearch();
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
@@ -83,6 +97,7 @@ function PetaInteraktif() {
   const [analyzeError, setAnalyzeError] = useState("");
   const [missions, setMissions] = useState<MissionFeature[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
+  const [customPrices, setCustomPrices] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const coord = KOORDINAT[selectedId];
@@ -258,23 +273,50 @@ function PetaInteraktif() {
     loadRealData();
   }, []);
 
+  const handleEditHarga = (id: string, currentVal: number) => {
+    const val = window.prompt(`Masukkan benchmark Harga Tanah pasar riil (Juta/m²) untuk ${id}:`, currentVal.toString());
+    if (val !== null) {
+      const num = parseFloat(val);
+      if (!isNaN(num) && num > 0) {
+        setCustomPrices(prev => ({ ...prev, [id]: num }));
+      }
+    }
+  };
+
+  const finalKawasans = kawasans.map(k => {
+    if (customPrices[k.id] !== undefined) {
+      const newPrice = customPrices[k.id];
+      return {
+        ...k,
+        hargaTanah: newPrice,
+        skor: {
+          ...k.skor,
+          properti: Math.min(100, Math.max(1, Math.round((newPrice / 25) * 100)))
+        }
+      };
+    }
+    return k;
+  });
+
   const peran = ROLES.find((r) => r.id === role)!;
-  const terpilih = kawasans.find((k) => k.id === selectedId)!;
+  const terpilih = finalKawasans.find((k) => k.id === selectedId)!;
   const skorTerpilih = hitungSkor(terpilih, role);
 
-  const peringkat = [...kawasans]
+  const peringkat = [...finalKawasans]
     .map((k) => ({ k, skor: hitungSkor(k, role) }))
     .sort((a, b) => b.skor - a.skor);
 
   return (
-    <div className="min-h-screen bg-background">
-      <SiteHeader />
+    <div className="min-h-screen bg-background print:bg-white print:min-h-0">
+      <div className="print:hidden">
+        <SiteHeader />
+      </div>
 
-      <main className="mx-auto max-w-[1400px] px-3 pb-8 pt-4 sm:px-5">
+      <main className="mx-auto max-w-[1400px] px-3 pb-8 pt-4 sm:px-5 print:p-0 print:m-0 print:max-w-none">
         <h1 className="sr-only">Peta Interaktif Skor Vitalitas Transit Bandung Raya</h1>
 
-        <div className="relative flex flex-col gap-4 lg:block lg:h-[calc(100vh-112px)] lg:min-h-[680px]">
-          <div className="h-[440px] overflow-hidden sm:h-[520px] lg:h-full">
+        <div className="relative flex flex-col gap-4 lg:block lg:h-[calc(100vh-112px)] lg:min-h-[680px] print:h-auto print:block">
+          <div className="h-[440px] overflow-hidden sm:h-[520px] lg:h-full print:hidden">
             <VitalityMap
               className="size-full"
               fill
@@ -302,7 +344,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Toolbar mengambang: peran */}
-          <div className="floating-card z-20 flex flex-wrap items-center gap-2 p-2 lg:absolute lg:left-5 lg:top-5 lg:max-w-[62%]">
+          <div className="floating-card z-20 flex flex-wrap items-center gap-2 p-2 lg:absolute lg:left-5 lg:top-5 lg:max-w-[62%] print:hidden">
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
               <img src={aiStar.url} alt="Titik Temu AI" className="size-5 drop-shadow-sm" />
             </span>
@@ -348,7 +390,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Panel layer kanan atas */}
-          <div className="floating-card z-20 w-full p-3 lg:absolute lg:right-5 lg:top-5 lg:w-[214px]">
+          <div className="floating-card z-20 w-full overflow-y-auto p-4 lg:absolute lg:right-5 lg:top-5 lg:max-h-[85%] lg:w-[280px] print:hidden">
             <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
               <Layers className="size-3.5 text-primary" /> Layer
             </p>
@@ -483,7 +525,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Kartu detail kawasan kiri bawah */}
-          <div className="floating-card z-20 w-full overflow-y-auto p-4 lg:absolute lg:bottom-5 lg:left-5 lg:max-h-[58%] lg:w-[360px]">
+          <div className="floating-card z-20 w-full overflow-y-auto p-4 lg:absolute lg:bottom-5 lg:left-5 lg:max-h-[65%] lg:w-[380px] print:static print:w-full print:max-h-none print:shadow-none print:border-none print:bg-white print:p-0">
             <div className="animate-in fade-in-50 duration-300">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -556,8 +598,19 @@ function PetaInteraktif() {
               <dl className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
                 <Fact label="Jarak transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit} m` : "N/A"} />
                 <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
-                <Fact label="Harga tanah" value={terpilih.hargaTanah ? `${terpilih.hargaTanah} jt/m²` : "N/A"} />
+                <div className="group relative cursor-pointer hover:bg-secondary/50 rounded-lg p-1 transition-colors" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+                  <dt className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                    Harga tanah <Edit2 className="size-2.5 opacity-50 group-hover:opacity-100" />
+                  </dt>
+                  <dd className="mt-0.5 font-mono text-xs font-semibold">
+                    {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt/m²` : "N/A"}
+                  </dd>
+                  {customPrices[terpilih.id] && (
+                    <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-orange-500"></span>
+                  )}
+                </div>
               </dl>
+              <p className="mt-1 text-center text-[9px] text-muted-foreground italic print:hidden">Estimasi via Extraction Method. Klik untuk override nilai patokan.</p>
 
               {terpilih.anomali && (
                 <div className="mt-2 flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3 text-[11.5px] text-primary/90 shadow-sm transition-colors hover:bg-primary/10">
@@ -569,9 +622,17 @@ function PetaInteraktif() {
                 </div>
               )}
 
+              {/* Kalkulator Potensi Usaha */}
+              <div className="mt-2 flex items-start gap-2 rounded-xl border border-orange-500/20 bg-orange-500/5 p-3 text-[11.5px] text-orange-700 shadow-sm print:border-gray-300 print:bg-white print:text-black">
+                <Lightbulb className="mt-0.5 size-4 shrink-0 text-orange-500" />
+                <span className="leading-relaxed">
+                  <strong>Peluang Usaha Warga:</strong> {getRekomendasiUsaha(terpilih)}
+                </span>
+              </div>
+
               <Link
                 to="/analisis"
-                className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline"
+                className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline print:hidden"
               >
                 Bandingkan &amp; simulasikan <ArrowRight className="size-3.5" />
               </Link>
@@ -579,7 +640,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Panel peringkat + pintasan TemuData AI */}
-          <div className="z-20 flex w-full flex-col items-stretch gap-2 lg:absolute lg:bottom-5 lg:right-5 lg:w-[380px] lg:items-end">
+          <div className="z-20 flex w-full flex-col items-stretch gap-2 lg:absolute lg:bottom-5 lg:right-5 lg:w-[380px] lg:items-end print:hidden">
             {tab === "peringkat" && (
               <div className="floating-card max-h-[50vh] w-full overflow-y-auto p-1 lg:max-h-[52vh]">
                 <div className="p-4">
@@ -625,6 +686,14 @@ function PetaInteraktif() {
                 TemuData AI
               </Link>
 
+              <button
+                onClick={() => window.print()}
+                className="group relative flex items-center gap-2 rounded-full bg-surface px-4 py-1.5 text-[12px] font-semibold shadow-md transition-all hover:scale-105 hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                <Printer className="size-3.5" />
+                Cetak Laporan PDF
+              </button>
+
               <TabButton
                 aktif={tab === "peringkat"}
                 onClick={() => setTab(tab === "peringkat" ? null : "peringkat")}
@@ -636,13 +705,15 @@ function PetaInteraktif() {
 
         </div>
 
-        <p className="mt-4 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+        <p className="mt-4 flex items-center gap-1.5 text-[12px] text-muted-foreground print:hidden">
           <MapPin className="size-3.5" /> 5 kawasan pilot di sekitar titik transportasi massal
           Bandung — klik kawasan untuk melihat rincian dan penjelasan AI.
         </p>
       </main>
 
-      <SiteFooter />
+      <div className="print:hidden">
+        <SiteFooter />
+      </div>
     </div>
   );
 }
