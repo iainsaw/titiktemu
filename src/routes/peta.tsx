@@ -439,45 +439,54 @@ function PetaInteraktif() {
 
             {/* CARD 4: Rankings */}
             <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
-              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
+              <div className="px-4 pt-4 pb-2 shrink-0 flex items-center justify-between">
+                <h3 className="text-[13px] font-semibold text-foreground">
                   Peringkat Kawasan
                 </h3>
                 <Link
                   to="/analisis"
-                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+                  className="text-[13px] font-medium text-[#0071E3] hover:opacity-80 transition-opacity"
                 >
-                  Bandingkan ›
+                  Bandingkan
                 </Link>
               </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
-                <ol className="space-y-0.5">
+              <div className="flex-1 overflow-y-auto floating-scrollbar pb-2">
+                <ul className="flex flex-col">
                   {peringkat.map(({ k, skor }, i) => (
                     <li key={k.id}>
                       <button
                         onClick={() => setSelectedId(k.id)}
                         className={cn(
-                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
+                          "group relative flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors",
                           k.id === selectedId
-                            ? "bg-secondary font-medium text-foreground shadow-sm"
-                            : "text-foreground/70 hover:bg-secondary/50"
+                            ? "bg-secondary/60 dark:bg-white/10"
+                            : "hover:bg-secondary/30 dark:hover:bg-white/5"
                         )}
                       >
-                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
-                        <span className="flex-1 truncate">{k.nama}</span>
+                        <span className="w-5 text-[14px] font-bold text-muted-foreground/30 text-right shrink-0">
+                          {i + 1}
+                        </span>
+                        <span className={cn(
+                          "flex-1 truncate text-[13px] transition-colors",
+                          k.id === selectedId ? "font-semibold text-foreground" : "font-medium text-foreground/80"
+                        )}>
+                          {k.nama}
+                        </span>
                         <span
-                          className="rounded-md px-1.5 py-0.5 font-mono text-[11px] font-semibold"
-                          style={{
-                            color: warnaSkor(skor),
-                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
-                          }}
+                          className="text-[13px] font-bold"
+                          style={{ color: warnaSkor(skor) }}
                         >
                           {skor}
                         </span>
+                        
+                        {/* iOS style subtle divider, skips the last item */}
+                        {i !== peringkat.length - 1 && (
+                          <div className="absolute bottom-0 left-12 right-0 h-[1px] bg-border/5" />
+                        )}
                       </button>
                     </li>
                   ))}
-                </ol>
+                </ul>
               </div>
             </div>
           </div>
