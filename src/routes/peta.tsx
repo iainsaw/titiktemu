@@ -354,80 +354,131 @@ function PetaInteraktif() {
             ))}
           </div>
 
-          {/* CARD 2: Search & Layers (Top Right) */}
-          <div className="absolute top-4 right-4 z-40 flex w-[320px] flex-col rounded-[24px] bg-white/90 p-5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
-            {/* Search */}
-            <form onSubmit={handleAnalisis} className="relative">
-              <input
-                type="text"
-                placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
-                value={searchNewPlace}
-                onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
-                disabled={analyzing}
-                className="h-[38px] w-full rounded-[12px] bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
-              />
-              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
-              </div>
-              {analyzeError && (
-                <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full rounded-[10px] border border-destructive/15 bg-destructive/8 px-3 py-2 text-[12px] text-destructive backdrop-blur-xl">
-                  {analyzeError}
+          {/* RIGHT CARDS CONTAINER */}
+          <div className={cn(
+            "absolute top-4 right-4 bottom-24 z-40 flex w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
+          )}>
+            
+            {/* CARD 2: Search & Layers */}
+            <div className="shrink-0 flex flex-col rounded-[24px] bg-white/90 p-5 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10">
+              {/* Search */}
+              <form onSubmit={handleAnalisis} className="relative">
+                <input
+                  type="text"
+                  placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
+                  value={searchNewPlace}
+                  onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
+                  disabled={analyzing}
+                  className="h-[38px] w-full rounded-[12px] bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
+                />
+                <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                  {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
                 </div>
-              )}
-            </form>
+                {analyzeError && (
+                  <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full rounded-[10px] border border-destructive/15 bg-destructive/8 px-3 py-2 text-[12px] text-destructive backdrop-blur-xl">
+                    {analyzeError}
+                  </div>
+                )}
+              </form>
 
-            {/* Layer Pill Chips */}
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {LAYERS.map((l) => (
-                <button
-                  key={l.id}
-                  onClick={() => setLayer(l.id)}
-                  className={cn(
-                    "rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200",
-                    layer === l.id
-                      ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
-                      : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
-                  )}
-                >
-                  {l.label}
-                </button>
-              ))}
+              {/* Layer Pill Chips */}
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {LAYERS.map((l) => (
+                  <button
+                    key={l.id}
+                    onClick={() => setLayer(l.id)}
+                    className={cn(
+                      "rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200",
+                      layer === l.id
+                        ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
+                        : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
+                    )}
+                  >
+                    {l.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Overlay Toggles */}
+              <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12px] text-muted-foreground">
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
+                  Koridor
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
+                  Angkot
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
+                  Bus (BRT)
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+                  Pendidikan
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
+                  Kesehatan
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
+                  Komersial
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
+                  Hiburan
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
+                  Transit
+                </label>
+              </div>
             </div>
 
-            {/* Overlay Toggles */}
-            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[12px] text-muted-foreground">
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
-                Koridor
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
-                Angkot
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
-                Bus (BRT)
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
-                Pendidikan
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
-                Kesehatan
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
-                Komersial
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
-                Hiburan
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer hover:text-foreground transition-colors">
-                <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
-                Transit
-              </label>
+            {/* CARD 4: Rankings */}
+            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
+              <div className="px-5 pt-5 pb-3 border-b border-border/10 shrink-0 flex items-center justify-between">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
+                  <BarChart3 className="size-3.5" /> Peringkat Kawasan
+                </h3>
+                <Link
+                  to="/analisis"
+                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+                >
+                  Bandingkan ›
+                </Link>
+              </div>
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+                <ol className="space-y-0.5">
+                  {peringkat.map(({ k, skor }, i) => (
+                    <li key={k.id}>
+                      <button
+                        onClick={() => setSelectedId(k.id)}
+                        className={cn(
+                          "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] transition-all",
+                          k.id === selectedId
+                            ? "bg-secondary font-medium text-foreground shadow-sm"
+                            : "text-foreground/70 hover:bg-secondary/50"
+                        )}
+                      >
+                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="flex-1 truncate">{k.nama}</span>
+                        <span
+                          className="rounded-lg px-2 py-0.5 font-mono text-[11px] font-semibold"
+                          style={{
+                            color: warnaSkor(skor),
+                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
+                          }}
+                        >
+                          {skor}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
 
@@ -438,7 +489,7 @@ function PetaInteraktif() {
           )}>
             
             {/* CARD 3: Selected Details & AI */}
-            <div className="flex flex-col shrink-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-5 max-h-[60vh] overflow-y-auto floating-scrollbar">
+            <div className="flex flex-col flex-1 min-h-0 rounded-[24px] bg-white/90 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-5 overflow-y-auto floating-scrollbar">
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-2 print:hidden">
                 <span className="text-[12px] text-muted-foreground flex items-center gap-1.5">
