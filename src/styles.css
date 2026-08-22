@@ -67,20 +67,20 @@
   --card-foreground: oklch(0.17 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.17 0 0);
-  --primary: oklch(0.56 0.19 256);
+  --primary: #0052CC;
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.945 0.004 250);
   --secondary-foreground: oklch(0.24 0 0);
   --muted: oklch(0.945 0.004 250);
   --muted-foreground: oklch(0.53 0.006 258);
 
-  --accent: oklch(0.56 0.19 256);
+  --accent: #0052CC;
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.92 0.002 250);
   --input: oklch(0.90 0.002 250);
-  --ring: oklch(0.56 0.19 256);
+  --ring: #0052CC;
 
   /* Ink = Apple's near-black feature sections */
   --ink: oklch(0.16 0 0);
@@ -92,7 +92,7 @@
   --score-4: oklch(0.6 0.18 145);
   --score-5: oklch(0.5 0.22 245);
 
-  --chart-1: oklch(0.56 0.19 256);
+  --chart-1: #0052CC;
   --chart-2: oklch(0.65 0.14 200);
   --chart-3: oklch(0.65 0.14 160);
   --chart-4: oklch(0.72 0.16 78);
