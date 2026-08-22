@@ -7,8 +7,10 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { VitalityMap } from "@/components/VitalityMap";
 import { KAWASAN as STATIC_KAWASAN, hitungSkor, type Kawasan } from "@/lib/vitality-data";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { RINGKASAN_SURVEI } from "@/lib/survei-data";
+import { generateInsights } from "@/lib/ai.functions";
 import { cn } from "@/lib/utils";
 const heroVideo = { url: "/hero-transit.mp4" };
 
@@ -63,6 +65,12 @@ function Beranda() {
   const [selectedId, setSelectedId] = useState<string>(STATIC_KAWASAN[0].id);
   const [typedTitle, setTypedTitle] = useState("");
   const fullTitle = "Titik Temu";
+
+  const { data: insights, isLoading: isInsightsLoading } = useQuery({
+    queryKey: ["ai-insights", kawasans],
+    queryFn: () => generateInsights({ data: kawasans }),
+    staleTime: Infinity,
+  });
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
@@ -276,45 +284,58 @@ function Beranda() {
           />
         </section>
 
-        <section className="mt-10 grid items-start gap-4 sm:gap-6 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <div className="panel p-4 sm:p-5">
-            <h2 className="mb-3 text-sm font-semibold">Cuplikan peta vitalitas</h2>
+        <section className="mt-10 lg:mt-14">
+          <div className="panel flex flex-col overflow-hidden lg:flex-row">
+            {/* Map Section */}
+            <div className="flex-1 p-4 sm:p-5">
+              <h2 className="mb-3 text-sm font-semibold">Cuplikan peta vitalitas</h2>
+              <VitalityMap
+                kawasan={kawasans}
+                role="investor"
+                compact
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+              />
+              <Link
+                to="/peta"
+                className="pill mt-4 inline-block bg-primary px-5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Buka Peta Penuh
+              </Link>
+            </div>
 
-            <VitalityMap
-              kawasan={kawasans}
-              role="investor"
-              compact
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-            />
-            <Link
-              to="/peta"
-              className="pill mt-4 inline-block bg-primary px-5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Buka Peta Penuh
-            </Link>
-          </div>
-
-          <div className="panel p-4 sm:p-5">
-            <h2 className="flex items-center gap-2 text-sm font-semibold">
-              <AiIcon /> Highlight insight AI
-            </h2>
-            <ul className="mt-3 space-y-3 text-[13px] leading-relaxed">
-              <li className="rounded-lg border border-border bg-background/60 p-3">
-                “Kawasan sekitar Stasiun Kiaracondong punya keragaman usaha sangat tinggi (78) namun
-                skor layanan hanya 52 — sinyal peluang tersembunyi bagi UMKM dan operator feeder.”
-              </li>
-              <li className="rounded-lg border border-border bg-background/60 p-3">
-                “Gedebage mencatat kesenjangan layanan terlebar di pilot (28). Satu rute feeder baru
-                diperkirakan menaikkan skor totalnya paling besar di antara seluruh kawasan.”
-              </li>
-            </ul>
-            <Link
-              to="/peta"
-              className="mt-4 inline-block text-[12px] font-medium text-primary hover:underline"
-            >
-              Buka TemuData AI ›
-            </Link>
+            {/* AI Insights Section */}
+            <div className="w-full border-t border-border/40 bg-secondary/20 p-4 sm:p-5 lg:w-[360px] lg:border-l lg:border-t-0">
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-primary">
+                <AiIcon /> Highlight Insight AI
+              </h2>
+              <div className="mt-4 space-y-3 text-[13px] leading-relaxed">
+                {isInsightsLoading ? (
+                  <>
+                    <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
+                      <div className="h-2 w-3/4 rounded bg-muted"></div>
+                      <div className="mt-2 h-2 w-1/2 rounded bg-muted"></div>
+                    </div>
+                    <div className="animate-pulse rounded-lg border border-border/50 bg-background/60 p-4">
+                      <div className="h-2 w-full rounded bg-muted"></div>
+                      <div className="mt-2 h-2 w-2/3 rounded bg-muted"></div>
+                    </div>
+                  </>
+                ) : (
+                  insights?.map((insight: string, idx: number) => (
+                    <div key={idx} className="rounded-lg border border-border/50 bg-background/80 p-3.5 shadow-sm">
+                      “{insight}”
+                    </div>
+                  ))
+                )}
+              </div>
+              <Link
+                to="/peta"
+                className="mt-5 inline-block text-[12px] font-medium text-primary hover:underline"
+              >
+                Eksplorasi TemuData AI ›
+              </Link>
+            </div>
           </div>
         </section>
       </main>
