@@ -352,16 +352,12 @@ function Beranda() {
 
 function Stat({ icon: Icon, label, value, sub }: any) {
   return (
-    <div className="flex flex-col justify-between p-6 rounded-[20px] sm:p-8 bg-background shadow-xl shadow-black/5 border border-border/40">
-      <div className="flex items-center gap-3 text-muted-foreground mb-6">
-        <p className="text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]">{label}</p>
-      </div>
-      <div>
-        <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
-          {value}
-        </p>
-        <p className="mt-3 text-[11px] uppercase tracking-widest text-muted-foreground leading-relaxed sm:text-[12px]">{sub}</p>
-      </div>
+    <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
+      <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
+        {value}
+      </p>
+      <p className="mt-1.5 text-[11px] uppercase tracking-widest text-muted-foreground leading-relaxed sm:text-[12px]">{sub}</p>
     </div>
   );
 }
