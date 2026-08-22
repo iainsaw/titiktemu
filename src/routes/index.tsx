@@ -232,12 +232,6 @@ function Beranda() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <span className={cn(
-                    "grid size-10 place-items-center rounded-full",
-                    isDark ? "bg-white/10 text-white" : "bg-secondary text-primary"
-                  )}>
-                    <k.icon className="size-4" />
-                  </span>
-                  <span className={cn(
                     "text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]",
                     isDark ? "text-white/50" : "text-muted-foreground"
                   )}>
@@ -360,9 +354,6 @@ function Stat({ icon: Icon, label, value, sub }: any) {
   return (
     <div className="flex flex-col justify-between p-6 rounded-[20px] sm:p-8 bg-background shadow-xl shadow-black/5 border border-border/40">
       <div className="flex items-center gap-3 text-muted-foreground mb-6">
-        <span className="grid size-9 place-items-center rounded-full bg-secondary text-primary">
-          <Icon className="size-4" />
-        </span>
         <p className="text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]">{label}</p>
       </div>
       <div>
