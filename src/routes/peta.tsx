@@ -261,7 +261,7 @@ function PetaInteraktif() {
   const handleAskAI = async (kws: Kawasan) => {
     setIsAiLoading(true);
     try {
-      const insight = await generateOpportunityInsight({ data: { kws } });
+      const insight = await generateOpportunityInsight({ data: { kws, role } });
       setAiRecommendation(insight);
     } catch (e) {
       setAiRecommendation("Terjadi kesalahan koneksi saat memanggil AI.");
@@ -610,7 +610,7 @@ function PetaInteraktif() {
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-[12px] font-medium text-ink-foreground transition-all hover:opacity-90 active:scale-95 print:hidden shadow-sm dark:bg-white dark:text-black"
                   >
                     <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert dark:invert-0" /> 
-                    Analisis Usaha
+                    {role === "investor" ? "Analisis Properti" : role === "pemerintah" ? "Analisis Perencanaan" : "Analisis Usaha"}
                   </button>
                 )}
 
@@ -623,7 +623,7 @@ function PetaInteraktif() {
                 {aiRecommendation && (
                   <div>
                     <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ink dark:text-white mb-2">
-                      <img src={aiStar.url} alt="" className="size-3" /> Analisis Usaha
+                      <img src={aiStar.url} alt="" className="size-3" /> {role === "investor" ? "Analisis Properti" : role === "pemerintah" ? "Analisis Perencanaan" : "Analisis Usaha"}
                     </div>
                     <p 
                       className="text-[12px] leading-relaxed text-foreground/85"

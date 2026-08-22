@@ -74,14 +74,25 @@ Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*7
   });
 
 export const generateOpportunityInsight = createServerFn({ method: "POST" })
-  .validator((data: { kws: Kawasan }) => data)
-  .handler(async ({ data: { kws } }) => {
+  .validator((data: { kws: Kawasan; role: string }) => data)
+  .handler(async ({ data: { kws, role } }) => {
     const apiKey = process.env.VITE_OPENROUTER_API_KEY;
     if (!apiKey) {
       throw new Error("Missing OpenRouter API Key");
     }
 
-    const prompt = `Anda adalah ahli tata kota dan penasihat bisnis UMKM profesional. 
+    let persona = "penasihat bisnis UMKM profesional";
+    let task = "peluang usaha atau UMKM yang paling menguntungkan untuk dibuka";
+    
+    if (role === "investor") {
+      persona = "ahli real estate dan investor properti";
+      task = "jenis properti atau strategi investasi yang paling prospektif";
+    } else if (role === "pemerintah") {
+      persona = "ahli perencanaan kota dan pembuat kebijakan pemerintah";
+      task = "prioritas pembangunan fasilitas atau infrastruktur publik yang paling mendesak untuk ditingkatkan";
+    }
+
+    const prompt = `Anda adalah ahli tata kota dan ${persona}. 
 Kawasan ${kws.nama} memiliki skor (0-100):
 Layanan Umum: ${kws.skor.layanan}
 Akses Transportasi: ${kws.skor.akses}
@@ -89,7 +100,7 @@ Pasar Properti: ${kws.skor.properti}
 Keragaman Ekonomi: ${kws.skor.ekonomi}
 Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' : 'Tidak diketahui'}.
 
-Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik peluang usaha yang paling menguntungkan untuk dibuka di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
+Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik ${task} di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
