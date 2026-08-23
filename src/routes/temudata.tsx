@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { AiIcon } from "@/components/AiIcon";
 import { konteksDashboard, konteksKawasan } from "@/lib/ai-konteks";
 import { getAiInsight, sendAiChat, type Pesan } from "@/lib/llm";
-import { supabase } from "@/lib/supabase";
+import { useKawasans } from "@/hooks/useKawasans";
 import {
   KAWASAN as STATIC_KAWASAN,
   ROLES,
@@ -46,17 +46,17 @@ export const Route = createFileRoute("/temudata")({
   component: TemuDataAi,
 });
 
-const SARAN = [
-  "Kawasan mana yang paling cocok untuk UMKM kuliner malam?",
-  "Kenapa Kiaracondong ditandai sebagai anomali peluang?",
-  "Kawasan mana yang paling butuh penambahan layanan?",
-  "Bandingkan tiga kawasan dengan skor properti tertinggi.",
-];
-
 function TemuDataAi() {
   const { peran: peranAwal, kawasan: kawasanAwal } = Route.useSearch();
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
-  const [kawasans, setKawasans] = useState<Kawasan[]>(STATIC_KAWASAN);
+  const { kawasans } = useKawasans();
+  
+  const SARAN = [
+    "Kawasan mana yang paling cocok untuk UMKM kuliner malam?",
+    kawasans.length > 1 ? `Kenapa ${kawasans.find(k => k.anomali)?.nama || kawasans[1].nama} ditandai sebagai anomali peluang?` : "Kenapa kawasan ini ditandai sebagai anomali peluang?",
+    "Kawasan mana yang paling butuh penambahan layanan?",
+    "Bandingkan tiga kawasan dengan skor properti tertinggi.",
+  ];
   const [selectedId, setSelectedId] = useState<string>(kawasanAwal ?? STATIC_KAWASAN[0].id);
 
   const [pesan, setPesan] = useState<Pesan[]>([]);
@@ -74,37 +74,6 @@ function TemuDataAi() {
   useEffect(() => {
     areaRef.current?.scrollTo({ top: areaRef.current.scrollHeight, behavior: "smooth" });
   }, [pesan, loading]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data, error: err } = await supabase.from("tod_stations").select("*");
-        if (err || !data?.length) return;
-        setKawasans((prev) =>
-          prev.map((k) => {
-            const d = data.find((x) => x.id === k.id);
-            if (!d) return k;
-            return {
-              ...k,
-              klaster: (d.klaster as Kawasan["klaster"]) || k.klaster,
-              umkm: d.umkm_count ?? k.umkm,
-              hargaTanah: d.harga_tanah_m2
-                ? Math.round(d.harga_tanah_m2 * 10) / 10
-                : k.hargaTanah,
-              skor: {
-                properti: Math.min(100, Math.max(1, d.skor_properti ?? 0)),
-                layanan: Math.min(100, Math.max(1, d.skor_layanan ?? 0)),
-                ekonomi: Math.min(100, Math.max(1, d.skor_ekonomi ?? 0)),
-                akses: Math.min(100, Math.max(1, d.skor_akses ?? 0)),
-              },
-            };
-          }),
-        );
-      } catch {
-        /* pakai data lokal */
-      }
-    })();
-  }, []);
 
   const terpilih = kawasans.find((k) => k.id === selectedId) ?? kawasans[0];
 

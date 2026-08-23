@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { VitalityMap } from "@/components/VitalityMap";
 import { KAWASAN as STATIC_KAWASAN, hitungSkor, type Kawasan } from "@/lib/vitality-data";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { useKawasans } from "@/hooks/useKawasans";
 import { RINGKASAN_SURVEI } from "@/lib/survei-data";
 import { generateInsights } from "@/lib/ai.functions";
 import { cn } from "@/lib/utils";
@@ -61,7 +61,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Beranda() {
-  const [kawasans, setKawasans] = useState<Kawasan[]>(STATIC_KAWASAN);
+  const { kawasans } = useKawasans();
   const [selectedId, setSelectedId] = useState<string>(STATIC_KAWASAN[0].id);
   const fullTitle = "Titik Temu";
 
@@ -71,35 +71,7 @@ function Beranda() {
     staleTime: Infinity,
   });
 
-  // Fetch 100% real computed analytics dari PostGIS Supabase
-  useEffect(() => {
-    async function loadRealData() {
-      try {
-        const { data, error } = await supabase.from('tod_stations').select('*');
-        if (error || !data || data.length === 0) return;
 
-        setKawasans(prev => prev.map(k => {
-          const dbData = data.find(d => d.id === k.id);
-          if (!dbData) return k;
-          return {
-            ...k,
-            klaster: (dbData.klaster as Kawasan['klaster']) || k.klaster,
-            umkm: dbData.umkm_count ?? k.umkm,
-            hargaTanah: dbData.harga_tanah_m2 ? Math.round(dbData.harga_tanah_m2 * 10) / 10 : k.hargaTanah,
-            skor: {
-              properti: Math.min(100, Math.max(1, dbData.skor_properti ?? 0)),
-              layanan: Math.min(100, Math.max(1, dbData.skor_layanan ?? 0)),
-              ekonomi: Math.min(100, Math.max(1, dbData.skor_ekonomi ?? 0)),
-              akses: Math.min(100, Math.max(1, dbData.skor_akses ?? 0)),
-            },
-          };
-        }));
-      } catch (e) {
-        console.error("Gagal load data asli:", e);
-      }
-    }
-    loadRealData();
-  }, []);
 
   const rata = Math.round(
     kawasans.reduce((a, k) => a + hitungSkor(k, "investor"), 0) / kawasans.length,
@@ -214,7 +186,7 @@ function Beranda() {
 
         {/* 2. Kawasan dianalisis */}
         <section className="mt-10 grid grid-cols-2 gap-2.5 sm:gap-3 lg:mt-14 lg:grid-cols-4">
-          <Stat icon={MapPin} label="Kawasan dianalisis" value={`${kawasans.length}`} sub="grid 200 m" />
+          <Stat icon={MapPin} label="Kawasan dianalisis" value={`${kawasans.length}`} sub="radius 800m" />
           <Stat icon={ClipboardList} label="Titik survei lapangan" value={`${RINGKASAN_SURVEI.totalTitik}`} sub={`${RINGKASAN_SURVEI.totalLokasi} lokasi`} />
           <Stat icon={Layers} label="Skor rata-rata pilot" value={`${rata}`} sub="peran investor" />
           <Stat

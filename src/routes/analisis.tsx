@@ -35,8 +35,7 @@ import {
   type JenisIntervensi,
 } from "@/lib/simulasi";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
-import { useEffect } from "react";
+import { useKawasans } from "@/hooks/useKawasans";
 
 const PALET = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)"];
 
@@ -65,36 +64,7 @@ export const Route = createFileRoute("/analisis")({
 function Analisis() {
   const [role, setRole] = useState<RoleId>("pemerintah");
   const [dipilih, setDipilih] = useState<string[]>([STATIC_KAWASAN[0].id, STATIC_KAWASAN[2].id, STATIC_KAWASAN[4].id]);
-  const [kawasans, setKawasans] = useState<Kawasan[]>(STATIC_KAWASAN);
-
-  useEffect(() => {
-    async function loadRealData() {
-      try {
-        const { data, error } = await supabase.from('tod_stations').select('*');
-        if (error || !data || data.length === 0) return;
-
-        setKawasans(prev => prev.map(k => {
-          const dbData = data.find(d => d.id === k.id);
-          if (!dbData) return k;
-          return {
-            ...k,
-            klaster: (dbData.klaster as Kawasan['klaster']) || k.klaster,
-            umkm: dbData.umkm_count ?? k.umkm,
-            hargaTanah: dbData.harga_tanah_m2 ? Math.round(dbData.harga_tanah_m2 * 10) / 10 : k.hargaTanah,
-            skor: {
-              properti: Math.min(100, Math.max(1, dbData.skor_properti ?? 0)),
-              layanan: Math.min(100, Math.max(1, dbData.skor_layanan ?? 0)),
-              ekonomi: Math.min(100, Math.max(1, dbData.skor_ekonomi ?? 0)),
-              akses: Math.min(100, Math.max(1, dbData.skor_akses ?? 0)),
-            },
-          };
-        }));
-      } catch (e) {
-        console.error("Gagal load data asli:", e);
-      }
-    }
-    loadRealData();
-  }, []);
+  const { kawasans } = useKawasans();
 
   const kawasan = kawasans.filter((k) => dipilih.includes(k.id));
 
