@@ -88,9 +88,11 @@ function Beranda() {
           loop
           muted
           playsInline
+          controlsList="nodownload"
+          disablePictureInPicture
           preload="metadata"
           aria-label="Animasi kawasan transit Kota Bandung"
-          className="hero-zoom absolute inset-0 size-full object-cover"
+          className="hero-zoom absolute inset-0 size-full object-cover pointer-events-none"
         />
         <div className="absolute inset-0 bg-ink/60" />
         <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-ink/70 to-transparent" />

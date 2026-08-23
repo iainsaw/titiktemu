@@ -124,6 +124,22 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    const preventMediaDownload = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName?.toLowerCase() === "img" || target.tagName?.toLowerCase() === "video")) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("contextmenu", preventMediaDownload);
+    document.addEventListener("dragstart", preventMediaDownload);
+
+    return () => {
+      document.removeEventListener("contextmenu", preventMediaDownload);
+      document.removeEventListener("dragstart", preventMediaDownload);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
