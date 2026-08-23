@@ -46,7 +46,7 @@ export const Route = createFileRoute("/analisis")({
       {
         name: "description",
         content:
-          "Vitality Twin: bandingkan hingga empat kawasan transit Bandung Raya dan simulasikan dampak penambahan rute, armada, halte, atau jalur pejalan kaki terhadap skor kesenjangan layanan.",
+          "Vitality Twin: bandingkan hingga empat kawasan transit Kota Bandung dan simulasikan dampak penambahan rute, armada, halte, atau jalur pejalan kaki terhadap skor kesenjangan layanan.",
       },
       { property: "og:title", content: "Analisis & Perbandingan — Titik Temu" },
       {

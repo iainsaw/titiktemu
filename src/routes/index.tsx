@@ -41,11 +41,11 @@ const KARTU = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Titik Temu — Indeks Vitalitas Transit Bandung Raya" },
+      { title: "Titik Temu — Indeks Vitalitas Transit Kota Bandung" },
       {
         name: "description",
         content:
-          "Platform Sistem Pendukung Keputusan Spasial (WebGIS) untuk mengukur Indeks Vitalitas Transit di kawasan Bandung Raya.",
+          "Platform Sistem Pendukung Keputusan Spasial (WebGIS) untuk mengukur Indeks Vitalitas Transit di kawasan Kota Bandung.",
       },
       { property: "og:title", content: "Titik Temu — Indeks Vitalitas Transit" },
       {
@@ -89,7 +89,7 @@ function Beranda() {
           muted
           playsInline
           preload="metadata"
-          aria-label="Animasi kawasan transit Bandung Raya"
+          aria-label="Animasi kawasan transit Kota Bandung"
           className="hero-zoom absolute inset-0 size-full object-cover"
         />
         <div className="absolute inset-0 bg-ink/60" />
@@ -97,15 +97,7 @@ function Beranda() {
         <div className="absolute inset-x-0 bottom-0 h-72 bg-linear-to-t from-background via-ink/40 to-transparent" />
 
         <div className="relative mx-auto max-w-[900px] px-4 pt-24 pb-12 text-center text-ink-foreground sm:px-5 sm:pt-36 sm:pb-16">
-          <div className="hero-rise flex flex-wrap items-center justify-center gap-2" style={{ animationDelay: "0.05s" }}>
-            <span className="pill border border-ink-foreground/25 bg-ink/70 px-3 py-1 text-[11px] font-medium text-ink-foreground backdrop-blur-md sm:px-4 sm:py-1.5 sm:text-[13px]">
-              MAPID WebGIS Competition 2026
-            </span>
-            <span className="pill border border-ink-foreground/25 bg-ink/70 px-3 py-1 text-[11px] font-medium text-ink-foreground backdrop-blur-md sm:px-4 sm:py-1.5 sm:text-[13px]">
-              Pilot <span className="font-semibold">Bandung Raya</span>
-            </span>
 
-          </div>
 
           <h1
             className="headline hero-rise mt-5 text-[clamp(38px,12vw,76px)] text-ink-foreground sm:mt-6"

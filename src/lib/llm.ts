@@ -37,7 +37,7 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
  * @param konteks Teks hasil `konteksKawasan()`
  */
 export async function getAiInsight(konteks: string): Promise<string> {
-  const prompt = `Anda adalah AI asisten untuk "Titik Temu", sebuah dashboard webGIS yang menganalisis potensi transit kawasan di Bandung Raya.
+  const prompt = `Anda adalah AI asisten untuk "Titik Temu", sebuah dashboard webGIS yang menganalisis potensi transit kawasan di Kota Bandung.
 Tugas Anda adalah menjelaskan secara singkat dan jelas kepada pengguna mengapa kawasan ini mendapatkan skor vitalitas yang diberikan.
 
 KONTEKS KAWASAN:
@@ -65,7 +65,7 @@ export async function sendAiChat(
   history: Pesan[],
   input: string
 ): Promise<string> {
-  const systemInstruction = `Anda adalah AI asisten untuk "Titik Temu", sebuah dashboard webGIS yang menganalisis potensi transit kawasan di Bandung Raya. Anda bertugas menjawab pertanyaan pengguna tentang 16 kawasan percontohan berdasarkan data dashboard saat ini.
+  const systemInstruction = `Anda adalah AI asisten untuk "Titik Temu", sebuah dashboard webGIS yang menganalisis potensi transit kawasan di Kota Bandung. Anda bertugas menjawab pertanyaan pengguna tentang 16 kawasan percontohan berdasarkan data dashboard saat ini.
 Gunakan format markdown yang rapi (bullet points, tebal) jika diperlukan. Jangan halusinasi angka yang tidak ada di konteks. Jika pengguna menanyakan rekomendasi, berikan berdasarkan skor tertinggi untuk kategori yang ditanyakan.
 
 KONTEKS DASHBOARD SAAT INI:

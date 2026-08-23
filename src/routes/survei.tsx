@@ -12,7 +12,7 @@ export const Route = createFileRoute("/survei")({
       {
         name: "description",
         content:
-          "Dokumentasi survei lapangan tim Titik Temu di kawasan transit Bandung Raya: metode, titik pengamatan, temuan utama, dan catatan per lokasi.",
+          "Dokumentasi survei lapangan tim Titik Temu di kawasan transit Kota Bandung: metode, titik pengamatan, temuan utama, dan catatan per lokasi.",
       },
       { property: "og:title", content: "Survei Lapangan — Titik Temu" },
       {

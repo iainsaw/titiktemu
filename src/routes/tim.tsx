@@ -84,7 +84,7 @@ export const Route = createFileRoute("/tim")({
       { property: "og:title", content: "Tentang Tim — Titik Temu" },
       {
         property: "og:description",
-        content: "Tim di balik Skor Vitalitas Transit untuk pilot Bandung Raya.",
+        content: "Tim di balik Skor Vitalitas Transit untuk pilot Kota Bandung.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -103,7 +103,7 @@ function TentangTim() {
         <p className="mt-4 max-w-[620px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
           Tim multidisiplin di balik <span className="font-semibold text-foreground">Titik Temu</span> —
           kolaborasi mahasiswa & dosen pembimbing Institut Teknologi Bandung untuk WebGIS Skor
-          Vitalitas Transit, pilot Kawasan Bandung Raya.
+          Vitalitas Transit, pilot Kawasan Kota Bandung.
         </p>
 
 
@@ -162,7 +162,7 @@ function TentangTim() {
         <div className="panel mt-8 p-6 text-[13px] leading-relaxed text-muted-foreground">
           <p className="text-[16px] font-semibold text-foreground">Kompetisi & kontak</p>
           <p className="mt-2">
-            MAPID WebGIS Competition 2026 · Kategori WebGIS Analitik · Pilot Bandung Raya (BBK).
+            MAPID WebGIS Competition 2026 · Kategori WebGIS Analitik · Pilot Kota Bandung (BBK).
           </p>
           <p className="mt-1">Kontak: titiktemu.team@email.com</p>
           <Link to="/metodologi" className="mt-3 inline-block font-medium text-primary hover:underline">

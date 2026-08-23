@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "WebGIS Skor Vitalitas Transit untuk kawasan sekitar titik transportasi massal Bandung Raya.",
+          "WebGIS Skor Vitalitas Transit untuk kawasan sekitar titik transportasi massal Kota Bandung.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

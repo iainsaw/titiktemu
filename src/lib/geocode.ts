@@ -9,12 +9,12 @@ export type GeoResult = {
   displayName: string;
 };
 
-// Bounding box Bandung Raya (viewbox: lon_min, lat_min, lon_max, lat_max)
+// Bounding box Kota Bandung (viewbox: lon_min, lat_min, lon_max, lat_max)
 const BANDUNG_VIEWBOX = "107.2,−7.2,107.9,−6.7";
 
 /**
  * Geocode nama tempat menjadi koordinat.
- * Dibatasi di area Bandung Raya agar hasilnya relevan.
+ * Dibatasi di area Kota Bandung agar hasilnya relevan.
  * Mengembalikan null jika tidak ditemukan.
  */
 export async function geocode(query: string): Promise<GeoResult | null> {

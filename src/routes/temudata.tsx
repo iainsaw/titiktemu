@@ -31,7 +31,7 @@ export const Route = createFileRoute("/temudata")({
       {
         name: "description",
         content:
-          "TemuData AI menggabungkan chat asisten dan penjelasan skor otomatis untuk 16 kawasan pilot Bandung Raya berbasis data dashboard Titik Temu.",
+          "TemuData AI menggabungkan chat asisten dan penjelasan skor otomatis untuk 16 kawasan pilot Kota Bandung berbasis data dashboard Titik Temu.",
       },
       { property: "og:title", content: "TemuData AI — Titik Temu" },
       {

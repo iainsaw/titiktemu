@@ -45,7 +45,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
   // 2. Geocode
   const geo = await geocode(searchQuery);
   if (!geo) {
-    throw new Error(`Lokasi "${searchQuery}" tidak ditemukan di area Bandung Raya. Coba nama yang lebih spesifik.`);
+    throw new Error(`Lokasi "${searchQuery}" tidak ditemukan di area Kota Bandung. Coba nama yang lebih spesifik.`);
   }
 
   // 2. Query PostGIS via RPC

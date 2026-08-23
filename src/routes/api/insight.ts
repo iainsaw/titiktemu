@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { callGateway } from "./chat";
 
-const SYSTEM = `Kamu adalah mesin AI Insight untuk WebGIS "Titik Temu" (Skor Vitalitas Transit, pilot Bandung Raya).
+const SYSTEM = `Kamu adalah mesin AI Insight untuk WebGIS "Titik Temu" (Skor Vitalitas Transit, pilot Kota Bandung).
 Tugasmu: menjelaskan MENGAPA skor sebuah kawasan berbeda antar komponen, dalam Bahasa Indonesia.
 Format jawaban WAJIB:
 1. Satu kalimat kesimpulan utama.

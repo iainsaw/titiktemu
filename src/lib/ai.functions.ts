@@ -22,7 +22,7 @@ export const generateInsights = createServerFn({ method: "POST" })
 
     const prompt = `
 Anda adalah seorang analis tata kota (urban planner) ahli.
-Analisis data kawasan transit berikut di Bandung Raya:
+Analisis data kawasan transit berikut di Kota Bandung:
 ${JSON.stringify(dataSummary, null, 2)}
 
 Tugas Anda:

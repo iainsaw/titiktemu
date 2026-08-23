@@ -38,7 +38,7 @@ type Props = {
 };
 
 /**
- * Koordinat geografis nyata (lng, lat) tiap kawasan pilot Bandung Raya,
+ * Koordinat geografis nyata (lng, lat) tiap kawasan pilot Kota Bandung,
  * dipetakan berdasarkan lokasi aktual titik transit terdekat. Digunakan
  * untuk menempatkan marker MapLibre secara geografis di atas basemap MAPID.
  */

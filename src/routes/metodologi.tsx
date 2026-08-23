@@ -49,7 +49,7 @@ function Metodologi() {
         <h1 className="headline text-[clamp(28px,8vw,52px)]">Metodologi & Sumber Data</h1>
 
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Semua data di dalam platform ini menggunakan <strong>data asli</strong> dari wilayah percontohan Bandung Raya yang ditarik secara real-time melalui basis data PostgreSQL (Supabase).
+          Semua data di dalam platform ini menggunakan <strong>data asli</strong> dari wilayah percontohan Kota Bandung yang ditarik secara real-time melalui basis data PostgreSQL (Supabase).
         </p>
 
         <Section title="1. Jangkauan Pejalan Kaki (Radius 800m)">

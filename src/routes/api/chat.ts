@@ -43,7 +43,7 @@ export async function callGateway(messages: Msg[]) {
   });
 }
 
-const SYSTEM = `Kamu adalah AI Assistant untuk WebGIS "Titik Temu" (Skor Vitalitas Transit, pilot Bandung Raya).
+const SYSTEM = `Kamu adalah AI Assistant untuk WebGIS "Titik Temu" (Skor Vitalitas Transit, pilot Kota Bandung).
 Jawab dalam Bahasa Indonesia yang ringkas, konkret, dan berbasis DATA KAWASAN yang diberikan di bawah.
 Aturan:
 - Selalu rujuk nama kawasan dan angka skor yang relevan.
