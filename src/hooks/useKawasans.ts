@@ -47,7 +47,7 @@ export function useKawasans() {
 
           if (error || !data || data.length === 0) return STATIC_KAWASAN;
 
-          const baseIds = ["KWS-01", "KWS-02", "KWS-03", "KWS-04", "KWS-05"];
+          const baseIds = Array.from({ length: 16 }, (_, i) => `KWS-${String(i + 1).padStart(2, '0')}`);
           const combined = new Map<string, Kawasan>();
 
           const seenNames = new Set<string>();

@@ -50,6 +50,17 @@ export const KOORDINAT: Record<string, [number, number]> = {
   "KWS-03": [107.5960, -6.9458], // Terminal Leuwipanjang
   "KWS-04": [107.6033, -6.9328], // Tegalega
   "KWS-05": [107.6158, -6.8906], // Dipatiukur
+  "KWS-06": [107.6465, -6.9248], // Stasiun Kiaracondong
+  "KWS-07": [107.5878, -6.9142], // Stasiun Ciroyom
+  "KWS-08": [107.6272, -6.9213], // Stasiun Cikudapateuh
+  "KWS-09": [107.5794, -6.9135], // Stasiun Andir
+  "KWS-10": [107.5583, -6.8986], // Stasiun Cimindi
+  "KWS-11": [107.6548, -6.9038], // Terminal Cicaheum
+  "KWS-12": [107.5960, -6.8615], // Terminal Ledeng
+  "KWS-13": [107.6186, -6.9003], // Gasibu
+  "KWS-14": [107.6095, -6.9174], // Braga
+  "KWS-15": [107.6433, -6.9128], // Kiara Artha Park
+  "KWS-16": [107.6558, -6.9145], // Antapani
 };
 
 /**
