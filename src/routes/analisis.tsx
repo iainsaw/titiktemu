@@ -89,7 +89,7 @@ function Analisis() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-[1180px] px-4 py-8 sm:px-5 sm:py-12">
+      <main className="mx-auto max-w-[1440px] px-4 py-8 sm:px-5 sm:py-12">
         <AnimatedSection>
           <h1 className="headline text-[clamp(28px,8vw,50px)]">Analisis & Perbandingan</h1>
           <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
@@ -145,7 +145,7 @@ function Analisis() {
                 })}
               </ul>
             </div>
-            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               <div className="panel p-4 sm:p-5">
                 <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
                 <div className="h-[240px] sm:h-[280px]">
@@ -223,13 +223,13 @@ function Analisis() {
             <table className="w-full text-left text-xs">
               <thead className="text-muted-foreground">
                 <tr className="border-b border-border">
-                  <th className="pb-2 font-medium">Kawasan</th>
+                  <th className="pb-2 font-medium w-[25%]">Kawasan</th>
                   {COMPONENTS.map((c) => (
-                    <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2">
+                    <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2 w-[12%] text-center">
                       {c.short}
                     </th>
                   ))}
-                  <th className="pb-2 font-medium whitespace-nowrap pl-2">Total</th>
+                  <th className="pb-2 font-medium whitespace-nowrap px-2 w-[15%] text-center">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -237,7 +237,7 @@ function Analisis() {
                   <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
                     <td className="py-2.5 font-medium pr-4">{k.nama}</td>
                     {COMPONENTS.map((c) => (
-                      <td key={c.id} className="py-2.5 font-display px-2">
+                      <td key={c.id} className="py-2.5 font-display px-2 text-center">
                         {k.skor[c.id]}
                       </td>
                     ))}
@@ -459,7 +459,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
               <table className="w-full text-left text-xs">
                 <thead className="text-muted-foreground">
                   <tr className="border-b border-border">
-                    <th className="pb-2 font-medium">Kawasan</th>
+                    <th className="pb-2 font-medium w-[25%]">Kawasan</th>
                     <th className="pb-2 font-medium">Layanan</th>
                     <th className="pb-2 font-medium">Akses</th>
                     <th className="pb-2 font-medium">Total</th>
