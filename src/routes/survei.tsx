@@ -84,12 +84,7 @@ function SurveiLapangan() {
           ))}
         </div>
 
-        <AnimatedSection delay={200} className="mt-8 text-[12px] text-muted-foreground">
-          <p>
-            Dokumentasi foto pada prototipe ini masih berupa placeholder; berkas foto asli tersedia
-            pada arsip tim dan akan ditautkan pada versi final.
-          </p>
-        </AnimatedSection>
+
       </main>
       <SiteFooter />
     </div>
