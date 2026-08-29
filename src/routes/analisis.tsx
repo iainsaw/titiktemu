@@ -13,7 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Plus, Trash2, Route as RouteIcon } from "lucide-react";
+import { Plus, Trash2, Route as RouteIcon, Sparkles } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -70,6 +70,9 @@ function Analisis() {
 
   const kawasan = kawasans.filter((k) => dipilih.includes(k.id));
 
+  const kawasanTerbaik = [...kawasan].sort((a, b) => hitungSkor(b, role) - hitungSkor(a, role))[0];
+  const kawasanTerendah = [...kawasan].sort((a, b) => hitungSkor(a, role) - hitungSkor(b, role))[0];
+
   const toggle = (id: string) =>
     setDipilih((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : prev.length < 4 ? [...prev, id] : prev,
@@ -116,34 +119,51 @@ function Analisis() {
 
         <AnimatedSection delay={200} className="mt-6 flex flex-col gap-5">
           <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
-            <div className="panel max-h-[560px] overflow-y-auto p-4">
-              <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
-              <ul className="space-y-1">
-                {kawasans.map((k) => {
-                  const aktif = dipilih.includes(k.id);
-                  return (
-                    <li key={k.id}>
-                      <button
-                        onClick={() => toggle(k.id)}
-                        className={cn(
-                          "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
-                          aktif
-                            ? "bg-secondary text-foreground"
-                            : "text-muted-foreground hover:bg-secondary/60",
-                        )}
-                      >
-                        <span className="truncate">{k.nama}</span>
-                        <span
-                          className="font-mono text-[11px] font-semibold"
-                          style={{ color: warnaSkor(hitungSkor(k, role)) }}
+            <div className="flex flex-col gap-5">
+              <div className="panel max-h-[560px] overflow-y-auto p-4">
+                <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
+                <ul className="space-y-1">
+                  {kawasans.map((k) => {
+                    const aktif = dipilih.includes(k.id);
+                    return (
+                      <li key={k.id}>
+                        <button
+                          onClick={() => toggle(k.id)}
+                          className={cn(
+                            "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
+                            aktif
+                              ? "bg-secondary text-foreground"
+                              : "text-muted-foreground hover:bg-secondary/60",
+                          )}
                         >
-                          {hitungSkor(k, role)}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+                          <span className="truncate">{k.nama}</span>
+                          <span
+                            className="font-mono text-[11px] font-semibold"
+                            style={{ color: warnaSkor(hitungSkor(k, role)) }}
+                          >
+                            {hitungSkor(k, role)}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              {kawasanTerbaik && (
+                <div className="panel relative overflow-hidden border-primary/20 bg-primary/5 p-4">
+                  <div className="absolute -right-4 -top-4 size-16 rounded-full bg-primary/10 blur-2xl"></div>
+                  <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-primary">
+                    <Sparkles className="size-4" /> Insight Singkat
+                  </h2>
+                  <p className="relative z-10 text-[12px] leading-relaxed text-muted-foreground">
+                    Berdasarkan perspektif <span className="font-medium text-foreground">{ROLES.find((r) => r.id === role)?.label}</span>, kawasan <span className="font-medium text-foreground">{kawasanTerbaik.nama}</span> menunjukkan potensi terbaik dengan skor <span className="font-mono font-medium text-foreground">{hitungSkor(kawasanTerbaik, role)}</span>.
+                    {kawasan.length > 1 && kawasanTerendah && kawasanTerendah.id !== kawasanTerbaik.id && (
+                      <> Sementara itu, <span className="font-medium text-foreground">{kawasanTerendah.nama}</span> mencatat skor terendah (<span className="font-mono font-medium text-foreground">{hitungSkor(kawasanTerendah, role)}</span>) dan memiliki peluang pengembangan terbesar.</>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
               <div className="panel p-4 sm:p-5">
