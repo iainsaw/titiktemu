@@ -483,10 +483,10 @@ function PetaInteraktif() {
                 <Fact label="Transit" value={terpilih.jarakTransit || 0} suffix="m" fallback="N/A" />
                 <Fact label="UMKM" value={terpilih.umkm || 0} fallback="N/A" />
                 <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
-                  <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
+                  <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
                     Harga
                   </dt>
-                  <dd className="mt-0.5 font-display text-[12px] font-semibold">
+                  <dd className="mt-1 font-display text-[14px] font-semibold">
                     {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
                   </dd>
                   {customPrices[terpilih.id] && (
