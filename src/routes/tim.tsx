@@ -5,6 +5,7 @@ import { getSecureAssetUrl } from "@/lib/supabase";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AnimatedSection } from "@/components/AnimatedSection";
 const fotoRiantini = { url: "/tim-riantini.jpg" };
 const fotoDimyati = { url: "/tim-dimyati-8.jpg" };
 const fotoSyahrul = { url: "/tim-syahrul-2.jpg" };
@@ -118,16 +119,17 @@ function TentangTim() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-[1180px] px-4 py-10 sm:px-5 sm:py-16">
-        <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px]">TIM</p>
-        <h1 className="headline mt-3 text-[clamp(30px,9vw,56px)]">Urban Nadi</h1>
-        <p className="mt-4 max-w-[620px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-          Tim multidisiplin di balik <span className="font-semibold text-foreground">Titik Temu</span> —
-          kolaborasi mahasiswa & dosen pembimbing Institut Teknologi Bandung untuk WebGIS Skor
-          Vitalitas Transit, pilot Kawasan Kota Bandung.
-        </p>
+        <AnimatedSection>
+          <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px]">TIM</p>
+          <h1 className="headline mt-3 text-[clamp(30px,9vw,56px)]">Urban Nadi</h1>
+          <p className="mt-4 max-w-[620px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+            Tim multidisiplin di balik <span className="font-semibold text-foreground">Titik Temu</span> —
+            kolaborasi mahasiswa & dosen pembimbing Institut Teknologi Bandung untuk WebGIS Skor
+            Vitalitas Transit, pilot Kawasan Kota Bandung.
+          </p>
+        </AnimatedSection>
 
-
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
+        <AnimatedSection delay={150} className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
           {team.map((t) => (
             <article
               key={t.nama}
@@ -177,9 +179,9 @@ function TentangTim() {
 
             </article>
           ))}
-        </div>
+        </AnimatedSection>
 
-        <div className="panel mt-8 p-6 text-[13px] leading-relaxed text-muted-foreground">
+        <AnimatedSection delay={300} animation="zoom-in" className="panel mt-8 p-6 text-[13px] leading-relaxed text-muted-foreground">
           <p className="text-[16px] font-semibold text-foreground">Kompetisi & kontak</p>
           <p className="mt-2">
             MAPID WebGIS Competition 2026 · Kategori WebGIS Analitik · Pilot Kota Bandung (BBK).
@@ -188,7 +190,7 @@ function TentangTim() {
           <Link to="/metodologi" className="mt-3 inline-block font-medium text-primary hover:underline">
             Baca metodologi & sumber data ›
           </Link>
-        </div>
+        </AnimatedSection>
       </main>
       <SiteFooter />
     </div>

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Loader2, Search as SearchIcon, Expand, Shrink } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
+import { AnimatedSection } from "@/components/AnimatedSection";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 
 import { VitalityMap } from "@/components/VitalityMap";
 const aiStar = { url: "/titik-temu-ai-star.png" };
@@ -237,7 +239,7 @@ function PetaInteraktif() {
           />
 
           {/* CARD 1: Role Selector (Bottom Center) */}
-          <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+          <AnimatedSection animation="fade-in-up" delay={200} className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
             {ROLES.map((r) => (
               <button
                 key={r.id}
@@ -255,10 +257,10 @@ function PetaInteraktif() {
                 {r.label}
               </button>
             ))}
-          </div>
+          </AnimatedSection>
 
           {/* RIGHT CARDS CONTAINER */}
-          <div className={cn(
+          <AnimatedSection animation="slide-in-right" delay={100} className={cn(
             "absolute top-4 right-4 z-40 flex max-h-[calc(100vh-32px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
           )}>
@@ -382,10 +384,10 @@ function PetaInteraktif() {
                 </ol>
               </div>
             </div>
-          </div>
+          </AnimatedSection>
 
           {/* LEFT CARDS CONTAINER */}
-          <div className={cn(
+          <AnimatedSection animation="slide-in-left" delay={100} className={cn(
             "absolute top-4 left-4 z-40 flex max-h-[calc(100vh-32px)] w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
             isMapMaximized ? "left-[-400px] opacity-0" : "opacity-100"
           )}>
@@ -459,27 +461,27 @@ function PetaInteraktif() {
                 <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-secondary/30 p-3.5 dark:bg-white/5">
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Penduduk (2024)</span>
-                    <span className="font-mono text-[13px] font-semibold">{terpilih.penduduk.toLocaleString('id-ID')}</span>
+                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.penduduk} /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Kepadatan</span>
-                    <span className="font-mono text-[13px] font-semibold">{Math.round(terpilih.kepadatan || 0).toLocaleString('id-ID')} /km²</span>
+                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={Math.round(terpilih.kepadatan || 0)} suffix=" /km²" /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Pelajar & Mhs</span>
-                    <span className="font-mono text-[13px] font-semibold">{(terpilih.pelajar || 0).toLocaleString('id-ID')}</span>
+                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.pelajar || 0} /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Total Fasilitas</span>
-                    <span className="font-mono text-[13px] font-semibold">{terpilih.totalFasilitas || 0} POI</span>
+                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.totalFasilitas || 0} suffix=" POI" /></span>
                   </div>
                 </div>
               )}
 
               {/* Quick Facts */}
               <dl className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-secondary/30 p-3 text-center dark:bg-white/5">
-                <Fact label="Transit" value={terpilih.jarakTransit ? `${terpilih.jarakTransit}m` : "N/A"} />
-                <Fact label="UMKM" value={terpilih.umkm ? `${terpilih.umkm}` : "N/A"} />
+                <Fact label="Transit" value={terpilih.jarakTransit || 0} suffix="m" fallback="N/A" />
+                <Fact label="UMKM" value={terpilih.umkm || 0} fallback="N/A" />
                 <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
                   <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
                     Harga
@@ -540,7 +542,7 @@ function PetaInteraktif() {
               </div>
 
             </div>
-          </div>
+          </AnimatedSection>
 
           {/* Floating: Toggle Sidebar (Moved to right above legend) */}
           <button
@@ -573,11 +575,13 @@ function PetaInteraktif() {
   );
 }
 
-function Fact({ label, value }: { label: string; value: string }) {
+function Fact({ label, value, suffix, fallback }: { label: string; value: string | number; suffix?: string; fallback?: string }) {
   return (
     <div className="flex flex-col items-center justify-center">
       <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</dt>
-      <dd className="mt-1 font-mono text-[14px] font-semibold">{value}</dd>
+      <dd className="mt-1 font-mono text-[14px] font-semibold">
+        {typeof value === 'number' && value > 0 ? <AnimatedNumber value={value} suffix={suffix} /> : fallback || value}
+      </dd>
     </div>
   );
 }

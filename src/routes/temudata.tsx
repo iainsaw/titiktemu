@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { AiIcon } from "@/components/AiIcon";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { konteksDashboard, konteksKawasan } from "@/lib/ai-konteks";
 import { getAiInsight, sendAiChat, type Pesan } from "@/lib/llm";
 import { useKawasans } from "@/hooks/useKawasans";
@@ -163,7 +164,7 @@ function TemuDataAi() {
           </div>
 
           {kosong ? (
-            <div className="flex flex-1 flex-col items-center justify-center text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <AnimatedSection animation="zoom-in" className="flex flex-1 flex-col items-center justify-center text-center">
               <div className="flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 shadow-inner ring-1 ring-primary/20">
                 <AiIcon className="size-8" />
               </div>
@@ -186,7 +187,7 @@ function TemuDataAi() {
                   </button>
                 ))}
               </div>
-            </div>
+            </AnimatedSection>
           ) : (
             <div ref={areaRef} className="flex-1 space-y-6 overflow-y-auto pb-4 pr-1">
               {pesan.map((p, i) =>

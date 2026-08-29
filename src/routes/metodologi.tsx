@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { COMPONENTS, ROLES } from "@/lib/vitality-data";
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
+import { AnimatedSection } from "@/components/AnimatedSection";
 
 export const Route = createFileRoute("/metodologi")({
   head: () => ({
@@ -218,9 +219,9 @@ function Metodologi() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-8">
+    <AnimatedSection animation="fade-in-up" className="mt-8">
       <h2 className="mb-3 text-lg font-semibold">{title}</h2>
       <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">{children}</div>
-    </section>
+    </AnimatedSection>
   );
 }

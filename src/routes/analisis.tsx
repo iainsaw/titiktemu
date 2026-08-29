@@ -17,6 +17,8 @@ import { Plus, Trash2, Route as RouteIcon } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AnimatedSection } from "@/components/AnimatedSection";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import {
   COMPONENTS,
   KAWASAN as STATIC_KAWASAN,
@@ -88,13 +90,14 @@ function Analisis() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-[1180px] px-4 py-8 sm:px-5 sm:py-12">
-        <h1 className="headline text-[clamp(28px,8vw,50px)]">Analisis & Perbandingan</h1>
-        <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
+        <AnimatedSection>
+          <h1 className="headline text-[clamp(28px,8vw,50px)]">Analisis & Perbandingan</h1>
+          <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
+            Bandingkan potensi tiap kawasan secara berdampingan. Anda juga bisa menguji simulasi: lihat bagaimana skor kawasan melonjak naik saat Anda menambahkan rute angkot, halte, atau jalur pejalan kaki baru.
+          </p>
+        </AnimatedSection>
 
-          Bandingkan potensi tiap kawasan secara berdampingan. Anda juga bisa menguji simulasi: lihat bagaimana skor kawasan melonjak naik saat Anda menambahkan rute angkot, halte, atau jalur pejalan kaki baru.
-        </p>
-
-        <div className="mt-6 flex flex-wrap items-center gap-2">
+        <AnimatedSection delay={100} className="mt-6 flex flex-wrap items-center gap-2">
           {ROLES.map((r) => (
             <button
               key={r.id}
@@ -109,9 +112,9 @@ function Analisis() {
               {r.label}
             </button>
           ))}
-        </div>
+        </AnimatedSection>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
+        <AnimatedSection delay={200} className="mt-6 grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
           <div className="panel max-h-[560px] overflow-y-auto p-4">
             <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
             <ul className="space-y-1">
@@ -246,7 +249,7 @@ function Analisis() {
               </table>
             </div>
           </div>
-        </div>
+        </AnimatedSection>
 
         <SimulasiLayanan role={role} kawasans={kawasans} />
       </main>
@@ -271,7 +274,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
     ]);
 
   return (
-    <section className="mt-12">
+    <AnimatedSection animation="fade-in-up" delay={150} className="mt-12">
       <h2 className="headline flex items-center gap-2 text-[26px] sm:text-[34px]">
         <RouteIcon className="size-6 text-primary" /> Simulasi dampak penambahan layanan
       </h2>
@@ -482,15 +485,17 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 
-function Metrik({ label, value, sub }: { label: string; value: string; sub: string }) {
+function Metrik({ label, value, sub }: { label: string; value: string | number; sub: string }) {
   return (
     <div className="panel p-4">
       <p className="text-[11px] text-muted-foreground">{label}</p>
-      <p className="font-display text-[22px] font-semibold tracking-tight">{value}</p>
+      <p className="font-display text-[22px] font-semibold tracking-tight">
+        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+      </p>
       <p className="text-[11px] leading-snug text-muted-foreground">{sub}</p>
     </div>
   );
