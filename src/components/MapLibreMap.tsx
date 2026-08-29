@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import "maplibre-gl/dist/maplibre-gl.css";
+// Load worker URL explicitly for Vite so it doesn't hang in production
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 
 type MapInstance = any;
 
@@ -66,6 +68,9 @@ export function MapLibreMap({
 
         const MLGL = module.default || module;
         (window as any).maplibregl = MLGL;
+
+        // Fix pending worker issue in Vite production build
+        MLGL.setWorkerUrl(maplibreWorkerUrl);
 
         // Ensure the container has a non-zero size before init
         const el = containerRef.current;
