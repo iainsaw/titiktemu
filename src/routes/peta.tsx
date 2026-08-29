@@ -308,11 +308,11 @@ function PetaInteraktif() {
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
-                  Angkot
+                  Jalur Angkot
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
-                  Bus (BRT)
+                  Jalur Bus (BRT)
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
