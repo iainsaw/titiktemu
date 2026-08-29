@@ -114,38 +114,37 @@ function Analisis() {
           ))}
         </AnimatedSection>
 
-        <AnimatedSection delay={200} className="mt-6 grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
-          <div className="panel max-h-[560px] overflow-y-auto p-4">
-            <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
-            <ul className="space-y-1">
-              {kawasans.map((k) => {
-                const aktif = dipilih.includes(k.id);
-                return (
-                  <li key={k.id}>
-                    <button
-                      onClick={() => toggle(k.id)}
-                      className={cn(
-                        "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
-                        aktif
-                          ? "bg-secondary text-foreground"
-                          : "text-muted-foreground hover:bg-secondary/60",
-                      )}
-                    >
-                      <span className="truncate">{k.nama}</span>
-                      <span
-                        className="font-mono text-[11px] font-semibold"
-                        style={{ color: warnaSkor(hitungSkor(k, role)) }}
+        <AnimatedSection delay={200} className="mt-6 flex flex-col gap-5">
+          <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
+            <div className="panel max-h-[560px] overflow-y-auto p-4">
+              <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
+              <ul className="space-y-1">
+                {kawasans.map((k) => {
+                  const aktif = dipilih.includes(k.id);
+                  return (
+                    <li key={k.id}>
+                      <button
+                        onClick={() => toggle(k.id)}
+                        className={cn(
+                          "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
+                          aktif
+                            ? "bg-secondary text-foreground"
+                            : "text-muted-foreground hover:bg-secondary/60",
+                        )}
                       >
-                        {hitungSkor(k, role)}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div className="flex flex-col gap-5">
+                        <span className="truncate">{k.nama}</span>
+                        <span
+                          className="font-mono text-[11px] font-semibold"
+                          style={{ color: warnaSkor(hitungSkor(k, role)) }}
+                        >
+                          {hitungSkor(k, role)}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
             <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
               <div className="panel p-4 sm:p-5">
                 <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
@@ -191,6 +190,10 @@ function Analisis() {
                         tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
                         axisLine={false}
                         tickLine={false}
+                        interval={0}
+                        angle={-25}
+                        textAnchor="end"
+                        height={50}
                       />
                       <YAxis
                         domain={[0, 100]}
@@ -213,41 +216,41 @@ function Analisis() {
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="panel overflow-x-auto p-4 sm:p-5">
-              <h2 className="mb-4 text-sm font-semibold">Tabel perbandingan</h2>
-              <table className="w-full text-left text-xs">
-                <thead className="text-muted-foreground">
-                  <tr className="border-b border-border">
-                    <th className="pb-2 font-medium">Kawasan</th>
-                    {COMPONENTS.map((c) => (
-                      <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2">
-                        {c.short}
-                      </th>
-                    ))}
-                    <th className="pb-2 font-medium whitespace-nowrap pl-2">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {kawasan.map((k) => (
-                    <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
-                      <td className="py-2.5 font-medium pr-4">{k.nama}</td>
-                      {COMPONENTS.map((c) => (
-                        <td key={c.id} className="py-2.5 font-mono px-2">
-                          {k.skor[c.id]}
-                        </td>
-                      ))}
-                      <td
-                        className="py-2.5 font-mono font-semibold pl-2"
-                        style={{ color: warnaSkor(hitungSkor(k, role)) }}
-                      >
-                        {hitungSkor(k, role)}
-                      </td>
-                    </tr>
+          <div className="panel overflow-x-auto p-4 sm:p-5">
+            <h2 className="mb-4 text-sm font-semibold">Tabel perbandingan</h2>
+            <table className="w-full text-left text-xs">
+              <thead className="text-muted-foreground">
+                <tr className="border-b border-border">
+                  <th className="pb-2 font-medium">Kawasan</th>
+                  {COMPONENTS.map((c) => (
+                    <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2">
+                      {c.short}
+                    </th>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                  <th className="pb-2 font-medium whitespace-nowrap pl-2">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {kawasan.map((k) => (
+                  <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
+                    <td className="py-2.5 font-medium pr-4">{k.nama}</td>
+                    {COMPONENTS.map((c) => (
+                      <td key={c.id} className="py-2.5 font-mono px-2">
+                        {k.skor[c.id]}
+                      </td>
+                    ))}
+                    <td
+                      className="py-2.5 font-mono font-semibold pl-2"
+                      style={{ color: warnaSkor(hitungSkor(k, role)) }}
+                    >
+                      {hitungSkor(k, role)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </AnimatedSection>
 
