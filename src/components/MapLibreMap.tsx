@@ -44,13 +44,20 @@ export function MapLibreMap({
     let map: MapInstance = null;
     let ro: ResizeObserver | null = null;
 
-    const apiKey = import.meta.env.VITE_MAPID_API_KEY;
+    // VITE_MAPID_API_KEY is baked at build time — may be domain-restricted to localhost.
+    // VITE_MAPID_API_KEY_PROD is the key allowed for the deployed domain.
+    // Falls back to VITE_MAPID_API_KEY if no prod key is set.
+    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const apiKey = isLocalhost
+      ? (import.meta.env.VITE_MAPID_API_KEY || import.meta.env.VITE_MAPID_API_KEY_PROD)
+      : (import.meta.env.VITE_MAPID_API_KEY_PROD || import.meta.env.VITE_MAPID_API_KEY);
 
     if (!apiKey) {
       setState("no-key");
       return;
     }
 
+    console.log("🔑 Using MapID key for", isLocalhost ? "localhost" : window.location.hostname);
     const styleUrl = `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`;
 
     import("maplibre-gl")
