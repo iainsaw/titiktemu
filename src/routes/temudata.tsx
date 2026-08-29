@@ -165,9 +165,7 @@ function TemuDataAi() {
 
           {kosong ? (
             <AnimatedSection animation="zoom-in" className="flex flex-1 flex-col items-center justify-center text-center">
-              <div className="flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 shadow-inner ring-1 ring-primary/20">
-                <AiIcon className="size-8" />
-              </div>
+              <AiIcon className="size-14" />
               <h1 className="headline mt-6 text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight">
                 Halo, mari telusuri data kawasan
               </h1>
