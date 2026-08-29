@@ -418,7 +418,7 @@ function PetaInteraktif() {
 
   // Rankings Component
   const rankingsContent = (
-    <div className="flex flex-col h-full min-h-0 overflow-hidden">
+    <div className="flex flex-col overflow-hidden">
       <div className="px-4 pt-3.5 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between bg-white dark:bg-zinc-900">
         <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
           Peringkat Kawasan
@@ -430,8 +430,10 @@ function PetaInteraktif() {
           Bandingkan ›
         </Link>
       </div>
+      {/* Max height set to ~190px to comfortably show exactly 5 items before scrolling */}
       <div
-        className="flex-1 min-h-0 overflow-y-auto px-2 py-2 floating-scrollbar"
+        className="overflow-y-auto px-2 py-2 floating-scrollbar"
+        style={{ maxHeight: "190px" }}
         onWheel={(e) => e.stopPropagation()}
         onTouchMove={(e) => e.stopPropagation()}
       >
@@ -627,7 +629,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Card 3: Peringkat Kawasan */}
-          <div className="rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-border/40 h-[330px] max-h-[380px] flex flex-col min-h-0 overflow-hidden">
+          <div className="rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-border/40 flex flex-col overflow-hidden pointer-events-auto">
             {rankingsContent}
           </div>
         </div>
