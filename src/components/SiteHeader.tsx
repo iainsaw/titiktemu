@@ -47,7 +47,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="glass-nav sticky top-0 z-40">
-        <div className="mx-auto grid h-11 max-w-[1180px] grid-cols-[auto_1fr_auto] items-center gap-4 px-5 text-[13px]">
+        <div className="mx-auto flex h-11 max-w-[1180px] items-center justify-between gap-4 px-5 text-[13px] lg:grid lg:grid-cols-[auto_1fr_auto]">
           <Link to="/" className="flex items-center gap-2 font-display text-[15px] font-semibold tracking-tight">
             <img src={logoMark.url} alt="Logo Titik Temu" className="size-6 shrink-0" />
             <span className="hidden sm:inline">Titik Temu</span>

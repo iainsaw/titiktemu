@@ -197,7 +197,7 @@ function PetaInteraktif() {
       </div>
 
       {/* ── BODY: Map as background, Cards floating ── */}
-      <div className="relative flex-1 overflow-hidden">
+      <div className="relative flex-1 overflow-hidden flex flex-col lg:block">
         
         {/* Toast Error Floating */}
         {analyzeError && (
@@ -211,7 +211,7 @@ function PetaInteraktif() {
         )}
 
         {/* MAP AREA */}
-        <main className="absolute inset-0 bg-muted/10 print:static print:w-full">
+        <main className="relative shrink-0 h-[45vh] lg:h-auto z-0 bg-muted/10 lg:absolute lg:inset-0 print:static print:w-full">
           <VitalityMap
             className="size-full"
             fill
@@ -238,8 +238,38 @@ function PetaInteraktif() {
             missions={missions}
           />
 
+          {/* Floating: Toggle Sidebar (Moved to right above legend) */}
+          <button
+            onClick={() => setIsMapMaximized(!isMapMaximized)}
+            className="hidden lg:flex lg:pointer-events-auto absolute bottom-[80px] right-4 z-50 size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
+            title={isMapMaximized ? "Tampilkan Cards" : "Sembunyikan Cards"}
+          >
+            {isMapMaximized ? <Shrink className="size-4" /> : <Expand className="size-4" />}
+          </button>
+
+          {/* Floating: Legend */}
+          <div className="hidden lg:block absolute bottom-4 right-4 z-20 rounded-[14px] bg-white/90 px-3.5 py-3 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">Legenda Skor</span>
+              <span className="text-[10px] text-muted-foreground/50 ml-3">r=800m</span>
+            </div>
+            <div className="flex items-center gap-1.5 w-40">
+              <span className="font-display text-[10px] text-muted-foreground/60">0</span>
+              <div className="flex-1 flex h-[6px] rounded-full overflow-hidden shadow-inner">
+                {[20, 48, 60, 72, 88].map((s) => (
+                  <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
+                ))}
+              </div>
+              <span className="font-display text-[10px] text-muted-foreground/60">100</span>
+            </div>
+          </div>
+        </main>
+
+        {/* CARDS AREA (Scrollable block on mobile, overlay on desktop) */}
+        <div className="flex-1 overflow-y-auto bg-background p-4 flex flex-col gap-4 lg:pointer-events-none lg:absolute lg:inset-0 lg:overflow-visible lg:p-0 lg:bg-transparent">
+
           {/* CARD 1: Role Selector (Bottom Center) */}
-          <AnimatedSection animation="fade-in-up" delay={200} className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
+          <AnimatedSection animation="fade-in-up" delay={200} className="lg:pointer-events-auto flex items-center justify-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden lg:absolute lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-auto">
             {ROLES.map((r) => (
               <button
                 key={r.id}
@@ -261,8 +291,9 @@ function PetaInteraktif() {
 
           {/* RIGHT CARDS CONTAINER */}
           <AnimatedSection animation="slide-in-right" delay={100} className={cn(
-            "absolute top-4 right-4 z-40 flex max-h-[calc(100%-140px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
-            isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
+            "lg:pointer-events-auto flex flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            "lg:absolute lg:top-4 lg:right-4 lg:z-40 lg:w-[300px] lg:max-h-[calc(100%-140px)]",
+            isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
           )}>
             
             {/* CARD 2: Search & Layers */}
@@ -388,8 +419,9 @@ function PetaInteraktif() {
 
           {/* LEFT CARDS CONTAINER */}
           <AnimatedSection animation="slide-in-left" delay={100} className={cn(
-            "absolute top-4 left-4 z-40 flex max-h-[calc(100vh-32px)] w-[320px] flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
-            isMapMaximized ? "left-[-400px] opacity-0" : "opacity-100"
+            "lg:pointer-events-auto flex flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+            "lg:absolute lg:top-4 lg:left-4 lg:z-40 lg:w-[320px] lg:max-h-[calc(100vh-32px)]",
+            isMapMaximized ? "lg:left-[-400px] lg:opacity-0" : "lg:opacity-100"
           )}>
             
             {/* CARD 3: Selected Details & AI */}
@@ -544,32 +576,7 @@ function PetaInteraktif() {
             </div>
           </AnimatedSection>
 
-          {/* Floating: Toggle Sidebar (Moved to right above legend) */}
-          <button
-            onClick={() => setIsMapMaximized(!isMapMaximized)}
-            className="absolute bottom-[80px] right-4 z-50 flex size-9 items-center justify-center rounded-[12px] bg-white/80 text-foreground/60 shadow-md backdrop-blur-xl border border-border/20 transition-all hover:bg-white hover:text-foreground hover:shadow-lg dark:bg-black/50 dark:text-white/70 dark:border-white/10 print:hidden"
-            title={isMapMaximized ? "Tampilkan Cards" : "Sembunyikan Cards"}
-          >
-            {isMapMaximized ? <Shrink className="size-4" /> : <Expand className="size-4" />}
-          </button>
-
-          {/* Floating: Legend */}
-          <div className="absolute bottom-4 right-4 z-20 rounded-[14px] bg-white/90 px-3.5 py-3 shadow-xl backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">Legenda Skor</span>
-              <span className="text-[10px] text-muted-foreground/50 ml-3">r=800m</span>
-            </div>
-            <div className="flex items-center gap-1.5 w-40">
-              <span className="font-display text-[10px] text-muted-foreground/60">0</span>
-              <div className="flex-1 flex h-[6px] rounded-full overflow-hidden shadow-inner">
-                {[20, 48, 60, 72, 88].map((s) => (
-                  <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
-                ))}
-              </div>
-              <span className="font-display text-[10px] text-muted-foreground/60">100</span>
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
     </div>
   );

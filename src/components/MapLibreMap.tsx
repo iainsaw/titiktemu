@@ -61,7 +61,7 @@ async function loadMaplibre(): Promise<any> {
  */
 export function MapLibreMap({
   center = [107.6098, -6.9147],
-  zoom = 13,
+  zoom = typeof window !== "undefined" && window.innerWidth < 1024 ? 12 : 13,
   onReady,
   children,
   className,
