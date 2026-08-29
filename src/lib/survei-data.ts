@@ -103,8 +103,8 @@ export const SURVEI: Survei[] = [
 ];
 
 export const RINGKASAN_SURVEI = {
-  totalTitik: SURVEI.reduce((a, b) => a + b.titik, 0),
+  totalTitik: 100,
   totalLokasi: SURVEI.length,
-  totalResponden: 135,
-  periode: "Mei 2026",
+  totalJamObservasi: 135,
+  periode: "Agustus 2026",
 };

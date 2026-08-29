@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Camera, MapPin, Users, ClipboardList, ChevronLeft, ChevronRight } from "lucide-react";
+import { Camera, MapPin, ClipboardList, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -46,7 +46,7 @@ function SurveiLapangan() {
         <AnimatedSection delay={150} className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-7 sm:grid-cols-4 sm:gap-3">
           <Ringkas icon={MapPin} label="Lokasi disurvei" value={RINGKASAN_SURVEI.totalLokasi} />
           <Ringkas icon={ClipboardList} label="Titik pengamatan" value={RINGKASAN_SURVEI.totalTitik} />
-          <Ringkas icon={Users} label="Responden" value={RINGKASAN_SURVEI.totalResponden} />
+          <Ringkas icon={Clock} label="Jam Observasi" value={RINGKASAN_SURVEI.totalJamObservasi} />
           <Ringkas icon={Camera} label="Periode" value={RINGKASAN_SURVEI.periode} />
         </AnimatedSection>
 
