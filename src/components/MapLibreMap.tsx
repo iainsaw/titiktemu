@@ -19,10 +19,7 @@ type Props = {
 
 /**
  * Reusable MapLibre GL basemap backed by the MAPID street-v2.0 style.
- *
- * Fully Firefox & Cross-Browser Compatible:
- * - Uses local node_modules maplibre-gl dynamic import (bypasses CDN CORS/CSP errors in Firefox)
- * - Uses debounced ResizeObserver to prevent layout thrashing and lag in Gecko engine
+ * Uses MAPID basemap only (required by competition).
  */
 export function MapLibreMap({
   center = [107.6098, -6.9147],
@@ -32,6 +29,7 @@ export function MapLibreMap({
   className,
   fallback,
 }: Props) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
@@ -40,18 +38,20 @@ export function MapLibreMap({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     if (!containerRef.current) return;
 
     let cancelled = false;
     let map: MapInstance = null;
     let ro: ResizeObserver | null = null;
-    let resizeTimer: any = null;
 
     const apiKey = import.meta.env.VITE_MAPID_API_KEY;
-    const styleUrl = apiKey
-      ? `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`
-      : `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json`;
+
+    if (!apiKey) {
+      setState("no-key");
+      return;
+    }
+
+    const styleUrl = `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`;
 
     import("maplibre-gl")
       .then((module) => {
@@ -60,62 +60,58 @@ export function MapLibreMap({
         const MLGL = module.default || module;
         (window as any).maplibregl = MLGL;
 
+        // Ensure the container has a non-zero size before init
+        const el = containerRef.current;
+        const rect = el.getBoundingClientRect();
+        console.log("🗺️ Map container size:", rect.width, "×", rect.height);
+
         map = new MLGL.Map({
-          container: containerRef.current,
+          container: el,
           style: styleUrl,
-          center: center,
-          zoom: zoom,
+          center,
+          zoom,
           attributionControl: false,
+          // Prevent MapLibre from resizing itself on window resize (we manage it)
+          trackResize: true,
         });
 
-        // NavigationControl in top-right
-        map.addControl(new MLGL.NavigationControl(), "top-right");
+        map.addControl(new MLGL.NavigationControl({ showCompass: true }), "top-right");
 
         let isReady = false;
         const setReady = () => {
           if (cancelled || isReady) return;
           isReady = true;
-          if (onReadyRef.current) onReadyRef.current(map!);
+          console.log("✅ Peta MAPID berhasil dimuat!");
           setState("ready");
-          // Resize multiple times: layout can still be reflow-ing
-          [100, 300, 600, 1000].forEach((ms) => {
+          if (onReadyRef.current) onReadyRef.current(map!);
+          // Force resize at several intervals to handle late layout reflows
+          [50, 200, 500, 1000, 2000].forEach((ms) => {
             setTimeout(() => { if (!cancelled && map) map.resize(); }, ms);
           });
         };
 
-        // Primary: MapID fires 'load' when done
         map.once("load", setReady);
 
-        // Fallback: if MapID is slow/down after 4s, switch to Carto Voyager
-        // Then listen for 'style.load' because setStyle() doesn't re-fire 'load'
-        setTimeout(() => {
-          if (!isReady && !cancelled && map) {
-            console.warn("⚠️ Basemap utama lambat. Mengalihkan ke basemap cadangan (Carto Voyager)...");
-            map.once("style.load", setReady);
-            map.setStyle("https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json");
-          }
-        }, 4000);
+        map.on("error", (e: any) => {
+          const msg = e.error?.message || String(e);
+          console.error("❌ MapLibre Error:", msg);
+          // Don't crash on tile 404s (normal when zooming out)
+          if (msg.includes("status 404") || msg.includes("status 403")) return;
+        });
 
-        // Hard safety net: force-ready after 10s no matter what
+        // Hard safety net: show map anyway after 12s
         setTimeout(() => {
           if (!isReady && !cancelled && map) {
-            console.warn("⚠️ Peta dipaksa tampil (timeout 10s).");
+            console.warn("⚠️ Peta dipaksa tampil setelah 12 detik.");
             setReady();
           }
-        }, 10000);
+        }, 12000);
 
-        map.on("error", (e: any) => {
-          console.error("❌ MapLibre Error:", e.error?.message || e);
-        });
-
-        // Debounced ResizeObserver to prevent Firefox lag and layout thrashing
+        // ResizeObserver: reflow the map canvas when wrapper changes size
         ro = new ResizeObserver(() => {
-          if (resizeTimer) clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(() => {
-            if (!cancelled && map) map.resize();
-          }, 150);
+          if (!cancelled && map) map.resize();
         });
-        ro.observe(containerRef.current!);
+        ro.observe(el);
       })
       .catch((err) => {
         console.error("❌ Gagal memuat maplibre-gl:", err);
@@ -124,7 +120,6 @@ export function MapLibreMap({
 
     return () => {
       cancelled = true;
-      if (resizeTimer) clearTimeout(resizeTimer);
       ro?.disconnect();
       if (map) {
         map.remove();
@@ -135,19 +130,32 @@ export function MapLibreMap({
 
   return (
     <div
-      className={cn(
-        "relative w-full flex flex-col overflow-hidden bg-secondary/30",
-        className,
-      )}
-      style={{ minHeight: "400px" }}
+      ref={wrapperRef}
+      className={cn("relative", className)}
+      style={{ minHeight: 400 }}
     >
-      <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />
+      {/* Map canvas target — fills the wrapper completely */}
+      <div
+        ref={containerRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      />
 
+      {/* Loading / error overlay */}
       {state !== "ready" && (
         <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center p-6 text-center">
           {fallback ?? <DefaultFallback state={state} />}
         </div>
       )}
+
+      {/* Slot for markers / overlays shown only after map is ready */}
       {state === "ready" && children}
     </div>
   );
@@ -159,7 +167,7 @@ function DefaultFallback({ state }: { state: "loading" | "no-key" | "error" }) {
       ? "API key MAPID belum dikonfigurasi. Tambahkan VITE_MAPID_API_KEY di file .env"
       : state === "error"
         ? "Gagal memuat basemap MAPID. Cek koneksi internet Anda."
-        : "Memuat peta…";
+        : "Memuat peta MAPID…";
   return (
     <div className="flex items-center gap-2 rounded-full bg-background/90 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-md backdrop-blur border border-border/40">
       <span
