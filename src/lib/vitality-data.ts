@@ -17,24 +17,28 @@ export type ComponentId = (typeof COMPONENTS)[number]["id"];
 export const ROLES: {
   id: RoleId;
   label: string;
+  shortLabel: string;
   tagline: string;
   weights: Record<ComponentId, number>;
 }[] = [
   {
     id: "investor",
     label: "Investor & Properti",
+    shortLabel: "Investor",
     tagline: "Menekankan pasar properti dan potensi imbal hasil kawasan.",
     weights: { properti: 0.4, layanan: 0.15, ekonomi: 0.2, akses: 0.25 },
   },
   {
     id: "pemerintah",
     label: "Pemerintah & Operator",
+    shortLabel: "Pemerintah",
     tagline: "Menekankan kesenjangan layanan dan pemerataan aksesibilitas.",
     weights: { properti: 0.15, layanan: 0.4, ekonomi: 0.15, akses: 0.3 },
   },
   {
     id: "umkm",
     label: "Pelaku UMKM",
+    shortLabel: "UMKM",
     tagline: "Menekankan keramaian ekonomi dan kedekatan ke titik transit.",
     weights: { properti: 0.15, layanan: 0.2, ekonomi: 0.4, akses: 0.25 },
   },

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 type MapInstance = any;
 
@@ -16,48 +17,12 @@ type Props = {
   fallback?: ReactNode;
 };
 
-import "maplibre-gl/dist/maplibre-gl.css";
-
-/**
- * Load maplibregl from CDN — this completely bypasses Vite's bundler/worker
- * issues that cause the map to hang in dev mode.
- */
-async function loadMaplibre(): Promise<any> {
-  if ((window as any).maplibregl) {
-    return (window as any).maplibregl;
-  }
-
-  try {
-    // 1. Ensure CSS is loaded first so container has dimensions
-    if (!document.querySelector('link[href*="maplibre-gl.css"]')) {
-      await new Promise<void>((resolve) => {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css";
-        link.onload = () => resolve();
-        link.onerror = () => resolve(); // continue anyway
-        document.head.appendChild(link);
-      });
-    }
-
-    // 2. Load JS module natively
-    const cdnUrl = "https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs";
-    const module = await import(/* @vite-ignore */ cdnUrl);
-    const maplibregl = module.default || module;
-    (window as any).maplibregl = maplibregl;
-    return maplibregl;
-  } catch (err) {
-    console.error(err);
-    throw new Error("Gagal memuat maplibre-gl dari CDN");
-  }
-}
-
 /**
  * Reusable MapLibre GL basemap backed by the MAPID street-v2.0 style.
  *
- * SSR-safe: maplibre-gl is loaded from CDN inside useEffect so it never
- * touches `window` during server render, and Vite's worker bundling issues
- * are completely sidestepped.
+ * Fully Firefox & Cross-Browser Compatible:
+ * - Uses local node_modules maplibre-gl dynamic import (bypasses CDN CORS/CSP errors in Firefox)
+ * - Uses debounced ResizeObserver to prevent layout thrashing and lag in Gecko engine
  */
 export function MapLibreMap({
   center = [107.6098, -6.9147],
@@ -83,25 +48,21 @@ export function MapLibreMap({
       return;
     }
 
-    if (!containerRef.current) {
-      console.warn("⚠️ Container ref peta belum tersedia");
-      return;
-    }
+    if (!containerRef.current) return;
 
     let cancelled = false;
     let map: MapInstance = null;
     let ro: ResizeObserver | null = null;
-
-    console.log("🗺️ Memulai inisialisasi MapLibre...");
+    let resizeTimer: any = null;
 
     const styleUrl = `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`;
-    console.log("🗺️ Style URL:", styleUrl);
 
-    loadMaplibre()
-      .then((MLGL) => {
+    import("maplibre-gl")
+      .then((module) => {
         if (cancelled || !containerRef.current) return;
 
-        console.log("🗺️ maplibre-gl loaded from CDN, creating map...");
+        const MLGL = module.default || module;
+        (window as any).maplibregl = MLGL;
 
         map = new MLGL.Map({
           container: containerRef.current,
@@ -111,33 +72,34 @@ export function MapLibreMap({
           attributionControl: false,
         });
 
-        // NavigationControl di pojok kanan atas
+        // NavigationControl in top-right
         map.addControl(new MLGL.NavigationControl(), "top-right");
 
-        // Mark ready after a short delay — the canvas starts rendering tiles
         let isReady = false;
         const setReady = () => {
           if (cancelled || isReady) return;
           isReady = true;
-          console.log("✅ MapLibre: Peta siap ditampilkan!");
           if (onReadyRef.current) onReadyRef.current(map!);
           setState("ready");
-
-          // Force resize aggressively to ensure canvas isn't trapped at 0x0
-          for (let i = 1; i <= 5; i++) {
-            setTimeout(() => map?.resize(), i * 200);
-          }
+          setTimeout(() => {
+            if (!cancelled && map) map.resize();
+          }, 100);
         };
 
         map.once("load", setReady);
-        setTimeout(setReady, 1500); // Fallback for broken sprites
+        setTimeout(setReady, 1500);
 
         map.on("error", (e: any) => {
           console.error("❌ MapLibre Error:", e.error?.message || e);
         });
 
-        // Keep the canvas in sync with responsive container resizes.
-        ro = new ResizeObserver(() => map?.resize());
+        // Debounced ResizeObserver to prevent Firefox lag and layout thrashing
+        ro = new ResizeObserver(() => {
+          if (resizeTimer) clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            if (!cancelled && map) map.resize();
+          }, 150);
+        });
         ro.observe(containerRef.current!);
       })
       .catch((err) => {
@@ -147,17 +109,19 @@ export function MapLibreMap({
 
     return () => {
       cancelled = true;
+      if (resizeTimer) clearTimeout(resizeTimer);
       ro?.disconnect();
-      map?.remove();
-      map = null;
+      if (map) {
+        map.remove();
+        map = null;
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
       className={cn(
-        "relative min-h-[500px] w-full flex flex-col overflow-hidden bg-secondary/30",
+        "relative min-h-[400px] w-full flex flex-col overflow-hidden bg-secondary/30",
         className,
       )}
     >
@@ -178,10 +142,10 @@ function DefaultFallback({ state }: { state: "loading" | "no-key" | "error" }) {
     state === "no-key"
       ? "API key MAPID belum dikonfigurasi. Tambahkan VITE_MAPID_API_KEY di file .env"
       : state === "error"
-        ? "Gagal memuat basemap MAPID. Cek console untuk detail."
+        ? "Gagal memuat basemap MAPID. Cek koneksi internet Anda."
         : "Memuat peta…";
   return (
-    <div className="flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+    <div className="flex items-center gap-2 rounded-full bg-background/90 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-md backdrop-blur border border-border/40">
       <span
         className={cn(
           "size-2 rounded-full",

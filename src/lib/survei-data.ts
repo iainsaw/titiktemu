@@ -82,11 +82,34 @@ export const SURVEI: Survei[] = [
       { judul: "Fasilitas Komersial", keterangan: "Fasilitas kesehatan dan komersial yang mendukung fungsi kawasan", src: "/survei/tegalega/apotek.jpg" },
     ],
   },
+  {
+    id: "SRV-04",
+    kawasanId: "KWS-01",
+    lokasi: "Alun-Alun Bandung",
+    tanggal: "Selasa, 25 Agustus 2026",
+    surveyor: "Firzatullah Al Ghiffari",
+    metode: "Observasi Karakteristik Ruang Publik, Infrastruktur Transit, dan Aksesibilitas Pejalan Kaki",
+    titik: 5,
+    temuan: [
+      "Fasilitas transit di kawasan Alun-Alun Bandung masih memiliki keterbatasan dari sisi keterbukaan informasi dan pemeliharaan fisik — Halte Alun-Alun melayani banyak trayek angkot dan Metro Jabar Trans (MJT), namun peta rute yang terpasang hanya mencakup satu koridor (MJT 2D). Sementara itu, Bus Stop di depan Golden Megah Corp tidak dilengkapi informasi trayek dan kondisi tempat duduknya mengalami kerusakan fisik (keramik terkelupas).",
+      "Infrastruktur penyeberangan ramah disabilitas belum merata — JPO Asia Afrika dalam kondisi bersih dan terawat dengan baik, namun belum dilengkapi fasilitas lift atau ramp ramah disabilitas. Keterbatasan petunjuk arah di sekitar area ini juga membuat sebagian pejalan kaki memilih menyeberang langsung di badan jalan.",
+      "Aktivitas ruang publik dan kawasan komersial menunjukkan dinamika pemanfaatan yang beragam dengan pola waktu yang belum konsisten sepanjang hari — Cikapundung Riverspot aktif sebagai taman kota dan spot foto publik yang ramai di sore hari, sementara deretan toko di Jalan Alkateri (termasuk kios bersejarah seperti Kopi Purnama) sebagian terlihat tutup saat kunjungan siang hari.",
+    ],
+    catatan: "Kawasan Alun-Alun Bandung dan Koridor Asia Afrika memiliki potensi daya tarik wisata dan ruang publik yang sangat tinggi. Pengembangan kawasan berkonsep TOD perlu memprioritaskan peremajaan fasilitas halte transit (perbaikan fisik & integrasi peta rute), penyediaan aksesibilitas inklusif disabilitas pada fasilitas penyeberangan, serta harmonisasi jalur pejalan kaki dengan penataan UMKM dan jam operasional komersial kawasan.",
+    foto: { judul: "Alun-Alun Bandung", keterangan: "Kawasan Alun-Alun Bandung & Koridor Asia Afrika", src: "/survei/alun-alun/bus-stop.jpg" },
+    fotos: [
+      { judul: "Rambu Bus Stop", keterangan: "Plang tempat berhenti bis/angkot di depan Golden Megah Corp yang belum dilengkapi petunjuk trayek", src: "/survei/alun-alun/bus-stop.jpg" },
+      { judul: "Kondisi Fisik Halte", keterangan: "Fasilitas tempat duduk di Halte Alun-Alun Bandung dengan kondisi keramik yang terkelupas", src: "/survei/alun-alun/halte-rusak.jpg" },
+      { judul: "Tangga JPO Asia Afrika", keterangan: "Infrastruktur JPO Asia Afrika yang bersih namun belum dilengkapi fasilitas lift untuk disabilitas", src: "/survei/alun-alun/jpo-asia-afrika.jpg" },
+      { judul: "Cikapundung Riverspot", keterangan: "Ruang terbuka publik dan area swafoto di Cikapundung Riverspot", src: "/survei/alun-alun/cikapundung-riverspot.jpg" },
+      { judul: "Pusat UMKM & Kuliner", keterangan: "Kawasan kios dan area kuliner indoor di sekitar Alun-Alun Bandung", src: "/survei/alun-alun/kios-umkm.jpg" },
+    ],
+  },
 ];
 
 export const RINGKASAN_SURVEI = {
-  totalTitik: 58,
-  totalLokasi: SURVEI.length,
-  totalJamObservasi: 18,
+  totalTitik: 63,
+  totalLokasi: 4,
+  totalJamObservasi: 24,
   periode: "Agustus 2026",
 };

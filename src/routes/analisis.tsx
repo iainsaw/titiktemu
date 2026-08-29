@@ -116,34 +116,36 @@ function Analisis() {
 
         <AnimatedSection delay={200} className="mt-6 flex flex-col gap-5">
           <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
-            <div className="panel max-h-[560px] overflow-y-auto p-4">
-              <h2 className="mb-3 text-sm font-semibold">Pilih kawasan ({dipilih.length}/4)</h2>
-              <ul className="space-y-1">
-                {kawasans.map((k) => {
-                  const aktif = dipilih.includes(k.id);
-                  return (
-                    <li key={k.id}>
-                      <button
-                        onClick={() => toggle(k.id)}
-                        className={cn(
-                          "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
-                          aktif
-                            ? "bg-secondary text-foreground"
-                            : "text-muted-foreground hover:bg-secondary/60",
-                        )}
-                      >
-                        <span className="truncate">{k.nama}</span>
-                        <span
-                          className="font-display text-[11px] font-semibold"
-                          style={{ color: warnaSkor(hitungSkor(k, role)) }}
+            <div className="panel p-4 flex flex-col h-[356px] overflow-hidden">
+              <h2 className="mb-3 text-sm font-semibold shrink-0">Pilih kawasan ({dipilih.length}/4)</h2>
+              <div className="flex-1 overflow-y-auto floating-scrollbar pr-1">
+                <ul className="space-y-1">
+                  {kawasans.map((k) => {
+                    const aktif = dipilih.includes(k.id);
+                    return (
+                      <li key={k.id}>
+                        <button
+                          onClick={() => toggle(k.id)}
+                          className={cn(
+                            "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors",
+                            aktif
+                              ? "bg-secondary text-foreground font-medium"
+                              : "text-muted-foreground hover:bg-secondary/60",
+                          )}
                         >
-                          {hitungSkor(k, role)}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+                          <span className="truncate">{k.nama}</span>
+                          <span
+                            className="font-display text-[11px] font-semibold"
+                            style={{ color: warnaSkor(hitungSkor(k, role)) }}
+                          >
+                            {hitungSkor(k, role)}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               <div className="panel p-4 sm:p-5">
@@ -242,7 +244,7 @@ function Analisis() {
                       </td>
                     ))}
                     <td
-                      className="py-2.5 font-display font-semibold pl-2"
+                      className="py-2.5 font-display font-semibold px-2 text-center"
                       style={{ color: warnaSkor(hitungSkor(k, role)) }}
                     >
                       {hitungSkor(k, role)}
