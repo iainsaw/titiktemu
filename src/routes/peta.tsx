@@ -261,7 +261,7 @@ function PetaInteraktif() {
 
           {/* RIGHT CARDS CONTAINER */}
           <AnimatedSection animation="slide-in-right" delay={100} className={cn(
-            "absolute top-4 right-4 z-40 flex max-h-[calc(100vh-140px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            "absolute top-4 right-4 z-40 flex max-h-[calc(100%-140px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
           )}>
             
@@ -342,7 +342,7 @@ function PetaInteraktif() {
             </div>
 
             {/* CARD 4: Rankings */}
-            <div className="flex flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
+            <div className="flex flex-1 min-h-0 flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
               <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
                   Peringkat Kawasan
