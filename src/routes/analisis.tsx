@@ -134,7 +134,7 @@ function Analisis() {
                       >
                         <span className="truncate">{k.nama}</span>
                         <span
-                          className="font-mono text-[11px] font-semibold"
+                          className="font-display text-[11px] font-semibold"
                           style={{ color: warnaSkor(hitungSkor(k, role)) }}
                         >
                           {hitungSkor(k, role)}
@@ -237,12 +237,12 @@ function Analisis() {
                   <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
                     <td className="py-2.5 font-medium pr-4">{k.nama}</td>
                     {COMPONENTS.map((c) => (
-                      <td key={c.id} className="py-2.5 font-mono px-2">
+                      <td key={c.id} className="py-2.5 font-display px-2">
                         {k.skor[c.id]}
                       </td>
                     ))}
                     <td
-                      className="py-2.5 font-mono font-semibold pl-2"
+                      className="py-2.5 font-display font-semibold pl-2"
                       style={{ color: warnaSkor(hitungSkor(k, role)) }}
                     >
                       {hitungSkor(k, role)}
@@ -470,16 +470,16 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                   {ringkas.teratas.map((h) => (
                     <tr key={h.kawasan.id} className="border-b border-border/60 last:border-0">
                       <td className="py-2.5 font-medium">{h.kawasan.nama}</td>
-                      <td className="py-2.5 font-mono">
+                      <td className="py-2.5 font-display">
                         {h.sebelum.layanan} → {h.sesudah.layanan}
                       </td>
-                      <td className="py-2.5 font-mono">
+                      <td className="py-2.5 font-display">
                         {h.sebelum.akses} → {h.sesudah.akses}
                       </td>
-                      <td className="py-2.5 font-mono">
+                      <td className="py-2.5 font-display">
                         {h.skorSebelum} → {h.skorSesudah}
                       </td>
-                      <td className="py-2.5 font-mono font-semibold text-primary">+{h.delta}</td>
+                      <td className="py-2.5 font-display font-semibold text-primary">+{h.delta}</td>
                     </tr>
                   ))}
                 </tbody>

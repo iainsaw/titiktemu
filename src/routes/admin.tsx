@@ -147,7 +147,7 @@ function AdminDashboard() {
                 <div className={cn("mb-2.5 flex size-9 items-center justify-center rounded-xl bg-background/60", color.replace("text-", "bg-").replace("-500", "-500/10"))}>
                   <Icon className={cn("size-4.5", color)} />
                 </div>
-                <p className="text-[22px] font-bold font-mono">
+                <p className="text-[22px] font-bold font-display">
                   {statsLoading ? (
                     <span className="inline-block h-5 w-16 animate-pulse rounded bg-secondary" />
                   ) : (
@@ -199,15 +199,15 @@ function AdminDashboard() {
                       const avg = avgSkor(s);
                       return (
                         <tr key={s.id} className="hover:bg-secondary/20 transition-colors">
-                          <td className="px-4 py-3 font-mono text-[11px] text-muted-foreground/60">{s.id}</td>
+                          <td className="px-4 py-3 font-display text-[11px] text-muted-foreground/60">{s.id}</td>
                           <td className="px-4 py-3 font-medium">{s.nama}</td>
-                          <td className="px-4 py-3 font-mono">{s.umkm_count}</td>
-                          <td className={cn("px-4 py-3 font-mono font-semibold", skorColor(s.skor_ekonomi))}>{s.skor_ekonomi}</td>
-                          <td className={cn("px-4 py-3 font-mono font-semibold", skorColor(s.skor_layanan))}>{s.skor_layanan}</td>
-                          <td className={cn("px-4 py-3 font-mono font-semibold", skorColor(s.skor_akses))}>{s.skor_akses}</td>
-                          <td className={cn("px-4 py-3 font-mono font-semibold", skorColor(s.skor_properti))}>{s.skor_properti}</td>
+                          <td className="px-4 py-3 font-display">{s.umkm_count}</td>
+                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_ekonomi))}>{s.skor_ekonomi}</td>
+                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_layanan))}>{s.skor_layanan}</td>
+                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_akses))}>{s.skor_akses}</td>
+                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_properti))}>{s.skor_properti}</td>
                           <td className="px-4 py-3">
-                            <span className={cn("inline-flex items-center gap-1 font-mono font-bold", skorColor(avg))}>
+                            <span className={cn("inline-flex items-center gap-1 font-display font-bold", skorColor(avg))}>
                               <CheckCircle2 className="size-3" />
                               {avg}
                             </span>

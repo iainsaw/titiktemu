@@ -58,7 +58,7 @@ function SurveiLapangan() {
                 <PhotoCarousel fotos={s.fotos} fallback={s.foto} />
 
                 <div className="min-w-0">
-                  <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                  <p className="font-display text-[11px] uppercase tracking-wider text-muted-foreground">
                     {s.id} · {s.kawasanId} · {s.tanggal}
                   </p>
                   <h2 className="mt-1 text-lg font-semibold">{s.lokasi}</h2>
@@ -176,7 +176,7 @@ function PhotoCarousel({
           >
             <ChevronRight className="size-4" />
           </button>
-          <div className="absolute top-3 right-3 z-20 bg-background/90 px-2 py-0.5 rounded-md text-[10.5px] font-mono font-medium backdrop-blur-sm border border-border/50 shadow-sm">
+          <div className="absolute top-3 right-3 z-20 bg-background/90 px-2 py-0.5 rounded-md text-[10.5px] font-display font-medium backdrop-blur-sm border border-border/50 shadow-sm">
             {currentIndex + 1} / {images.length}
           </div>
         </>

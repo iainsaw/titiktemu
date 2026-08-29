@@ -140,7 +140,7 @@ function Metodologi() {
                   <tr key={r.id} className="border-b border-border/60 last:border-0">
                     <td className="py-2.5 font-medium text-foreground">{r.label}</td>
                     {COMPONENTS.map((c) => (
-                      <td key={c.id} className="py-2.5 font-mono">
+                      <td key={c.id} className="py-2.5 font-display">
                         {r.weights[c.id].toFixed(2)}
                       </td>
                     ))}
