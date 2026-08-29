@@ -118,6 +118,11 @@ export function useKawasans() {
                 kws.pekerja = sumPekerja;
                 kws.totalFasilitas = sumFasilitas;
                 kws.jarakTransit = Math.round(sumDistance / gridsInRadius);
+                
+                // Recalculate scores to perfectly match the facts calculated from grid
+                kws.skor.layanan = Math.min(100, Math.max(1, Math.round(sumFasilitas * 100 / 150))); // benchmark 150 POI
+                kws.skor.akses = Math.min(100, Math.max(1, Math.round(100 - (kws.jarakTransit / 9)))); // 540m -> score 40
+                kws.skor.ekonomi = Math.min(100, Math.max(1, Math.round(kws.umkm * 100 / 85))); // benchmark 85 UMKM -> 11 UMKM = 13 score
               }
             }
             return kws;
