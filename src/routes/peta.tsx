@@ -261,7 +261,7 @@ function PetaInteraktif() {
 
           {/* RIGHT CARDS CONTAINER */}
           <AnimatedSection animation="slide-in-right" delay={100} className={cn(
-            "absolute top-4 right-4 z-40 flex max-h-[calc(100vh-32px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+            "absolute top-4 right-4 z-40 flex max-h-[calc(100vh-140px)] w-[300px] flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized ? "right-[-400px] opacity-0" : "opacity-100"
           )}>
             
@@ -354,7 +354,7 @@ function PetaInteraktif() {
                   Bandingkan ›
                 </Link>
               </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar max-h-[380px]">
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
                 <ol className="space-y-0.5">
                   {peringkat.map(({ k, skor }, i) => (
                     <li key={k.id}>
