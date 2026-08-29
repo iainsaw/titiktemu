@@ -105,16 +105,11 @@ function Ringkas({
   value: string | number;
 }) {
   return (
-    <div className="panel flex items-center gap-3 p-4">
-      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-primary">
-        <Icon className="size-4" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-[11px] text-muted-foreground">{label}</p>
-        <p className="font-display text-[19px] font-semibold tracking-tight">
-          {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
-        </p>
-      </div>
+    <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40 transition-transform hover:-translate-y-1">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
+      <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
+        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+      </p>
     </div>
   );
 }
