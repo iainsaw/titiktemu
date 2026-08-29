@@ -274,7 +274,11 @@ function PetaInteraktif() {
         </span>
         <div className="flex items-center gap-1.5">
           <button
-            onClick={() => window.print()}
+            onClick={() => {
+              // Trigger resize event for MapLibre before printing
+              window.dispatchEvent(new Event("beforeprint"));
+              setTimeout(() => window.print(), 500);
+            }}
             className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
           >
             PDF
@@ -513,7 +517,7 @@ function PetaInteraktif() {
         )}
 
         {/* ── MAP AREA ── */}
-        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:static print:w-full">
+        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:block print:w-full print:h-[500px] print:!absolute print:!inset-0 print:mt-[150px]">
           <VitalityMap
             className="size-full"
             fill

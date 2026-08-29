@@ -82,6 +82,7 @@ export function MapLibreMap({
           style: styleUrl,
           center,
           zoom,
+          preserveDrawingBuffer: true, // Crucial for PDF/printing WebGL canvases
           attributionControl: false,
           // Prevent MapLibre from resizing itself on window resize (we manage it)
           trackResize: true,
@@ -124,6 +125,17 @@ export function MapLibreMap({
           if (!cancelled && map) map.resize();
         });
         ro.observe(el);
+
+        // Fix for PDF Printing: trigger resize immediately before print snapshot
+        const onBeforePrint = () => {
+          if (!cancelled && map) {
+            map.resize();
+          }
+        };
+        window.addEventListener("beforeprint", onBeforePrint);
+        
+        // Clean up the event listener later
+        (map as any)._onBeforePrint = onBeforePrint;
       })
       .catch((err) => {
         console.error("❌ Gagal memuat maplibre-gl:", err);
@@ -134,6 +146,9 @@ export function MapLibreMap({
       cancelled = true;
       ro?.disconnect();
       if (map) {
+        if ((map as any)._onBeforePrint) {
+          window.removeEventListener("beforeprint", (map as any)._onBeforePrint);
+        }
         map.remove();
         map = null;
       }
