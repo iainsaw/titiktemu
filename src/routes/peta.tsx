@@ -367,10 +367,10 @@ function PetaInteraktif() {
                             : "text-foreground/70 hover:bg-secondary/50"
                         )}
                       >
-                        <span className="w-4 font-mono text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
                         <span className="flex-1 truncate">{k.nama}</span>
                         <span
-                          className="rounded-md px-1.5 py-0.5 font-mono text-[11px] font-semibold"
+                          className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
                           style={{
                             color: warnaSkor(skor),
                             backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
@@ -412,7 +412,7 @@ function PetaInteraktif() {
               {/* Title + Score */}
               <div className="flex items-start justify-between gap-3 mt-1.5 mb-4">
                 <div className="min-w-0">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
+                  <p className="font-display text-[10px] uppercase tracking-widest text-muted-foreground/50">
                     {terpilih.id} · {terpilih.koridor}
                   </p>
                   <h2 className="mt-1 truncate text-[18px] font-semibold tracking-tight">{terpilih.nama}</h2>
@@ -437,7 +437,7 @@ function PetaInteraktif() {
                       <div key={c.id}>
                         <div className="mb-1 flex items-baseline justify-between">
                           <span className="text-[12px] font-medium text-foreground/70">{c.label}</span>
-                          <span className="font-mono text-[12px] font-semibold text-foreground">
+                          <span className="font-display text-[12px] font-semibold text-foreground">
                             {nilai}
                             <span className="ml-1 text-[9px] text-muted-foreground/60">
                               ×{peran.weights[c.id].toFixed(2)}
@@ -461,19 +461,19 @@ function PetaInteraktif() {
                 <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-secondary/30 p-3.5 dark:bg-white/5">
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Penduduk (2024)</span>
-                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.penduduk} /></span>
+                    <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.penduduk} /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Kepadatan</span>
-                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={Math.round(terpilih.kepadatan || 0)} suffix=" /km²" /></span>
+                    <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={Math.round(terpilih.kepadatan || 0)} suffix=" /km²" /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Pelajar & Mhs</span>
-                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.pelajar || 0} /></span>
+                    <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.pelajar || 0} /></span>
                   </div>
                   <div>
                     <span className="block text-[10px] text-muted-foreground mb-0.5">Total Fasilitas</span>
-                    <span className="font-mono text-[13px] font-semibold"><AnimatedNumber value={terpilih.totalFasilitas || 0} suffix=" POI" /></span>
+                    <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.totalFasilitas || 0} suffix=" POI" /></span>
                   </div>
                 </div>
               )}
@@ -486,7 +486,7 @@ function PetaInteraktif() {
                   <dt className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
                     Harga
                   </dt>
-                  <dd className="mt-0.5 font-mono text-[12px] font-semibold">
+                  <dd className="mt-0.5 font-display text-[12px] font-semibold">
                     {terpilih.hargaTanah ? `${terpilih.hargaTanah} jt` : "N/A"}
                   </dd>
                   {customPrices[terpilih.id] && (
@@ -560,13 +560,13 @@ function PetaInteraktif() {
               <span className="text-[10px] text-muted-foreground/50 ml-3">r=800m</span>
             </div>
             <div className="flex items-center gap-1.5 w-40">
-              <span className="font-mono text-[10px] text-muted-foreground/60">0</span>
+              <span className="font-display text-[10px] text-muted-foreground/60">0</span>
               <div className="flex-1 flex h-[6px] rounded-full overflow-hidden shadow-inner">
                 {[20, 48, 60, 72, 88].map((s) => (
                   <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
                 ))}
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground/60">100</span>
+              <span className="font-display text-[10px] text-muted-foreground/60">100</span>
             </div>
           </div>
         </main>
@@ -579,7 +579,7 @@ function Fact({ label, value, suffix, fallback }: { label: string; value: string
   return (
     <div className="flex flex-col items-center justify-center">
       <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</dt>
-      <dd className="mt-1 font-mono text-[14px] font-semibold">
+      <dd className="mt-1 font-display text-[14px] font-semibold">
         {typeof value === 'number' && value > 0 ? <AnimatedNumber value={value} suffix={suffix} /> : fallback || value}
       </dd>
     </div>
