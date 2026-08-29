@@ -59,11 +59,34 @@ export const SURVEI: Survei[] = [
       { judul: "Monumen Perjuangan", keterangan: "Monumen Perjuangan Rakyat Jawa Barat sebagai landmark kawasan Dipatiukur", src: "/survei/dipatiukur/monumen-perjuangan.jpg" },
     ],
   },
+  {
+    id: "SRV-03",
+    kawasanId: "KWS-04",
+    lokasi: "Tegalega",
+    tanggal: "Sabtu, 29 Agustus 2026",
+    surveyor: "Gilang Wijaya",
+    metode: "Observasi Karakteristik Kawasan TOD (<800m)",
+    titik: 20,
+    temuan: [
+      "Keragaman POI di kawasan Tegallega tergolong cukup tinggi, meliputi fasilitas kesehatan, pendidikan, perbankan, UMKM, perdagangan, hingga ruang terbuka publik.",
+      "Aktivitas kawasan memiliki pola waktu yang berbeda — aktivitas Pasar Tegallega dominan pada pagi hingga siang hari, sementara fasilitas publik lainnya lebih fleksibel.",
+      "Terdapat potensi integrasi yang baik antara titik transportasi (halte/bus stop) dengan berbagai POI, namun kualitas akses pejalan kaki masih perlu ditingkatkan.",
+    ],
+    catatan: "Kawasan Tegallega memiliki potensi TOD yang kuat didukung keberagaman POI. Pengembangan perlu diarahkan pada peningkatan konektivitas antar-titik transit dan POI melalui akses pejalan kaki yang aman. Optimalisasi kawasan juga perlu memperhatikan pola waktu aktivitas yang cenderung terkonsentrasi.",
+    foto: { judul: "Tegalega", keterangan: "Kawasan Tegalega, Bandung", src: "/survei/tegalega/tirtalega.jpg" },
+    fotos: [
+      { judul: "Kolam Renang Tirtalega", keterangan: "Gerbang masuk kawasan UPTD Tegallega", src: "/survei/tegalega/tirtalega.jpg" },
+      { judul: "Angkot Stop", keterangan: "Aktivitas masyarakat dan penumpang di pemberhentian angkot", src: "/survei/tegalega/angkot-stop.jpg" },
+      { judul: "Metro Jabar Trans", keterangan: "Armada bus Metro Jabar Trans melintas di halte Moh. Toha", src: "/survei/tegalega/metro-jabar-trans.jpg" },
+      { judul: "Pasar UMKM", keterangan: "Aktivitas perdagangan di Pasar Tegallega yang dominan di pagi-siang hari", src: "/survei/tegalega/pasar.jpg" },
+      { judul: "Fasilitas Komersial", keterangan: "Fasilitas kesehatan dan komersial yang mendukung fungsi kawasan", src: "/survei/tegalega/apotek.jpg" },
+    ],
+  },
 ];
 
 export const RINGKASAN_SURVEI = {
-  totalTitik: 38,
+  totalTitik: 58,
   totalLokasi: SURVEI.length,
-  totalJamObservasi: 12,
+  totalJamObservasi: 18,
   periode: "Agustus 2026",
 };
