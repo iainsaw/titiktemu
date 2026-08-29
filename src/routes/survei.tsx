@@ -8,6 +8,7 @@ import { AnimatedSection } from "@/components/AnimatedSection";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { SURVEI, RINGKASAN_SURVEI } from "@/lib/survei-data";
 import { getSecureAssetUrl } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/survei")({
   head: () => ({
@@ -107,7 +108,10 @@ function Ringkas({
   return (
     <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40 transition-transform hover:-translate-y-1">
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
-      <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
+      <p className={cn(
+        "font-display font-semibold tracking-tight leading-none",
+        typeof value === 'number' ? "text-[32px] sm:text-[42px]" : "text-[20px] sm:text-[26px] whitespace-nowrap"
+      )}>
         {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
       </p>
     </div>
