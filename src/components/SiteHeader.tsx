@@ -46,9 +46,9 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="glass-nav sticky top-0 z-40">
+      <header className="sticky top-0 z-40 bg-white dark:bg-black border-b border-border/10">
         <div className="mx-auto flex h-11 max-w-[1180px] items-center justify-between gap-4 px-5 text-[13px] lg:grid lg:grid-cols-[auto_1fr_auto]">
-          <Link to="/" className="flex items-center gap-2 font-display text-[15px] font-semibold tracking-tight">
+          <Link to="/" className="flex flex-1 lg:flex-none items-center gap-2 font-display text-[15px] font-semibold tracking-tight">
             <img src={logoMark.url} alt="Logo Titik Temu" className="size-6 shrink-0" />
             <span className="hidden sm:inline">Titik Temu</span>
           </Link>
@@ -67,7 +67,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 justify-self-end">
+          <div className="flex flex-1 lg:flex-none items-center justify-end gap-2 lg:justify-self-end">
             <Link
               to="/peta"
               className="pill hidden bg-primary px-3.5 py-1.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:inline-block"
@@ -141,7 +141,7 @@ export function SiteHeader() {
                   /* Sign In Button */
                   <button
                     onClick={() => setAuthModalOpen(true)}
-                    className="flex items-center gap-1.5 rounded-xl bg-secondary/60 px-3 py-1.5 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
+                    className="hidden lg:flex items-center gap-1.5 rounded-xl bg-secondary/60 px-3 py-1.5 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
                   >
                     <LogIn className="size-3.5" />
                     <span className="hidden sm:inline">Masuk</span>
@@ -162,7 +162,7 @@ export function SiteHeader() {
         </div>
 
         {mobileOpen && (
-          <nav className="border-t border-border/30 bg-background/80 backdrop-blur-2xl px-5 py-3 lg:hidden">
+          <nav className="border-t border-border/30 bg-background px-5 py-3 lg:hidden">
             <ul className="space-y-0.5">
               {nav.map((item) => (
                 <li key={item.to}>
@@ -186,6 +186,17 @@ export function SiteHeader() {
                   >
                     ✦ Dashboard Admin
                   </Link>
+                </li>
+              )}
+              {!user && !loading && (
+                <li className="mt-2 border-t border-border/30 pt-2">
+                  <button
+                    onClick={() => { setMobileOpen(false); setAuthModalOpen(true); }}
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/70 transition-colors hover:bg-secondary/60 hover:text-foreground"
+                  >
+                    <LogIn className="size-4" />
+                    Masuk
+                  </button>
                 </li>
               )}
             </ul>
