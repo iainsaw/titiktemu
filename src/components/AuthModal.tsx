@@ -106,7 +106,6 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
 
             {/* Top Logo */}
             <div className="relative z-10 flex items-center gap-2.5">
-              <img src={logoMark.url} alt="Logo" className="size-7 brightness-0 invert" />
               <span className="font-display text-[17px] font-bold tracking-tight text-white">
                 Titik Temu
               </span>
@@ -129,7 +128,6 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
             <div>
               {/* Mobile Header Logo */}
               <div className="flex items-center gap-2 mb-6 md:hidden">
-                <img src={logoMark.url} alt="Logo" className="size-6 dark:brightness-0 dark:invert" />
                 <span className="font-display text-[16px] font-semibold">Titik Temu</span>
               </div>
 
