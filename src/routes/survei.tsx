@@ -108,10 +108,7 @@ function Ringkas({
   return (
     <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40 transition-transform hover:-translate-y-1">
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
-      <p className={cn(
-        "font-display font-semibold tracking-tight leading-none",
-        typeof value === 'number' ? "text-[32px] sm:text-[42px]" : "text-[20px] sm:text-[26px] whitespace-nowrap"
-      )}>
+      <p className="font-display font-semibold tracking-tight leading-none text-[24px] sm:text-[28px] whitespace-nowrap">
         {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
       </p>
     </div>
