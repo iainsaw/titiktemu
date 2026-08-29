@@ -145,104 +145,104 @@ function Analisis() {
             </ul>
           </div>
 
-          <div className="space-y-5">
-            <div className="panel p-5">
-              <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
-              <div className="h-[340px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={radarData} outerRadius="72%">
-                    <PolarGrid stroke="var(--border)" />
-                    <PolarAngleAxis
-                      dataKey="komponen"
-                      tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
-                    />
-                    {kawasan.map((k, i) => (
-                      <Radar
-                        key={k.id}
-                        name={k.nama}
-                        dataKey={k.nama}
-                        stroke={PALET[i]}
-                        fill={PALET[i]}
-                        fillOpacity={0.18}
+          <div className="flex flex-col gap-5">
+            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+              <div className="panel p-4 sm:p-5">
+                <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
+                <div className="h-[240px] sm:h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={radarData} outerRadius="70%">
+                      <PolarGrid stroke="var(--border)" />
+                      <PolarAngleAxis
+                        dataKey="komponen"
+                        tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                       />
-                    ))}
-                    <Legend wrapperStyle={{ fontSize: 12 }} />
-                    <Tooltip
-                      contentStyle={{
-                        background: "var(--popover)",
-                        border: "1px solid var(--border)",
-                        borderRadius: 8,
-                        fontSize: 12,
-                      }}
-                    />
-                  </RadarChart>
-                </ResponsiveContainer>
+                      {kawasan.map((k, i) => (
+                        <Radar
+                          key={k.id}
+                          name={k.nama}
+                          dataKey={k.nama}
+                          stroke={PALET[i]}
+                          fill={PALET[i]}
+                          fillOpacity={0.18}
+                        />
+                      ))}
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      <Tooltip
+                        contentStyle={{
+                          background: "var(--popover)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="panel p-4 sm:p-5">
+                <h2 className="mb-4 text-sm font-semibold">Skor total tertimbang per peran</h2>
+                <div className="h-[240px] sm:h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <XAxis
+                        dataKey="nama"
+                        tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        domain={[0, 100]}
+                        tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip
+                        cursor={{ fill: "var(--secondary)" }}
+                        contentStyle={{
+                          background: "var(--popover)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                      />
+                      <Bar dataKey="skor" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
 
-            <div className="panel p-5">
-              <h2 className="mb-4 text-sm font-semibold">Skor total tertimbang per peran</h2>
-              <div className="h-[260px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={barData}>
-                    <XAxis
-                      dataKey="nama"
-                      tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      domain={[0, 100]}
-                      tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      cursor={{ fill: "var(--secondary)" }}
-                      contentStyle={{
-                        background: "var(--popover)",
-                        border: "1px solid var(--border)",
-                        borderRadius: 8,
-                        fontSize: 12,
-                      }}
-                    />
-                    <Bar dataKey="skor" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            <div className="panel overflow-x-auto p-5">
+            <div className="panel overflow-x-auto p-4 sm:p-5">
               <h2 className="mb-4 text-sm font-semibold">Tabel perbandingan</h2>
               <table className="w-full text-left text-xs">
                 <thead className="text-muted-foreground">
                   <tr className="border-b border-border">
                     <th className="pb-2 font-medium">Kawasan</th>
                     {COMPONENTS.map((c) => (
-                      <th key={c.id} className="pb-2 font-medium">
+                      <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2">
                         {c.short}
                       </th>
                     ))}
-                    <th className="pb-2 font-medium">Total</th>
-                    <th className="pb-2 font-medium">Tren</th>
+                    <th className="pb-2 font-medium whitespace-nowrap pl-2">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {kawasan.map((k) => (
-                    <tr key={k.id} className="border-b border-border/60 last:border-0">
-                      <td className="py-2.5 font-medium">{k.nama}</td>
+                    <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
+                      <td className="py-2.5 font-medium pr-4">{k.nama}</td>
                       {COMPONENTS.map((c) => (
-                        <td key={c.id} className="py-2.5 font-mono">
+                        <td key={c.id} className="py-2.5 font-mono px-2">
                           {k.skor[c.id]}
                         </td>
                       ))}
                       <td
-                        className="py-2.5 font-mono font-semibold"
+                        className="py-2.5 font-mono font-semibold pl-2"
                         style={{ color: warnaSkor(hitungSkor(k, role)) }}
                       >
                         {hitungSkor(k, role)}
                       </td>
-                      <td className="py-2.5 font-mono text-accent"></td>
                     </tr>
                   ))}
                 </tbody>
@@ -491,12 +491,12 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
 
 function Metrik({ label, value, sub }: { label: string; value: string | number; sub: string }) {
   return (
-    <div className="panel p-4">
-      <p className="text-[11px] text-muted-foreground">{label}</p>
-      <p className="font-display text-[22px] font-semibold tracking-tight">
+    <div className="panel p-4 flex flex-col justify-center h-full">
+      <p className="text-[11px] text-muted-foreground whitespace-nowrap">{label}</p>
+      <p className="font-display text-[22px] font-semibold tracking-tight whitespace-nowrap">
         {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
       </p>
-      <p className="text-[11px] leading-snug text-muted-foreground">{sub}</p>
+      <p className="mt-0.5 text-[10px] leading-snug text-muted-foreground truncate" title={sub}>{sub}</p>
     </div>
   );
 }
