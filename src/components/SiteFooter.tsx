@@ -26,8 +26,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border/60 bg-surface-raised">
       <div className="mx-auto max-w-[1180px] px-5 py-16">
-        <div className="grid grid-cols-2 gap-8 sm:gap-10 lg:grid-cols-4">
-          <div className="col-span-2 lg:col-span-1">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-3">
+          <div>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 font-display text-[15px] font-semibold tracking-tight">
                 <img src={logoMark.url} alt="Logo Titik Temu" className="size-6" />
@@ -79,16 +79,6 @@ export function SiteFooter() {
                 <li key={s}>{s}</li>
               ))}
             </ul>
-          </div>
-
-          <div>
-            <p className="text-[13px] font-semibold">Disclaimer</p>
-            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-              Sebagian nilai pada prototipe ini — termasuk estimasi biaya intervensi layanan,
-              proyeksi tren, dan hasil simulasi — merupakan perkiraan kasar untuk keperluan
-              demonstrasi, bukan angka resmi pemerintah. Gunakan sebagai alat bantu diskusi, bukan
-              dasar tunggal pengambilan keputusan.
-            </p>
           </div>
         </div>
 

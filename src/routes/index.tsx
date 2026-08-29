@@ -137,31 +137,44 @@ function Beranda() {
           {[
             {
               tag: "SKOR BERBASIS DATA",
-              judul: `Rata-rata ${rata}`,
-              teks: "Skor akurat yang dihitung berdasarkan sudut pandang masing-masing peran.",
+              judul: "Analisis Multi-Peran",
+              teks: "Skor akurat yang dihitung berdasarkan sudut pandang masing-masing aktor.",
             },
             {
               tag: "TERUJI DI LAPANGAN",
-              judul: `${RINGKASAN_SURVEI.totalTitik} observasi`,
-              teks: `Algoritma diverifikasi dengan menghitung kendaraan dan mewawancarai UMKM di ${RINGKASAN_SURVEI.totalLokasi} lokasi riil.`,
+              judul: "Validasi Data Riil",
+              teks: "Algoritma diverifikasi dengan observasi kendaraan dan UMKM secara langsung.",
             },
             {
               tag: "REKOMENDASI CERDAS",
               judul: "Intelegensi Spasial",
-              teks: "Tidak sekadar menampilkan angka, tapi memberikan rekomendasi bisnis dan tata ruang yang siap dieksekusi.",
+              teks: "Rekomendasi bisnis dan tata ruang yang siap dieksekusi, bukan sekadar angka.",
             },
           ].map((c, i) => {
+            const isDark = i === 1;
             return (
               <div
                 key={c.tag}
-                className="panel hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5"
+                className={cn(
+                  "hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5 transition-transform hover:-translate-y-1",
+                  isDark ? "bg-ink text-ink-foreground" : "bg-background border border-border/40"
+                )}
                 style={{ animationDelay: `${0.55 + i * 0.12}s` }}
               >
-                <p className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground sm:text-[12px]">
+                <p className={cn(
+                  "text-[11px] font-semibold tracking-widest uppercase sm:text-[12px]",
+                  isDark ? "text-white/50" : "text-muted-foreground"
+                )}>
                   {c.tag}
                 </p>
-                <p className="mt-2 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]">{c.judul}</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-[15px]">{c.teks}</p>
+                <p className={cn(
+                  "mt-2 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]",
+                  isDark ? "text-white" : ""
+                )}>{c.judul}</p>
+                <p className={cn(
+                  "mt-1.5 text-[13px] leading-relaxed sm:text-[15px]",
+                  isDark ? "text-white/70" : "text-muted-foreground"
+                )}>{c.teks}</p>
               </div>
             );
           })}

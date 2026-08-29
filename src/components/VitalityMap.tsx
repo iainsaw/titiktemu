@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 const aiStar = { url: "/titik-temu-ai-star.png" };
 import { MapLibreMap } from "@/components/MapLibreMap";
+import { getSecureAssetUrl } from "@/lib/supabase";
 
 type Props = {
   kawasan: Kawasan[];
@@ -33,6 +34,7 @@ type Props = {
   poiHiburan?: boolean;
   poiTransit?: boolean;
   tampilkanPedestrian?: boolean;
+  tampilkanMissions?: boolean;
   className?: string;
   missions?: any[];
 };
@@ -75,6 +77,7 @@ export function VitalityMap({
   poiHiburan = false,
   poiTransit = false,
   tampilkanPedestrian = false,
+  tampilkanMissions = false,
   tampilkanAnomali = true,
   compact = false,
   fill = false,
@@ -124,12 +127,12 @@ export function VitalityMap({
     }
 
     // Add layers in correct order so beforeId references resolve correctly
-    addKoridorLayer(map, kawasanRef.current, tampilkanKoridor);
-    addSensusLayer(map, tampilkanSensus);
-    addAngkotLayer(map, tampilkanAngkot);
-    addBusLayer(map, tampilkanBus);
-    addPoiLayer(map); // Init POI layer (starts hidden)
-    addPedestrianLayer(map, tampilkanPedestrian);
+    await addKoridorLayer(map, kawasanRef.current, tampilkanKoridor);
+    await addSensusLayer(map, tampilkanSensus);
+    await addAngkotLayer(map, tampilkanAngkot);
+    await addBusLayer(map, tampilkanBus);
+    await addPoiLayer(map); // Init POI layer (starts hidden)
+    await addPedestrianLayer(map, tampilkanPedestrian);
     setReady(true);
     // Render initial marker content.
     renderAllMarkers(markers, kawasanRef.current, propsRef.current);
@@ -247,6 +250,9 @@ export function VitalityMap({
         id: "missions-circle",
         type: "circle",
         source: "mapid-missions",
+        layout: {
+          visibility: tampilkanMissions ? "visible" : "none"
+        },
         paint: {
           "circle-radius": 6,
           "circle-color": [
@@ -305,7 +311,11 @@ export function VitalityMap({
         map.getCanvas().style.cursor = "";
       });
     }
-  }, [ready, missions]);
+
+    if (map.getLayer("missions-circle")) {
+      map.setLayoutProperty("missions-circle", "visibility", tampilkanMissions ? "visible" : "none");
+    }
+  }, [ready, missions, tampilkanMissions]);
 
 
 
@@ -318,13 +328,15 @@ export function VitalityMap({
 }
 
 /** Build the koridor LineString GeoJSON layer connecting each corridor's kawasan. */
-function addKoridorLayer(map: MLMap, kawasan: Kawasan[], visible: boolean) {
+async function addKoridorLayer(map: MLMap, kawasan: Kawasan[], visible: boolean) {
   if (map.getSource("koridor")) return;
   
-  // Menggunakan rute fisik asli dari file GeoJSON yang diunggah user (Jalur Kereta/Transit)
+  const url = await getSecureAssetUrl("rute-kereta-jawa.geojson");
+  if (!url) return;
+
   map.addSource("koridor", {
     type: "geojson",
-    data: "/rute-kereta-jawa.geojson",
+    data: url,
   });
   
   map.addLayer({
@@ -340,11 +352,14 @@ function addKoridorLayer(map: MLMap, kawasan: Kawasan[], visible: boolean) {
   });
 }
 
-function addSensusLayer(map: MLMap, visible: boolean) {
+async function addSensusLayer(map: MLMap, visible: boolean) {
   if (map.getSource("sensus")) return;
+  const url = await getSecureAssetUrl("sensus-penduduk-kawasan.geojson");
+  if (!url) return;
+
   map.addSource("sensus", {
     type: "geojson",
-    data: "/sensus-penduduk-kawasan.geojson",
+    data: url,
   });
   
   // Base polygon fill layer
@@ -381,11 +396,14 @@ function addSensusLayer(map: MLMap, visible: boolean) {
   }, "koridor-line");
 }
 
-function addAngkotLayer(map: MLMap, visible: boolean) {
+async function addAngkotLayer(map: MLMap, visible: boolean) {
   if (map.getSource("angkot")) return;
+  const url = await getSecureAssetUrl("rute-angkot-bandung-micro.geojson");
+  if (!url) return;
+
   map.addSource("angkot", {
     type: "geojson",
-    data: "/rute-angkot-bandung-micro.geojson",
+    data: url,
   });
   
   map.addLayer({
@@ -401,11 +419,14 @@ function addAngkotLayer(map: MLMap, visible: boolean) {
   }, "koridor-line");
 }
 
-function addBusLayer(map: MLMap, visible: boolean) {
+async function addBusLayer(map: MLMap, visible: boolean) {
   if (map.getSource("bus")) return;
+  const url = await getSecureAssetUrl("rute-bus-bandung.geojson");
+  if (!url) return;
+
   map.addSource("bus", {
     type: "geojson",
-    data: "/rute-bus-bandung.geojson",
+    data: url,
   });
   
   map.addLayer({
@@ -421,11 +442,14 @@ function addBusLayer(map: MLMap, visible: boolean) {
   }, "koridor-line");
 }
 
-function addPoiLayer(map: MLMap) {
+async function addPoiLayer(map: MLMap) {
   if (map.getSource("poi")) return;
+  const url = await getSecureAssetUrl("poi-fasilitas.geojson");
+  if (!url) return;
+
   map.addSource("poi", {
     type: "geojson",
-    data: "/poi-fasilitas.geojson",
+    data: url,
   });
   
   const colorMatch: any = [
@@ -467,11 +491,14 @@ function addPoiLayer(map: MLMap) {
   });
 }
 
-function addPedestrianLayer(map: MLMap, visible: boolean) {
+async function addPedestrianLayer(map: MLMap, visible: boolean) {
   if (map.getSource("pedestrian")) return;
+  const url = await getSecureAssetUrl("infrastruktur-pedestrian.geojson");
+  if (!url) return;
+
   map.addSource("pedestrian", {
     type: "geojson",
-    data: "/infrastruktur-pedestrian.geojson",
+    data: url,
   });
   
   map.addLayer({

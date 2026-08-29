@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 import appCss from "../styles.css?url";
 
@@ -94,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap",
       },
 
       { rel: "icon", href: "/favicon.png", type: "image/png" },
@@ -141,9 +142,11 @@ function RootComponent() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }

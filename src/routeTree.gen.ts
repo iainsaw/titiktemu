@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AnalisisRouteImport } from './routes/analisis'
 import { Route as MetodologiRouteImport } from './routes/metodologi'
 import { Route as PetaRouteImport } from './routes/peta'
@@ -23,6 +24,11 @@ import { Route as ApiInsightRouteImport } from './routes/api/insight'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalisisRoute = AnalisisRouteImport.update({
@@ -73,6 +79,7 @@ const ApiInsightRoute = ApiInsightRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/analisis': typeof AnalisisRoute
   '/metodologi': typeof MetodologiRoute
   '/peta': typeof PetaRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/analisis': typeof AnalisisRoute
   '/metodologi': typeof MetodologiRoute
   '/peta': typeof PetaRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/analisis': typeof AnalisisRoute
   '/metodologi': typeof MetodologiRoute
   '/peta': typeof PetaRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/analisis'
     | '/metodologi'
     | '/peta'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/analisis'
     | '/metodologi'
     | '/peta'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/analisis'
     | '/metodologi'
     | '/peta'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AnalisisRoute: typeof AnalisisRoute
   MetodologiRoute: typeof MetodologiRoute
   PetaRoute: typeof PetaRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analisis': {
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AnalisisRoute: AnalisisRoute,
   MetodologiRoute: MetodologiRoute,
   PetaRoute: PetaRoute,

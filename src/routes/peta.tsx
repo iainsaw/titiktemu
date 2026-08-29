@@ -22,7 +22,8 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { analyzeNewPlace } from "@/lib/analyze-point";
 import { addDynamicKoordinat, KOORDINAT } from "@/components/VitalityMap";
-import { fetchAllMAPIDMissions, createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
+import { createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
+import { fetchAllMAPIDMissionsFn } from "@/lib/api-missions.functions";
 import { useKawasans } from "@/hooks/useKawasans";
 
 type Search = { peran?: RoleId };
@@ -58,6 +59,7 @@ function PetaInteraktif() {
   const [poiHiburan, setPoiHiburan] = useState(false);
   const [poiTransit, setPoiTransit] = useState(false);
   const [pedestrian, setPedestrian] = useState(false);
+  const [tampilkanMissions, setTampilkanMissions] = useState(false);
   const [anomaliLayer, setAnomaliLayer] = useState(true);
   
   const { kawasans, setKawasans } = useKawasans();
@@ -80,7 +82,7 @@ function PetaInteraktif() {
     setMissionsLoading(true);
 
     const polygon = createCirclePolygon(coord[0], coord[1], 800);
-    fetchAllMAPIDMissions(polygon, apiKey).then(data => {
+    fetchAllMAPIDMissionsFn({ data: { polygon } }).then(data => {
       if (isMounted) {
         setMissions([...data.properti, ...data.menu, ...data.struk]);
         setMissionsLoading(false);
@@ -229,6 +231,7 @@ function PetaInteraktif() {
             poiHiburan={poiHiburan}
             poiTransit={poiTransit}
             tampilkanPedestrian={pedestrian}
+            tampilkanMissions={tampilkanMissions}
             tampilkanAnomali={anomaliLayer}
             missions={missions}
           />
@@ -328,6 +331,10 @@ function PetaInteraktif() {
                 <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
                   <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
                   Transit
+                </label>
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                  <input type="checkbox" checked={tampilkanMissions} onChange={(e) => setTampilkanMissions(e.target.checked)} className="size-3.5 rounded accent-sky-500" />
+                  Misi MAPID
                 </label>
               </div>
             </div>

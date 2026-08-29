@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, getSecureAssetUrl } from "@/lib/supabase";
 import { KAWASAN as STATIC_KAWASAN, type Kawasan } from "@/lib/vitality-data";
 import { KOORDINAT } from "@/components/VitalityMap";
 
@@ -36,7 +36,7 @@ export function useKawasans() {
         try {
           const [{ data, error }, geoRes] = await Promise.all([
             supabase.from('tod_stations').select('*'),
-            fetch("/datasetfix.geojson").catch(() => null)
+            getSecureAssetUrl("datasetfix.geojson").then(url => url ? fetch(url).catch(() => null) : null)
           ]);
 
           let gridFeatures: any[] = [];

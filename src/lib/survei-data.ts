@@ -8,7 +8,8 @@ export type Survei = {
   titik: number;
   temuan: string[];
   catatan: string;
-  foto: { judul: string; keterangan: string };
+  foto: { judul: string; keterangan: string; src?: string };
+  fotos?: { judul: string; keterangan: string; src?: string }[];
 };
 
 export const SURVEI: Survei[] = [
@@ -32,17 +33,24 @@ export const SURVEI: Survei[] = [
     id: "SRV-02",
     kawasanId: "KWS-02",
     lokasi: "Stasiun Bandung",
-    tanggal: "14 Mei 2026",
-    surveyor: "Tim B (3 orang)",
-    metode: "Pemetaan POI + kuesioner UMKM",
-    titik: 31,
+    tanggal: "28 Agustus 2026",
+    surveyor: "Dimyati",
+    metode: "Pemetaan POI, Penilaian Infrastruktur Pejalan Kaki, dan Observasi Fasilitas Publik",
+    titik: 20,
     temuan: [
-      "Rata-rata penumpang komuter tinggi di pagi dan sore hari",
-      "Banyaknya POI komersial dan hotel di pintu selatan",
-      "Titik kemacetan parah karena penjemputan online/taksi",
+      "Kawasan gerbang utara memiliki konsentrasi tinggi untuk POI komersial dan hiburan seperti Hotel Geary dan Loko Cafe, yang sangat berpotensi mendukung konsep Transit Oriented Development (TOD).",
+      "Kondisi infrastruktur di luar kawasan stasiun memprihatinkan dengan adanya trotoar rusak dan penyalahgunaan area pejalan kaki untuk parkir motor. Hal ini memaksa pejalan kaki menggunakan badan jalan raya yang berisiko tinggi terhadap keselamatan mereka.",
+      "Tidak tersedianya area merokok khusus (Smoking Area) menyebabkan paparan asap rokok yang mengganggu pengunjung non-perokok dan berdampak pada berserakannya sampah puntung rokok di area stasiun.",
     ],
-    catatan: "Hub utama transit kota, membutuhkan penataan sirkulasi kendaraan.",
-    foto: { judul: "Pintu Selatan Stasiun", keterangan: "Antrean penjemputan penumpang" },
+    catatan: "Perlu adanya penataan trotoar dan penertiban parkir di luar kawasan stasiun untuk keselamatan pejalan kaki. Selain itu, penyediaan fasilitas area merokok khusus sangat mendesak untuk menjaga kebersihan dan kenyamanan pengunjung. Potensi TOD di gerbang utara dapat dioptimalkan lebih lanjut.",
+    foto: { judul: "Stasiun Bandung", keterangan: "Kawasan Stasiun Bandung" },
+    fotos: [
+      { judul: "Plang Stasiun", keterangan: "Papan nama Stasiun Bandung dengan rambu dilarang parkir", src: "/stasiun-bandung-1.jpg" },
+      { judul: "Loko Cafe", keterangan: "Suasana Loko Cafe di area stasiun", src: "/stasiun-bandung-2.jpg" },
+      { judul: "Jalur Pejalan Kaki", keterangan: "Kondisi selasar pejalan kaki di dalam area stasiun", src: "/stasiun-bandung-3.jpg" },
+      { judul: "Trotoar Luar", keterangan: "Kondisi trotoar luar kawasan stasiun yang dialihfungsikan", src: "/stasiun-bandung-4.jpg" },
+      { judul: "Titik Kepadatan", keterangan: "Aktivitas komersial dan hiburan di kawasan gerbang utara", src: "/stasiun-bandung-5.jpg" }
+    ],
   },
   {
     id: "SRV-03",

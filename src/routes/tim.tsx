@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, Phone, Linkedin } from "lucide-react";
+import { getSecureAssetUrl } from "@/lib/supabase";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -94,6 +96,24 @@ export const Route = createFileRoute("/tim")({
 });
 
 function TentangTim() {
+  const [team, setTeam] = useState(TIM);
+
+  useEffect(() => {
+    async function loadUrls() {
+      const updatedTim = await Promise.all(
+        TIM.map(async (t) => {
+          if (t.foto && t.foto.startsWith('/')) {
+            const url = await getSecureAssetUrl(t.foto);
+            return { ...t, foto: url || t.foto };
+          }
+          return t;
+        })
+      );
+      setTeam(updatedTim);
+    }
+    loadUrls();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
@@ -108,7 +128,7 @@ function TentangTim() {
 
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
-          {TIM.map((t) => (
+          {team.map((t) => (
             <article
               key={t.nama}
               className="group relative flex aspect-4/5 flex-col justify-end overflow-hidden rounded-2xl border border-border bg-ink shadow-[var(--shadow-panel)] sm:rounded-3xl"

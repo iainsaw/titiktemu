@@ -26,7 +26,7 @@ async function loadMaplibre(): Promise<any> {
   if ((window as any).maplibregl) {
     return (window as any).maplibregl;
   }
-  
+
   try {
     // 1. Ensure CSS is loaded first so container has dimensions
     if (!document.querySelector('link[href*="maplibre-gl.css"]')) {
@@ -122,7 +122,7 @@ export function MapLibreMap({
           console.log("✅ MapLibre: Peta siap ditampilkan!");
           if (onReadyRef.current) onReadyRef.current(map!);
           setState("ready");
-          
+
           // Force resize aggressively to ensure canvas isn't trapped at 0x0
           for (let i = 1; i <= 5; i++) {
             setTimeout(() => map?.resize(), i * 200);

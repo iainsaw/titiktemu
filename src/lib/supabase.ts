@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { generateSecureAssetUrl } from "./supabase.functions";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 // Mendukung penggunaan nama VITE_SUPABASE_ANON_KEY atau VITE_SUPABASE_PUBLISHABLE_KEY
@@ -36,6 +37,11 @@ function createStubClient(): SupabaseClient {
       getSession: async () => ({ data: { session: null }, error: null }),
       onAuthStateChange: () => ({
         data: { subscription: { unsubscribe: () => {} } },
+      }),
+    },
+    storage: {
+      from: () => ({
+        createSignedUrl: async (path: string) => ({ data: { signedUrl: `/${path}` }, error: null }),
       }),
     },
   } as unknown as SupabaseClient;
@@ -124,4 +130,18 @@ export async function fetchGeoJSON(tableName: string) {
   }
 
   return await response.json();
+}
+
+/**
+ * Mendapatkan Signed URL sementara untuk file dari bucket 'secure-assets'.
+ */
+export async function getSecureAssetUrl(filePath: string, expiresIn = 3600): Promise<string | null> {
+  if (!isSupabaseConfigured) return filePath; // Fallback jika belum di-config
+  
+  try {
+    return await generateSecureAssetUrl({ data: { path: filePath, expiresIn } });
+  } catch (err) {
+    console.error(`Exception saat mengambil Signed URL untuk ${filePath}:`, err);
+    return null;
+  }
 }

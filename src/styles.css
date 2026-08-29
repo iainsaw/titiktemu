@@ -51,39 +51,39 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --font-display:
-    "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
+    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
   --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
+    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 :root {
-  --radius: 1rem; /* 16px — Sedang (12-16 pt) Apple standar */
-  --background: oklch(0.972 0.003 250); /* abu lembut, bukan putih polos */
-  --foreground: oklch(0.17 0 0);
+  --radius: 1rem;
+  --background: oklch(0.985 0.003 85); /* Warm alabaster canvas khas Claude */
+  --foreground: oklch(0.18 0.01 60);
   --surface: oklch(1 0 0);
-  --surface-raised: oklch(0.955 0.004 250);
+  --surface-raised: oklch(0.965 0.004 85);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.17 0 0);
+  --card-foreground: oklch(0.18 0.01 60);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.17 0 0);
-  --primary: #0071E3;
+  --popover-foreground: oklch(0.18 0.01 60);
+  --primary: #0071E3; /* Biru logo Titik Temu dipertahankan */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.945 0.004 250);
+  --secondary: oklch(0.955 0.004 85);
   --secondary-foreground: oklch(0.24 0 0);
-  --muted: oklch(0.945 0.004 250);
-  --muted-foreground: oklch(0.53 0.006 258);
+  --muted: oklch(0.955 0.004 85);
+  --muted-foreground: oklch(0.50 0.008 85);
 
   --accent: #0071E3;
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.92 0.002 250);
-  --input: oklch(0.90 0.002 250);
+  --border: oklch(0.925 0.004 85);
+  --input: oklch(0.91 0.004 85);
   --ring: #0071E3;
 
-  /* Ink = Apple's near-black feature sections */
-  --ink: oklch(0.16 0 0);
+  /* Ink = Claude deep warm feature sections */
+  --ink: oklch(0.16 0.01 60);
   --ink-foreground: oklch(0.98 0 0);
 
   --score-1: oklch(0.56 0.24 27);

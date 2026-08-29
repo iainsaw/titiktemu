@@ -1,9 +1,11 @@
+import { useState, useEffect, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Camera, MapPin, Users, ClipboardList } from "lucide-react";
+import { Camera, MapPin, Users, ClipboardList, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SURVEI, RINGKASAN_SURVEI } from "@/lib/survei-data";
+import { getSecureAssetUrl } from "@/lib/supabase";
 
 export const Route = createFileRoute("/survei")({
   head: () => ({
@@ -48,11 +50,7 @@ function SurveiLapangan() {
         <div className="mt-8 space-y-5">
           {SURVEI.map((s) => (
             <article key={s.id} className="panel grid gap-4 p-4 sm:gap-5 sm:p-5 md:grid-cols-[220px_minmax(0,1fr)]">
-              <div className="dotted-canvas flex aspect-[4/3] flex-col justify-end rounded-xl border border-border bg-secondary p-3">
-                <Camera className="mb-auto size-5 text-muted-foreground" />
-                <p className="text-[12px] font-medium">{s.foto.judul}</p>
-                <p className="text-[11px] text-muted-foreground">{s.foto.keterangan}</p>
-              </div>
+              <PhotoCarousel fotos={s.fotos} fallback={s.foto} />
 
               <div className="min-w-0">
                 <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -108,6 +106,81 @@ function Ringkas({
         <p className="text-[11px] text-muted-foreground">{label}</p>
         <p className="font-display text-[19px] font-semibold tracking-tight">{value}</p>
       </div>
+    </div>
+  );
+}
+
+function PhotoCarousel({
+  fotos,
+  fallback,
+}: {
+  fotos?: { judul: string; keterangan: string; src?: string }[];
+  fallback: { judul: string; keterangan: string; src?: string };
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+
+  const images = useMemo(() => fotos && fotos.length > 0 ? fotos : [fallback], [fotos, fallback]);
+  const current = images[currentIndex];
+
+  useEffect(() => {
+    async function fetchUrls() {
+      const urls: Record<string, string> = {};
+      for (const img of images) {
+        if (img.src) {
+          const url = await getSecureAssetUrl(img.src);
+          if (url) urls[img.src] = url;
+        }
+      }
+      setSignedUrls(urls);
+    }
+    fetchUrls();
+  }, [images]);
+
+  const next = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const prev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(next, 4000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  const currentSrc = current.src ? signedUrls[current.src] || current.src : undefined;
+
+  return (
+    <div className="relative w-full h-full min-h-[220px] rounded-xl border border-border bg-secondary overflow-hidden group">
+      {currentSrc ? (
+        <img
+          src={currentSrc}
+          alt={current.judul}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center opacity-10 dotted-canvas">
+          <Camera className="size-12" />
+        </div>
+      )}
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-background/80 hover:bg-background text-foreground backdrop-blur-sm border border-border/50 transition-colors z-20 opacity-0 group-hover:opacity-100 shadow-sm"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-background/80 hover:bg-background text-foreground backdrop-blur-sm border border-border/50 transition-colors z-20 opacity-0 group-hover:opacity-100 shadow-sm"
+          >
+            <ChevronRight className="size-4" />
+          </button>
+          <div className="absolute top-3 right-3 z-20 bg-background/90 px-2 py-0.5 rounded-md text-[10.5px] font-mono font-medium backdrop-blur-sm border border-border/50 shadow-sm">
+            {currentIndex + 1} / {images.length}
+          </div>
+        </>
+      )}
     </div>
   );
 }
