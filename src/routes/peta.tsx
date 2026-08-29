@@ -263,17 +263,14 @@ function PetaInteraktif() {
           </div>
         </main>
 
-        {/* CARDS AREA (Scrollable block on mobile, overlay on desktop) */}
+                {/* CARDS AREA (Scrollable block on mobile, overlay on desktop) */}
         <div className="flex-1 overflow-y-auto bg-background p-4 flex flex-col gap-4 lg:pointer-events-none lg:absolute lg:inset-0 lg:overflow-visible lg:p-0 lg:bg-transparent pb-24 lg:pb-0">
 
-          {/* UNIFIED MOBILE CARD WRAPPER */}
-          <div className="flex flex-col gap-0 rounded-2xl bg-white shadow-lg border border-border/20 dark:bg-black dark:border-white/10 lg:bg-transparent lg:shadow-none lg:border-none lg:grid lg:grid-cols-[320px_1fr_300px] lg:grid-rows-[auto_1fr] lg:gap-y-4 lg:absolute lg:top-4 lg:left-4 lg:right-4 lg:bottom-[100px] lg:pointer-events-none">
-            
-            
-            
+          {/* UNIFIED GRID WRAPPER */}
+          <div className="grid grid-cols-1 grid-rows-none gap-0 rounded-2xl bg-white shadow-lg border border-border/20 dark:bg-black dark:border-white/10 lg:bg-transparent lg:shadow-none lg:border-none lg:grid-cols-[320px_1fr_300px] lg:grid-rows-[auto_1fr] lg:gap-x-4 lg:gap-y-3 lg:absolute lg:top-4 lg:left-4 lg:right-4 lg:bottom-[100px] lg:pointer-events-none lg:p-0">
 {/* 1. SEARCH & FILTERS (Order 1 on mobile, Right Side on desktop) */}
             <AnimatedSection animation="slide-in-right" delay={100} className={cn(
-              "order-1 lg:col-start-3 lg:row-start-1 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+              "order-1 lg:order-none lg:col-start-3 lg:row-start-1 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
               "p-4 lg:p-4 lg:rounded-2xl lg:bg-white lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black lg:dark:border-white/10",
               isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
             )}>
@@ -362,61 +359,9 @@ function PetaInteraktif() {
               </div>
             </AnimatedSection>
 
-            
-{/* 3. RANKINGS (Order 3 on mobile, Right Side on desktop, below Search) */}
-            <AnimatedSection animation="slide-in-right" delay={150} className={cn(
-              "order-3 lg:col-start-3 lg:row-start-2 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden overflow-hidden",
-              "border-t border-border/10 min-h-[300px] lg:min-h-0 lg:border-none lg:rounded-2xl lg:bg-white lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black lg:dark:border-white/10 lg:flex-1 lg:min-h-0",
-              isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
-            )}>
-              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between bg-white dark:bg-black">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
-                  Peringkat Kawasan
-                </h3>
-                <Link
-                  to="/analisis"
-                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
-                >
-                  Bandingkan ›
-                </Link>
-              </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
-                <ol className="space-y-0.5">
-                  {peringkat.map(({ k, skor }, i) => (
-                    <li key={k.id}>
-                      <button
-                        onClick={() => setSelectedId(k.id)}
-                        className={cn(
-                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
-                          k.id === selectedId
-                            ? "bg-secondary font-medium text-foreground shadow-sm"
-                            : "text-foreground/70 hover:bg-secondary/50"
-                        )}
-                      >
-                        <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
-                        <span className="flex-1 truncate">{k.nama}</span>
-                        <span
-                          className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
-                          style={{
-                            color: warnaSkor(skor),
-                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
-                          }}
-                        >
-                          {skor}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </AnimatedSection>
-
-            </div>
-
-            
 {/* 2. DETAIL KAWASAN (Order 2 on mobile, Left Side on desktop) */}
             <AnimatedSection animation="slide-in-left" delay={100} className={cn(
-              "order-2 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+              "order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
               "p-4 border-t border-border/10 lg:border-none lg:p-4 lg:rounded-2xl lg:bg-white lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black lg:dark:border-white/10 lg:max-h-[calc(100vh-132px)] overflow-hidden",
               isMapMaximized ? "lg:left-[-400px] lg:opacity-0" : "lg:opacity-100"
             )}>
@@ -567,6 +512,55 @@ function PetaInteraktif() {
                 )}
               </div>
             </AnimatedSection>
+
+{/* 3. RANKINGS (Order 3 on mobile, Right Side on desktop, below Search) */}
+            <AnimatedSection animation="slide-in-right" delay={150} className={cn(
+              "order-3 lg:order-none lg:col-start-3 lg:row-start-2 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden overflow-hidden",
+              "border-t border-border/10 min-h-[300px] lg:min-h-0 lg:border-none lg:rounded-2xl lg:bg-white lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black lg:dark:border-white/10 lg:flex-1",
+              isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
+            )}>
+              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between bg-white dark:bg-black">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
+                  Peringkat Kawasan
+                </h3>
+                <Link
+                  to="/analisis"
+                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+                >
+                  Bandingkan ›
+                </Link>
+              </div>
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+                <ol className="space-y-0.5">
+                  {peringkat.map(({ k, skor }, i) => (
+                    <li key={k.id}>
+                      <button
+                        onClick={() => setSelectedId(k.id)}
+                        className={cn(
+                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
+                          k.id === selectedId
+                            ? "bg-secondary font-medium text-foreground shadow-sm"
+                            : "text-foreground/70 hover:bg-secondary/50"
+                        )}
+                      >
+                        <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="flex-1 truncate">{k.nama}</span>
+                        <span
+                          className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
+                          style={{
+                            color: warnaSkor(skor),
+                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
+                          }}
+                        >
+                          {skor}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </AnimatedSection>
+
           </div>
 
           {/* CARD 4: Role Selector (Remains a separate floating card on mobile) */}
