@@ -63,6 +63,8 @@ function PetaInteraktif() {
   const [pedestrian, setPedestrian] = useState(false);
   const [tampilkanMissions, setTampilkanMissions] = useState(false);
   const [anomaliLayer, setAnomaliLayer] = useState(true);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   
   const { kawasans, setKawasans } = useKawasans();
   const [selectedId, setSelectedId] = useState<string>(STATIC_KAWASAN[0].id);
@@ -184,10 +186,6 @@ function PetaInteraktif() {
     .sort((a, b) => b.skor - a.skor);
 
   // Jika terpilih berubah, reset rekomendasi AI
-  useEffect(() => {
-    setAiRecommendation("");
-  }, [selectedId]);
-
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
 
@@ -266,166 +264,111 @@ function PetaInteraktif() {
         </main>
 
         {/* CARDS AREA (Scrollable block on mobile, overlay on desktop) */}
-        <div className="flex-1 overflow-y-auto bg-background p-4 flex flex-col gap-4 lg:pointer-events-none lg:absolute lg:inset-0 lg:overflow-visible lg:p-0 lg:bg-transparent">
+        <div className="flex-1 overflow-y-auto bg-background p-4 flex flex-col gap-4 lg:pointer-events-none lg:absolute lg:inset-0 lg:overflow-visible lg:p-0 lg:bg-transparent pb-24 lg:pb-0">
 
-          {/* CARD 1: Role Selector (Bottom Center) */}
-          <AnimatedSection animation="fade-in-up" delay={200} className="lg:pointer-events-auto flex items-center justify-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden lg:absolute lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-auto">
-            {ROLES.map((r) => (
-              <button
-                key={r.id}
-                onClick={() => {
-                  setRole(r.id);
-                  setAiRecommendation("");
-                }}
-                className={cn(
-                  "rounded-lg px-4 py-2 text-[12px] font-medium transition-all duration-200",
-                  role === r.id
-                    ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                )}
-              >
-                {r.label}
-              </button>
-            ))}
-          </AnimatedSection>
-
-          {/* RIGHT CARDS CONTAINER */}
-          <AnimatedSection animation="slide-in-right" delay={100} className={cn(
-            "lg:pointer-events-auto flex flex-col gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
-            "lg:absolute lg:top-4 lg:right-4 lg:z-40 lg:w-[300px] lg:max-h-[calc(100%-140px)]",
-            isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
-          )}>
+          {/* UNIFIED MOBILE CARD WRAPPER */}
+          {/* On Desktop, this disappears and children flow normally */}
+          <div className="flex flex-col gap-0 rounded-2xl bg-white/90 shadow-lg border border-border/20 dark:bg-black/80 dark:border-white/10 lg:bg-transparent lg:shadow-none lg:border-none lg:contents">
             
-            {/* CARD 2: Search & Layers */}
-            <div className="shrink-0 flex flex-col rounded-2xl bg-white/90 p-4 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10">
-              {/* Search */}
-              <form onSubmit={handleAnalisis} className="relative">
-                <input
-                  type="text"
-                  placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
-                  value={searchNewPlace}
-                  onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
-                  disabled={analyzing}
-                  className="h-[36px] w-full rounded-xl bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
-                />
-                <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                  {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
-                </div>
-              </form>
-
-              {/* Layer Pill Chips */}
-              <div className="mt-3.5 flex flex-wrap gap-1.5">
-                {LAYERS.map((l) => (
-                  <button
-                    key={l.id}
-                    onClick={() => setLayer(l.id)}
-                    className={cn(
-                      "rounded-full px-3 py-1 text-[12px] font-medium transition-all duration-200",
-                      layer === l.id
-                        ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
-                        : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
-                    )}
-                  >
-                    {l.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Overlay Toggles */}
-              <div className="mt-3.5 grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-muted-foreground">
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
-                  Koridor
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
-                  Jalur Angkot
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
-                  Jalur Bus (BRT)
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
-                  Pendidikan
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
-                  Kesehatan
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
-                  Komersial
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
-                  Hiburan
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
-                  Transit
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-                  <input type="checkbox" checked={tampilkanMissions} onChange={(e) => setTampilkanMissions(e.target.checked)} className="size-3.5 rounded accent-sky-500" />
-                  Misi MAPID
-                </label>
-              </div>
-            </div>
-
-            {/* CARD 4: Rankings */}
-            <div className="flex flex-1 min-h-0 flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 overflow-hidden">
-              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
-                  Peringkat Kawasan
-                </h3>
-                <Link
-                  to="/analisis"
-                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+            {/* 1. SEARCH & FILTERS (Order 1 on mobile, Right Side on desktop) */}
+            <AnimatedSection animation="slide-in-right" delay={100} className={cn(
+              "order-1 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
+              "p-4 lg:p-4 lg:rounded-2xl lg:bg-white/90 lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black/80 lg:dark:border-white/10",
+              "lg:absolute lg:top-4 lg:right-4 lg:z-40 lg:w-[300px]",
+              isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
+            )}>
+              {/* Search Bar + Filter Button for Mobile */}
+              <div className="flex items-center gap-2">
+                <form onSubmit={handleAnalisis} className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
+                    value={searchNewPlace}
+                    onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
+                    disabled={analyzing}
+                    className="h-[36px] w-full rounded-xl bg-secondary/50 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/8 disabled:opacity-50"
+                  />
+                  <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                    {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
+                  </div>
+                </form>
+                {/* Mobile Filter Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                  className="lg:hidden flex h-[36px] items-center justify-center rounded-xl bg-secondary/50 px-3 text-[13px] font-medium transition-colors hover:bg-secondary"
                 >
-                  Bandingkan ›
-                </Link>
+                  Layer
+                </button>
               </div>
-              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
-                <ol className="space-y-0.5">
-                  {peringkat.map(({ k, skor }, i) => (
-                    <li key={k.id}>
-                      <button
-                        onClick={() => setSelectedId(k.id)}
-                        className={cn(
-                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
-                          k.id === selectedId
-                            ? "bg-secondary font-medium text-foreground shadow-sm"
-                            : "text-foreground/70 hover:bg-secondary/50"
-                        )}
-                      >
-                        <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
-                        <span className="flex-1 truncate">{k.nama}</span>
-                        <span
-                          className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
-                          style={{
-                            color: warnaSkor(skor),
-                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
-                          }}
-                        >
-                          {skor}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </AnimatedSection>
 
-          {/* LEFT CARDS CONTAINER */}
-          <AnimatedSection animation="slide-in-left" delay={100} className={cn(
-            "lg:pointer-events-auto flex flex-col gap-4 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
-            "lg:absolute lg:top-4 lg:left-4 lg:z-40 lg:w-[320px] lg:max-h-[calc(100vh-32px)]",
-            isMapMaximized ? "lg:left-[-400px] lg:opacity-0" : "lg:opacity-100"
-          )}>
-            
-            {/* CARD 3: Selected Details & AI */}
-            <div className="flex flex-col rounded-2xl bg-white/90 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 p-4">
+              {/* Layer Pill Chips & Checkboxes (Collapsible on mobile) */}
+              <div className={cn("mt-3.5 flex-col gap-3", showMobileFilters ? "flex" : "hidden lg:flex")}>
+                <div className="flex flex-wrap gap-1.5">
+                  {LAYERS.map((l) => (
+                    <button
+                      key={l.id}
+                      onClick={() => setLayer(l.id)}
+                      className={cn(
+                        "rounded-full px-3 py-1 text-[12px] font-medium transition-all duration-200",
+                        layer === l.id
+                          ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
+                          : "bg-secondary/50 text-muted-foreground hover:bg-secondary/70 dark:bg-white/8"
+                      )}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-muted-foreground">
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
+                    Koridor
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
+                    Jalur Angkot
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
+                    Jalur Bus (BRT)
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+                    Pendidikan
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
+                    Kesehatan
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
+                    Komersial
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
+                    Hiburan
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
+                    Transit
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
+                    <input type="checkbox" checked={tampilkanMissions} onChange={(e) => setTampilkanMissions(e.target.checked)} className="size-3.5 rounded accent-sky-500" />
+                    Misi MAPID
+                  </label>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* 2. DETAIL KAWASAN (Order 2 on mobile, Left Side on desktop) */}
+            <AnimatedSection animation="slide-in-left" delay={100} className={cn(
+              "order-2 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:static print:w-full",
+              "p-4 border-t border-border/10 lg:border-none lg:p-4 lg:rounded-2xl lg:bg-white/90 lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black/80 lg:dark:border-white/10",
+              "lg:absolute lg:top-4 lg:left-4 lg:z-40 lg:w-[320px] lg:max-h-[calc(100vh-32px)]",
+              isMapMaximized ? "lg:left-[-400px] lg:opacity-0" : "lg:opacity-100"
+            )}>
               {/* Kawasan Header */}
               <div className="flex items-center justify-between mb-1.5 print:hidden">
                 <span className="text-[11px] font-semibold tracking-wide text-ink dark:text-white uppercase">
@@ -538,7 +481,7 @@ function PetaInteraktif() {
                 </div>
               )}
 
-              {/* AI Recommendation (Integrated into Card 3) */}
+              {/* AI Recommendation */}
               <div className="mt-3 rounded-xl border border-ink/10 bg-ink/[0.03] p-4">
                 {!aiRecommendation && !isAiLoading && (
                   <button
@@ -572,8 +515,77 @@ function PetaInteraktif() {
                   </div>
                 )}
               </div>
+            </AnimatedSection>
 
-            </div>
+            {/* 3. RANKINGS (Order 3 on mobile, Right Side on desktop, below Search) */}
+            <AnimatedSection animation="slide-in-right" delay={150} className={cn(
+              "order-3 lg:pointer-events-auto flex flex-col transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden overflow-hidden",
+              "border-t border-border/10 min-h-[300px] lg:min-h-0 lg:border-none lg:rounded-2xl lg:bg-white/90 lg:shadow-lg lg:border lg:border-border/20 lg:dark:bg-black/80 lg:dark:border-white/10",
+              "lg:absolute lg:top-[340px] lg:right-4 lg:z-40 lg:w-[300px] lg:max-h-[calc(100vh-360px)]",
+              isMapMaximized ? "lg:right-[-400px] lg:opacity-0" : "lg:opacity-100"
+            )}>
+              <div className="px-4 pt-4 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between bg-white/90 dark:bg-black/80">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
+                  Peringkat Kawasan
+                </h3>
+                <Link
+                  to="/analisis"
+                  className="text-[11px] font-medium text-ink hover:underline dark:text-white"
+                >
+                  Bandingkan ›
+                </Link>
+              </div>
+              <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+                <ol className="space-y-0.5">
+                  {peringkat.map(({ k, skor }, i) => (
+                    <li key={k.id}>
+                      <button
+                        onClick={() => setSelectedId(k.id)}
+                        className={cn(
+                          "flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[12px] transition-all",
+                          k.id === selectedId
+                            ? "bg-secondary font-medium text-foreground shadow-sm"
+                            : "text-foreground/70 hover:bg-secondary/50"
+                        )}
+                      >
+                        <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
+                        <span className="flex-1 truncate">{k.nama}</span>
+                        <span
+                          className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
+                          style={{
+                            color: warnaSkor(skor),
+                            backgroundColor: `color-mix(in oklab, ${warnaSkor(skor)} 8%, transparent)`,
+                          }}
+                        >
+                          {skor}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </AnimatedSection>
+          </div>
+
+          {/* CARD 4: Role Selector (Remains a separate floating card on mobile) */}
+          <AnimatedSection animation="fade-in-up" delay={200} className="lg:pointer-events-auto flex items-center justify-center gap-1 rounded-xl bg-white/90 p-1 shadow-lg backdrop-blur-xl border border-border/20 dark:bg-black/80 dark:border-white/10 print:hidden lg:absolute lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-auto self-center mt-2 lg:mt-0 sticky bottom-4">
+            {ROLES.map((r) => (
+              <button
+                key={r.id}
+                onClick={() => {
+                  setRole(r.id);
+                  setAiRecommendation("");
+                }}
+                className={cn(
+                  "rounded-lg px-4 py-2 text-[12px] font-medium transition-all duration-200",
+                  role === r.id
+                    ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                )}
+              >
+                {r.label}
+              </button>
+            ))}
           </AnimatedSection>
 
         </div>
