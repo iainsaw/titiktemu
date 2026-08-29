@@ -123,9 +123,9 @@ function TentangTim() {
           <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px]">TIM</p>
           <h1 className="headline mt-3 text-[clamp(30px,9vw,56px)]">Urban Nadi</h1>
           <p className="mt-4 max-w-[620px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Tim multidisiplin di balik <span className="font-semibold text-foreground">Titik Temu</span> —
-            kolaborasi mahasiswa & dosen pembimbing Institut Teknologi Bandung untuk WebGIS Skor
-            Vitalitas Transit, pilot Kawasan Kota Bandung.
+            Tim di balik <span className="font-semibold text-foreground">Titik Temu</span> merupakan
+            kolaborasi mahasiswa dan dosen pembimbing dari Teknik Geodesi dan Geomatika, Institut Teknologi Bandung 
+            untuk WebGIS Skor Vitalitas Transit, pilot Kawasan Kota Bandung.
           </p>
         </AnimatedSection>
 
