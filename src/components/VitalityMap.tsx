@@ -138,12 +138,13 @@ export function VitalityMap({
     }
 
     // Add layers in correct order so beforeId references resolve correctly
-    await addKoridorLayer(map, kawasanRef.current, tampilkanKoridor);
-    await addSensusLayer(map, tampilkanSensus);
-    await addAngkotLayer(map, tampilkanAngkot);
-    await addBusLayer(map, tampilkanBus);
-    await addPoiLayer(map); // Init POI layer (starts hidden)
-    await addPedestrianLayer(map, tampilkanPedestrian);
+    try { await addKoridorLayer(map, kawasanRef.current, tampilkanKoridor); } catch (e) { console.error("Error loading koridor layer:", e); }
+    try { await addSensusLayer(map, tampilkanSensus); } catch (e) { console.error("Error loading sensus layer:", e); }
+    try { await addAngkotLayer(map, tampilkanAngkot); } catch (e) { console.error("Error loading angkot layer:", e); }
+    try { await addBusLayer(map, tampilkanBus); } catch (e) { console.error("Error loading bus layer:", e); }
+    try { await addPoiLayer(map); } catch (e) { console.error("Error loading poi layer:", e); }
+    try { await addPedestrianLayer(map, tampilkanPedestrian); } catch (e) { console.error("Error loading pedestrian layer:", e); }
+    
     setReady(true);
     // Render initial marker content.
     renderAllMarkers(markers, kawasanRef.current, propsRef.current);
@@ -391,7 +392,7 @@ async function addSensusLayer(map: MLMap, visible: boolean) {
       ],
       "fill-opacity": 0.5,
     },
-  }, "koridor-line"); // place below koridor-line
+  }, map.getLayer("koridor-line") ? "koridor-line" : undefined); // place below koridor-line if exists
   
   // Outline layer
   map.addLayer({
@@ -404,7 +405,7 @@ async function addSensusLayer(map: MLMap, visible: boolean) {
       "line-width": 1,
       "line-opacity": 0.6,
     },
-  }, "koridor-line");
+  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
 }
 
 async function addAngkotLayer(map: MLMap, visible: boolean) {
@@ -427,7 +428,7 @@ async function addAngkotLayer(map: MLMap, visible: boolean) {
       "line-width": 1.5,
       "line-opacity": 0.5,
     },
-  }, "koridor-line");
+  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
 }
 
 async function addBusLayer(map: MLMap, visible: boolean) {
@@ -450,7 +451,7 @@ async function addBusLayer(map: MLMap, visible: boolean) {
       "line-width": 2,
       "line-opacity": 0.7,
     },
-  }, "koridor-line");
+  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
 }
 
 async function addPoiLayer(map: MLMap) {
@@ -522,7 +523,7 @@ async function addPedestrianLayer(map: MLMap, visible: boolean) {
       "line-width": 1.5,
       "line-dasharray": [2, 2]
     },
-  }, "koridor-line");
+  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
 }
 
 

@@ -418,7 +418,7 @@ function PetaInteraktif() {
 
   // Rankings Component
   const rankingsContent = (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 overflow-hidden">
       <div className="px-4 pt-3.5 pb-2.5 border-b border-border/10 shrink-0 flex items-center justify-between bg-white dark:bg-zinc-900">
         <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80 flex items-center gap-1.5">
           Peringkat Kawasan
@@ -430,7 +430,11 @@ function PetaInteraktif() {
           Bandingkan ›
         </Link>
       </div>
-      <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
+      <div
+        className="flex-1 min-h-0 overflow-y-auto px-2 py-2 floating-scrollbar"
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <ol className="space-y-0.5">
           {peringkat.map(({ k, skor }, i) => (
             <li key={k.id}>
@@ -565,11 +569,15 @@ function PetaInteraktif() {
         {/* Left Side: Detail Kawasan */}
         <div
           className={cn(
-            "hidden lg:flex flex-col gap-3 absolute top-4 left-4 z-30 w-[360px] max-h-[calc(100vh-96px)] pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
+            "hidden lg:flex flex-col gap-3 absolute top-4 left-4 z-30 w-[360px] max-h-[calc(100vh-96px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
             isMapMaximized && "left-[-420px] opacity-0"
           )}
         >
-          <div className="rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-xl border border-border/30 overflow-y-auto max-h-full floating-scrollbar">
+          <div
+            className="pointer-events-auto rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-xl border border-border/30 overflow-y-auto max-h-full floating-scrollbar"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {detailContent}
           </div>
         </div>
@@ -577,17 +585,25 @@ function PetaInteraktif() {
         {/* Right Side: Search & Filter (Top) + Rankings (Bottom) */}
         <div
           className={cn(
-            "hidden lg:flex flex-col gap-3 absolute top-4 right-4 z-30 w-[320px] max-h-[calc(100vh-124px)] pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
+            "hidden lg:flex flex-col gap-3 absolute top-4 right-4 z-30 w-[320px] max-h-[calc(100vh-124px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
             isMapMaximized && "right-[-420px] opacity-0"
           )}
         >
           {/* Search Card */}
-          <div className="rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-xl border border-border/30 shrink-0">
+          <div
+            className="pointer-events-auto rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-xl border border-border/30 shrink-0"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {searchFilterContent}
           </div>
 
           {/* Rankings Card */}
-          <div className="rounded-2xl bg-white dark:bg-zinc-900 shadow-xl border border-border/30 flex-1 overflow-hidden flex flex-col h-[340px] max-h-[calc(100vh-140px)]">
+          <div
+            className="pointer-events-auto rounded-2xl bg-white dark:bg-zinc-900 shadow-xl border border-border/30 flex-1 min-h-0 overflow-hidden flex flex-col h-[330px] max-h-[calc(100vh-140px)]"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {rankingsContent}
           </div>
         </div>
@@ -611,7 +627,7 @@ function PetaInteraktif() {
           </div>
 
           {/* Card 3: Peringkat Kawasan */}
-          <div className="rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-border/40 h-[340px] max-h-[380px] flex flex-col overflow-hidden">
+          <div className="rounded-2xl bg-white dark:bg-zinc-900 shadow-sm border border-border/40 h-[330px] max-h-[380px] flex flex-col min-h-0 overflow-hidden">
             {rankingsContent}
           </div>
         </div>

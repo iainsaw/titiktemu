@@ -88,28 +88,51 @@ export const SURVEI: Survei[] = [
     lokasi: "Alun-Alun Bandung",
     tanggal: "Selasa, 25 Agustus 2026",
     surveyor: "Firzatullah Al Ghiffari",
-    metode: "Observasi Karakteristik Ruang Publik, Infrastruktur Transit, dan Aksesibilitas Pejalan Kaki",
+    metode: "Observasi karakteristik ruang publik, UMKM, dan infrastruktur transit (halte, pejalan kaki, JPO)",
     titik: 5,
     temuan: [
-      "Fasilitas transit di kawasan Alun-Alun Bandung masih memiliki keterbatasan dari sisi keterbukaan informasi dan pemeliharaan fisik — Halte Alun-Alun melayani banyak trayek angkot dan Metro Jabar Trans (MJT), namun peta rute yang terpasang hanya mencakup satu koridor (MJT 2D). Sementara itu, Bus Stop di depan Golden Megah Corp tidak dilengkapi informasi trayek dan kondisi tempat duduknya mengalami kerusakan fisik (keramik terkelupas).",
-      "Infrastruktur penyeberangan ramah disabilitas belum merata — JPO Asia Afrika dalam kondisi bersih dan terawat dengan baik, namun belum dilengkapi fasilitas lift atau ramp ramah disabilitas. Keterbatasan petunjuk arah di sekitar area ini juga membuat sebagian pejalan kaki memilih menyeberang langsung di badan jalan.",
-      "Aktivitas ruang publik dan kawasan komersial menunjukkan dinamika pemanfaatan yang beragam dengan pola waktu yang belum konsisten sepanjang hari — Cikapundung Riverspot aktif sebagai taman kota dan spot foto publik yang ramai di sore hari, sementara deretan toko di Jalan Alkateri (termasuk kios bersejarah seperti Kopi Purnama) sebagian terlihat tutup saat kunjungan siang hari.",
+      "Fasilitas transit kekurangan informasi rute dan aksesibilitas; halte utama hanya memiliki peta rute tunggal, sementara bus stop lain minim petunjuk trayek dengan kondisi fisik yang mulai rusak.",
+      "Infrastruktur ramah disabilitas belum memadai; JPO Asia Afrika terawat namun ketiadaan lift menyulitkan penyandang disabilitas, mendorong pejalan kaki menyeberang langsung di jalan.",
+      "Pemanfaatan ruang publik dan komersial tidak konsisten; Cikapundung Riverspot aktif dengan PKL di sore hari, namun sebagian kios bersejarah di Jl. Alakateri justru tutup pada siang hari."
     ],
-    catatan: "Kawasan Alun-Alun Bandung dan Koridor Asia Afrika memiliki potensi daya tarik wisata dan ruang publik yang sangat tinggi. Pengembangan kawasan berkonsep TOD perlu memprioritaskan peremajaan fasilitas halte transit (perbaikan fisik & integrasi peta rute), penyediaan aksesibilitas inklusif disabilitas pada fasilitas penyeberangan, serta harmonisasi jalur pejalan kaki dengan penataan UMKM dan jam operasional komersial kawasan.",
-    foto: { judul: "Alun-Alun Bandung", keterangan: "Kawasan Alun-Alun Bandung & Koridor Asia Afrika", src: "/survei/alun-alun/bus-stop.jpg" },
+    catatan: "Kawasan Alun-Alun Bandung memerlukan peningkatan informasi rute pada titik transit dan perbaikan fasilitas aksesibilitas (seperti lift pada JPO). Optimalisasi ruang komersial juga diperlukan agar aktivitas ekonomi berjalan optimal dan konsisten sepanjang hari.",
+    foto: { judul: "Alun-Alun Bandung", keterangan: "Cikapundung Riverspot di kawasan Alun-Alun Bandung", src: "/survei/alun-alun/cikapundung.jpg" },
     fotos: [
-      { judul: "Rambu Bus Stop", keterangan: "Plang tempat berhenti bis/angkot di depan Golden Megah Corp yang belum dilengkapi petunjuk trayek", src: "/survei/alun-alun/bus-stop.jpg" },
-      { judul: "Kondisi Fisik Halte", keterangan: "Fasilitas tempat duduk di Halte Alun-Alun Bandung dengan kondisi keramik yang terkelupas", src: "/survei/alun-alun/halte-rusak.jpg" },
-      { judul: "Tangga JPO Asia Afrika", keterangan: "Infrastruktur JPO Asia Afrika yang bersih namun belum dilengkapi fasilitas lift untuk disabilitas", src: "/survei/alun-alun/jpo-asia-afrika.jpg" },
-      { judul: "Cikapundung Riverspot", keterangan: "Ruang terbuka publik dan area swafoto di Cikapundung Riverspot", src: "/survei/alun-alun/cikapundung-riverspot.jpg" },
-      { judul: "Pusat UMKM & Kuliner", keterangan: "Kawasan kios dan area kuliner indoor di sekitar Alun-Alun Bandung", src: "/survei/alun-alun/kios-umkm.jpg" },
+      { judul: "Cikapundung Riverspot", keterangan: "Cikapundung Riverspot menjadi taman aktif dengan banyak spot foto", src: "/survei/alun-alun/cikapundung.jpg" },
+      { judul: "Bus Stop", keterangan: "Bus stop depan Golden Megah Corp tanpa petunjuk trayek", src: "/survei/alun-alun/bus-stop.jpg" },
+      { judul: "Kondisi Halte", keterangan: "Kondisi fisik tempat duduk halte yang mulai terkelupas dan rusak", src: "/survei/alun-alun/halte-rusak.jpg" },
+      { judul: "JPO Asia Afrika", keterangan: "JPO dalam kondisi terawat namun tidak dilengkapi dengan lift", src: "/survei/alun-alun/jpo-tangga.jpg" },
+      { judul: "Kios & Ruang Publik", keterangan: "Pemanfaatan ruang oleh pedagang dan area makan di sekitar kawasan", src: "/survei/alun-alun/umkm-kuliner.jpg" }
+    ],
+  },
+  {
+    id: "SRV-05",
+    kawasanId: "KWS-03",
+    lokasi: "Terminal Leuwipanjang",
+    tanggal: "Sabtu, 28 & 29 Agustus 2026",
+    surveyor: "Syahrul Muharam",
+    metode: "Observasi ground truth parameter TOD, kualitas aksesibilitas, fasilitas publik (POI), ekonomi ritel, dan potensi pasar properti",
+    titik: 20,
+    temuan: [
+      "Fasilitas layanan publik (POI) terdistribusi baik dan esensial, terintegrasi dengan fasilitas keagamaan dan instansi pemerintah di luar terminal, membuktikan fungsi kawasan lebih dari sekadar tempat naik-turun penumpang.",
+      "Infrastruktur pedestrian secara fisik memadai namun fungsinya terdegradasi ekstrem akibat parkir liar roda dua yang memutus konektivitas first/last mile, serta adanya kerusakan trotoar parah di perhentian Trans Metro Bandung.",
+      "Dinamika ekonomi menunjukkan aktivitas UMKM dan ritel yang hidup, namun masih terdapat lahan berpagar (blank spot) yang berpotensi menjadi peluang investasi strategis untuk fasilitas mixed-use berbasis TOD."
+    ],
+    catatan: "Terminal Leuwipanjang memiliki potensi besar sebagai kawasan TOD. Fokus utama perbaikan adalah penertiban parkir liar di trotoar untuk mengembalikan fungsi pedestrian, perbaikan infrastruktur di titik perhentian, serta optimalisasi lahan pasif menjadi ruang komersial terintegrasi.",
+    foto: { judul: "Terminal Leuwipanjang", keterangan: "Suasana Terminal Leuwipanjang saat senja", src: "/survei/leuwipanjang/2.jpg" },
+    fotos: [
+      { judul: "Potensi Lahan Pasif", keterangan: "Lahan berpagar yang disewakan di sekitar kawasan", src: "/survei/leuwipanjang/1.jpg" },
+      { judul: "Terminal Senja", keterangan: "Tampilan Terminal Leuwipanjang pada waktu senja", src: "/survei/leuwipanjang/2.jpg" },
+      { judul: "UMKM dan Ritel", keterangan: "Aktivitas UMKM dan ritel yang ramai di sepanjang jalan", src: "/survei/leuwipanjang/3.jpg" },
+      { judul: "Fasilitas Publik", keterangan: "Fasilitas Badan Gizi Nasional di dekat kawasan terminal", src: "/survei/leuwipanjang/4.jpg" },
+      { judul: "Fasilitas Keagamaan", keterangan: "Masjid Jami Al-Mushlih yang terintegrasi dengan kawasan", src: "/survei/leuwipanjang/5.jpg" }
     ],
   },
 ];
 
 export const RINGKASAN_SURVEI = {
-  totalTitik: 63,
-  totalLokasi: 4,
-  totalJamObservasi: 24,
+  totalTitik: 83,
+  totalLokasi: SURVEI.length,
+  totalJamObservasi: 18,
   periode: "Agustus 2026",
 };

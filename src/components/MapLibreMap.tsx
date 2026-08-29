@@ -41,13 +41,6 @@ export function MapLibreMap({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const apiKey = import.meta.env.VITE_MAPID_API_KEY;
-    if (!apiKey) {
-      console.warn("⚠️ VITE_MAPID_API_KEY tidak ditemukan di .env");
-      setState("no-key");
-      return;
-    }
-
     if (!containerRef.current) return;
 
     let cancelled = false;
@@ -55,7 +48,10 @@ export function MapLibreMap({
     let ro: ResizeObserver | null = null;
     let resizeTimer: any = null;
 
-    const styleUrl = `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`;
+    const apiKey = import.meta.env.VITE_MAPID_API_KEY;
+    const styleUrl = apiKey
+      ? `https://v2.basemap.mapid.io/styles/street-v2.0/style.json?key=${apiKey}`
+      : `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json`;
 
     import("maplibre-gl")
       .then((module) => {
@@ -81,13 +77,32 @@ export function MapLibreMap({
           isReady = true;
           if (onReadyRef.current) onReadyRef.current(map!);
           setState("ready");
-          setTimeout(() => {
-            if (!cancelled && map) map.resize();
-          }, 100);
+          // Resize multiple times: layout can still be reflow-ing
+          [100, 300, 600, 1000].forEach((ms) => {
+            setTimeout(() => { if (!cancelled && map) map.resize(); }, ms);
+          });
         };
 
+        // Primary: MapID fires 'load' when done
         map.once("load", setReady);
-        setTimeout(setReady, 1500);
+
+        // Fallback: if MapID is slow/down after 4s, switch to Carto Voyager
+        // Then listen for 'style.load' because setStyle() doesn't re-fire 'load'
+        setTimeout(() => {
+          if (!isReady && !cancelled && map) {
+            console.warn("⚠️ Basemap utama lambat. Mengalihkan ke basemap cadangan (Carto Voyager)...");
+            map.once("style.load", setReady);
+            map.setStyle("https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json");
+          }
+        }, 4000);
+
+        // Hard safety net: force-ready after 10s no matter what
+        setTimeout(() => {
+          if (!isReady && !cancelled && map) {
+            console.warn("⚠️ Peta dipaksa tampil (timeout 10s).");
+            setReady();
+          }
+        }, 10000);
 
         map.on("error", (e: any) => {
           console.error("❌ MapLibre Error:", e.error?.message || e);
@@ -121,11 +136,12 @@ export function MapLibreMap({
   return (
     <div
       className={cn(
-        "relative min-h-[400px] w-full flex flex-col overflow-hidden bg-secondary/30",
+        "relative w-full flex flex-col overflow-hidden bg-secondary/30",
         className,
       )}
+      style={{ minHeight: "400px" }}
     >
-      <div ref={containerRef} className="flex-1 w-full" />
+      <div ref={containerRef} style={{ position: "absolute", inset: 0 }} />
 
       {state !== "ready" && (
         <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center p-6 text-center">

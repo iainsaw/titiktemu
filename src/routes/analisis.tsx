@@ -116,9 +116,13 @@ function Analisis() {
 
         <AnimatedSection delay={200} className="mt-6 flex flex-col gap-5">
           <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
-            <div className="panel p-4 flex flex-col h-[356px] overflow-hidden">
+            <div className="panel p-4 flex flex-col h-[356px] min-h-0 overflow-hidden">
               <h2 className="mb-3 text-sm font-semibold shrink-0">Pilih kawasan ({dipilih.length}/4)</h2>
-              <div className="flex-1 overflow-y-auto floating-scrollbar pr-1">
+              <div
+                className="flex-1 min-h-0 overflow-y-auto floating-scrollbar pr-1"
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+              >
                 <ul className="space-y-1">
                   {kawasans.map((k) => {
                     const aktif = dipilih.includes(k.id);

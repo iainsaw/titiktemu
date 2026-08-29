@@ -323,3 +323,23 @@
 .vitality-marker:hover .vm-tip {
   opacity: 1;
 }
+
+/* Floating custom scrollbar for sleek cards in Chrome & Safari */
+.floating-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.4) transparent;
+}
+.floating-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.floating-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.floating-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+.floating-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
+}
