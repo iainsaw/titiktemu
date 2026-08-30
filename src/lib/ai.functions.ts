@@ -3,12 +3,12 @@ import { type Kawasan } from "./vitality-data";
 
 const OPENROUTER_MODELS = [
   "openrouter/free",
-  "google/gemma-4-26b-a4b-it:free",
-  "google/gemma-4-31b-it:free",
-  "nvidia/nemotron-3.5-lightning:free",
   "meta-llama/llama-3.3-70b-instruct:free",
-  "deepseek/deepseek-r1:free",
+  "google/gemma-2-9b-it:free",
   "qwen/qwen-2.5-coder-32b-instruct:free",
+  "mistralai/mistral-7b-instruct:free",
+  "nvidia/nemotron-3.5-lightning:free",
+  "deepseek/deepseek-r1:free",
 ];
 
 function cleanAiResponse(text: string): string {
@@ -67,7 +67,6 @@ async function callOpenRouterWithFallback(
         body: JSON.stringify({
           model: model,
           messages: messages,
-          reasoning: { exclude: true },
           ...options
         })
       });
@@ -76,7 +75,7 @@ async function callOpenRouterWithFallback(
         const errorText = await response.text();
         console.warn(`[OpenRouter] Gagal menggunakan model ${model}:`, errorText);
         lastError = new Error(errorText);
-        continue; // Coba model selanjutnya untuk error apapun (429 rate limit, 402, 500, dll)
+        continue;
       }
 
       const json = await response.json();

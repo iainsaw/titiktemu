@@ -4,12 +4,12 @@ export type Pesan = { role: "user" | "assistant"; content: string };
 
 const OPENROUTER_MODELS = [
   "openrouter/free",
-  "google/gemma-4-26b-a4b-it:free",
-  "google/gemma-4-31b-it:free",
-  "nvidia/nemotron-3.5-lightning:free",
   "meta-llama/llama-3.3-70b-instruct:free",
-  "deepseek/deepseek-r1:free",
+  "google/gemma-2-9b-it:free",
   "qwen/qwen-2.5-coder-32b-instruct:free",
+  "mistralai/mistral-7b-instruct:free",
+  "nvidia/nemotron-3.5-lightning:free",
+  "deepseek/deepseek-r1:free",
 ];
 
 function cleanAiResponse(text: string): string {
@@ -69,8 +69,7 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
         body: JSON.stringify({
           model: model,
           messages: messages,
-          reasoning: { exclude: true },
-          max_tokens: 1500, // Batas aman agar OpenRouter tidak mencoba mengalokasikan kredit untuk 65k token
+          max_tokens: 1000,
         })
       });
 
@@ -79,12 +78,13 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
         const errMsg = errData?.error?.message || "Gagal menghubungi OpenRouter API";
         console.warn(`[OpenRouter] Gagal dengan model ${model}:`, errMsg);
         lastError = new Error(errMsg);
-        continue; // Coba model selanjutnya untuk error apapun (429, 402, 500, dll)
+        continue;
       }
 
       const data = await response.json();
       const rawContent = data.choices?.[0]?.message?.content || "";
-      return cleanAiResponse(rawContent);
+      const cleaned = cleanAiResponse(rawContent);
+      if (cleaned) return cleaned;
     } catch (e: any) {
       console.warn(`[OpenRouter] Exception dengan model ${model}:`, e);
       lastError = e;
