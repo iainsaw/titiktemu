@@ -264,6 +264,34 @@ function PetaInteraktif() {
     </div>
   );
 
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  // PDF Generation without map
+  const handleGeneratePDF = async () => {
+    if (isGeneratingPdf) return;
+    setIsGeneratingPdf(true);
+    try {
+      // Dynamically import to avoid SSR issues
+      const html2pdf = (await import("html2pdf.js")).default;
+      const element = document.getElementById("pdf-report-template");
+      if (!element) return;
+      
+      const opt = {
+        margin:       15,
+        filename:     `Laporan-Titik-Temu-${terpilih.nama.replace(/\s+/g, '-')}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      await html2pdf().from(element).set(opt).save();
+    } catch (e) {
+      console.error("Failed to generate PDF", e);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   // Detail Kawasan Component
   const detailContent = (
     <div>
@@ -274,14 +302,11 @@ function PetaInteraktif() {
         </span>
         <div className="flex items-center gap-1.5">
           <button
-            onClick={() => {
-              // Trigger resize event for MapLibre before printing
-              window.dispatchEvent(new Event("beforeprint"));
-              setTimeout(() => window.print(), 500);
-            }}
-            className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
+            onClick={handleGeneratePDF}
+            disabled={isGeneratingPdf}
+            className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary disabled:opacity-50"
           >
-            PDF
+            {isGeneratingPdf ? <Loader2 className="size-3 animate-spin" /> : "Unduh Laporan PDF"}
           </button>
         </div>
       </div>
@@ -497,7 +522,7 @@ function PetaInteraktif() {
   );
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground print:h-auto print:min-h-screen print:w-full print:overflow-visible print:bg-white print:text-black print:font-latex">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
 
       {/* ── GLOBAL NAV ── */}
       <div className="shrink-0 z-50 print:hidden">
@@ -505,7 +530,7 @@ function PetaInteraktif() {
       </div>
 
       {/* ── MAIN CONTAINER ── */}
-      <div className="relative flex-1 overflow-hidden flex flex-col lg:block print:flex print:flex-col print:overflow-visible">
+      <div className="relative flex-1 overflow-hidden flex flex-col lg:block">
         
         {/* Toast Error Floating */}
         {analyzeError && (
@@ -516,27 +541,8 @@ function PetaInteraktif() {
           </div>
         )}
 
-        {/* ── PRINT ONLY: Header & Metadata (Order 1) ── */}
-        <div className="hidden print:block order-1 px-10 pt-10 pb-2">
-          <h1 className="text-center text-[18pt] font-bold uppercase border-b-2 border-black pb-4 mb-6">
-            Laporan Analisis Vitalitas Kawasan
-          </h1>
-          <div className="flex justify-between items-start mb-4 text-[11pt] leading-relaxed">
-            <div>
-              <p><strong>Platform:</strong> Titik Temu Pintar</p>
-              <p><strong>Kawasan:</strong> {terpilih.nama} ({terpilih.klaster})</p>
-              <p><strong>Perspektif:</strong> {peran.label}</p>
-            </div>
-            <div className="text-right">
-              <p><strong>Tanggal:</strong> {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-              <p><strong>Radius Analisis:</strong> 800m</p>
-            </div>
-          </div>
-          <p className="text-[11pt] italic mb-2">Gambar 1. Peta persebaran kawasan dan utilitas di sekitarnya.</p>
-        </div>
-
-        {/* ── MAP AREA (Order 2) ── */}
-        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:order-2 print:relative print:w-[calc(100%-5rem)] print:mx-auto print:h-[10cm] print:border print:border-black print:!mt-0 print:mb-6">
+        {/* ── MAP AREA ── */}
+        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:hidden">
           <VitalityMap
             className="size-full"
             fill
@@ -589,56 +595,6 @@ function PetaInteraktif() {
             </div>
           </div>
         </main>
-
-        {/* ── PRINT ONLY: Data Tables & AI Analysis (Order 3) ── */}
-        <div className="hidden print:block order-3 px-10">
-          <div className="flex gap-8 items-start mb-6">
-            <div className="w-1/3">
-              <h2 className="text-[14pt] font-bold mb-3">Ringkasan Skor</h2>
-              <div className="border border-black p-4 text-center bg-gray-50/50">
-                <p className="text-[11pt] mb-1">Skor Vitalitas Total</p>
-                <p className="text-[28pt] font-bold">{skorTerpilih}</p>
-                <p className="text-[11pt] italic text-gray-600 mt-1">Kelas: {kelasSkor(skorTerpilih).label}</p>
-              </div>
-            </div>
-            <div className="w-2/3">
-              <h2 className="text-[14pt] font-bold mb-3">Rincian Komponen</h2>
-              <table className="w-full text-[11pt] border-collapse border border-black text-left">
-                <thead>
-                  <tr>
-                    <th className="border border-black px-3 py-2 bg-gray-100/50">Komponen</th>
-                    <th className="border border-black px-3 py-2 bg-gray-100/50 text-center w-24">Skor</th>
-                    <th className="border border-black px-3 py-2 bg-gray-100/50 text-center w-24">Bobot</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPONENTS.map(c => (
-                    <tr key={c.id}>
-                      <td className="border border-black px-3 py-2">{c.label}</td>
-                      <td className="border border-black px-3 py-2 text-center font-bold">
-                        {terpilih.skor[c.id]}
-                      </td>
-                      <td className="border border-black px-3 py-2 text-center text-gray-600">
-                        {peran.weights[c.id] * 100}%
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <h2 className="text-[14pt] font-bold mb-3">Analisis Kecerdasan Buatan (AI)</h2>
-            {aiRecommendation ? (
-              <div className="border-l-4 border-black pl-4 py-1 text-[11pt] text-justify leading-relaxed [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:my-2 [&_li]:mb-1 [&_strong]:font-bold">
-                <div dangerouslySetInnerHTML={{ __html: aiRecommendation }} />
-              </div>
-            ) : (
-              <p className="text-[11pt] italic text-gray-500">Hasil analisis AI belum di-generate untuk kawasan ini.</p>
-            )}
-          </div>
-        </div>
 
         {/* ── DESKTOP OVERLAY LAYOUT (lg:flex) ── */}
         {/* Left Side: Detail Kawasan */}
@@ -711,6 +667,68 @@ function PetaInteraktif() {
         <div className="lg:hidden fixed bottom-3 left-2 right-2 z-40 flex justify-center pointer-events-none print:hidden">
           <div className="pointer-events-auto bg-white/95 dark:bg-zinc-900/95 shadow-2xl border border-border/50 backdrop-blur-md rounded-xl p-1 flex gap-1 justify-center max-w-[360px] w-full">
             {roleSelectorContent}
+          </div>
+        </div>
+
+        {/* ── PDF REPORT TEMPLATE (Hidden from screen) ── */}
+        <div className="absolute top-[-9999px] left-[-9999px] w-[210mm] z-[-1] print:hidden">
+          <div id="pdf-report-template" className="bg-white text-black font-latex px-[10mm] pt-[15mm] pb-[10mm]">
+            <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
+              Laporan Analisis Vitalitas Kawasan
+            </h1>
+            
+            <div className="flex justify-between items-start mb-10 text-[11pt] leading-relaxed">
+              <div>
+                <p><strong>Platform:</strong> Titik Temu Pintar</p>
+                <p><strong>Kawasan:</strong> {terpilih.nama} ({terpilih.klaster})</p>
+                <p><strong>Perspektif:</strong> {peran.label}</p>
+              </div>
+              <div className="text-right">
+                <p><strong>Tanggal:</strong> {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p><strong>Radius Analisis:</strong> 800m</p>
+              </div>
+            </div>
+
+            <h2 className="text-[14pt] font-bold mb-4">1. Ringkasan Skor Vitalitas</h2>
+            <p className="text-[11pt] text-justify mb-4 leading-relaxed">
+              Berdasarkan model pembobotan untuk peran <strong>{peran.label}</strong>, kawasan {terpilih.nama} mendapatkan skor vitalitas sebesar <strong>{skorTerpilih}</strong> dari 100, menempatkannya pada kelas <strong>{kelasSkor(skorTerpilih).label}</strong>. Berikut adalah rincian kontribusi masing-masing komponen pembentuk:
+            </p>
+
+            <table className="w-full text-[11pt] border-collapse border border-black text-left mb-10">
+              <thead>
+                <tr>
+                  <th className="border border-black px-4 py-3 bg-gray-100">Komponen</th>
+                  <th className="border border-black px-4 py-3 bg-gray-100 text-center w-24">Skor</th>
+                  <th className="border border-black px-4 py-3 bg-gray-100 text-center w-24">Bobot</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPONENTS.map(c => (
+                  <tr key={c.id}>
+                    <td className="border border-black px-4 py-3">{c.label}</td>
+                    <td className="border border-black px-4 py-3 text-center font-bold">
+                      {terpilih.skor[c.id]}
+                    </td>
+                    <td className="border border-black px-4 py-3 text-center text-gray-600">
+                      {peran.weights[c.id] * 100}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <h2 className="text-[14pt] font-bold mb-4">2. Analisis & Rekomendasi Sistem</h2>
+            {aiRecommendation ? (
+              <div className="text-[11pt] text-justify leading-relaxed [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:my-2 [&_li]:mb-1 [&_strong]:font-bold border-l-4 border-black pl-4 py-1">
+                <div dangerouslySetInnerHTML={{ __html: aiRecommendation }} />
+              </div>
+            ) : (
+              <p className="text-[11pt] italic text-gray-500">Hasil analisis AI belum di-generate untuk kawasan ini.</p>
+            )}
+            
+            <div className="mt-16 text-center text-[10pt] italic text-gray-500 border-t border-gray-300 pt-4">
+              Dokumen ini dihasilkan secara otomatis dari platform Titik Temu Pintar. Seluruh hasil didasarkan pada data faktual dan model analisis spasial komprehensif.
+            </div>
           </div>
         </div>
 
