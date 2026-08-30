@@ -6,7 +6,7 @@ const OPENROUTER_MODELS = [
   "google/gemma-4-26b-a4b-it:free",
   "google/gemma-4-31b-it:free",
   "nvidia/nemotron-3.5-lightning:free",
-  "google/gemini-2.5-flash",
+  "google/gemini-2.0-flash-lite-preview-02-05:free"
 ];
 
 async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
