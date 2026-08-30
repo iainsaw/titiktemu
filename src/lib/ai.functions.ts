@@ -2,13 +2,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { type Kawasan } from "./vitality-data";
 
 const OPENROUTER_MODELS = [
-  "openrouter/free",
   "meta-llama/llama-3.3-70b-instruct:free",
+  "google/gemini-2.0-flash-exp:free",
   "google/gemma-2-9b-it:free",
   "qwen/qwen-2.5-coder-32b-instruct:free",
   "mistralai/mistral-7b-instruct:free",
-  "nvidia/nemotron-3.5-lightning:free",
-  "deepseek/deepseek-r1:free",
 ];
 
 function cleanAiResponse(text: string): string {

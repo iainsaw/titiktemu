@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { AiIcon } from "@/components/AiIcon";
@@ -200,8 +201,8 @@ function TemuDataAi() {
                     <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary shadow-sm ring-1 ring-border/50">
                       <AiIcon className="size-4" />
                     </div>
-                    <div className="min-w-0 flex-1 rounded-[24px] rounded-tl-sm bg-surface/80 px-5 py-3.5 text-[15px] leading-relaxed text-foreground shadow-sm ring-1 ring-border/50 backdrop-blur-md [&>p:last-child]:mb-0 [&>p]:mb-3 [&_ol]:ml-5 [&_ol]:space-y-1 [&_ol]:list-decimal [&_strong]:font-semibold [&_ul]:ml-5 [&_ul]:space-y-1 [&_ul]:list-disc">
-                      <ReactMarkdown>{p.content}</ReactMarkdown>
+                    <div className="min-w-0 flex-1 rounded-[24px] rounded-tl-sm bg-surface/80 px-5 py-3.5 text-[15px] leading-relaxed text-foreground shadow-sm ring-1 ring-border/50 backdrop-blur-md [&>p:last-child]:mb-0 [&>p]:mb-3 [&_ol]:ml-5 [&_ol]:space-y-1 [&_ol]:list-decimal [&_strong]:font-semibold [&_ul]:ml-5 [&_ul]:space-y-1 [&_ul]:list-disc [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-[13px] [&_th]:border [&_th]:border-border/60 [&_th]:bg-muted/40 [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border/40 [&_td]:px-3 [&_td]:py-2 overflow-x-auto">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{p.content}</ReactMarkdown>
                     </div>
                   </div>
                 ),
