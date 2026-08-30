@@ -13,36 +13,11 @@ const OPENROUTER_MODELS = [
 function cleanAiResponse(text: string): string {
   if (!text) return "";
 
-  // 1. Clear out <think> tags or reasoning blocks
+  // Remove <think>...</think> tags if any
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
-  // 2. Remove standard reasoning header sections if present
-  if (/here's a thinking process:|thinking process:|analyze user input|formulate response/i.test(cleaned)) {
-    const parts = cleaned.split(/\n\s*\n/);
-    const validParts = parts.filter(p => 
-      !/thinking process|analyze user input|formulate response|extract data|check if any|structure:|top 3 by property|let's list|let's sort|user wants|we need to|let's craft|count sentences/i.test(p)
-    );
-    if (validParts.length > 0) {
-      cleaned = validParts.join("\n\n").trim();
-    }
-  }
-
-  // 3. Remove leading English scratchpad / prompt restatements
-  cleaned = cleaned.replace(/^(?:We need to|Let's craft|Ensure no extra|Count sentences|So recommendation:)[^\n]*\n?/gi, "");
-  
-  // 4. If AI wraps quoted Indonesian recommendation inside an English reasoning block
-  if (/we need to|let's craft|recommendation:/i.test(cleaned)) {
-    const matches = Array.from(cleaned.matchAll(/["“]([A-Z0-9\s\.,\(\)\-\%\/\*\#\:\;]{20,})["”]/g));
-    if (matches.length > 0) {
-      cleaned = matches[matches.length - 1][1];
-    }
-  }
-
-  // 5. Clean orphan trailing sentences like "That's two sentences." or "Ensure no extra."
-  cleaned = cleaned
-    .replace(/(?:that's two sentences|ensure no extra|count sentences).*$/gi, "")
-    .replace(/^["“']+|["”']+$/g, "")
-    .trim();
+  // Remove leading/trailing quotes if the whole text is wrapped in quotes
+  cleaned = cleaned.replace(/^["“']+|["”']+$/g, "").trim();
 
   return cleaned;
 }
@@ -69,7 +44,7 @@ async function callGeminiOrOpenRouter(messages: { role: string; content: string 
           body: JSON.stringify({
             model: model,
             messages: messages,
-            max_tokens: 1000,
+            max_tokens: 2048,
           })
         });
 
@@ -108,7 +83,7 @@ async function callGeminiOrOpenRouter(messages: { role: string; content: string 
           contents: [{ parts: [{ text: promptText }] }],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 1000
+            maxOutputTokens: 2048
           }
         })
       });
