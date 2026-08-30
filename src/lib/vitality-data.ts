@@ -23,7 +23,7 @@ export const ROLES: {
 }[] = [
   {
     id: "investor",
-    label: "Investor properti",
+    label: "Investor Properti",
     shortLabel: "Investor",
     tagline: "Menekankan pasar properti dan potensi imbal hasil kawasan.",
     weights: { properti: 0.4, layanan: 0.15, ekonomi: 0.2, akses: 0.25 },
