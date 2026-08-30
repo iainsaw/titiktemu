@@ -13,10 +13,13 @@ const OPENROUTER_MODELS = [
 function cleanAiResponse(text: string): string {
   if (!text) return "";
 
-  // Remove <think>...</think> tags if any
+  // 1. Remove <think>...</think> tags if any
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
-  // Remove leading/trailing quotes if the whole text is wrapped in quotes
+  // 2. Remove common AI prompt/header echoes if present
+  cleaned = cleaned.replace(/^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi, "").trim();
+
+  // 3. Remove leading/trailing quotes if the whole text is wrapped in quotes
   cleaned = cleaned.replace(/^["“']+|["”']+$/g, "").trim();
 
   return cleaned;

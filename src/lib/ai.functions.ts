@@ -12,10 +12,13 @@ const OPENROUTER_MODELS = [
 function cleanAiResponse(text: string): string {
   if (!text) return "";
 
-  // Remove <think>...</think> tags if any
+  // 1. Remove <think>...</think> tags if any
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
-  // Remove leading/trailing quotes if the whole text is wrapped in quotes
+  // 2. Remove common AI prompt/header echoes if present
+  cleaned = cleaned.replace(/^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi, "").trim();
+
+  // 3. Remove leading/trailing quotes if the whole text is wrapped in quotes
   cleaned = cleaned.replace(/^["“']+|["”']+$/g, "").trim();
 
   return cleaned;
@@ -204,19 +207,20 @@ export const generateOpportunityInsight = createServerFn({ method: "POST" })
       task = "prioritas pembangunan fasilitas atau infrastruktur publik yang paling mendesak untuk ditingkatkan";
     }
 
-    const prompt = `Anda adalah ahli tata kota dan ${persona}.
-Kawasan ${kws.nama} memiliki skor (0-100):
-Layanan Umum: ${kws.skor.layanan}
-Akses Transportasi: ${kws.skor.akses}
-Pasar Properti: ${kws.skor.properti}
-Keragaman Ekonomi: ${kws.skor.ekonomi}
-Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' : 'Tidak diketahui'}.
+    const prompt = `Anda adalah seorang ahli tata kota dan ${persona}.
+Analisis data statistik kawasan ${kws.nama} di Kota Bandung:
+- Layanan Umum: ${kws.skor.layanan}/100
+- Akses Transportasi: ${kws.skor.akses}/100
+- Pasar Properti: ${kws.skor.properti}/100
+- Keragaman Ekonomi: ${kws.skor.ekonomi}/100
+- Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' jiwa/km²' : 'Tidak diketahui'}
 
-INSTRUKSI KETAT:
-- Berikan 1 rekomendasi spesifik ${task} di area ini beserta alasan logisnya.
-- TULIS SELURUH JAWABAN DALAM BAHASA INDONESIA BAKU YANG PROFESIONAL.
-- DILARANG MENULISKAN PROSES BERPIKIR (REASONING), TEKS BAHASA INGGRIS, ATAU META-COMMENT SEPERTI "We need to", "Let's craft", ATAU "Count sentences".
-- Jawab HANYA 2 kalimat ringkas dan padat. Langsung ke isi rekomendasi.`;
+Tugas:
+Berikan 1 rekomendasi terbaik mengenai ${task} di kawasan ${kws.nama} beserta alasannya.
+
+Syarat Penulisan:
+- Tulis langsung jawaban Anda dalam 2 kalimat Bahasa Indonesia yang jelas, profesional, dan padat.
+- Langsung sampaikan rekomendasi dan alasannya tanpa judul, pengantar, atau teks bahasa Inggris.`;
 
     let json;
     try {
