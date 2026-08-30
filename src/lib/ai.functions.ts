@@ -117,7 +117,6 @@ async function callOpenRouterWithFallback(
     console.error("[Google Gemini API Error]:", e.message);
     throw new Error(`Google Gemini Error: ${e.message}`);
   }
-});
 }
 
 export const generateInsights = createServerFn({ method: "POST" })
