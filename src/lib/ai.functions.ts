@@ -51,75 +51,75 @@ async function callOpenRouterWithFallback(
   messages: any[],
   options: { temperature?: number; max_tokens?: number } = {}
 ) {
-  // 1. Direct REST fetch to Google AI Studio if key starts with AIzaSy
-  if (apiKey && apiKey.startsWith("AIzaSy")) {
-    try {
-      const promptText = messages.map(m => m.content).join("\n\n");
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: promptText }] }],
-          generationConfig: {
-            temperature: options.temperature || 0.7,
-            maxOutputTokens: options.max_tokens || 1000
-          }
-        })
-      });
+  // 1. If key starts with sk-or-v1-, use OpenRouter
+  if (apiKey && apiKey.startsWith("sk-or-v1-")) {
+    let lastError;
+    for (const model of OPENROUTER_MODELS) {
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:3000",
+            "X-Title": "Titik Temu AI"
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: messages,
+            ...options
+          })
+        });
 
-      if (response.ok) {
-        const json = await response.json();
-        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        if (text) {
-          return { choices: [{ message: { content: cleanAiResponse(text) } }] };
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.warn(`[OpenRouter] Gagal menggunakan model ${model}:`, errorText);
+          lastError = new Error(errorText);
+          continue;
         }
-      } else {
-        console.warn("[Gemini REST API Error]:", await response.text());
+
+        const json = await response.json();
+        if (json.choices?.[0]?.message?.content) {
+          json.choices[0].message.content = cleanAiResponse(json.choices[0].message.content);
+        }
+        return json;
+      } catch (error) {
+        console.warn(`[OpenRouter] Exception dengan model ${model}:`, error);
+        lastError = error;
       }
-    } catch (e: any) {
-      console.warn("[Gemini REST API Exception]:", e.message);
     }
+    throw new Error("Gagal memproses rekomendasi AI via OpenRouter.");
   }
 
-  // 2. Fallback to OpenRouter
-  let lastError;
-  for (const model of OPENROUTER_MODELS) {
-    try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "Titik Temu AI"
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: messages,
-          ...options
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.warn(`[OpenRouter] Gagal menggunakan model ${model}:`, errorText);
-        lastError = new Error(errorText);
-        continue;
+  // 2. Otherwise, treat key as Google Gemini API Key (handles AIzaSy... or AQ... keys)
+  const promptText = messages.map(m => m.content).join("\n\n");
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: promptText }] }],
+      generationConfig: {
+        temperature: options.temperature || 0.7,
+        maxOutputTokens: options.max_tokens || 1000
       }
+    })
+  });
 
-      const json = await response.json();
-      if (json.choices?.[0]?.message?.content) {
-        json.choices[0].message.content = cleanAiResponse(json.choices[0].message.content);
-      }
-      return json;
-    } catch (error) {
-      console.warn(`[OpenRouter] Exception dengan model ${model}:`, error);
-      lastError = error;
-    }
+  if (!response.ok) {
+    const errJson = await response.json().catch(() => ({}));
+    const errMsg = errJson?.error?.message || "Gagal menghubungi Google Gemini API";
+    console.error("[Google Gemini API Error]:", errMsg);
+    throw new Error(`Google Gemini Error: ${errMsg}`);
   }
 
-  throw new Error("Gagal memproses rekomendasi AI.");
+  const json = await response.json();
+  const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  if (!text) {
+    throw new Error("Google Gemini tidak mengembalikan jawaban.");
+  }
+
+  return { choices: [{ message: { content: cleanAiResponse(text) } }] };
 }
 
 export const generateInsights = createServerFn({ method: "POST" })
