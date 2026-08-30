@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, Database, Users, Map,
@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAdminStats } from "@/lib/auth.functions";
+import { deleteOfficialStation } from "@/lib/admin.functions";
 import { SiteHeader } from "@/components/SiteHeader";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +35,7 @@ type Stats = {
 function AdminDashboard() {
   const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
+  const router = useRouter();
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState<string | null>(null);
@@ -225,9 +227,17 @@ function AdminDashboard() {
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
-                              <button onClick={() => alert(`Edit ${s.nama}`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
-                              <button onClick={() => {
-                                if (window.confirm(`Hapus ${s.nama}?`)) alert("Dihapus (Mock)");
+                              <button onClick={() => alert(`Edit ${s.nama} (Coming Soon)`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
+                              <button onClick={async () => {
+                                if (window.confirm(`Yakin hapus kawasan resmi ${s.nama}?`)) {
+                                  try {
+                                    await deleteOfficialStation({ data: { userId: user!.id, stationId: s.id } });
+                                    alert("Sukses dihapus!");
+                                    router.invalidate();
+                                  } catch (e) {
+                                    alert("Gagal menghapus: " + (e as Error).message);
+                                  }
+                                }
                               }} className="text-red-500 hover:underline text-[11px] font-medium">Hapus</button>
                             </div>
                           </td>

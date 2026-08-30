@@ -23,6 +23,7 @@ import { generateOpportunityInsight } from "@/lib/ai.functions";
 import { cn } from "@/lib/utils";
 import { analyzeNewPlace, analyzeCoordinates } from "@/lib/analyze-point";
 import { createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
+import { insertOfficialStation } from "@/lib/admin.functions";
 import { fetchAllMAPIDMissionsFn } from "@/lib/api-missions.functions";
 import { useKawasans } from "@/hooks/useKawasans";
 
@@ -76,6 +77,7 @@ function PetaInteraktif() {
   const [isMapMaximized, setIsMapMaximized] = useState(false);
   const [aiRecommendation, setAiRecommendation] = useState<string>("");
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isInserting, setIsInserting] = useState(false);
 
   useEffect(() => {
     const coord = KOORDINAT[selectedId];
@@ -181,11 +183,35 @@ function PetaInteraktif() {
   };
 
   const handleMakeOfficial = async () => {
-    // For MVP: Just an alert to show the action works, 
-    // the real insert to tod_stations table can be added to supabase directly later
-    // or via a server fn. Since we don't have the RPC setup for insert yet, we mock it.
-    if (!isAdmin) return;
-    alert(`Sukses: Kawasan "${terpilih.nama}" telah didaftarkan sebagai Kawasan TOD Resmi.`);
+    if (!isAdmin || !user || !terpilih) return;
+    
+    setIsInserting(true);
+    try {
+      await insertOfficialStation({
+        data: {
+          userId: user.id,
+          station: {
+            id: terpilih.id,
+            nama: terpilih.nama,
+            koridor: terpilih.koridor,
+            klaster: terpilih.klaster,
+            umkm_count: terpilih.umkm || 0,
+            skor_properti: terpilih.skor.properti,
+            skor_layanan: terpilih.skor.layanan,
+            skor_ekonomi: terpilih.skor.ekonomi,
+            skor_akses: terpilih.skor.akses,
+            harga_tanah_m2: terpilih.hargaTanah || 0,
+            lng: KOORDINAT[terpilih.id][0],
+            lat: KOORDINAT[terpilih.id][1]
+          }
+        }
+      });
+      alert(`Sukses: Kawasan "${terpilih.nama}" telah didaftarkan secara permanen di server! (Silakan muat ulang halaman untuk melihatnya tanpa tanda 'Analisis Kustom')`);
+    } catch (e) {
+      alert("Gagal menyimpan ke server: " + (e as Error).message);
+    } finally {
+      setIsInserting(false);
+    }
   };
 
   const finalKawasans = kawasans.map(k => {
@@ -458,9 +484,10 @@ function PetaInteraktif() {
       {isAdmin && terpilih.id.startsWith("ANL-") && (
         <button
           onClick={handleMakeOfficial}
-          className="mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+          disabled={isInserting}
+          className="mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
-          Simpan Jadi Kawasan Resmi (Admin)
+          {isInserting ? "Menyimpan ke Server..." : "Simpan Jadi Kawasan Resmi (Admin)"}
         </button>
       )}
     </div>
