@@ -37,6 +37,7 @@ type Props = {
   tampilkanMissions?: boolean;
   className?: string;
   missions?: any[];
+  onMapClick?: (lng: number, lat: number) => void;
 };
 
 /**
@@ -94,6 +95,7 @@ export function VitalityMap({
   fill = false,
   className,
   missions = [],
+  onMapClick,
 }: Props) {
   const mapRef = useRef<MLMap | null>(null);
   const markersRef = useRef<Map<string, HTMLButtonElement>>(new Map());
@@ -106,6 +108,8 @@ export function VitalityMap({
   kawasanRef.current = kawasan;
   const propsRef = useRef({ role, layer, selectedId, tampilkanAnomali, compact });
   propsRef.current = { role, layer, selectedId, tampilkanAnomali, compact };
+  const onMapClickRef = useRef(onMapClick);
+  onMapClickRef.current = onMapClick;
 
   // Create markers + koridor GeoJSON layer once the basemap is ready.
   const handleReady = useCallback(async (map: MLMap) => {
@@ -148,6 +152,12 @@ export function VitalityMap({
     setReady(true);
     // Render initial marker content.
     renderAllMarkers(markers, kawasanRef.current, propsRef.current);
+
+    map.on("click", (e: any) => {
+      if (onMapClickRef.current) {
+        onMapClickRef.current(e.lngLat.lng, e.lngLat.lat);
+      }
+    });
   }, []);
 
   // Re-render marker DOM (score, color, highlight, opacity) on any change.

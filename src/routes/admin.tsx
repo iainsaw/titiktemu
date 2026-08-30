@@ -167,9 +167,17 @@ function AdminDashboard() {
               <BarChart3 className="size-3.5" />
               Skor Kawasan TOD
             </h2>
-            <span className="text-[12px] text-muted-foreground/60">
-              {stats?.stations.length ?? 0} kawasan aktif
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-[12px] text-muted-foreground/60">
+                {stats?.stations.length ?? 0} kawasan aktif
+              </span>
+              <button
+                onClick={() => alert("Formulir Tambah Kawasan akan segera tersedia.")}
+                className="rounded bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground hover:bg-primary/90"
+              >
+                + Tambah Kawasan
+              </button>
+            </div>
           </div>
 
           <div className="rounded-2xl border border-border/30 bg-secondary/10 overflow-hidden">
@@ -187,7 +195,7 @@ function AdminDashboard() {
                 <table className="w-full text-[13px]">
                   <thead>
                     <tr className="border-b border-border/20 bg-secondary/30">
-                      {["ID", "Nama Kawasan", "UMKM", "Ekonomi", "Layanan", "Akses", "Properti", "Rata-rata", "Diperbarui"].map(h => (
+                      {["ID", "Nama Kawasan", "UMKM", "Ekonomi", "Layanan", "Akses", "Properti", "Rata-rata", "Diperbarui", "Aksi"].map(h => (
                         <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
                           {h}
                         </th>
@@ -214,6 +222,14 @@ function AdminDashboard() {
                           </td>
                           <td className="px-4 py-3 text-muted-foreground/50 text-[11px]">
                             {s.updated_at ? new Date(s.updated_at).toLocaleDateString("id-ID") : "—"}
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => alert(`Edit ${s.nama}`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
+                              <button onClick={() => {
+                                if (window.confirm(`Hapus ${s.nama}?`)) alert("Dihapus (Mock)");
+                              }} className="text-red-500 hover:underline text-[11px] font-medium">Hapus</button>
+                            </div>
                           </td>
                         </tr>
                       );

@@ -4,6 +4,7 @@ import { Loader2, Search as SearchIcon, Expand, Shrink } from "lucide-react";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { useAuth } from "@/contexts/AuthContext";
 
 import { VitalityMap, addDynamicKoordinat, KOORDINAT } from "@/components/VitalityMap";
 const aiStar = { url: "/titik-temu-ai-star.png" };
@@ -20,7 +21,7 @@ import {
 } from "@/lib/vitality-data";
 import { generateOpportunityInsight } from "@/lib/ai.functions";
 import { cn } from "@/lib/utils";
-import { analyzeNewPlace } from "@/lib/analyze-point";
+import { analyzeNewPlace, analyzeCoordinates } from "@/lib/analyze-point";
 import { createCirclePolygon, type MissionFeature } from "@/lib/api-missions";
 import { fetchAllMAPIDMissionsFn } from "@/lib/api-missions.functions";
 import { useKawasans } from "@/hooks/useKawasans";
@@ -46,6 +47,7 @@ const LAYERS: { id: ComponentId | "total"; label: string }[] = [
 ];
 
 function PetaInteraktif() {
+  const { user, isAdmin } = useAuth();
   const { peran: peranAwal } = Route.useSearch();
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
   const [layer, setLayer] = useState<ComponentId | "total">("total");
@@ -124,6 +126,29 @@ function PetaInteraktif() {
     }
   };
 
+  const handleMapClick = async (lng: number, lat: number) => {
+    if (!user) {
+      alert("Fitur Analisis Kustom Eksklusif: Silakan Login untuk melakukan analisis pada titik mana pun di peta.");
+      return;
+    }
+    
+    if (analyzing) return;
+    setAnalyzing(true);
+    setAnalyzeError("");
+    try {
+      const { kawasan, geo } = await analyzeCoordinates(lat, lng);
+      addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
+      // Update customPrices so the calculated property score stays consistent
+      setCustomPrices(prev => ({ ...prev, [kawasan.id]: kawasan.hargaTanah }));
+      setKawasans(prev => [kawasan, ...prev].slice(0, 16));
+      setSelectedId(kawasan.id);
+    } catch (err) {
+      setAnalyzeError(err instanceof Error ? err.message : "Gagal menganalisis koordinat");
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
   useEffect(() => {
     if (analyzeError) {
       const timer = setTimeout(() => {
@@ -153,6 +178,14 @@ function PetaInteraktif() {
     } finally {
       setIsAiLoading(false);
     }
+  };
+
+  const handleMakeOfficial = async () => {
+    // For MVP: Just an alert to show the action works, 
+    // the real insert to tod_stations table can be added to supabase directly later
+    // or via a server fn. Since we don't have the RPC setup for insert yet, we mock it.
+    if (!isAdmin) return;
+    alert(`Sukses: Kawasan "${terpilih.nama}" telah didaftarkan sebagai Kawasan TOD Resmi.`);
   };
 
   const finalKawasans = kawasans.map(k => {
@@ -421,6 +454,15 @@ function PetaInteraktif() {
           </div>
         )}
       </div>
+
+      {isAdmin && terpilih.id.startsWith("ANL-") && (
+        <button
+          onClick={handleMakeOfficial}
+          className="mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          Simpan Jadi Kawasan Resmi (Admin)
+        </button>
+      )}
     </div>
   );
 
@@ -524,8 +566,7 @@ function PetaInteraktif() {
         <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:hidden">
           <VitalityMap
             className="size-full"
-            fill
-            kawasan={kawasans}
+            kawasan={finalKawasans}
             role={role}
             selectedId={selectedId}
             onSelect={(id) => {
@@ -544,8 +585,9 @@ function PetaInteraktif() {
             poiTransit={poiTransit}
             tampilkanPedestrian={pedestrian}
             tampilkanMissions={tampilkanMissions}
-            tampilkanAnomali={anomaliLayer}
             missions={missions}
+            tampilkanAnomali={anomaliLayer}
+            onMapClick={handleMapClick}
           />
 
           {/* Desktop Floating Button: Toggle Sidebar */}

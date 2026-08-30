@@ -112,6 +112,72 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
 }
 
 /**
+ * Menganalisis potensi TOD berdasarkan titik koordinat secara langsung.
+ * (Fitur Custom Pin Drop).
+ */
+export async function analyzeCoordinates(lat: number, lng: number): Promise<AnalysisResult> {
+  // 1. Panggil RPC analyze_single_point
+  const { data, error } = await supabase.rpc("analyze_single_point", {
+    p_lat: lat,
+    p_lng: lng,
+  });
+
+  if (error) {
+    throw new Error(`Gagal menganalisis lokasi: ${error.message}`);
+  }
+  if (!data) {
+    throw new Error("Tidak ada data analisis yang dikembalikan dari server.");
+  }
+
+  // 2. Fetch land prices (opsional)
+  let landPrices: Record<string, number> = {};
+  try {
+    const res = await fetch("/harga-tanah-ekstraksi.json");
+    if (res.ok) landPrices = await res.json();
+  } catch (e) {
+    console.warn("Gagal fetch harga tanah:", e);
+  }
+
+  const result = typeof data === "string" ? JSON.parse(data) : data;
+  
+  // Custom point doesn't have a specific name, so we use coordinate
+  const placeName = `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+  let hargaTanah = result.harga_tanah_m2 ?? 0;
+  let skorProperti = result.skor_properti ?? 1;
+
+  // We could try to reverse-geocode to get the kecamatan, but to save time/API limits, we'll just set it to 'Titik Kustom'
+  const kecamatan = "Titik Kustom";
+
+  const kawasan: Kawasan = {
+    id: `ANL-${Date.now()}`,
+    nama: placeName,
+    koridor: kecamatan,
+    klaster: result.klaster || "Pinggiran Berkembang",
+    x: 0,
+    y: 0,
+    jarakTransit: 0,
+    umkm: result.umkm_count ?? 0,
+    hargaTanah: hargaTanah,
+    anomali: false,
+    skor: {
+      properti: skorProperti,
+      layanan: Math.min(100, Math.max(1, result.skor_layanan ?? 1)),
+      ekonomi: Math.min(100, Math.max(1, result.skor_ekonomi ?? 1)),
+      akses: Math.min(100, Math.max(1, result.skor_akses ?? 1)),
+    },
+  };
+
+  const geo: GeoResult = {
+    lat,
+    lng,
+    displayName: placeName,
+    type: "custom",
+  };
+
+  return { kawasan, geo };
+}
+
+/**
  * Ekstrak nama kecamatan/koridor dari display name Nominatim.
  * Contoh input: "Jalan Cihampelas, Cipaganti, Coblong, Bandung, Jawa Barat, ..."
  * Output: "Coblong" (kecamatan)
