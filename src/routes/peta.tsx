@@ -270,6 +270,10 @@ function PetaInteraktif() {
   const handleGeneratePDF = async () => {
     if (isGeneratingPdf) return;
     setIsGeneratingPdf(true);
+    
+    // Beri jeda sejenak agar React sempat merender animasi loading sebelum main thread diblokir
+    await new Promise(resolve => setTimeout(resolve, 150));
+    
     try {
       // Dynamically import to avoid SSR issues
       const html2pdf = (await import("html2pdf.js")).default;
@@ -671,7 +675,7 @@ function PetaInteraktif() {
         </div>
 
         {/* ── PDF REPORT TEMPLATE (Hidden from screen) ── */}
-        <div className="absolute top-[-9999px] left-[-9999px] w-[210mm] z-[-1] print:hidden">
+        <div className="absolute top-0 left-0 w-[210mm] z-[-100] opacity-0 pointer-events-none print:hidden">
           <div id="pdf-report-template" className="bg-white text-black font-latex px-[10mm] pt-[15mm] pb-[10mm]">
             <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
               Laporan Analisis Vitalitas Kawasan
