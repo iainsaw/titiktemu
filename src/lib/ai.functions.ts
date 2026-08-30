@@ -119,12 +119,19 @@ async function callOpenRouterWithFallback(
   }
 }
 
+const getApiKey = () => 
+  process.env.VITE_GEMINI_API_KEY || 
+  process.env.VITE_OPENROUTER_API_KEY || 
+  process.env.OPENROUTER_API_KEY || 
+  import.meta.env.VITE_GEMINI_API_KEY || 
+  import.meta.env.VITE_OPENROUTER_API_KEY;
+
 export const generateInsights = createServerFn({ method: "POST" })
   .validator((data: Kawasan[]) => data)
   .handler(async ({ data: kawasans }) => {
-    const apiKey = process.env.VITE_OPENROUTER_API_KEY;
+    const apiKey = getApiKey();
     if (!apiKey) {
-      throw new Error("Missing OpenRouter API Key");
+      throw new Error("Missing AI API Key (VITE_GEMINI_API_KEY atau VITE_OPENROUTER_API_KEY)");
     }
 
     // Summarize the data to send to the AI
@@ -160,7 +167,7 @@ Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*7
         max_tokens: 150
       });
     } catch (error) {
-      console.error("OpenRouter API error:", error);
+      console.error("AI API error:", error);
       throw new Error("Failed to fetch AI insights");
     }
 
@@ -181,9 +188,9 @@ Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*7
 export const generateOpportunityInsight = createServerFn({ method: "POST" })
   .validator((data: { kws: Kawasan; role: string }) => data)
   .handler(async ({ data: { kws, role } }) => {
-    const apiKey = process.env.VITE_OPENROUTER_API_KEY;
+    const apiKey = getApiKey();
     if (!apiKey) {
-      throw new Error("Missing OpenRouter API Key");
+      throw new Error("Missing AI API Key (VITE_GEMINI_API_KEY atau VITE_OPENROUTER_API_KEY)");
     }
 
     let persona = "penasihat bisnis UMKM profesional";
@@ -215,7 +222,7 @@ INSTRUKSI KETAT:
     try {
       json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
-        max_tokens: 150
+        max_tokens: 500
       });
     } catch (error) {
       throw new Error("Failed to fetch AI insights");
@@ -227,9 +234,9 @@ INSTRUKSI KETAT:
 export const parseSearchQuery = createServerFn({ method: "POST" })
   .validator((data: { query: string }) => data)
   .handler(async ({ data: { query } }) => {
-    const apiKey = process.env.VITE_OPENROUTER_API_KEY;
+    const apiKey = getApiKey();
     if (!apiKey) {
-      throw new Error("Missing OpenRouter API Key");
+      throw new Error("Missing AI API Key (VITE_GEMINI_API_KEY atau VITE_OPENROUTER_API_KEY)");
     }
 
     const prompt = `Anda adalah asisten pencarian cerdas untuk sistem GIS Kota Bandung.
