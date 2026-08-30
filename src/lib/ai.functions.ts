@@ -87,9 +87,9 @@ async function callOpenRouterWithFallback(
     throw new Error("Gagal memproses rekomendasi AI via OpenRouter.");
   }
 
-  // 2. Otherwise, treat key as Google Gemini API Key (gemini-3.6-flash with 3x retry)
+  // 2. Otherwise, treat key as Google Gemini API Key (gemini-flash-lite-latest with 3x retry)
   const promptText = messages.map(m => m.content).join("\n\n");
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
 
   try {
     const response = await fetchWithRetry(
