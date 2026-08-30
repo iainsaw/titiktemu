@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/react-start";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { type Kawasan } from "./vitality-data";
 
 const OPENROUTER_MODELS = [
@@ -53,6 +53,26 @@ async function callOpenRouterWithFallback(
   messages: any[],
   options: { temperature?: number; max_tokens?: number } = {}
 ) {
+  if (apiKey.startsWith("AIzaSy")) {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      const promptText = messages.map(m => m.content).join("\n");
+      const result = await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: promptText }] }],
+        generationConfig: {
+          temperature: options.temperature || 0.7,
+          maxOutputTokens: options.max_tokens || 1000
+        }
+      });
+
+      return { choices: [{ message: { content: cleanAiResponse(result.response.text()) } }] };
+    } catch (e: any) {
+      console.warn("[Gemini API Direct Error]:", e.message);
+    }
+  }
+
   let lastError;
   for (const model of OPENROUTER_MODELS) {
     try {
@@ -89,7 +109,7 @@ async function callOpenRouterWithFallback(
     }
   }
 
-  throw new Error("Semua model OpenRouter gagal digunakan. Error terakhir: " + (lastError?.message || lastError));
+  throw new Error("Gagal memproses rekomendasi AI.");
 }
 
 export const generateInsights = createServerFn({ method: "POST" })

@@ -1,4 +1,6 @@
-const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const getApiKey = () => import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_OPENROUTER_API_KEY;
 
 export type Pesan = { role: "user" | "assistant"; content: string };
 
@@ -49,9 +51,40 @@ function cleanAiResponse(text: string): string {
   return cleaned;
 }
 
-async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
+async function callGeminiOrOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
+  const apiKey = getApiKey();
   if (!apiKey) {
-    throw new Error("VITE_OPENROUTER_API_KEY belum dikonfigurasi di file .env");
+    throw new Error("VITE_GEMINI_API_KEY atau VITE_OPENROUTER_API_KEY belum dikonfigurasi di .env");
+  }
+
+  // If using Google AI Studio API Key directly
+  if (apiKey.startsWith("AIzaSy")) {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      const systemMsg = messages.find(m => m.role === "system")?.content;
+      const userMsgs = messages.filter(m => m.role !== "system");
+
+      const contents = userMsgs.map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
+
+      const result = await model.generateContent({
+        contents,
+        systemInstruction: systemMsg ? { parts: [{ text: systemMsg }] } : undefined,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1000
+        }
+      });
+
+      return result.response.text();
+    } catch (e: any) {
+      console.warn("[Gemini API Direct Error]:", e.message);
+      // Fallthrough to OpenRouter if available
+    }
   }
 
   let lastError;
@@ -62,8 +95,8 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
         method: "POST",
         headers: {
           "Authorization": `Bearer ${apiKey}`,
-          "HTTP-Referer": "http://localhost:8090", // Optional, for OpenRouter rankings
-          "X-Title": "Titik Temu WebGIS", // Optional, for OpenRouter rankings
+          "HTTP-Referer": "http://localhost:8090",
+          "X-Title": "Titik Temu WebGIS",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -91,12 +124,11 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
     }
   }
 
-  throw new Error(lastError?.message || "Semua model OpenRouter gagal digunakan");
+  throw new Error(lastError?.message || "Gagal memproses AI.");
 }
 
 /**
  * Meminta penjelasan/insight spesifik untuk satu kawasan.
- * @param konteks Teks hasil `konteksKawasan()`
  */
 export async function getAiInsight(konteks: string): Promise<string> {
   const prompt = `Anda adalah AI asisten untuk "Titik Temu", sebuah dashboard webGIS yang menganalisis potensi transit kawasan di Kota Bandung.
@@ -111,16 +143,13 @@ INSTRUKSI:
 3. Bandingkan dengan rata-rata 16 kawasan jika relevan.
 4. Jangan halusinasi data, gunakan hanya data di atas.`;
 
-  return callOpenRouter([
+  return callGeminiOrOpenRouter([
     { role: "user", content: prompt }
   ]);
 }
 
 /**
  * Memulai atau melanjutkan percakapan AI Chat.
- * @param konteks Teks hasil `konteksDashboard()`
- * @param history Riwayat pesan sebelumnya
- * @param input Pertanyaan terbaru pengguna
  */
 export async function sendAiChat(
   konteks: string,
@@ -139,5 +168,5 @@ ${konteks}`;
     { role: "user", content: input }
   ];
 
-  return callOpenRouter(messages);
+  return callGeminiOrOpenRouter(messages);
 }
