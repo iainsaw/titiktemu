@@ -167,7 +167,7 @@ Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*7
     try {
       json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
-        max_tokens: 150
+        max_tokens: 1000
       });
     } catch (error) {
       console.error("AI API error:", error);
@@ -219,14 +219,15 @@ Tugas:
 Berikan 1 rekomendasi terbaik mengenai ${task} di kawasan ${kws.nama} beserta alasannya.
 
 Syarat Penulisan:
-- Tulis langsung jawaban Anda dalam 2 kalimat Bahasa Indonesia yang jelas, profesional, dan padat.
+- Tulis langsung rekomendasi Anda dalam 2-3 kalimat Bahasa Indonesia yang padat, jelas, dan profesional.
+- Pastikan kalimat diakhiri dengan tanda titik yang lengkap. Jangan terpotong.
 - Langsung sampaikan rekomendasi dan alasannya tanpa judul, pengantar, atau teks bahasa Inggris.`;
 
     let json;
     try {
       json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 1000
       });
     } catch (error) {
       throw new Error("Failed to fetch AI insights");
