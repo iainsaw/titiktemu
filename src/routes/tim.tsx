@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, Phone, Linkedin } from "lucide-react";
-import { getSecureAssetUrl } from "@/lib/supabase";
+import { getSecureAssetUrl, supabase } from "@/lib/supabase";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -100,7 +100,19 @@ function TentangTim() {
   const [team, setTeam] = useState(TIM);
 
   useEffect(() => {
-    async function loadUrls() {
+    async function loadTeam() {
+      try {
+        const { data, error } = await supabase.from("team_members").select("*").order("order_index", { ascending: true });
+        if (!error && data && data.length > 0) {
+          // If loaded from DB, we use it directly
+          setTeam(data);
+          return;
+        }
+      } catch (e) {
+        console.warn("Failed to load team from DB, using fallback.");
+      }
+
+      // Fallback: load secure urls for hardcoded TIM
       const updatedTim = await Promise.all(
         TIM.map(async (t) => {
           if (t.foto && t.foto.startsWith('/')) {
@@ -112,7 +124,7 @@ function TentangTim() {
       );
       setTeam(updatedTim);
     }
-    loadUrls();
+    loadTeam();
   }, []);
 
   return (
@@ -137,9 +149,9 @@ function TentangTim() {
             >
               <div className="absolute inset-0 bg-linear-to-br from-primary/35 via-ink to-ink" />
 
-              {t.foto ? (
+              {t.foto_url || t.foto ? (
                 <img
-                  src={t.foto}
+                  src={t.foto_url || t.foto}
                   alt={`Foto ${t.nama}`}
                   loading="lazy"
                   className="absolute inset-0 size-full object-cover object-top transition-transform duration-500 group-hover:scale-105"

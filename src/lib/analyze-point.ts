@@ -4,7 +4,7 @@
  * ZERO dummy data — semua skor dihitung dari data riil.
  */
 
-import { geocode, type GeoResult } from "./geocode";
+import { geocode, reverseGeocode, type GeoResult } from "./geocode";
 import { supabase } from "./supabase";
 import type { Kawasan } from "./vitality-data";
 
@@ -42,7 +42,37 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
     // if AI fails for other reasons (e.g. rate limit), just fallback to the raw query
   }
 
-  // 2. Geocode
+  // 1. Cek apakah ini input koordinat (lat, lng) atau (lng, lat)
+  // Regex untuk mencocokkan format "lat, lng" atau "lng, lat" dengan angka desimal
+  const coordRegex = /^(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)$/;
+  const coordMatch = searchQuery.match(coordRegex);
+
+  if (coordMatch) {
+    // Kita asumsikan format "lat, lng" jika lat di antara -90 dan 90
+    let val1 = parseFloat(coordMatch[1]);
+    let val2 = parseFloat(coordMatch[3]);
+    let lat = val1;
+    let lng = val2;
+
+    // Jika val1 di luar range latitude Indonesia (-11 s/d 6), mungkin kebalik
+    // Kita paksakan logika yang aman untuk Bandung (~ -6.9, 107.6)
+    if (Math.abs(val1) > 90 || (val1 > 90 && val2 < 0)) {
+      lng = val1;
+      lat = val2;
+    } else if (val1 > 10 && val2 < 10) {
+      // Pasti val1 itu lng (bujur) di Indonesia, val2 itu lat (lintang)
+      lng = val1;
+      lat = val2;
+    }
+
+    // Lakukan reverse geocode
+    const geo = await reverseGeocode(lat, lng);
+    
+    // Panggil analyzeCoordinates (yang kita buat sebelumnya)
+    return await analyzeCoordinates(lat, lng, geo.displayName);
+  }
+
+  // 2. Jika bukan koordinat, Geocoding biasa
   const geo = await geocode(searchQuery);
   if (!geo) {
     throw new Error(`Lokasi "${searchQuery}" tidak ditemukan di area Kota Bandung. Coba nama yang lebih spesifik.`);
@@ -113,9 +143,9 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
 
 /**
  * Menganalisis potensi TOD berdasarkan titik koordinat secara langsung.
- * (Fitur Custom Pin Drop).
+ * (Fitur Custom Pin Drop & Coordinate Search).
  */
-export async function analyzeCoordinates(lat: number, lng: number): Promise<AnalysisResult> {
+export async function analyzeCoordinates(lat: number, lng: number, overrideName?: string): Promise<AnalysisResult> {
   // 1. Panggil RPC analyze_single_point
   const { data, error } = await supabase.rpc("analyze_single_point", {
     p_lat: lat,
@@ -141,12 +171,13 @@ export async function analyzeCoordinates(lat: number, lng: number): Promise<Anal
   const result = typeof data === "string" ? JSON.parse(data) : data;
   
   // Custom point doesn't have a specific name, so we use coordinate
-  const placeName = `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+  // Jika overrideName tersedia dari reverse geocoding, gunakan itu!
+  const placeName = overrideName || `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
   let hargaTanah = result.harga_tanah_m2 ?? 0;
   let skorProperti = result.skor_properti ?? 1;
 
-  // We could try to reverse-geocode to get the kecamatan, but to save time/API limits, we'll just set it to 'Titik Kustom'
-  const kecamatan = "Titik Kustom";
+  // We could try to extract kecamatan from overrideName, but for now we'll just use the name
+  const kecamatan = overrideName ? overrideName.split(",")[0] : "Titik Kustom";
 
   const kawasan: Kawasan = {
     id: `ANL-${Date.now()}`,
@@ -155,7 +186,7 @@ export async function analyzeCoordinates(lat: number, lng: number): Promise<Anal
     klaster: result.klaster || "Pinggiran Berkembang",
     x: 0,
     y: 0,
-    jarakTransit: 0,
+    jarakTransit: result.jarak_transit ?? 0, // Menggunakan hasil RPC baru
     umkm: result.umkm_count ?? 0,
     hargaTanah: hargaTanah,
     anomali: false,

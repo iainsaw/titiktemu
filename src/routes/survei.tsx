@@ -6,7 +6,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
-import { SURVEI, RINGKASAN_SURVEI } from "@/lib/survei-data";
+import { supabase } from "@/lib/supabase";
+import { type Survei, SURVEI as INITIAL_SURVEI, RINGKASAN_SURVEI } from "@/lib/survei-data";
 import { getSecureAssetUrl } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
@@ -32,16 +33,36 @@ export const Route = createFileRoute("/survei")({
 });
 
 function SurveiLapangan() {
+  const [surveys, setSurveys] = useState<Survei[]>(INITIAL_SURVEI);
+
+  useEffect(() => {
+    async function loadSurveys() {
+      try {
+        const { data, error } = await supabase.from("surveys").select("*").order("created_at", { ascending: false });
+        if (!error && data && data.length > 0) {
+          setSurveys(data as Survei[]);
+        }
+      } catch (e) {
+        console.warn("Failed to load surveys from DB, using fallback.");
+      }
+    }
+    loadSurveys();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-[1100px] px-4 py-8 sm:px-5 sm:py-12">
+      <main className="mx-auto max-w-[1180px] px-4 py-8 sm:px-5 sm:py-12">
         <AnimatedSection>
-          <h1 className="headline text-[clamp(28px,8vw,50px)]">Survei Lapangan</h1>
-          <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
-            Skor Vitalitas Transit tidak hanya bersandar pada data sekunder. Tim melakukan observasi
-            langsung untuk memvalidasi komponen layanan, ekonomi, dan aksesibilitas di kawasan pilot.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px] uppercase mb-2">SURVEI LAPANGAN</p>
+              <h1 className="text-[clamp(28px,6vw,44px)] font-bold tracking-tight headline">Validasi Kondisi Riil</h1>
+              <p className="mt-3 max-w-[600px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+                Dokumentasi hasil pengamatan langsung dari lokasi stasiun dan simpul transit untuk memvalidasi skor AI dan data geospasial.
+              </p>
+            </div>
+          </div>
         </AnimatedSection>
 
         <AnimatedSection delay={150} className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-7 sm:grid-cols-4 sm:gap-3">
@@ -52,7 +73,7 @@ function SurveiLapangan() {
         </AnimatedSection>
 
         <div className="mt-8 space-y-5">
-          {SURVEI.map((s, idx) => (
+          {surveys.map((s, idx) => (
             <AnimatedSection key={s.id} delay={Math.min(idx * 100, 500)}>
               <article className="panel grid gap-4 p-4 sm:gap-5 sm:p-5 md:grid-cols-[220px_minmax(0,1fr)]">
                 <PhotoCarousel fotos={s.fotos} fallback={s.foto} />

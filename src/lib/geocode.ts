@@ -53,3 +53,42 @@ export async function geocode(query: string): Promise<GeoResult | null> {
     displayName: displayName,
   };
 }
+
+/**
+ * Reverse geocode koordinat menjadi nama tempat.
+ */
+export async function reverseGeocode(lat: number, lng: number): Promise<GeoResult> {
+  const params = new URLSearchParams({
+    lat: lat.toString(),
+    lon: lng.toString(),
+    format: "json",
+  });
+
+  const url = `https://nominatim.openstreetmap.org/reverse?${params}`;
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "TitikTemu-WebGIS/1.0 (hackathon project)",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Gagal menghubungi layanan geocoding");
+  }
+
+  const data = await response.json();
+
+  if (!data || data.error) {
+    return {
+      lat,
+      lng,
+      displayName: `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
+    };
+  }
+
+  return {
+    lat: parseFloat(data.lat),
+    lng: parseFloat(data.lon),
+    displayName: data.display_name,
+  };
+}

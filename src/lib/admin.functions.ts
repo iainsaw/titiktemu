@@ -61,3 +61,53 @@ export const deleteOfficialStation = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { success: true };
   });
+
+// --- SURVEI CRUD ---
+
+export const createSurvey = createServerFn({ method: "POST" })
+  .validator((data: { userId: string; survey: any }) => data)
+  .handler(async ({ data: { userId, survey } }) => {
+    await requireAdmin(userId);
+    const { error } = await supabaseServer.from("surveys").insert(survey);
+    if (error) throw new Error(error.message);
+    return { success: true };
+  });
+
+export const deleteSurvey = createServerFn({ method: "POST" })
+  .validator((data: { userId: string; surveyId: string }) => data)
+  .handler(async ({ data: { userId, surveyId } }) => {
+    await requireAdmin(userId);
+    const { error } = await supabaseServer.from("surveys").delete().eq("id", surveyId);
+    if (error) throw new Error(error.message);
+    return { success: true };
+  });
+
+// --- TEAM CRUD ---
+
+export const createTeamMember = createServerFn({ method: "POST" })
+  .validator((data: { userId: string; member: any }) => data)
+  .handler(async ({ data: { userId, member } }) => {
+    await requireAdmin(userId);
+    const { error } = await supabaseServer.from("team_members").insert(member);
+    if (error) throw new Error(error.message);
+    return { success: true };
+  });
+
+export const updateTeamMember = createServerFn({ method: "POST" })
+  .validator((data: { userId: string; id: string; member: any }) => data)
+  .handler(async ({ data: { userId, id, member } }) => {
+    await requireAdmin(userId);
+    const { error } = await supabaseServer.from("team_members").update(member).eq("id", id);
+    if (error) throw new Error(error.message);
+    return { success: true };
+  });
+
+export const deleteTeamMember = createServerFn({ method: "POST" })
+  .validator((data: { userId: string; id: string }) => data)
+  .handler(async ({ data: { userId, id } }) => {
+    await requireAdmin(userId);
+    const { error } = await supabaseServer.from("team_members").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+    return { success: true };
+  });
+

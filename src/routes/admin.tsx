@@ -10,6 +10,9 @@ import { getAdminStats } from "@/lib/auth.functions";
 import { deleteOfficialStation } from "@/lib/admin.functions";
 import { SiteHeader } from "@/components/SiteHeader";
 import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SurveyAdmin } from "@/components/admin/SurveyAdmin";
+import { TeamAdmin } from "@/components/admin/TeamAdmin";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -162,94 +165,110 @@ function AdminDashboard() {
           </div>
         </section>
 
-        {/* Kawasan TOD Table */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[12px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-              <BarChart3 className="size-3.5" />
-              Skor Kawasan TOD
-            </h2>
-            <div className="flex items-center gap-3">
-              <span className="text-[12px] text-muted-foreground/60">
-                {stats?.stations.length ?? 0} kawasan aktif
-              </span>
-              <button
-                onClick={() => alert("Formulir Tambah Kawasan akan segera tersedia.")}
-                className="rounded bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground hover:bg-primary/90"
-              >
-                + Tambah Kawasan
-              </button>
-            </div>
-          </div>
+        {/* Admin Tabs */}
+        <Tabs defaultValue="kawasan" className="w-full">
+          <TabsList className="mb-6 grid w-full max-w-md grid-cols-3">
+            <TabsTrigger value="kawasan">Kawasan TOD</TabsTrigger>
+            <TabsTrigger value="survei">Survei</TabsTrigger>
+            <TabsTrigger value="tim">Tim</TabsTrigger>
+          </TabsList>
 
-          <div className="rounded-2xl border border-border/30 bg-secondary/10 overflow-hidden">
-            {statsLoading ? (
-              <div className="flex items-center justify-center py-16">
-                <Loader2 className="size-5 animate-spin text-muted-foreground" />
+          <TabsContent value="kawasan" className="space-y-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-[12px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <BarChart3 className="size-3.5" />
+                Skor Kawasan TOD
+              </h2>
+              <div className="flex items-center gap-3">
+                <span className="text-[12px] text-muted-foreground/60">
+                  {stats?.stations.length ?? 0} kawasan aktif
+                </span>
+                <button
+                  onClick={() => alert("Formulir Tambah Kawasan akan segera tersedia.")}
+                  className="rounded bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground hover:bg-primary/90"
+                >
+                  + Tambah Kawasan
+                </button>
               </div>
-            ) : stats?.stations.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-                <Database className="size-8 mb-3 opacity-30" />
-                <p className="text-[13px]">Belum ada data kawasan.</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-[13px]">
-                  <thead>
-                    <tr className="border-b border-border/20 bg-secondary/30">
-                      {["ID", "Nama Kawasan", "UMKM", "Ekonomi", "Layanan", "Akses", "Properti", "Rata-rata", "Diperbarui", "Aksi"].map(h => (
-                        <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/10">
-                    {stats?.stations.map((s) => {
-                      const avg = avgSkor(s);
-                      return (
-                        <tr key={s.id} className="hover:bg-secondary/20 transition-colors">
-                          <td className="px-4 py-3 font-display text-[11px] text-muted-foreground/60">{s.id}</td>
-                          <td className="px-4 py-3 font-medium">{s.nama}</td>
-                          <td className="px-4 py-3 font-display">{s.umkm_count}</td>
-                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_ekonomi))}>{s.skor_ekonomi}</td>
-                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_layanan))}>{s.skor_layanan}</td>
-                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_akses))}>{s.skor_akses}</td>
-                          <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_properti))}>{s.skor_properti}</td>
-                          <td className="px-4 py-3">
-                            <span className={cn("inline-flex items-center gap-1 font-display font-bold", skorColor(avg))}>
-                              <CheckCircle2 className="size-3" />
-                              {avg}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-muted-foreground/50 text-[11px]">
-                            {s.updated_at ? new Date(s.updated_at).toLocaleDateString("id-ID") : "—"}
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="flex items-center gap-2">
-                              <button onClick={() => alert(`Edit ${s.nama} (Coming Soon)`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
-                              <button onClick={async () => {
-                                if (window.confirm(`Yakin hapus kawasan resmi ${s.nama}?`)) {
-                                  try {
-                                    await deleteOfficialStation({ data: { userId: user!.id, stationId: s.id } });
-                                    alert("Sukses dihapus!");
-                                    router.invalidate();
-                                  } catch (e) {
-                                    alert("Gagal menghapus: " + (e as Error).message);
+            </div>
+
+            <div className="rounded-2xl border border-border/30 bg-secondary/10 overflow-hidden">
+              {statsLoading ? (
+                <div className="flex items-center justify-center py-16">
+                  <Loader2 className="size-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : stats?.stations.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+                  <Database className="size-8 mb-3 opacity-30" />
+                  <p className="text-[13px]">Belum ada data kawasan.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-[13px]">
+                    <thead>
+                      <tr className="border-b border-border/20 bg-secondary/30">
+                        {["ID", "Nama Kawasan", "UMKM", "Ekonomi", "Layanan", "Akses", "Properti", "Rata-rata", "Diperbarui", "Aksi"].map(h => (
+                          <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/10">
+                      {stats?.stations.map((s) => {
+                        const avg = avgSkor(s);
+                        return (
+                          <tr key={s.id} className="hover:bg-secondary/20 transition-colors">
+                            <td className="px-4 py-3 font-display text-[11px] text-muted-foreground/60">{s.id}</td>
+                            <td className="px-4 py-3 font-medium">{s.nama}</td>
+                            <td className="px-4 py-3 font-display">{s.umkm_count}</td>
+                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_ekonomi))}>{s.skor_ekonomi}</td>
+                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_layanan))}>{s.skor_layanan}</td>
+                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_akses))}>{s.skor_akses}</td>
+                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_properti))}>{s.skor_properti}</td>
+                            <td className="px-4 py-3">
+                              <span className={cn("inline-flex items-center gap-1 font-display font-bold", skorColor(avg))}>
+                                <CheckCircle2 className="size-3" />
+                                {avg}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-muted-foreground/50 text-[11px]">
+                              {s.updated_at ? new Date(s.updated_at).toLocaleDateString("id-ID") : "—"}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-2">
+                                <button onClick={() => alert(`Edit ${s.nama} (Coming Soon)`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
+                                <button onClick={async () => {
+                                  if (window.confirm(`Yakin hapus kawasan resmi ${s.nama}?`)) {
+                                    try {
+                                      await deleteOfficialStation({ data: { userId: user!.id, stationId: s.id } });
+                                      alert("Sukses dihapus!");
+                                      router.invalidate();
+                                    } catch (e) {
+                                      alert("Gagal menghapus: " + (e as Error).message);
+                                    }
                                   }
-                                }
-                              }} className="text-red-500 hover:underline text-[11px] font-medium">Hapus</button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </section>
+                                }} className="text-red-500 hover:underline text-[11px] font-medium">Hapus</button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="survei">
+            <SurveyAdmin />
+          </TabsContent>
+
+          <TabsContent value="tim">
+            <TeamAdmin />
+          </TabsContent>
+        </Tabs>
 
         {/* Security Note */}
         <div className="mt-8 flex items-start gap-3 rounded-2xl border border-border/20 bg-secondary/10 p-4 text-[12px] text-muted-foreground">
