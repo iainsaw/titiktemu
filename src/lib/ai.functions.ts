@@ -2,10 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { type Kawasan } from "./vitality-data";
 
 const OPENROUTER_MODELS = [
+  "openrouter/free",
   "google/gemma-4-26b-a4b-it:free",
   "google/gemma-4-31b-it:free",
   "nvidia/nemotron-3.5-lightning:free",
-  "google/gemini-2.0-flash-lite-preview-02-05:free"
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "deepseek/deepseek-r1:free",
+  "qwen/qwen-2.5-coder-32b-instruct:free",
 ];
 
 async function callOpenRouterWithFallback(
@@ -34,11 +37,8 @@ async function callOpenRouterWithFallback(
       if (!response.ok) {
         const errorText = await response.text();
         console.warn(`[OpenRouter] Gagal menggunakan model ${model}:`, errorText);
-        if (response.status === 429 || response.status === 402 || errorText.toLowerCase().includes("credits") || errorText.toLowerCase().includes("limit") || errorText.toLowerCase().includes("tokens")) {
-          lastError = new Error(errorText);
-          continue; 
-        }
-        throw new Error(errorText);
+        lastError = new Error(errorText);
+        continue; // Coba model selanjutnya untuk error apapun (429 rate limit, 402, 500, dll)
       }
 
       return await response.json();

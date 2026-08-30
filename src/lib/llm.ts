@@ -3,10 +3,13 @@ const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
 export type Pesan = { role: "user" | "assistant"; content: string };
 
 const OPENROUTER_MODELS = [
+  "openrouter/free",
   "google/gemma-4-26b-a4b-it:free",
   "google/gemma-4-31b-it:free",
   "nvidia/nemotron-3.5-lightning:free",
-  "google/gemini-2.0-flash-lite-preview-02-05:free"
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "deepseek/deepseek-r1:free",
+  "qwen/qwen-2.5-coder-32b-instruct:free",
 ];
 
 async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
@@ -37,12 +40,8 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
         const errData = await response.json().catch(() => ({}));
         const errMsg = errData?.error?.message || "Gagal menghubungi OpenRouter API";
         console.warn(`[OpenRouter] Gagal dengan model ${model}:`, errMsg);
-        
-        if (response.status === 402 || response.status === 429 || errMsg.toLowerCase().includes("credits") || errMsg.toLowerCase().includes("limit") || errMsg.toLowerCase().includes("tokens")) {
-          lastError = new Error(errMsg);
-          continue; // Coba model selanjutnya
-        }
-        throw new Error(errMsg);
+        lastError = new Error(errMsg);
+        continue; // Coba model selanjutnya untuk error apapun (429, 402, 500, dll)
       }
 
       const data = await response.json();
