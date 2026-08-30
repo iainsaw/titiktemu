@@ -20,6 +20,9 @@ const TIM = [
     peran: "Dosen Pembimbing",
     teks: "Mengarahkan riset, memvalidasi metodologi skor vitalitas, dan memastikan luaran ilmiah Titik Temu memenuhi standar akademik.",
     linkedin: false,
+    linkedin_url: null,
+    email: "virtriana@itb.ac.id",
+    telp: "085720124114",
     foto: fotoRiantini.url as string | null,
   },
   {
@@ -28,6 +31,9 @@ const TIM = [
     peran: "Project Leader",
     teks: "Memimpin tim, mengelola alur kerja antar-divisi, dan memastikan setiap milestone proyek tersampaikan tepat waktu.",
     linkedin: true,
+    linkedin_url: "https://www.linkedin.com/in/syahrul-muharam",
+    email: "syahrulmuharam820@gmail.com",
+    telp: "088229071029",
     foto: fotoSyahrul.url,
   },
   {
@@ -36,6 +42,9 @@ const TIM = [
     peran: "WebGIS Developer",
     teks: "Membangun peta interaktif, dashboard analisis, dan integrasi lapisan AI ke dalam antarmuka WebGIS.",
     linkedin: true,
+    linkedin_url: "https://www.linkedin.com/in/dim-geo",
+    email: "dimyati2106@gmail.com",
+    telp: "085156597099",
     foto: fotoDimyati.url,
   },
   {
@@ -44,6 +53,9 @@ const TIM = [
     peran: "UI/UX Designer",
     teks: "Merancang alur pengguna dan sistem desain agar tiga sudut pandang pengguna terbaca jelas dalam satu peta.",
     linkedin: true,
+    linkedin_url: "https://www.linkedin.com/in/shafina-moktika-khairani-ba9663270",
+    email: "shafina6701@gmail.com",
+    telp: "0895351740055",
     foto: fotoShafina.url,
   },
   {
@@ -52,6 +64,9 @@ const TIM = [
     peran: "Business / Product Analyst",
     teks: "Menerjemahkan kebutuhan investor, pemerintah, dan pelaku UMKM menjadi fitur dan narasi produk yang terukur.",
     linkedin: true,
+    linkedin_url: "https://www.linkedin.com/in/firzatullah-al-ghiffari-082049285",
+    email: "firzaedu@gmail.com",
+    telp: "081293901867",
     foto: fotoFirza.url,
   },
   {
@@ -60,6 +75,9 @@ const TIM = [
     peran: "Data & AI Analyst",
     teks: "Mengolah data spasial dan survei lapangan, menyusun pembobotan skor, serta merancang prompt dan konteks AI Insight.",
     linkedin: true,
+    linkedin_url: "https://www.linkedin.com/in/gilangwjy",
+    email: "wijayagilang652@gmail.com",
+    telp: "085276925618",
     foto: fotoGilang.url,
   },
 ];
@@ -175,16 +193,40 @@ function TentangTim() {
                   {t.teks}
                 </p>
                 <div className="mt-2.5 flex gap-1.5 sm:mt-4 sm:gap-2">
-                  <IconBtn label={`Email ${t.nama}`}>
-                    <Mail className="size-3.5" />
-                  </IconBtn>
-                  <IconBtn label={`Telepon ${t.nama}`}>
-                    <Phone className="size-3.5" />
-                  </IconBtn>
-                  {t.linkedin && (
-                    <IconBtn label={`LinkedIn ${t.nama}`}>
-                      <Linkedin className="size-3.5" />
+                  {t.email ? (
+                    <a href={`mailto:${t.email}`} target="_blank" rel="noopener noreferrer">
+                      <IconBtn label={`Email ${t.nama}`}>
+                        <Mail className="size-3.5" />
+                      </IconBtn>
+                    </a>
+                  ) : (
+                    <IconBtn label={`Email ${t.nama}`}>
+                      <Mail className="size-3.5" />
                     </IconBtn>
+                  )}
+                  {t.telp ? (
+                    <a href={`https://wa.me/${t.telp.replace(/^0/, '62')}`} target="_blank" rel="noopener noreferrer">
+                      <IconBtn label={`Telepon ${t.nama}`}>
+                        <Phone className="size-3.5" />
+                      </IconBtn>
+                    </a>
+                  ) : (
+                    <IconBtn label={`Telepon ${t.nama}`}>
+                      <Phone className="size-3.5" />
+                    </IconBtn>
+                  )}
+                  {t.linkedin && (
+                    t.linkedin_url ? (
+                      <a href={t.linkedin_url} target="_blank" rel="noopener noreferrer">
+                        <IconBtn label={`LinkedIn ${t.nama}`}>
+                          <Linkedin className="size-3.5" />
+                        </IconBtn>
+                      </a>
+                    ) : (
+                      <IconBtn label={`LinkedIn ${t.nama}`}>
+                        <Linkedin className="size-3.5" />
+                      </IconBtn>
+                    )
                   )}
                 </div>
               </div>

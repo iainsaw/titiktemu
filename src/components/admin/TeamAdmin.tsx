@@ -17,6 +17,9 @@ export function TeamAdmin() {
     peran: "",
     teks: "",
     linkedin: false,
+    linkedin_url: "",
+    email: "",
+    telp: "",
     order_index: 0,
   });
 
@@ -80,7 +83,7 @@ export function TeamAdmin() {
 
       alert("Anggota tim berhasil ditambahkan!");
       setForm({
-        nama: "", label: "", peran: "", teks: "", linkedin: false, order_index: 0
+        nama: "", label: "", peran: "", teks: "", linkedin: false, linkedin_url: "", email: "", telp: "", order_index: 0
       });
       setFile(null);
       loadTeam();
@@ -135,6 +138,21 @@ export function TeamAdmin() {
             <div className="flex items-center gap-2">
                <input type="checkbox" id="linkedin" checked={form.linkedin} onChange={e => setForm({...form, linkedin: e.target.checked})} />
                <label htmlFor="linkedin" className="text-[13px]">Aktifkan Tombol LinkedIn?</label>
+            </div>
+            
+            {form.linkedin && (
+              <div>
+                <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">URL LinkedIn</label>
+                <input value={form.linkedin_url} onChange={e => setForm({...form, linkedin_url: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Misal: https://linkedin.com/..." />
+              </div>
+            )}
+            <div>
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Email</label>
+              <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Misal: user@email.com" />
+            </div>
+            <div>
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">No. Telepon (WhatsApp)</label>
+              <input value={form.telp} onChange={e => setForm({...form, telp: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Misal: 08123456789" />
             </div>
 
             <div>
