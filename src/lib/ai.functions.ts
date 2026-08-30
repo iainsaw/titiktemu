@@ -11,6 +11,34 @@ const OPENROUTER_MODELS = [
   "qwen/qwen-2.5-coder-32b-instruct:free",
 ];
 
+function cleanAiResponse(text: string): string {
+  if (!text) return "";
+  let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+
+  if (/here's a thinking process:|thinking process:/i.test(cleaned)) {
+    const sections = cleaned.split(/\n\s*\n/);
+    const contentSections = sections.filter(sec => 
+      !/thinking process|analyze user input|formulate response|extract data|check if any|structure:|top 3 by property|let's list|let's sort|user wants/i.test(sec)
+    );
+    if (contentSections.length > 0) {
+      cleaned = contentSections.join("\n\n").trim();
+    }
+  }
+
+  if (/we need to give|let's craft:|count sentences:/i.test(cleaned)) {
+    const matches = Array.from(cleaned.matchAll(/["“]([^"”]{20,})["”]/g));
+    if (matches.length > 0) {
+      cleaned = matches[matches.length - 1][1];
+    } else {
+      cleaned = cleaned
+        .replace(/^[\s\S]*?(?:let's craft:|"|“)/i, "")
+        .replace(/["”]?\s*(?:that's two sentences|ensure no extra|count sentences).*$/i, "");
+    }
+  }
+
+  return cleaned.trim();
+}
+
 async function callOpenRouterWithFallback(
   apiKey: string,
   messages: any[],
@@ -30,6 +58,7 @@ async function callOpenRouterWithFallback(
         body: JSON.stringify({
           model: model,
           messages: messages,
+          reasoning: { exclude: true },
           ...options
         })
       });
@@ -41,7 +70,11 @@ async function callOpenRouterWithFallback(
         continue; // Coba model selanjutnya untuk error apapun (429 rate limit, 402, 500, dll)
       }
 
-      return await response.json();
+      const json = await response.json();
+      if (json.choices?.[0]?.message?.content) {
+        json.choices[0].message.content = cleanAiResponse(json.choices[0].message.content);
+      }
+      return json;
     } catch (error) {
       console.warn(`[OpenRouter] Exception dengan model ${model}:`, error);
       lastError = error;

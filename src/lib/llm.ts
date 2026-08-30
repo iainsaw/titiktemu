@@ -12,6 +12,34 @@ const OPENROUTER_MODELS = [
   "qwen/qwen-2.5-coder-32b-instruct:free",
 ];
 
+function cleanAiResponse(text: string): string {
+  if (!text) return "";
+  let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+
+  if (/here's a thinking process:|thinking process:/i.test(cleaned)) {
+    const sections = cleaned.split(/\n\s*\n/);
+    const contentSections = sections.filter(sec => 
+      !/thinking process|analyze user input|formulate response|extract data|check if any|structure:|top 3 by property|let's list|let's sort|user wants/i.test(sec)
+    );
+    if (contentSections.length > 0) {
+      cleaned = contentSections.join("\n\n").trim();
+    }
+  }
+
+  if (/we need to give|let's craft:|count sentences:/i.test(cleaned)) {
+    const matches = Array.from(cleaned.matchAll(/["“]([^"”]{20,})["”]/g));
+    if (matches.length > 0) {
+      cleaned = matches[matches.length - 1][1];
+    } else {
+      cleaned = cleaned
+        .replace(/^[\s\S]*?(?:let's craft:|"|“)/i, "")
+        .replace(/["”]?\s*(?:that's two sentences|ensure no extra|count sentences).*$/i, "");
+    }
+  }
+
+  return cleaned.trim();
+}
+
 async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
   if (!apiKey) {
     throw new Error("VITE_OPENROUTER_API_KEY belum dikonfigurasi di file .env");
@@ -32,6 +60,7 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
         body: JSON.stringify({
           model: model,
           messages: messages,
+          reasoning: { exclude: true },
           max_tokens: 1500, // Batas aman agar OpenRouter tidak mencoba mengalokasikan kredit untuk 65k token
         })
       });
@@ -45,7 +74,8 @@ async function callOpenRouter(messages: { role: string; content: string }[]): Pr
       }
 
       const data = await response.json();
-      return data.choices?.[0]?.message?.content || "";
+      const rawContent = data.choices?.[0]?.message?.content || "";
+      return cleanAiResponse(rawContent);
     } catch (e: any) {
       console.warn(`[OpenRouter] Exception dengan model ${model}:`, e);
       lastError = e;
