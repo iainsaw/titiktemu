@@ -2,34 +2,58 @@ const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
 
 export type Pesan = { role: "user" | "assistant"; content: string };
 
+const OPENROUTER_MODELS = [
+  "google/gemma-4-26b-a4b-it:free",
+  "google/gemma-4-31b-it:free",
+  "nvidia/nemotron-3.5-lightning:free",
+  "google/gemini-2.5-flash",
+];
+
 async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
   if (!apiKey) {
     throw new Error("VITE_OPENROUTER_API_KEY belum dikonfigurasi di file .env");
   }
 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "HTTP-Referer": "http://localhost:8090", // Optional, for OpenRouter rankings
-      "X-Title": "Titik Temu WebGIS", // Optional, for OpenRouter rankings
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      // We can use gemini via OpenRouter, or any other fast model like haiku/llama
-      model: "google/gemini-2.5-flash",
-      messages: messages,
-      max_tokens: 1500, // Batas aman agar OpenRouter tidak mencoba mengalokasikan kredit untuk 65k token
-    })
-  });
+  let lastError;
 
-  if (!response.ok) {
-    const errData = await response.json().catch(() => ({}));
-    throw new Error(errData?.error?.message || "Gagal menghubungi OpenRouter API");
+  for (const model of OPENROUTER_MODELS) {
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "HTTP-Referer": "http://localhost:8090", // Optional, for OpenRouter rankings
+          "X-Title": "Titik Temu WebGIS", // Optional, for OpenRouter rankings
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          max_tokens: 1500, // Batas aman agar OpenRouter tidak mencoba mengalokasikan kredit untuk 65k token
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        const errMsg = errData?.error?.message || "Gagal menghubungi OpenRouter API";
+        console.warn(`[OpenRouter] Gagal dengan model ${model}:`, errMsg);
+        
+        if (response.status === 402 || response.status === 429 || errMsg.toLowerCase().includes("credits") || errMsg.toLowerCase().includes("limit") || errMsg.toLowerCase().includes("tokens")) {
+          lastError = new Error(errMsg);
+          continue; // Coba model selanjutnya
+        }
+        throw new Error(errMsg);
+      }
+
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || "";
+    } catch (e: any) {
+      console.warn(`[OpenRouter] Exception dengan model ${model}:`, e);
+      lastError = e;
+    }
   }
 
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
+  throw new Error(lastError?.message || "Semua model OpenRouter gagal digunakan");
 }
 
 /**

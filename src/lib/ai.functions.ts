@@ -1,6 +1,56 @@
 import { createServerFn } from "@tanstack/react-start";
 import { type Kawasan } from "./vitality-data";
 
+const OPENROUTER_MODELS = [
+  "google/gemma-4-26b-a4b-it:free",
+  "google/gemma-4-31b-it:free",
+  "nvidia/nemotron-3.5-lightning:free",
+  "google/gemini-2.5-flash",
+];
+
+async function callOpenRouterWithFallback(
+  apiKey: string,
+  messages: any[],
+  options: { temperature?: number; max_tokens?: number } = {}
+) {
+  let lastError;
+  for (const model of OPENROUTER_MODELS) {
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:3000",
+          "X-Title": "Titik Temu AI"
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          ...options
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.warn(`[OpenRouter] Gagal menggunakan model ${model}:`, errorText);
+        if (response.status === 429 || response.status === 402 || errorText.toLowerCase().includes("credits") || errorText.toLowerCase().includes("limit") || errorText.toLowerCase().includes("tokens")) {
+          lastError = new Error(errorText);
+          continue; 
+        }
+        throw new Error(errorText);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.warn(`[OpenRouter] Exception dengan model ${model}:`, error);
+      lastError = error;
+    }
+  }
+
+  throw new Error("Semua model OpenRouter gagal digunakan. Error terakhir: " + (lastError?.message || lastError));
+}
+
 export const generateInsights = createServerFn({ method: "POST" })
   .validator((data: Kawasan[]) => data)
   .handler(async ({ data: kawasans }) => {
@@ -35,30 +85,17 @@ Contoh output:
 Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*78*) namun skor layanan hanya *52* — sinyal peluang tersembunyi bagi UMKM dan operator feeder.
 `;
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:3000",
-        "X-Title": "Titik Temu AI"
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "user", content: prompt }
-        ],
+    let json;
+    try {
+      json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
         max_tokens: 150
-      })
-    });
-
-    if (!response.ok) {
-      console.error("OpenRouter API error:", await response.text());
+      });
+    } catch (error) {
+      console.error("OpenRouter API error:", error);
       throw new Error("Failed to fetch AI insights");
     }
 
-    const json = await response.json();
     const content = json.choices?.[0]?.message?.content || "";
     
     const insight = content.trim().replace(/^["“]+|["”]+$/g, '');
@@ -102,27 +139,16 @@ Kepadatan Penduduk: ${kws.penduduk ? Math.round(kws.kepadatan || 0) + ' / km²' 
 
 Berdasarkan analisis GIS di atas, berikan 1 rekomendasi spesifik ${task} di area ini, beserta alasan logisnya. Jawab HANYA dalam 2 kalimat singkat yang padat dan persuasif, tanpa basa-basi.`;
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:3000",
-        "X-Title": "Titik Temu AI"
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [{ role: "user", content: prompt }],
+    let json;
+    try {
+      json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
         max_tokens: 150
-      })
-    });
-
-    if (!response.ok) {
+      });
+    } catch (error) {
       throw new Error("Failed to fetch AI insights");
     }
 
-    const json = await response.json();
     return json.choices?.[0]?.message?.content || "Gagal memproses rekomendasi AI.";
   });
 
@@ -153,27 +179,17 @@ Output: OUTSIDE
 Input: buh btu
 Output: Buahbatu, Kota Bandung`;
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:3000",
-        "X-Title": "Titik Temu AI"
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [{ role: "user", content: prompt }],
+    let json;
+    try {
+      json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.1,
         max_tokens: 50
-      })
-    });
-
-    if (!response.ok) {
+      });
+    } catch (error) {
       throw new Error("Failed to parse search query via AI");
     }
 
-    const json = await response.json();
+    const jsonResult = json;
     const result = json.choices?.[0]?.message?.content?.trim() || "";
     
     if (result.includes("OUTSIDE")) {
