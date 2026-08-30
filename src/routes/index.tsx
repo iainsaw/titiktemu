@@ -19,7 +19,7 @@ const heroVideo = { url: "/hero-transit.mp4" };
 const KARTU = [
   {
     icon: Building2,
-    judul: "Investor & Properti",
+    judul: "Investor properti",
     teks: "Temukan kawasan transit dengan fundamental properti yang kuat dan potensi keuntungan terbaik untuk investasi Anda.",
     peran: "investor" as const,
     tombol: "Investor",

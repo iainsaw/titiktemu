@@ -119,7 +119,7 @@ function Metodologi() {
             Prioritas penataan kota berbeda bagi setiap pihak. Dasbor interaktif ini menggunakan sistem pembobotan dinamis agar skor menyesuaikan kebutuhan pengguna:
           </p>
           <ul className="list-disc space-y-2 pl-5 mb-4 text-muted-foreground text-sm">
-            <li><strong>Investor & Properti:</strong> Bobot terbesar ditaruh pada <strong>Pasar Properti (40%)</strong> karena secara langsung mencerminkan potensi imbal hasil (ROI) lahan. Disusul Akses (25%) dan Ekonomi (20%) yang sering menjadi katalis kenaikan <em>capital gain</em>.</li>
+            <li><strong>Investor properti:</strong> Bobot terbesar ditaruh pada <strong>Pasar Properti (40%)</strong> karena secara langsung mencerminkan potensi imbal hasil (ROI) lahan. Disusul Akses (25%) dan Ekonomi (20%) yang sering menjadi katalis kenaikan <em>capital gain</em>.</li>
             <li><strong>Pemerintah & Perencana:</strong> Memprioritaskan <strong>Kesenjangan Layanan (40%)</strong> dan <strong>Aksesibilitas Transit (30%)</strong>. Pembobotan ini didasari pada mandat pemerintah untuk memastikan pemerataan infrastruktur dan hak mobilitas warga secara inklusif.</li>
             <li><strong>Pelaku UMKM:</strong> Kesuksesan bisnis mikro sangat bergantung pada keramaian pasar, sehingga bobot terberat ada pada <strong>Keragaman Ekonomi (40%)</strong> (memanfaatkan efek aglomerasi) serta <strong>Akses Transit (25%)</strong> agar konsumen mudah datang berkunjung.</li>
           </ul>

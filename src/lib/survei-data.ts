@@ -89,7 +89,7 @@ export const SURVEI: Survei[] = [
     tanggal: "Selasa, 25 Agustus 2026",
     surveyor: "Firzatullah Al Ghiffari",
     metode: "Observasi karakteristik ruang publik, UMKM, dan infrastruktur transit (halte, pejalan kaki, JPO)",
-    titik: 5,
+    titik: 6,
     temuan: [
       "Fasilitas transit kekurangan informasi rute dan aksesibilitas; halte utama hanya memiliki peta rute tunggal, sementara bus stop lain minim petunjuk trayek dengan kondisi fisik yang mulai rusak.",
       "Infrastruktur ramah disabilitas belum memadai; JPO Asia Afrika terawat namun ketiadaan lift menyulitkan penyandang disabilitas, mendorong pejalan kaki menyeberang langsung di jalan.",

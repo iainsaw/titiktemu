@@ -106,20 +106,29 @@ function PetaInteraktif() {
   const handleAnalisis = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchNewPlace.trim() || analyzing) return;
+
+    // Check if it's an existing station first (so guests can still search existing pins)
+    const normalizedQuery = searchNewPlace.toLowerCase().replace(/\s+/g, '');
+    const existing = kawasans.find(k => k.nama.toLowerCase().replace(/\s+/g, '') === normalizedQuery);
+    if (existing) {
+      setSelectedId(existing.id);
+      setSearchNewPlace("");
+      return;
+    }
+
+    // It's a new place/coordinate. Check if logged in.
+    if (!user) {
+      alert("Fitur Analisis Kustom Eksklusif: Silakan Login untuk mencari dan menganalisis koordinat/lokasi baru.");
+      return;
+    }
+
     setAnalyzing(true);
     setAnalyzeError("");
     try {
       const { kawasan, geo } = await analyzeNewPlace(searchNewPlace);
-      const normalizedNewName = kawasan.nama.toLowerCase().replace(/\s+/g, '');
-      const existing = kawasans.find(k => k.nama.toLowerCase().replace(/\s+/g, '') === normalizedNewName);
-      
-      if (existing) {
-        setSelectedId(existing.id);
-      } else {
-        addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
-        setKawasans(prev => [kawasan, ...prev].slice(0, 16));
-        setSelectedId(kawasan.id);
-      }
+      addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
+      setKawasans(prev => [kawasan, ...prev].slice(0, 16));
+      setSelectedId(kawasan.id);
       setSearchNewPlace("");
     } catch (err) {
       setAnalyzeError(err instanceof Error ? err.message : "Gagal menganalisis lokasi");

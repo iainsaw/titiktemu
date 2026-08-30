@@ -171,8 +171,20 @@ export async function analyzeCoordinates(lat: number, lng: number, overrideName?
   const result = typeof data === "string" ? JSON.parse(data) : data;
   
   // Custom point doesn't have a specific name, so we use coordinate
-  // Jika overrideName tersedia dari reverse geocoding, gunakan itu!
-  const placeName = overrideName || `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+  // Jika overrideName tersedia, gunakan itu. Jika tidak, coba reverse geocode otomatis.
+  let finalName = overrideName;
+  if (!finalName) {
+    try {
+      const reverse = await reverseGeocode(lat, lng);
+      if (reverse) {
+        finalName = `${reverse.name || reverse.display_name.split(',')[0]} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+      }
+    } catch(e) {
+      // ignore
+    }
+  }
+
+  const placeName = finalName || `Titik Kustom (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
   let hargaTanah = result.harga_tanah_m2 ?? 0;
   let skorProperti = result.skor_properti ?? 1;
 
