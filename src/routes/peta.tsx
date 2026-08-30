@@ -280,11 +280,14 @@ function PetaInteraktif() {
       const element = document.getElementById("pdf-report-template");
       if (!element) return;
       
+      // Tampilkan sementara agar bisa di-render oleh html2canvas
+      element.style.display = "block";
+      
       const opt = {
         margin:       15,
         filename:     `Laporan-Titik-Temu-${terpilih.nama.replace(/\s+/g, '-')}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       
@@ -292,6 +295,15 @@ function PetaInteraktif() {
     } catch (e) {
       console.error("Failed to generate PDF", e);
     } finally {
+      const element = document.getElementById("pdf-report-template");
+      if (element) {
+        element.style.display = "none";
+      }
+      
+      // Fallback cleanup: hapus overlay/container yang mungkin ditinggalkan html2canvas
+      const containers = document.querySelectorAll('.html2canvas-container');
+      containers.forEach(c => c.remove());
+      
       setIsGeneratingPdf(false);
     }
   };
@@ -675,8 +687,8 @@ function PetaInteraktif() {
         </div>
 
         {/* ── PDF REPORT TEMPLATE (Hidden from screen) ── */}
-        <div className="absolute top-0 left-0 w-[210mm] z-[-100] opacity-0 pointer-events-none print:hidden">
-          <div id="pdf-report-template" className="bg-white text-black font-latex px-[10mm] pt-[15mm] pb-[10mm]">
+        <div className="absolute top-[-9999px] left-[-9999px] w-[210mm] print:hidden">
+          <div id="pdf-report-template" style={{ display: 'none' }} className="bg-white text-black font-latex px-[10mm] pt-[15mm] pb-[10mm]">
             <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
               Laporan Analisis Vitalitas Kawasan
             </h1>
