@@ -14,30 +14,39 @@ const OPENROUTER_MODELS = [
 
 function cleanAiResponse(text: string): string {
   if (!text) return "";
+
+  // 1. Clear out <think> tags or reasoning blocks
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
-  if (/here's a thinking process:|thinking process:/i.test(cleaned)) {
-    const sections = cleaned.split(/\n\s*\n/);
-    const contentSections = sections.filter(sec => 
-      !/thinking process|analyze user input|formulate response|extract data|check if any|structure:|top 3 by property|let's list|let's sort|user wants/i.test(sec)
+  // 2. Remove standard reasoning header sections if present
+  if (/here's a thinking process:|thinking process:|analyze user input|formulate response/i.test(cleaned)) {
+    const parts = cleaned.split(/\n\s*\n/);
+    const validParts = parts.filter(p => 
+      !/thinking process|analyze user input|formulate response|extract data|check if any|structure:|top 3 by property|let's list|let's sort|user wants|we need to|let's craft|count sentences/i.test(p)
     );
-    if (contentSections.length > 0) {
-      cleaned = contentSections.join("\n\n").trim();
+    if (validParts.length > 0) {
+      cleaned = validParts.join("\n\n").trim();
     }
   }
 
-  if (/we need to give|let's craft:|count sentences:/i.test(cleaned)) {
-    const matches = Array.from(cleaned.matchAll(/["“]([^"”]{20,})["”]/g));
+  // 3. Remove leading English scratchpad / prompt restatements
+  cleaned = cleaned.replace(/^(?:We need to|Let's craft|Ensure no extra|Count sentences|So recommendation:)[^\n]*\n?/gi, "");
+  
+  // 4. If AI wraps quoted Indonesian recommendation inside an English reasoning block
+  if (/we need to|let's craft|recommendation:/i.test(cleaned)) {
+    const matches = Array.from(cleaned.matchAll(/["“]([A-Z0-9\s\.,\(\)\-\%\/\*\#\:\;]{20,})["”]/g));
     if (matches.length > 0) {
       cleaned = matches[matches.length - 1][1];
-    } else {
-      cleaned = cleaned
-        .replace(/^[\s\S]*?(?:let's craft:|"|“)/i, "")
-        .replace(/["”]?\s*(?:that's two sentences|ensure no extra|count sentences).*$/i, "");
     }
   }
 
-  return cleaned.trim();
+  // 5. Clean orphan trailing sentences like "That's two sentences." or "Ensure no extra."
+  cleaned = cleaned
+    .replace(/(?:that's two sentences|ensure no extra|count sentences).*$/gi, "")
+    .replace(/^["“']+|["”']+$/g, "")
+    .trim();
+
+  return cleaned;
 }
 
 async function callOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
