@@ -93,33 +93,42 @@ async function callOpenRouterWithFallback(
 
   // 2. Otherwise, treat key as Google Gemini API Key (handles AIzaSy... or AQ... keys)
   const promptText = messages.map(m => m.content).join("\n\n");
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: promptText }] }],
-      generationConfig: {
-        temperature: options.temperature || 0.7,
-        maxOutputTokens: options.max_tokens || 1000
+  const geminiModels = ["gemini-3.6-flash", "gemini-1.5-flash"];
+  
+  let lastGeminiError;
+  for (const modelName of geminiModels) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }],
+          generationConfig: {
+            temperature: options.temperature || 0.7,
+            maxOutputTokens: options.max_tokens || 1000
+          }
+        })
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        if (text) {
+          return { choices: [{ message: { content: cleanAiResponse(text) } }] };
+        }
+      } else {
+        const errJson = await response.json().catch(() => ({}));
+        lastGeminiError = errJson?.error?.message || response.statusText;
+        console.warn(`[Google Gemini ${modelName} Error]:`, lastGeminiError);
       }
-    })
-  });
-
-  if (!response.ok) {
-    const errJson = await response.json().catch(() => ({}));
-    const errMsg = errJson?.error?.message || "Gagal menghubungi Google Gemini API";
-    console.error("[Google Gemini API Error]:", errMsg);
-    throw new Error(`Google Gemini Error: ${errMsg}`);
+    } catch (e: any) {
+      lastGeminiError = e.message;
+      console.warn(`[Google Gemini ${modelName} Exception]:`, e.message);
+    }
   }
 
-  const json = await response.json();
-  const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-  if (!text) {
-    throw new Error("Google Gemini tidak mengembalikan jawaban.");
-  }
-
-  return { choices: [{ message: { content: cleanAiResponse(text) } }] };
+  throw new Error(`Google Gemini Error: ${lastGeminiError || "Gagal memproses AI"}`);
 }
 
 export const generateInsights = createServerFn({ method: "POST" })
