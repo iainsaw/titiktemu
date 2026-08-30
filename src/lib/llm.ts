@@ -22,61 +22,77 @@ function cleanAiResponse(text: string): string {
   return cleaned;
 }
 
+async function fetchWithRetry(url: string, options: RequestInit, retries = 3, delayMs = 500): Promise<Response> {
+  let lastError;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok) return res;
+      const errText = await res.text().catch(() => res.statusText);
+      lastError = new Error(`HTTP ${res.status}: ${errText}`);
+      console.warn(`[AI Request Attempt ${attempt}/${retries} Failed]:`, lastError.message);
+    } catch (e: any) {
+      lastError = e;
+      console.warn(`[AI Network Attempt ${attempt}/${retries} Exception]:`, e.message);
+    }
+    if (attempt < retries) {
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+  throw lastError;
+}
+
 async function callGeminiOrOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
   const apiKey = getApiKey();
   if (!apiKey) {
     throw new Error("API Key AI belum dikonfigurasi di file .env");
   }
 
-  // 1. If key starts with sk-or-v1-, use OpenRouter
+  // 1. If key starts with sk-or-v1-, use OpenRouter with automatic retry
   if (apiKey.startsWith("sk-or-v1-")) {
     let lastError;
     for (const model of OPENROUTER_MODELS) {
       try {
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "HTTP-Referer": "http://localhost:8090",
-            "X-Title": "Titik Temu WebGIS",
-            "Content-Type": "application/json"
+        const response = await fetchWithRetry(
+          "https://openrouter.ai/api/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${apiKey}`,
+              "HTTP-Referer": "http://localhost:8090",
+              "X-Title": "Titik Temu WebGIS",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: messages,
+              max_tokens: 2048,
+            })
           },
-          body: JSON.stringify({
-            model: model,
-            messages: messages,
-            max_tokens: 2048,
-          })
-        });
-
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          const errMsg = errData?.error?.message || "Gagal menghubungi OpenRouter API";
-          console.warn(`[OpenRouter] Gagal dengan model ${model}:`, errMsg);
-          lastError = new Error(errMsg);
-          continue;
-        }
+          2, // retry twice per model
+          400
+        );
 
         const data = await response.json();
         const rawContent = data.choices?.[0]?.message?.content || "";
         const cleaned = cleanAiResponse(rawContent);
         if (cleaned) return cleaned;
       } catch (e: any) {
-        console.warn(`[OpenRouter] Exception dengan model ${model}:`, e);
+        console.warn(`[OpenRouter] Exception dengan model ${model}:`, e.message);
         lastError = e;
       }
     }
     throw new Error(lastError?.message || "Gagal memproses AI via OpenRouter.");
   }
 
-  // 2. Otherwise, treat key as Google Gemini API Key (handles AIzaSy... or AQ... keys)
+  // 2. Otherwise, treat key as Google Gemini API Key (gemini-3.6-flash with retry)
   const promptText = messages.map(m => m.content).join("\n\n");
-  const geminiModels = ["gemini-3.6-flash", "gemini-1.5-flash"];
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
   
-  let lastGeminiError;
-  for (const modelName of geminiModels) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-      const response = await fetch(url, {
+  try {
+    const response = await fetchWithRetry(
+      url,
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -86,26 +102,22 @@ async function callGeminiOrOpenRouter(messages: { role: string; content: string 
             maxOutputTokens: 2048
           }
         })
-      });
+      },
+      3, // retry 3 times automatically
+      500
+    );
 
-      if (response.ok) {
-        const json = await response.json();
-        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        if (text) {
-          return cleanAiResponse(text);
-        }
-      } else {
-        const errJson = await response.json().catch(() => ({}));
-        lastGeminiError = errJson?.error?.message || response.statusText;
-        console.warn(`[Google Gemini ${modelName} Error]:`, lastGeminiError);
-      }
-    } catch (e: any) {
-      lastGeminiError = e.message;
-      console.warn(`[Google Gemini ${modelName} Exception]:`, e.message);
+    const json = await response.json();
+    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    if (!text) {
+      throw new Error("Google Gemini tidak mengembalikan jawaban.");
     }
-  }
 
-  throw new Error(`Google Gemini Error: ${lastGeminiError || "Gagal memproses AI"}`);
+    return cleanAiResponse(text);
+  } catch (e: any) {
+    console.error("[Google Gemini API Error]:", e.message);
+    throw new Error(`Google Gemini Error: ${e.message}`);
+  }
 }
 
 /**
