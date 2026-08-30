@@ -1,5 +1,6 @@
 @import "tailwindcss" source(none);
 @source "../src";
+@import url('https://cdn.jsdelivr.net/gh/dreampulse/computer-modern-web-font@master/fonts.css');
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -202,6 +203,10 @@
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.05;
+}
+
+@utility font-latex {
+  font-family: "Computer Modern Serif", "CMU Serif", serif;
 }
 
 @utility pill {

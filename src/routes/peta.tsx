@@ -497,7 +497,7 @@ function PetaInteraktif() {
   );
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground print:h-auto print:min-h-screen print:w-full print:overflow-visible print:bg-white print:text-black print:font-latex">
 
       {/* ── GLOBAL NAV ── */}
       <div className="shrink-0 z-50 print:hidden">
@@ -505,7 +505,7 @@ function PetaInteraktif() {
       </div>
 
       {/* ── MAIN CONTAINER ── */}
-      <div className="relative flex-1 overflow-hidden flex flex-col lg:block">
+      <div className="relative flex-1 overflow-hidden flex flex-col lg:block print:flex print:flex-col print:overflow-visible">
         
         {/* Toast Error Floating */}
         {analyzeError && (
@@ -516,8 +516,27 @@ function PetaInteraktif() {
           </div>
         )}
 
-        {/* ── MAP AREA ── */}
-        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:block print:w-full print:h-[500px] print:!absolute print:!inset-0 print:mt-[150px]">
+        {/* ── PRINT ONLY: Header & Metadata (Order 1) ── */}
+        <div className="hidden print:block order-1 px-10 pt-10 pb-2">
+          <h1 className="text-center text-[18pt] font-bold uppercase border-b-2 border-black pb-4 mb-6">
+            Laporan Analisis Vitalitas Kawasan
+          </h1>
+          <div className="flex justify-between items-start mb-4 text-[11pt] leading-relaxed">
+            <div>
+              <p><strong>Platform:</strong> Titik Temu Pintar</p>
+              <p><strong>Kawasan:</strong> {terpilih.nama} ({terpilih.klaster})</p>
+              <p><strong>Perspektif:</strong> {peran.label}</p>
+            </div>
+            <div className="text-right">
+              <p><strong>Tanggal:</strong> {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              <p><strong>Radius Analisis:</strong> 800m</p>
+            </div>
+          </div>
+          <p className="text-[11pt] italic mb-2">Gambar 1. Peta persebaran kawasan dan utilitas di sekitarnya.</p>
+        </div>
+
+        {/* ── MAP AREA (Order 2) ── */}
+        <main className="relative shrink-0 h-[40vh] lg:h-full w-full z-0 bg-muted/10 lg:absolute lg:inset-0 print:order-2 print:relative print:w-[calc(100%-5rem)] print:mx-auto print:h-[10cm] print:border print:border-black print:!mt-0 print:mb-6">
           <VitalityMap
             className="size-full"
             fill
@@ -571,11 +590,61 @@ function PetaInteraktif() {
           </div>
         </main>
 
+        {/* ── PRINT ONLY: Data Tables & AI Analysis (Order 3) ── */}
+        <div className="hidden print:block order-3 px-10">
+          <div className="flex gap-8 items-start mb-6">
+            <div className="w-1/3">
+              <h2 className="text-[14pt] font-bold mb-3">Ringkasan Skor</h2>
+              <div className="border border-black p-4 text-center bg-gray-50/50">
+                <p className="text-[11pt] mb-1">Skor Vitalitas Total</p>
+                <p className="text-[28pt] font-bold">{skorTerpilih}</p>
+                <p className="text-[11pt] italic text-gray-600 mt-1">Kelas: {kelasSkor(skorTerpilih).label}</p>
+              </div>
+            </div>
+            <div className="w-2/3">
+              <h2 className="text-[14pt] font-bold mb-3">Rincian Komponen</h2>
+              <table className="w-full text-[11pt] border-collapse border border-black text-left">
+                <thead>
+                  <tr>
+                    <th className="border border-black px-3 py-2 bg-gray-100/50">Komponen</th>
+                    <th className="border border-black px-3 py-2 bg-gray-100/50 text-center w-24">Skor</th>
+                    <th className="border border-black px-3 py-2 bg-gray-100/50 text-center w-24">Bobot</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPONENTS.map(c => (
+                    <tr key={c.id}>
+                      <td className="border border-black px-3 py-2">{c.label}</td>
+                      <td className="border border-black px-3 py-2 text-center font-bold">
+                        {terpilih.skor[c.id]}
+                      </td>
+                      <td className="border border-black px-3 py-2 text-center text-gray-600">
+                        {peran.weights[c.id] * 100}%
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h2 className="text-[14pt] font-bold mb-3">Analisis Kecerdasan Buatan (AI)</h2>
+            {aiRecommendation ? (
+              <div className="border-l-4 border-black pl-4 py-1 text-[11pt] text-justify leading-relaxed [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:my-2 [&_li]:mb-1 [&_strong]:font-bold">
+                <div dangerouslySetInnerHTML={{ __html: aiRecommendation }} />
+              </div>
+            ) : (
+              <p className="text-[11pt] italic text-gray-500">Hasil analisis AI belum di-generate untuk kawasan ini.</p>
+            )}
+          </div>
+        </div>
+
         {/* ── DESKTOP OVERLAY LAYOUT (lg:flex) ── */}
         {/* Left Side: Detail Kawasan */}
         <div
           className={cn(
-            "hidden lg:flex flex-col gap-3 absolute top-4 left-4 z-30 w-[360px] max-h-[calc(100vh-96px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
+            "hidden lg:flex flex-col gap-3 absolute top-4 left-4 z-30 w-[360px] max-h-[calc(100vh-96px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized && "left-[-420px] opacity-0"
           )}
         >
@@ -591,7 +660,7 @@ function PetaInteraktif() {
         {/* Right Side: Search & Filter (Top) + Rankings (Bottom) */}
         <div
           className={cn(
-            "hidden lg:flex flex-col gap-3 absolute top-4 right-4 z-30 w-[320px] max-h-[calc(100vh-124px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
+            "hidden lg:flex flex-col gap-3 absolute top-4 right-4 z-30 w-[320px] max-h-[calc(100vh-124px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
             isMapMaximized && "right-[-420px] opacity-0"
           )}
         >
@@ -615,12 +684,12 @@ function PetaInteraktif() {
         </div>
 
         {/* Desktop Floating Center: Role Selector Pill */}
-        <div className="hidden lg:flex absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-auto bg-white dark:bg-zinc-900 shadow-xl border border-border/30 rounded-xl p-1 w-[420px]">
+        <div className="hidden lg:flex absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-auto bg-white dark:bg-zinc-900 shadow-xl border border-border/30 rounded-xl p-1 w-[420px] print:hidden">
           {roleSelectorContent}
         </div>
 
         {/* ── MOBILE CONTENT SECTION (< lg) ── */}
-        <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-zinc-950 p-3 pb-24 flex flex-col gap-3.5 lg:hidden z-10">
+        <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-zinc-950 p-3 pb-24 flex flex-col gap-3.5 lg:hidden z-10 print:hidden">
           
           {/* Card 1: Search & Filter */}
           <div className="rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-sm border border-border/40">
@@ -639,7 +708,7 @@ function PetaInteraktif() {
         </div>
 
         {/* Mobile Floating Bottom Bar: Role Selector */}
-        <div className="lg:hidden fixed bottom-3 left-2 right-2 z-40 flex justify-center pointer-events-none">
+        <div className="lg:hidden fixed bottom-3 left-2 right-2 z-40 flex justify-center pointer-events-none print:hidden">
           <div className="pointer-events-auto bg-white/95 dark:bg-zinc-900/95 shadow-2xl border border-border/50 backdrop-blur-md rounded-xl p-1 flex gap-1 justify-center max-w-[360px] w-full">
             {roleSelectorContent}
           </div>
