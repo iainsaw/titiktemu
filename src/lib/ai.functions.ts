@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { createServerFn } from "@tanstack/react-start";
 import { type Kawasan } from "./vitality-data";
 
 const OPENROUTER_MODELS = [
@@ -6,9 +6,7 @@ const OPENROUTER_MODELS = [
   "nvidia/nemotron-3.5-lightning:free",
   "minimax/minimax-m3:free",
   "z-ai/glm-5.2:free",
-  "google/gemma-4-31b-it:free",
-  "google/gemma-4-26b-a4b-it:free",
-  "liquid/lfm-2.5-2.6b:free"
+  "google/gemma-4-31b-it:free"
 ];
 
 function cleanAiResponse(text: string): string {
@@ -53,26 +51,38 @@ async function callOpenRouterWithFallback(
   messages: any[],
   options: { temperature?: number; max_tokens?: number } = {}
 ) {
-  if (apiKey.startsWith("AIzaSy")) {
+  // 1. Direct REST fetch to Google AI Studio if key starts with AIzaSy
+  if (apiKey && apiKey.startsWith("AIzaSy")) {
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-      const promptText = messages.map(m => m.content).join("\n");
-      const result = await model.generateContent({
-        contents: [{ role: "user", parts: [{ text: promptText }] }],
-        generationConfig: {
-          temperature: options.temperature || 0.7,
-          maxOutputTokens: options.max_tokens || 1000
-        }
+      const promptText = messages.map(m => m.content).join("\n\n");
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }],
+          generationConfig: {
+            temperature: options.temperature || 0.7,
+            maxOutputTokens: options.max_tokens || 1000
+          }
+        })
       });
 
-      return { choices: [{ message: { content: cleanAiResponse(result.response.text()) } }] };
+      if (response.ok) {
+        const json = await response.json();
+        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        if (text) {
+          return { choices: [{ message: { content: cleanAiResponse(text) } }] };
+        }
+      } else {
+        console.warn("[Gemini REST API Error]:", await response.text());
+      }
     } catch (e: any) {
-      console.warn("[Gemini API Direct Error]:", e.message);
+      console.warn("[Gemini REST API Exception]:", e.message);
     }
   }
 
+  // 2. Fallback to OpenRouter
   let lastError;
   for (const model of OPENROUTER_MODELS) {
     try {
