@@ -264,48 +264,12 @@ function PetaInteraktif() {
     </div>
   );
 
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-
-  // PDF Generation without map
-  const handleGeneratePDF = async () => {
-    if (isGeneratingPdf) return;
-    setIsGeneratingPdf(true);
-    
-    // Beri jeda sejenak agar React sempat merender animasi loading sebelum main thread diblokir
-    await new Promise(resolve => setTimeout(resolve, 150));
-    
-    try {
-      // Dynamically import to avoid SSR issues
-      const html2pdf = (await import("html2pdf.js")).default;
-      const element = document.getElementById("pdf-report-template");
-      if (!element) return;
-      
-      // Tampilkan sementara agar bisa di-render oleh html2canvas
-      element.style.display = "block";
-      
-      const opt = {
-        margin:       15,
-        filename:     `Laporan-Titik-Temu-${terpilih.nama.replace(/\s+/g, '-')}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      
-      await html2pdf().from(element).set(opt).save();
-    } catch (e) {
-      console.error("Failed to generate PDF", e);
-    } finally {
-      const element = document.getElementById("pdf-report-template");
-      if (element) {
-        element.style.display = "none";
-      }
-      
-      // Fallback cleanup: hapus overlay/container yang mungkin ditinggalkan html2canvas
-      const containers = document.querySelectorAll('.html2canvas-container');
-      containers.forEach(c => c.remove());
-      
-      setIsGeneratingPdf(false);
-    }
+  // PDF Generation with native print
+  const handlePrintPDF = () => {
+    // Beri sedikit jeda agar DOM siap
+    setTimeout(() => {
+      window.print();
+    }, 100);
   };
 
   // Detail Kawasan Component
@@ -318,11 +282,10 @@ function PetaInteraktif() {
         </span>
         <div className="flex items-center gap-1.5">
           <button
-            onClick={handleGeneratePDF}
-            disabled={isGeneratingPdf}
-            className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary disabled:opacity-50"
+            onClick={handlePrintPDF}
+            className="flex items-center gap-1 rounded-lg bg-secondary/60 px-2.5 py-1 text-[11px] font-medium transition-colors hover:bg-secondary"
           >
-            {isGeneratingPdf ? <Loader2 className="size-3 animate-spin" /> : "Unduh Laporan PDF"}
+            Unduh Laporan PDF
           </button>
         </div>
       </div>
@@ -538,7 +501,7 @@ function PetaInteraktif() {
   );
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground print:h-auto print:bg-white print:text-black">
 
       {/* ── GLOBAL NAV ── */}
       <div className="shrink-0 z-50 print:hidden">
@@ -546,7 +509,7 @@ function PetaInteraktif() {
       </div>
 
       {/* ── MAIN CONTAINER ── */}
-      <div className="relative flex-1 overflow-hidden flex flex-col lg:block">
+      <div className="relative flex-1 overflow-hidden flex flex-col lg:block print:hidden">
         
         {/* Toast Error Floating */}
         {analyzeError && (
@@ -685,11 +648,12 @@ function PetaInteraktif() {
             {roleSelectorContent}
           </div>
         </div>
+      </div>
 
-        {/* ── PDF REPORT TEMPLATE (Hidden from screen) ── */}
-        <div className="absolute top-[-9999px] left-[-9999px] w-[210mm] print:hidden">
-          <div id="pdf-report-template" style={{ display: 'none' }} className="bg-white text-black font-latex px-[10mm] pt-[15mm] pb-[10mm]">
-            <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
+      {/* ── PDF REPORT TEMPLATE (Only visible in print mode) ── */}
+      <div className="hidden print:block w-full h-full bg-white text-black font-latex">
+        <div id="pdf-report-template" className="px-[10mm] pt-[15mm] pb-[10mm]">
+          <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
               Laporan Analisis Vitalitas Kawasan
             </h1>
             
@@ -747,9 +711,7 @@ function PetaInteraktif() {
             </div>
           </div>
         </div>
-
       </div>
-    </div>
   );
 }
 
