@@ -33,6 +33,7 @@ function createStubClient(): SupabaseClient {
     auth: {
       signUp: async () => ({ data: null, error: err }),
       signInWithPassword: async () => ({ data: null, error: err }),
+      resetPasswordForEmail: async () => ({ data: null, error: err }),
       signOut: async () => ({ error: err }),
       getSession: async () => ({ data: { session: null }, error: null }),
       onAuthStateChange: () => ({

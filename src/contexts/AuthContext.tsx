@@ -12,6 +12,7 @@ interface AuthContextValue {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, displayName?: string) => Promise<{ error: string | null }>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -96,6 +97,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null };
   };
 
+  const resetPassword = async (email: string) => {
+    const redirectTo = typeof window !== "undefined" ? window.location.origin : undefined;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("rate limit") || msg.includes("too many requests")) {
+        return { error: "Terlalu banyak permintaan. Silakan tunggu beberapa saat." };
+      }
+      return { error: "Gagal mengirim email reset kata sandi. Pastikan email terdaftar." };
+    }
+    return { error: null };
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
@@ -105,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider value={{
       user, role, isAdmin: role === "admin",
-      loading, signIn, signUp, signOut,
+      loading, signIn, signUp, resetPassword, signOut,
     }}>
       {children}
     </AuthContext.Provider>

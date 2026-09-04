@@ -11,6 +11,7 @@ const tautan = [
   { to: "/survei", label: "Survei Lapangan" },
   { to: "/metodologi", label: "Metodologi & Sumber Data" },
   { to: "/tim", label: "Tentang Tim" },
+  { to: "/#faq", label: "Pertanyaan Umum (FAQ)" },
 ] as const;
 
 const sumber = [

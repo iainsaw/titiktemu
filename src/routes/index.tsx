@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { VitalityMap } from "@/components/VitalityMap";
+import { FaqSection } from "@/components/FaqSection";
 import { KAWASAN as STATIC_KAWASAN, hitungSkor, type Kawasan } from "@/lib/vitality-data";
 import { useQuery } from "@tanstack/react-query";
 import { useKawasans } from "@/hooks/useKawasans";
@@ -301,6 +302,9 @@ function Beranda() {
             );
           })}
         </AnimatedSection>
+
+        {/* 5. Pertanyaan Umum (FAQ) */}
+        <FaqSection />
       </main>
 
       <section className="ink-section">

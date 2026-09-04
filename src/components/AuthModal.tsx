@@ -9,10 +9,10 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
-type TabType = "signin" | "signup";
+type TabType = "signin" | "signup" | "forgot";
 
 export function AuthModal({ open, onClose }: AuthModalProps) {
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, resetPassword } = useAuth();
   const [tab, setTab] = useState<TabType>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +49,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
       setError("Format email tidak valid.");
       return;
     }
-    if (!validatePassword(password)) {
+    if (tab !== "forgot" && !validatePassword(password)) {
       setError("Kata sandi minimal 6 karakter.");
       return;
     }
@@ -61,10 +61,14 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
         if (err) { setError(err); return; }
         onClose();
         resetForm();
-      } else {
+      } else if (tab === "signup") {
         const { error: err } = await signUp(email, password, displayName);
         if (err) { setError(err); return; }
         setSuccess("Akun berhasil dibuat! Silakan masuk dengan email & kata sandi Anda.");
+      } else if (tab === "forgot") {
+        const { error: err } = await resetPassword(email);
+        if (err) { setError(err); return; }
+        setSuccess("Instruksi reset kata sandi telah dikirim ke email Anda. Silakan periksa inbox/kotak masuk Anda.");
       }
     } finally {
       setLoading(false);
@@ -134,12 +138,18 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
               {/* Form Title */}
               <div className="mb-6">
                 <h2 className="font-display text-[24px] sm:text-[28px] font-bold tracking-tight text-foreground">
-                  {tab === "signin" ? "Masuk Akun" : "Buat Akun Baru"}
+                  {tab === "signin"
+                    ? "Masuk Akun"
+                    : tab === "signup"
+                    ? "Buat Akun Baru"
+                    : "Lupa Kata Sandi"}
                 </h2>
                 <p className="mt-1 text-[13px] text-muted-foreground">
                   {tab === "signin"
                     ? "Masukkan detail akun Anda untuk melanjutkan."
-                    : "Daftar gratis untuk menyimpan kawasan favorit Anda."}
+                    : tab === "signup"
+                    ? "Daftar gratis untuk menyimpan kawasan favorit Anda."
+                    : "Masukkan email terdaftar Anda untuk mengirim instruksi reset kata sandi."}
                 </p>
               </div>
 
@@ -181,30 +191,43 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[12px] font-medium text-foreground/80 mb-1.5">
-                    Kata Sandi
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/50" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Minimal 6 karakter"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value.slice(0, 72))}
-                      required
-                      autoComplete={tab === "signin" ? "current-password" : "new-password"}
-                      className="h-11 w-full rounded-2xl bg-secondary/40 pl-10 pr-10 text-[13.5px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/40 border border-border/40 transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-                    >
-                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                    </button>
+                {tab !== "forgot" && (
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-[12px] font-medium text-foreground/80">
+                        Kata Sandi
+                      </label>
+                      {tab === "signin" && (
+                        <button
+                          type="button"
+                          onClick={() => switchTab("forgot")}
+                          className="text-[11.5px] font-medium text-primary hover:underline"
+                        >
+                          Lupa kata sandi?
+                        </button>
+                      )}
+                    </div>
+                    <div className="relative">
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/50" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Minimal 6 karakter"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value.slice(0, 72))}
+                        required={tab !== "forgot"}
+                        autoComplete={tab === "signin" ? "current-password" : "new-password"}
+                        className="h-11 w-full rounded-2xl bg-secondary/40 pl-10 pr-10 text-[13.5px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/40 border border-border/40 transition-all"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                      >
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Messages */}
                 {error && (
@@ -228,7 +251,11 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                     <Loader2 className="size-4.5 animate-spin" />
                   ) : (
                     <>
-                      {tab === "signin" ? "Masuk Sekarang" : "Buat Akun"}
+                      {tab === "signin"
+                        ? "Masuk Sekarang"
+                        : tab === "signup"
+                        ? "Buat Akun"
+                        : "Kirim Instruksi Reset"}
                       <ArrowRight className="size-4" />
                     </>
                   )}
@@ -258,7 +285,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                     Daftar di sini
                   </button>
                 </p>
-              ) : (
+              ) : tab === "signup" ? (
                 <p>
                   Sudah punya akun?{" "}
                   <button
@@ -266,6 +293,16 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                     className="font-semibold text-primary hover:underline"
                   >
                     Masuk di sini
+                  </button>
+                </p>
+              ) : (
+                <p>
+                  Ingat kata sandi Anda?{" "}
+                  <button
+                    onClick={() => switchTab("signin")}
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    Kembali ke Masuk
                   </button>
                 </p>
               )}
