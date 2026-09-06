@@ -235,16 +235,6 @@ function TentangTim() {
           ))}
         </AnimatedSection>
 
-        <AnimatedSection delay={300} animation="zoom-in" className="panel mt-8 p-6 text-[13px] leading-relaxed text-muted-foreground">
-          <p className="text-[16px] font-semibold text-foreground">Kompetisi & kontak</p>
-          <p className="mt-2">
-            MAPID WebGIS Competition 2026 · Kategori WebGIS Analitik · Pilot Kota Bandung (BBK).
-          </p>
-          <p className="mt-1">Kontak: titiktemu.team@email.com</p>
-          <Link to="/metodologi" className="mt-3 inline-block font-medium text-primary hover:underline">
-            Baca metodologi & sumber data ›
-          </Link>
-        </AnimatedSection>
       </main>
       <SiteFooter />
     </div>
