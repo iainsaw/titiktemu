@@ -116,7 +116,8 @@ export function FaqSection({ className }: { className?: string }) {
                       className="size-4"
                       style={{
                         transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                        transition: "transform 280ms cubic-bezier(0.34, 1.2, 0.64, 1)",
+                        /* Guide §5: --ease-snappy for small, fast micro-animations */
+                        transition: "transform 280ms var(--ease-snappy)",
                       }}
                     />
                   </div>
@@ -139,10 +140,15 @@ export function FaqSection({ className }: { className?: string }) {
                     maxHeight: isOpen ? "500px" : "0px",
                     opacity: isOpen ? 1 : 0,
                     overflow: "hidden",
-                    // Expand with spring-gentle; collapse faster (ease-in feel)
+                    /*
+                     * Guide §5: --ease-out for the expand (entrance ease-out).
+                     * Faster ease-in on collapse — physical objects fall faster.
+                     * max-height is tolerated here (no transform equivalent for
+                     * height-unknown accordion content).
+                     */
                     transition: isOpen
-                      ? "max-height 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease"
-                      : "max-height 280ms cubic-bezier(0.4, 0, 1, 1), opacity 150ms ease",
+                      ? "max-height 420ms var(--ease-out), opacity 200ms ease"
+                      : "max-height 260ms cubic-bezier(0.4, 0, 1, 1), opacity 150ms ease",
                   }}
                 >
                   <p className="pt-3.5 pr-8 pb-1 text-[14.5px] leading-relaxed text-muted-foreground">

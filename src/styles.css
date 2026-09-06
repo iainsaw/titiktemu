@@ -70,13 +70,20 @@
   --background: oklch(0.985 0.003 85); /* Warm alabaster canvas khas Claude */
   --foreground: oklch(0.18 0.01 60);
 
-  /* ─── Spring timing functions (Apple Fluid Interfaces) ─── */
-  /* Critically-damped → no overshoot. Use for panels, modals, default UI. */
-  --spring-gentle: cubic-bezier(0.22, 1, 0.36, 1);
-  /* Snappier settle. Use for menus, tooltips, dropdowns. */
-  --spring-snappy: cubic-bezier(0.34, 1.2, 0.64, 1);
-  /* Slight overshoot. Use only after a momentum gesture (flick/drag release). */
-  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ─── Easing tokens (Emil Kowalski / animate guide) ─── */
+  /* Strong ease-out: the default for entrances and exits.
+     Built-in ease-out is too weak — this one actually feels resolved. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Strong ease-in-out: for elements moving across the screen. */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* iOS-style drawer curve (Ionic). */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Snappier settle for menus and small popovers. */
+  --ease-snappy: cubic-bezier(0.34, 1.2, 0.64, 1);
+
+  /* Aliases used in motion comments (Apple vocabulary → guide vocabulary) */
+  --spring-gentle: var(--ease-out);    /* critically-damped → same as strong ease-out */
+  --spring-snappy: var(--ease-snappy); /* faster settle → same as snappy */
   --surface: oklch(1 0 0);
   --surface-raised: oklch(0.965 0.004 85);
   --card: oklch(1 0 0);
@@ -288,11 +295,11 @@
 
 @utility hero-rise {
   opacity: 0;
-  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-rise 0.9s var(--ease-out) forwards;
 }
 
 @utility hero-zoom {
-  animation: hero-zoom 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hero-zoom 2.4s var(--ease-out) forwards;
 }
 
 /* ═══════════════════════════════════════════════════════════

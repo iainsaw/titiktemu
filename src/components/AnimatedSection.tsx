@@ -56,19 +56,16 @@ export function AnimatedSection({
       )}
       style={{
         /*
-         * Apple §4: Springs over fixed-duration animations.
-         * cubic-bezier(0.22, 1, 0.36, 1) = --spring-gentle approximation:
-         * critically-damped, overshoots slightly then settles cleanly.
-         * Matches Apple's damping=1.0, response≈0.4 for scroll-driven entrances.
-         *
-         * Reduced-motion path: opacity-only, 200ms ease.
+         * Guide §5: --ease-out = cubic-bezier(0.23, 1, 0.32, 1).
+         * Strong ease-out for entrances — the built-in ease-out is too weak.
+         * Reduced-motion path: opacity-only, 200ms ease (gentler, not zero).
          */
         transitionProperty: prefersReducedMotion ? 'opacity' : 'transform, opacity',
         transitionDuration: prefersReducedMotion ? '200ms' : `${duration}ms`,
         transitionDelay: `${delay}ms`,
         transitionTimingFunction: prefersReducedMotion
           ? 'ease'
-          : 'cubic-bezier(0.22, 1, 0.36, 1)',
+          : 'var(--ease-out)',
       }}
     >
       {children}

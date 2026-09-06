@@ -97,7 +97,7 @@ export function SiteHeader() {
              */}
             <Link
               to="/peta"
-              className="pill hidden bg-primary px-3.5 py-1.5 text-[13px] font-medium text-primary-foreground transition-all duration-100 hover:opacity-90 active:scale-[0.97] sm:inline-block"
+              className="pill hidden bg-primary px-3.5 py-1.5 text-[13px] font-medium text-primary-foreground [transition:transform_100ms_ease-out,opacity_100ms_ease] supports-[selector(:hover)]:hover:opacity-90 active:scale-[0.97] active:transition-none sm:inline-block"
             >
               Jelajahi Peta
             </Link>
@@ -249,8 +249,13 @@ export function SiteHeader() {
           style={{
             maxHeight: mobileOpen ? "480px" : "0px",
             opacity: mobileOpen ? 1 : 0,
-            transition:
-              "max-height 380ms cubic-bezier(0.22, 1, 0.36, 1), opacity 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+            /*
+             * Guide §5: Use --ease-drawer for sheet/drawer-like motion (iOS-style).
+             * Collapse faster than expand — physical objects fall faster than they rise.
+             */
+            transition: mobileOpen
+              ? "max-height 380ms var(--ease-drawer), opacity 250ms var(--ease-out)"
+              : "max-height 260ms cubic-bezier(0.4, 0, 1, 1), opacity 180ms ease",
           }}
         >
           <div className="bg-background px-5 py-3">
