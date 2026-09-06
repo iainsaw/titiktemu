@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from 'react';
+import { useRef, useEffect, useState, type ReactNode } from 'react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { cn } from '@/lib/utils';
 
@@ -15,40 +15,60 @@ export function AnimatedSection({
   className,
   animation = 'fade-in-up',
   delay = 0,
-  duration = 700,
+  duration = 600, // Tuned down from 700ms: snappier settle (Apple §4: response)
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isVisible = useIntersectionObserver(ref, { threshold: 0.1, freezeOnceVisible: true });
+  // Trigger slightly before the element is fully in view for a more natural feel
+  const isVisible = useIntersectionObserver(ref, {
+    threshold: 0.08,
+    rootMargin: '-4% 0px',
+    freezeOnceVisible: true,
+  });
 
-  const getAnimationClass = () => {
+  // Apple §14: Reduced-motion — detect once at mount, skip all transforms
+  const [prefersReducedMotion] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false
+  );
+
+  const getHiddenTransform = () => {
+    if (prefersReducedMotion) return ''; // No transform — opacity only
     switch (animation) {
-      case 'fade-in-up':
-        return 'translate-y-8 opacity-0';
-      case 'slide-in-right':
-        return 'translate-x-8 opacity-0';
-      case 'slide-in-left':
-        return '-translate-x-8 opacity-0';
-      case 'zoom-in':
-        return 'scale-95 opacity-0';
+      case 'fade-in-up':   return 'translate-y-6 opacity-0';
+      case 'slide-in-right': return 'translate-x-6 opacity-0';
+      case 'slide-in-left':  return '-translate-x-6 opacity-0';
+      case 'zoom-in':        return 'scale-[0.96] opacity-0';
       case 'fade-in':
-      default:
-        return 'opacity-0';
+      default:               return 'opacity-0';
     }
   };
 
   return (
     <div
       ref={ref}
+      data-animated-section="" // Hook for CSS reduced-motion guard
       className={cn(
-        'transition-all will-change-transform',
-        !isVisible && getAnimationClass(),
+        'will-change-transform',
+        !isVisible && getHiddenTransform(),
         isVisible && 'translate-y-0 translate-x-0 scale-100 opacity-100',
         className
       )}
       style={{
-        transitionDuration: `${duration}ms`,
+        /*
+         * Apple §4: Springs over fixed-duration animations.
+         * cubic-bezier(0.22, 1, 0.36, 1) = --spring-gentle approximation:
+         * critically-damped, overshoots slightly then settles cleanly.
+         * Matches Apple's damping=1.0, response≈0.4 for scroll-driven entrances.
+         *
+         * Reduced-motion path: opacity-only, 200ms ease.
+         */
+        transitionProperty: prefersReducedMotion ? 'opacity' : 'transform, opacity',
+        transitionDuration: prefersReducedMotion ? '200ms' : `${duration}ms`,
         transitionDelay: `${delay}ms`,
-        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionTimingFunction: prefersReducedMotion
+          ? 'ease'
+          : 'cubic-bezier(0.22, 1, 0.36, 1)',
       }}
     >
       {children}

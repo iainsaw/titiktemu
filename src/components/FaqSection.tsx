@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { cn } from "@/lib/utils";
 
@@ -58,8 +58,8 @@ export function FaqSection({ className }: { className?: string }) {
   return (
     <section id="faq" className={cn("py-16 sm:py-24", className)}>
       <div className="mx-auto max-w-[800px] px-4 sm:px-6">
-        
-        {/* Section Header - Minimal & Clean */}
+
+        {/* Section Header */}
         <AnimatedSection className="text-center mb-12 sm:mb-16">
           <h2 className="headline text-[clamp(28px,6vw,44px)] tracking-tight">
             Pertanyaan Umum
@@ -69,33 +69,86 @@ export function FaqSection({ className }: { className?: string }) {
           </p>
         </AnimatedSection>
 
-        {/* Minimal Border-Divided Accordion List (No Cards, No Icons) */}
+        {/*
+         * Apple §3: Interruptible — using CSS max-height/opacity transition
+         * instead of conditional mount/unmount so the collapse can reverse
+         * mid-flight without waiting to finish (grab-and-reverse).
+         *
+         * Apple §9: Rubber-band feel — spring-gentle easing for the expand,
+         * slightly faster ease-in for collapse (mimics physical resistance).
+         *
+         * Apple §8: The plus icon rotates 45° to hint at the collapse direction
+         * before it begins, telegraphing the next state.
+         */}
         <AnimatedSection delay={100} className="divide-y divide-border/50 border-y border-border/50">
           {FAQ_LIST.map((faq) => {
             const isOpen = openId === faq.id;
 
             return (
-              <div key={faq.id} className="py-5 sm:py-6 transition-colors">
+              <div key={faq.id} className="py-5 sm:py-6">
+                {/*
+                 * Apple §1: Respond on pointer-down — active:scale for instant feedback.
+                 * The scale is very subtle (0.995) so it doesn't look odd on a full-width row.
+                 */}
                 <button
                   onClick={() => toggle(faq.id)}
-                  className="flex w-full items-center justify-between text-left group cursor-pointer outline-none"
+                  className="flex w-full items-center justify-between text-left group cursor-pointer outline-none transition-transform duration-100 active:scale-[0.995]"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-body-${faq.id}`}
                 >
-                  <span className="font-display text-[16px] sm:text-[18px] font-semibold text-foreground group-hover:text-primary transition-colors pr-6 leading-snug">
+                  <span className="font-display text-[16px] sm:text-[18px] font-semibold text-foreground group-hover:text-primary transition-colors pr-6 leading-snug"
+                    style={{ transition: "color 150ms ease" }}
+                  >
                     {faq.question}
                   </span>
-                  <div className="flex size-7 shrink-0 items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors">
-                    {isOpen ? <Minus className="size-4.5" /> : <Plus className="size-4.5" />}
+
+                  {/*
+                   * Apple §8: Hint in the direction of the gesture.
+                   * Icon rotates 45° → previews that content will expand/collapse.
+                   * Spring-snappy easing (cubic-bezier(0.34, 1.2, 0.64, 1)) for a
+                   * micro-bounce that makes the rotation feel alive.
+                   */}
+                  <div
+                    className="flex size-7 shrink-0 items-center justify-center text-muted-foreground group-hover:text-foreground"
+                    style={{ transition: "color 150ms ease" }}
+                  >
+                    <Plus
+                      className="size-4"
+                      style={{
+                        transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                        transition: "transform 280ms cubic-bezier(0.34, 1.2, 0.64, 1)",
+                      }}
+                    />
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div className="pt-3.5 pr-8 animate-in fade-in slide-in-from-top-1 duration-200">
-                    <p className="text-[14.5px] leading-relaxed text-muted-foreground">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
+                {/*
+                 * Apple §3: Always in the DOM — transitions can be reversed mid-flight.
+                 * max-height animates from 0 → auto approximated at 500px.
+                 * Expand: spring-gentle (0.22, 1, 0.36, 1) — feels like content
+                 * naturally settling into place.
+                 * Collapse: ease-in (faster) — physical objects collapse faster
+                 * than they expand (gravity).
+                 * data-faq-body: reduced-motion hook strips height animation in CSS.
+                 */}
+                <div
+                  id={`faq-body-${faq.id}`}
+                  data-faq-body=""
+                  role="region"
+                  style={{
+                    maxHeight: isOpen ? "500px" : "0px",
+                    opacity: isOpen ? 1 : 0,
+                    overflow: "hidden",
+                    // Expand with spring-gentle; collapse faster (ease-in feel)
+                    transition: isOpen
+                      ? "max-height 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease"
+                      : "max-height 280ms cubic-bezier(0.4, 0, 1, 1), opacity 150ms ease",
+                  }}
+                >
+                  <p className="pt-3.5 pr-8 pb-1 text-[14.5px] leading-relaxed text-muted-foreground">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             );
           })}

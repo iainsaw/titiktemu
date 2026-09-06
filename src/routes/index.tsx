@@ -120,15 +120,21 @@ function Beranda() {
             className="hero-rise mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:mt-9 sm:gap-3"
             style={{ animationDelay: "0.42s" }}
           >
+            {/*
+             * Apple §1: Respond on pointer-down.
+             * active:scale fires on :active (pointerdown), active:transition-none
+             * makes the press-down instant; the release is handled by the
+             * base transition-all/transition-opacity (100ms).
+             */}
             <Link
               to="/peta"
-              className="pill bg-background px-5 py-2.5 text-[14px] font-medium text-foreground transition-opacity hover:opacity-90 sm:px-7 sm:py-3 sm:text-[15px]"
+              className="pill bg-background px-5 py-2.5 text-[14px] font-medium text-foreground transition-all duration-100 hover:opacity-90 active:scale-[0.97] active:transition-none sm:px-7 sm:py-3 sm:text-[15px]"
             >
               Jelajahi Peta
             </Link>
             <Link
               to="/metodologi"
-              className="pill border border-ink-foreground/25 px-5 py-2.5 text-[14px] font-medium text-ink-foreground transition-colors hover:bg-ink-foreground/10 sm:px-7 sm:py-3 sm:text-[15px]"
+              className="pill border border-ink-foreground/25 px-5 py-2.5 text-[14px] font-medium text-ink-foreground transition-all duration-100 hover:bg-ink-foreground/10 active:scale-[0.97] active:transition-none sm:px-7 sm:py-3 sm:text-[15px]"
             >
               Pelajari metodologi ›
             </Link>
@@ -159,7 +165,12 @@ function Beranda() {
               <div
                 key={c.tag}
                 className={cn(
-                  "hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5 transition-transform hover:-translate-y-1",
+                  /*
+                   * Apple §1: hover:-translate-y-1 (lift) + active:scale-[0.98] (press).
+                   * transition-[transform] 200ms spring-gentle on hover;
+                   * active:transition-none makes the press-down instant.
+                   */
+                  "hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5 transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98] active:transition-none",
                   isDark ? "bg-ink text-ink-foreground" : "bg-background border border-border/40"
                 )}
                 style={{ animationDelay: `${0.55 + i * 0.12}s` }}
@@ -292,7 +303,12 @@ function Beranda() {
                   to="/peta"
                   search={{ peran: k.peran }}
                   className={cn(
-                    "mt-8 block w-full rounded-full py-3.5 text-center text-[14px] font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] sm:text-[15px]",
+                    /*
+                     * Apple §1: Instant press feedback on the role CTA.
+                     * hover:scale-[1.02] = anticipation; active:scale-[0.97] = commit.
+                     * active:transition-none = instant press-down, spring-gentle release.
+                     */
+                    "mt-8 block w-full rounded-full py-3.5 text-center text-[14px] font-semibold transition-transform duration-150 hover:scale-[1.02] active:scale-[0.97] active:transition-none sm:text-[15px]",
                     isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
                   )}
                 >
@@ -322,13 +338,13 @@ function Beranda() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               to="/peta"
-              className="pill bg-primary px-6 py-2.5 text-[15px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="pill bg-primary px-6 py-2.5 text-[15px] font-medium text-primary-foreground transition-all duration-100 hover:opacity-90 active:scale-[0.97] active:transition-none"
             >
               Jelajahi Peta Interaktif
             </Link>
             <Link
               to="/analisis"
-              className="pill border border-ink-foreground/25 px-6 py-2.5 text-[15px] font-medium text-ink-foreground transition-colors hover:bg-ink-foreground/10"
+              className="pill border border-ink-foreground/25 px-6 py-2.5 text-[15px] font-medium text-ink-foreground transition-all duration-100 hover:bg-ink-foreground/10 active:scale-[0.97] active:transition-none"
             >
               Analisis & Simulasi ›
             </Link>

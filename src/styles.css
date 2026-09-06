@@ -7,6 +7,14 @@
 /*
  * Apple-inspired design system.
  * Light, high-contrast, big type, translucent chrome, soft rounded surfaces.
+ *
+ * Motion system (Apple Fluid Interfaces):
+ *   --spring-gentle  → critically-damped, slow settle (modals, panels)
+ *   --spring-snappy  → critically-damped, fast settle (menus, tooltips)
+ *   --spring-bounce  → under-damped (flick/momentum interactions)
+ *
+ * All three are cubic-bézier approximations of spring physics,
+ * matching Apple's damping=1.0/response=0.4, 0.25, and damping=0.8/0.3.
  */
 
 @theme inline {
@@ -61,6 +69,14 @@
   --radius: 1rem;
   --background: oklch(0.985 0.003 85); /* Warm alabaster canvas khas Claude */
   --foreground: oklch(0.18 0.01 60);
+
+  /* ─── Spring timing functions (Apple Fluid Interfaces) ─── */
+  /* Critically-damped → no overshoot. Use for panels, modals, default UI. */
+  --spring-gentle: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Snappier settle. Use for menus, tooltips, dropdowns. */
+  --spring-snappy: cubic-bezier(0.34, 1.2, 0.64, 1);
+  /* Slight overshoot. Use only after a momentum gesture (flick/drag release). */
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --surface: oklch(1 0 0);
   --surface-raised: oklch(0.965 0.004 85);
   --card: oklch(1 0 0);
@@ -137,6 +153,15 @@
     letter-spacing: -0.03em;
     font-weight: 600;
     text-wrap: balance;
+    /* Optical sizing: letterforms adapt their detail level to display size */
+    font-optical-sizing: auto;
+  }
+
+  /* Instant press feedback — Apple §1: respond on pointer-down */
+  button,
+  [role="button"],
+  a {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -213,6 +238,24 @@
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 0.5px solid color-mix(in oklab, var(--border) 60%, transparent);
+  /* Materialize the glass on enter — blur + opacity together */
+  transition: background-color 200ms var(--spring-gentle),
+              box-shadow 200ms var(--spring-gentle);
+}
+
+/* Scroll-driven header depth: class added by JS when page is scrolled */
+@utility glass-nav-scrolled {
+  background-color: color-mix(in oklab, var(--background) 85%, transparent);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 50%, transparent),
+              0 4px 24px -4px oklch(0 0 0 / 0.08);
+}
+
+/* ── Pressable — instant tactile feedback on pointer-down (Apple §1) ── */
+@utility pressable {
+  transition: transform 100ms ease-out;
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 @utility ink-section {
@@ -252,11 +295,59 @@
   animation: hero-zoom 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY — MOTION & TRANSPARENCY
+   Apple §14: Reduced-motion ≠ no feedback. Cross-fade instead
+   of translate/spring. Reduced-transparency = solid surfaces.
+   ═══════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
+  /* Hero entrance: skip all transforms, keep opacity */
   .hero-rise,
   .hero-zoom {
     animation: none;
     opacity: 1;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* AnimatedSection: skip translate/scale, only cross-fade */
+  [data-animated-section] {
+    transition: opacity 200ms ease !important;
+    transform: none !important;
+  }
+
+  /* Mobile menu, dropdowns, sheets: opacity-only transitions */
+  [data-mobile-nav] {
+    transition: opacity 150ms ease !important;
+  }
+
+  /* FAQ collapse: skip height animation */
+  [data-faq-body] {
+    transition: opacity 150ms ease !important;
+  }
+
+  /* Suppress all tw-animate-css slide/scale classes */
+  .slide-in-from-top-1,
+  .slide-in-from-top-2,
+  .zoom-in-95 {
+    --tw-enter-translate-y: 0 !important;
+    --tw-enter-scale: 1 !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  /* Make translucent surfaces solid — legibility first */
+  .glass-nav,
+  [class*="glass-nav"] {
+    background-color: var(--background) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .floating-card {
+    background-color: var(--background) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
