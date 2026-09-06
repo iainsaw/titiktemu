@@ -729,67 +729,148 @@ function PetaInteraktif() {
       </div>
 
       {/* ── PDF REPORT TEMPLATE (Only visible in print mode) ── */}
-      <div className="hidden print:block w-full h-full bg-white text-black font-latex">
-        <div id="pdf-report-template" className="px-[10mm] pt-[15mm] pb-[10mm]">
-          <h1 className="text-center text-[22pt] font-bold uppercase border-b-2 border-black pb-4 mb-6 tracking-wide">
-              Laporan Analisis Vitalitas Kawasan
-            </h1>
-            
-            <div className="flex justify-between items-start mb-10 text-[11pt] leading-relaxed">
-              <div>
-                <p><strong>Platform:</strong> Titik Temu Pintar</p>
-                <p><strong>Kawasan:</strong> {terpilih.nama} ({terpilih.klaster})</p>
-                <p><strong>Perspektif:</strong> {peran.label}</p>
+      <div className="hidden print:block w-full h-full bg-white text-slate-900 font-sans p-4">
+        <div id="pdf-report-template" className="max-w-[210mm] mx-auto">
+          
+          {/* Header Branding */}
+          <div className="flex items-start justify-between border-b-2 border-slate-900 pb-4 mb-5">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="inline-block size-3 rounded-full bg-[#0071E3]" />
+                <span className="text-[10pt] font-semibold text-slate-800">
+                  Titik Temu · WebGIS Vitalitas Transit Kota Bandung
+                </span>
               </div>
-              <div className="text-right">
-                <p><strong>Tanggal:</strong> {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                <p><strong>Radius Analisis:</strong> 800m</p>
-              </div>
+              <h1 className="text-[17pt] font-bold tracking-tight text-slate-900">
+                Laporan Analisis Vitalitas Kawasan
+              </h1>
             </div>
-
-            <h2 className="text-[14pt] font-bold mb-4">1. Ringkasan Skor Vitalitas</h2>
-            <p className="text-[11pt] text-justify mb-4 leading-relaxed">
-              Berdasarkan model pembobotan untuk peran <strong>{peran.label}</strong>, kawasan {terpilih.nama} mendapatkan skor vitalitas sebesar <strong>{skorTerpilih}</strong> dari 100, menempatkannya pada kelas <strong>{kelasSkor(skorTerpilih).label}</strong>. Berikut adalah rincian kontribusi masing-masing komponen pembentuk:
-            </p>
-
-            <table className="w-full text-[11pt] border-collapse border border-black text-left mb-10">
-              <thead>
-                <tr>
-                  <th className="border border-black px-4 py-3 bg-gray-100">Komponen</th>
-                  <th className="border border-black px-4 py-3 bg-gray-100 text-center w-24">Skor</th>
-                  <th className="border border-black px-4 py-3 bg-gray-100 text-center w-24">Bobot</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPONENTS.map(c => (
-                  <tr key={c.id}>
-                    <td className="border border-black px-4 py-3">{c.label}</td>
-                    <td className="border border-black px-4 py-3 text-center font-bold">
-                      {terpilih.skor[c.id]}
-                    </td>
-                    <td className="border border-black px-4 py-3 text-center text-gray-600">
-                      {peran.weights[c.id] * 100}%
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <h2 className="text-[14pt] font-bold mb-4">2. Analisis & Rekomendasi Sistem</h2>
-            {aiRecommendation ? (
-              <div className="text-[11pt] text-justify leading-relaxed [&_ul]:list-disc [&_ul]:ml-5 [&_ul]:my-2 [&_ol]:list-decimal [&_ol]:ml-5 [&_ol]:my-2 [&_li]:mb-1 [&_strong]:font-bold border-l-4 border-black pl-4 py-1">
-                <div dangerouslySetInnerHTML={{ __html: aiRecommendation }} />
-              </div>
-            ) : (
-              <p className="text-[11pt] italic text-gray-500">Hasil analisis AI belum di-generate untuk kawasan ini.</p>
-            )}
-            
-            <div className="mt-16 text-center text-[10pt] italic text-gray-500 border-t border-gray-300 pt-4">
-              Dokumen ini dihasilkan secara otomatis dari platform Titik Temu Pintar. Seluruh hasil didasarkan pada data faktual dan model analisis spasial komprehensif.
+            <div className="text-right">
+              <span className="inline-block rounded-md bg-slate-100 px-3 py-1 text-[8.5pt] font-medium text-slate-700 border border-slate-200">
+                Ref: TT-BDG/{new Date().getFullYear()} · {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </span>
             </div>
           </div>
+
+          {/* Key Info Grid */}
+          <div className="grid grid-cols-3 gap-3 mb-5 text-[10pt]">
+            <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Nama Kawasan</span>
+              <span className="font-bold text-[11pt] text-slate-900">{terpilih.nama}</span>
+              <span className="block text-[8.5pt] text-slate-600 mt-0.5">{terpilih.id} · Koridor {terpilih.koridor}</span>
+            </div>
+            <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Klaster & Perspektif</span>
+              <span className="font-bold text-[11pt] text-slate-900">{terpilih.klaster}</span>
+              <span className="block text-[8.5pt] text-slate-600 mt-0.5">Peran: {peran.label}</span>
+            </div>
+            <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Skor Vitalitas Total</span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-[16pt] font-extrabold text-[#0071E3]">{skorTerpilih}</span>
+                <span className="text-[9.5pt] font-semibold text-slate-700">/ 100 ({kelasSkor(skorTerpilih).label})</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 1: Ringkasan Skor & Komponen */}
+          <div className="mb-5">
+            <h2 className="text-[11.5pt] font-bold text-slate-900 mb-2 pb-1 border-b border-slate-200">
+              A. Rincian Komponen Skor Vitalitas
+            </h2>
+            <p className="text-[9.5pt] text-slate-700 mb-3 leading-relaxed">
+              Skor vitalitas dihitung berdasarkan pembobotan perspektif <strong>{peran.label}</strong> ({peran.tagline}). Berikut adalah kontribusi masing-masing komponen pembentuk:
+            </p>
+
+            <table className="w-full text-[9.5pt] border-collapse border border-slate-300 text-left mb-2">
+              <thead>
+                <tr className="bg-slate-100 text-slate-800 font-semibold border-b border-slate-300">
+                  <th className="px-4 py-2 border-r border-slate-300">Indikator Komponen</th>
+                  <th className="px-4 py-2 border-r border-slate-300 text-center w-28">Skor Komponen</th>
+                  <th className="px-4 py-2 border-r border-slate-300 text-center w-28">Bobot Peran</th>
+                  <th className="px-4 py-2 text-center w-36">Kontribusi Skor</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {COMPONENTS.map((c) => {
+                  const nilai = terpilih.skor[c.id];
+                  const bobot = peran.weights[c.id];
+                  const kontribusi = (nilai * bobot).toFixed(1);
+                  return (
+                    <tr key={c.id}>
+                      <td className="px-4 py-2 border-r border-slate-200 font-medium text-slate-900">{c.label}</td>
+                      <td className="px-4 py-2 border-r border-slate-200 text-center font-bold text-slate-900">{nilai}</td>
+                      <td className="px-4 py-2 border-r border-slate-200 text-center text-slate-600">{(bobot * 100).toFixed(0)}%</td>
+                      <td className="px-4 py-2 text-center font-semibold text-[#0071E3]">+{kontribusi}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Section 2: Profil & Statistik Faktual Kawasan */}
+          <div className="mb-5">
+            <h2 className="text-[11.5pt] font-bold text-slate-900 mb-2 pb-1 border-b border-slate-200">
+              B. Indikator & Data Faktual Spasial Kawasan
+            </h2>
+            <div className="grid grid-cols-4 gap-3 text-[9.5pt]">
+              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Jarak ke Transit</span>
+                <span className="text-[11pt] font-bold text-slate-900">{terpilih.jarakTransit} m</span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Jumlah UMKM</span>
+                <span className="text-[11pt] font-bold text-slate-900">{terpilih.umkm || "N/A"} Unit</span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Harga Tanah</span>
+                <span className="text-[11pt] font-bold text-slate-900">{terpilih.hargaTanah ? `Rp ${terpilih.hargaTanah} Jt/m²` : "N/A"}</span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Kepadatan Penduduk</span>
+                <span className="text-[11pt] font-bold text-slate-900">{terpilih.kepadatan ? `${Math.round(terpilih.kepadatan)} /km²` : "N/A"}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Rekomendasi & Analisis Perencanaan */}
+          <div className="mb-5">
+            <h2 className="text-[11.5pt] font-bold text-slate-900 mb-2 pb-1 border-b border-slate-200">
+              C. Rekomendasi Perencanaan Spasial & Catatan Sistem
+            </h2>
+            {aiRecommendation ? (
+              <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-[9.5pt] leading-relaxed text-slate-800 [&_strong]:font-bold [&_strong]:text-slate-900">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: aiRecommendation
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                  }}
+                />
+              </div>
+            ) : (
+              <p className="text-[9.5pt] italic text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                Catatan: Analisis rekomendasi spasial dapat dipicu pada panel kawasan di dashboard sebelum mengunduh laporan ini.
+              </p>
+            )}
+          </div>
+
+          {/* Official Endorsement Footer */}
+          <div className="mt-8 pt-4 border-t border-slate-300 flex justify-between items-end text-[8.5pt] text-slate-600">
+            <div>
+              <p className="font-semibold text-slate-800">Titik Temu WebGIS — Perkotaan Kota Bandung</p>
+              <p className="text-[8pt] text-slate-500">Dokumen Resmi Hasil Analisis Spasial & Vitalitas Transit</p>
+            </div>
+            <div className="text-right text-[8pt] text-slate-500">
+              <p>Dicetak pada: {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>Status: Laporan Terverifikasi</p>
+            </div>
+          </div>
+
         </div>
       </div>
+    </div>
   );
 }
 

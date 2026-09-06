@@ -12,6 +12,8 @@ import {
   YAxis,
   Tooltip,
   Legend,
+  Cell,
+  LabelList,
 } from "recharts";
 import { Plus, Trash2, Route as RouteIcon } from "lucide-react";
 
@@ -272,9 +274,80 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
   const [kawasanId, setKawasanId] = useState<string>(STATIC_KAWASAN[0].id);
   const [intensitas, setIntensitas] = useState(1);
   const [daftar, setDaftar] = useState<Intervensi[]>([]);
+  const [hanyaTerdampak, setHanyaTerdampak] = useState(false);
 
   const hasil = useMemo(() => simulasi(daftar, role, kawasans), [daftar, role, kawasans]);
   const ringkas = useMemo(() => ringkasSimulasi(hasil, daftar), [hasil, daftar]);
+
+  const chartData = useMemo(() => {
+    let list = hasil;
+    if (hanyaTerdampak) {
+      const filtered = hasil.filter(
+        (h) => h.kawasan.id === kawasanId || (h.sesudah.layanan - h.sebelum.layanan) > 0
+      );
+      if (filtered.length > 0) list = filtered;
+    }
+
+    return list.map((h) => {
+      const isSelected = h.kawasan.id === kawasanId;
+      const deltaLayanan = h.sesudah.layanan - h.sebelum.layanan;
+      const isImpacted = deltaLayanan > 0;
+
+      return {
+        id: h.kawasan.id,
+        namaFull: h.kawasan.nama,
+        nama: h.kawasan.nama.length > 12 ? `${h.kawasan.nama.slice(0, 11)}…` : h.kawasan.nama,
+        Sebelum: h.sebelum.layanan,
+        Sesudah: h.sesudah.layanan,
+        deltaLayanan,
+        isSelected,
+        isImpacted,
+        colorSebelum: isSelected ? "#3b82f6" : isImpacted ? "#64748b" : "#94a3b8",
+        colorSesudah: isSelected ? "#10b981" : isImpacted ? "#0071E3" : "#cbd5e1",
+      };
+    });
+  }, [hasil, kawasanId, hanyaTerdampak]);
+
+  const CustomTooltipSimulasi = ({ active, payload }: any) => {
+    if (!active || !payload || !payload.length) return null;
+    const data = payload[0].payload;
+    const delta = data.deltaLayanan;
+
+    return (
+      <div className="rounded-xl border border-border/80 bg-popover/95 p-3.5 shadow-xl backdrop-blur-md text-popover-foreground text-xs min-w-[200px]">
+        <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-2 mb-2 font-semibold">
+          <span>{data.namaFull}</span>
+          {data.isSelected ? (
+            <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+              Pusat Intervensi
+            </span>
+          ) : data.isImpacted ? (
+            <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-bold text-blue-600 dark:text-blue-400">
+              Terdampak
+            </span>
+          ) : (
+            <span className="text-[10px] font-normal text-muted-foreground">Tidak Berubah</span>
+          )}
+        </div>
+        <div className="space-y-1.5 font-display">
+          <div className="flex items-center justify-between text-muted-foreground">
+            <span>Skor Baseline (Sebelum):</span>
+            <span className="font-semibold text-foreground">{data.Sebelum}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-foreground">Skor Simulasi (Sesudah):</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{data.Sesudah}</span>
+          </div>
+          {delta > 0 && (
+            <div className="mt-1 flex items-center justify-between rounded-md bg-emerald-500/10 px-2 py-1 text-emerald-700 dark:text-emerald-300 font-semibold text-[11px]">
+              <span>Kenaikan Layanan:</span>
+              <span>+{delta} Poin</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   const tambah = () =>
     setDaftar((p) => [
@@ -412,15 +485,44 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
           </div>
 
           <div className="panel p-5">
-            <h3 className="mb-4 text-sm font-semibold">Skor layanan sebelum vs sesudah</h3>
-            <div className="h-[300px]">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 className="text-sm font-semibold">Skor layanan sebelum vs sesudah</h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Warna terang menyoroti kawasan yang terpilih dan mengalami peningkatan skor.
+                </p>
+              </div>
+              <div className="flex items-center gap-1 rounded-lg bg-secondary/60 p-1 text-[12px]">
+                <button
+                  onClick={() => setHanyaTerdampak(false)}
+                  className={cn(
+                    "rounded-md px-2.5 py-1 font-medium transition-all",
+                    !hanyaTerdampak
+                      ? "bg-background text-foreground shadow-sm font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Semua Kawasan (16)
+                </button>
+                <button
+                  onClick={() => setHanyaTerdampak(true)}
+                  className={cn(
+                    "rounded-md px-2.5 py-1 font-medium transition-all",
+                    hanyaTerdampak
+                      ? "bg-background text-foreground shadow-sm font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Hanya Terdampak
+                </button>
+              </div>
+            </div>
+
+            <div className="h-[320px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={hasil.map((h) => ({
-                    nama: h.kawasan.nama.length > 12 ? `${h.kawasan.nama.slice(0, 11)}…` : h.kawasan.nama,
-                    Sebelum: h.sebelum.layanan,
-                    Sesudah: h.sesudah.layanan,
-                  }))}
+                  data={chartData}
+                  margin={{ top: 20, right: 10, left: -15, bottom: 10 }}
                 >
                   <XAxis
                     dataKey="nama"
@@ -428,7 +530,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     interval={0}
                     angle={-35}
                     textAnchor="end"
-                    height={70}
+                    height={65}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -438,18 +540,35 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     axisLine={false}
                     tickLine={false}
                   />
-                  <Tooltip
-                    cursor={{ fill: "var(--secondary)" }}
-                    contentStyle={{
-                      background: "var(--popover)",
-                      border: "1px solid var(--border)",
-                      borderRadius: 8,
-                      fontSize: 12,
-                    }}
+                  <Tooltip content={<CustomTooltipSimulasi />} cursor={{ fill: "var(--secondary)" }} />
+                  <Legend
+                    wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+                    formatter={(value) => (value === "Sebelum" ? "Skor Baseline (Sebelum)" : "Skor Simulasi (Sesudah)")}
                   />
-                  <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar dataKey="Sebelum" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Sesudah" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Sebelum" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-seb-${index}`}
+                        fill={entry.colorSebelum}
+                        opacity={entry.isImpacted || entry.isSelected ? 1 : 0.4}
+                      />
+                    ))}
+                  </Bar>
+                  <Bar dataKey="Sesudah" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-ses-${index}`}
+                        fill={entry.colorSesudah}
+                        opacity={entry.isImpacted || entry.isSelected ? 1 : 0.35}
+                      />
+                    ))}
+                    <LabelList
+                      dataKey="deltaLayanan"
+                      position="top"
+                      formatter={(val: any) => (typeof val === "number" && val > 0 ? `+${val}` : "")}
+                      style={{ fill: "var(--primary)", fontSize: 10, fontWeight: "bold" }}
+                    />
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>

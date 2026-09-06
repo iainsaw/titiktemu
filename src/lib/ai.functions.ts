@@ -18,7 +18,14 @@ function cleanAiResponse(text: string): string {
   // 2. Remove common AI prompt/header echoes if present
   cleaned = cleaned.replace(/^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi, "").trim();
 
-  // 3. Remove leading/trailing quotes if the whole text is wrapped in quotes
+  // 3. Remove dollar sign wrappers ($200$ -> 200) or standalone $ before numbers ($200 -> 200)
+  cleaned = cleaned.replace(/\$([^\$\n]+)\$/g, "$1");
+  cleaned = cleaned.replace(/\$(\d+)/g, "$1");
+
+  // 4. Convert raw markdown header hashtags (# Header -> **Header**)
+  cleaned = cleaned.replace(/^#{1,6}\s+(.+)$/gm, "**$1**");
+
+  // 5. Remove leading/trailing quotes if the whole text is wrapped in quotes
   cleaned = cleaned.replace(/^["“']+|["”']+$/g, "").trim();
 
   return cleaned;
