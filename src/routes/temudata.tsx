@@ -165,8 +165,11 @@ function TemuDataAi() {
           </div>
 
           {kosong ? (
-            <AnimatedSection animation="zoom-in" className="flex flex-1 flex-col items-center justify-center text-center">
-              <AiIcon className="size-14" />
+            <AnimatedSection animation="zoom-in" className="flex flex-1 flex-col items-center justify-center text-center py-8">
+              <div className="relative flex items-center justify-center">
+                <div className="absolute size-20 rounded-full bg-primary/10 blur-xl animate-pulse" />
+                <AiIcon className="relative size-14" />
+              </div>
               <h1 className="headline mt-6 text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight">
                 Halo, mari telusuri data kawasan
               </h1>
@@ -180,28 +183,31 @@ function TemuDataAi() {
                   <button
                     key={s}
                     onClick={() => kirim(s)}
-                    className="rounded-2xl border border-border/60 bg-surface/60 p-4 text-left text-[14px] text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-surface/90 hover:text-foreground hover:shadow-md active:scale-[0.98]"
+                    className="group flex items-start gap-3 rounded-2xl border border-border/60 bg-surface/60 p-4 text-left text-[14px] text-foreground/80 shadow-xs backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-surface/90 hover:text-foreground hover:shadow-md active:scale-[0.98]"
                   >
-                    {s}
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+                      <AiIcon className="size-3" />
+                    </span>
+                    <span className="flex-1 leading-snug">{s}</span>
                   </button>
                 ))}
               </div>
             </AnimatedSection>
           ) : (
-            <div ref={areaRef} className="flex-1 space-y-6 overflow-y-auto pb-4 pr-1">
+            <div ref={areaRef} className="flex-1 space-y-7 overflow-y-auto pb-6 pr-1">
               {pesan.map((p, i) =>
                 p.role === "user" ? (
-                  <div key={i} className="flex justify-end animate-in fade-in slide-in-from-right-2">
-                    <div className="max-w-[85%] rounded-[24px] rounded-br-sm bg-primary px-5 py-3 text-[15px] leading-relaxed text-primary-foreground shadow-sm">
+                  <div key={i} className="flex justify-end animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <div className="max-w-[82%] sm:max-w-[75%] rounded-[22px] rounded-tr-xs bg-secondary/90 px-4.5 py-3 text-[14.5px] leading-relaxed text-foreground shadow-xs ring-1 ring-border/50">
                       {p.content}
                     </div>
                   </div>
                 ) : (
-                  <div key={i} className="flex gap-3 animate-in fade-in slide-in-from-left-2">
-                    <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary shadow-sm ring-1 ring-border/50">
+                  <div key={i} className="flex items-start gap-3.5 py-1 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <div className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
                       <AiIcon className="size-4" />
                     </div>
-                    <div className="min-w-0 flex-1 rounded-[24px] rounded-tl-sm bg-surface/80 px-5 py-3.5 text-[15px] leading-relaxed text-foreground shadow-sm ring-1 ring-border/50 backdrop-blur-md [&>p:last-child]:mb-0 [&>p]:mb-3 [&_ol]:ml-5 [&_ol]:space-y-1 [&_ol]:list-decimal [&_strong]:font-semibold [&_ul]:ml-5 [&_ul]:space-y-1 [&_ul]:list-disc [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-[13px] [&_th]:border [&_th]:border-border/60 [&_th]:bg-muted/40 [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border/40 [&_td]:px-3 [&_td]:py-2 overflow-x-auto">
+                    <div className="min-w-0 flex-1 text-[15px] leading-relaxed text-foreground space-y-3 [&>p:last-child]:mb-0 [&>p]:mb-3 [&_ol]:ml-5 [&_ol]:space-y-1.5 [&_ol]:list-decimal [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:ml-5 [&_ul]:space-y-1.5 [&_ul]:list-disc [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-[13px] [&_th]:border [&_th]:border-border/60 [&_th]:bg-muted/30 [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border/40 [&_td]:px-3 [&_td]:py-2 [&_code]:rounded [&_code]:bg-muted/50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:font-mono overflow-x-auto">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{p.content}</ReactMarkdown>
                     </div>
                   </div>
@@ -209,14 +215,17 @@ function TemuDataAi() {
               )}
 
               {loading && (
-                <div className="flex gap-3 animate-in fade-in">
-                  <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary shadow-sm ring-1 ring-border/50">
+                <div className="flex items-start gap-3.5 py-1 animate-in fade-in duration-300">
+                  <div className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
                     <AiIcon className="size-4 animate-pulse" />
                   </div>
-                  <div className="flex-1 space-y-2.5 rounded-[24px] rounded-tl-sm bg-surface/50 p-4 shadow-sm ring-1 ring-border/50 backdrop-blur-md">
-                    <div className="h-4 w-2/3 animate-pulse rounded-md bg-muted" />
-                    <div className="h-4 w-1/2 animate-pulse rounded-md bg-muted" />
-                    <div className="h-4 w-5/6 animate-pulse rounded-md bg-muted" />
+                  <div className="flex items-center gap-2.5 pt-1.5 text-[14px] font-medium text-muted-foreground">
+                    <span className="tracking-tight">TemuData AI sedang berpikir</span>
+                    <span className="flex gap-1 items-center">
+                      <span className="size-1.5 rounded-full bg-primary/70 animate-bounce [animation-delay:-0.32s]" />
+                      <span className="size-1.5 rounded-full bg-primary/70 animate-bounce [animation-delay:-0.16s]" />
+                      <span className="size-1.5 rounded-full bg-primary/70 animate-bounce" />
+                    </span>
                   </div>
                 </div>
               )}
