@@ -52,12 +52,12 @@ function TemuDataAi() {
   const { peran: peranAwal, kawasan: kawasanAwal } = Route.useSearch();
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
   const { kawasans } = useKawasans();
-  
+
   const SARAN = [
-    "Kawasan mana yang paling cocok untuk UMKM kuliner malam?",
-    kawasans.length > 1 ? `Kenapa ${kawasans.find(k => k.anomali)?.nama || kawasans[1].nama} ditandai sebagai anomali peluang?` : "Kenapa kawasan ini ditandai sebagai anomali peluang?",
-    "Kawasan mana yang paling butuh penambahan layanan?",
-    "Bandingkan tiga kawasan dengan skor properti tertinggi.",
+    "Kawasan mana yang paling cocok untuk pengembangan UMKM kuliner?",
+    "Kawasan mana yang memiliki aksesibilitas transit terbaik di Bandung?",
+    "Kawasan mana yang paling butuh peningkatan integrasi transportasi?",
+    "Bandingkan tiga kawasan dengan skor vitalitas tertinggi.",
   ];
   const [selectedId, setSelectedId] = useState<string>(kawasanAwal ?? STATIC_KAWASAN[0].id);
 
@@ -183,12 +183,9 @@ function TemuDataAi() {
                   <button
                     key={s}
                     onClick={() => kirim(s)}
-                    className="group flex items-start gap-3 rounded-2xl border border-border/60 bg-surface/60 p-4 text-left text-[14px] text-foreground/80 shadow-xs backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-surface/90 hover:text-foreground hover:shadow-md active:scale-[0.98]"
+                    className="rounded-2xl border border-border/60 bg-surface/60 p-4 text-left text-[14px] leading-relaxed text-foreground/80 shadow-xs backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-surface/90 hover:text-foreground hover:shadow-md active:scale-[0.98]"
                   >
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
-                      <AiIcon className="size-3" />
-                    </span>
-                    <span className="flex-1 leading-snug">{s}</span>
+                    {s}
                   </button>
                 ))}
               </div>
