@@ -170,7 +170,7 @@ function Analisis() {
                 </button>
               </div>
             ) : (
-              <>
+              <div className="flex flex-col gap-5 min-w-0">
                 <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                   <div className="panel p-4 sm:p-5">
                     <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
@@ -277,7 +277,7 @@ function Analisis() {
                     </tbody>
                   </table>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </AnimatedSection>
