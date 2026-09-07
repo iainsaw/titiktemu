@@ -153,112 +153,132 @@ function Analisis() {
                 </ul>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-              <div className="panel p-4 sm:p-5">
-                <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
-                <div className="h-[240px] sm:h-[280px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={radarData} outerRadius="70%">
-                      <PolarGrid stroke="var(--border)" />
-                      <PolarAngleAxis
-                        dataKey="komponen"
-                        tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
-                      />
-                      {kawasan.map((k, i) => (
-                        <Radar
-                          key={k.id}
-                          name={k.nama}
-                          dataKey={k.nama}
-                          stroke={PALET[i]}
-                          fill={PALET[i]}
-                          fillOpacity={0.18}
-                        />
+            {kawasan.length === 0 ? (
+              <div className="panel flex flex-col items-center justify-center p-8 text-center sm:p-12">
+                <div className="mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-xs">
+                  <Plus className="size-6" />
+                </div>
+                <h3 className="text-base font-semibold text-foreground">Belum ada kawasan yang dipilih</h3>
+                <p className="mt-1 max-w-md text-[13px] leading-relaxed text-muted-foreground">
+                  Silakan pilih minimal 1 hingga 4 kawasan dari daftar di samping untuk menampilkan diagram radar, grafik total, dan tabel perbandingan.
+                </p>
+                <button
+                  onClick={() => setDipilih([kawasans[0]?.id ?? STATIC_KAWASAN[0].id, kawasans[2]?.id ?? STATIC_KAWASAN[2].id, kawasans[4]?.id ?? STATIC_KAWASAN[4].id])}
+                  className="pill mt-4 bg-primary px-4 py-2 text-xs font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+                >
+                  Pilih 3 Kawasan Utama
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                  <div className="panel p-4 sm:p-5">
+                    <h2 className="mb-4 text-sm font-semibold">Diagram radar komponen skor</h2>
+                    <div className="h-[240px] sm:h-[280px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart data={radarData} outerRadius="70%">
+                          <PolarGrid stroke="var(--border)" />
+                          <PolarAngleAxis
+                            dataKey="komponen"
+                            tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                          />
+                          {kawasan.map((k, i) => (
+                            <Radar
+                              key={k.id}
+                              name={k.nama}
+                              dataKey={k.nama}
+                              stroke={PALET[i % PALET.length]}
+                              fill={PALET[i % PALET.length]}
+                              fillOpacity={0.18}
+                            />
+                          ))}
+                          <Legend wrapperStyle={{ fontSize: 11 }} />
+                          <Tooltip
+                            contentStyle={{
+                              background: "var(--popover)",
+                              border: "1px solid var(--border)",
+                              borderRadius: 8,
+                              fontSize: 12,
+                            }}
+                          />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  <div className="panel p-4 sm:p-5">
+                    <h2 className="mb-4 text-sm font-semibold">Skor total tertimbang per peran</h2>
+                    <div className="h-[240px] sm:h-[280px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <XAxis
+                            dataKey="nama"
+                            tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
+                            axisLine={false}
+                            tickLine={false}
+                            interval={0}
+                            angle={-25}
+                            textAnchor="end"
+                            height={50}
+                          />
+                          <YAxis
+                            domain={[0, 100]}
+                            tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <Tooltip
+                            cursor={{ fill: "var(--secondary)" }}
+                            contentStyle={{
+                              background: "var(--popover)",
+                              border: "1px solid var(--border)",
+                              borderRadius: 8,
+                              fontSize: 12,
+                            }}
+                          />
+                          <Bar dataKey="skor" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="panel overflow-x-auto p-4 sm:p-5">
+                  <h2 className="mb-4 text-sm font-semibold">Tabel perbandingan</h2>
+                  <table className="w-full text-left text-xs">
+                    <thead className="text-muted-foreground">
+                      <tr className="border-b border-border">
+                        <th className="w-[25%] pb-2 font-medium">Kawasan</th>
+                        {COMPONENTS.map((c) => (
+                          <th key={c.id} className="w-[12%] whitespace-nowrap px-2 pb-2 text-center font-medium">
+                            {c.short}
+                          </th>
+                        ))}
+                        <th className="w-[15%] whitespace-nowrap px-2 pb-2 text-center font-medium">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {kawasan.map((k) => (
+                        <tr key={k.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
+                          <td className="py-2.5 pr-4 font-medium">{k.nama}</td>
+                          {COMPONENTS.map((c) => (
+                            <td key={c.id} className="px-2 py-2.5 text-center font-display">
+                              {k.skor[c.id]}
+                            </td>
+                          ))}
+                          <td
+                            className="px-2 py-2.5 text-center font-display font-semibold"
+                            style={{ color: warnaSkor(hitungSkor(k, role)) }}
+                          >
+                            {hitungSkor(k, role)}
+                          </td>
+                        </tr>
                       ))}
-                      <Legend wrapperStyle={{ fontSize: 11 }} />
-                      <Tooltip
-                        contentStyle={{
-                          background: "var(--popover)",
-                          border: "1px solid var(--border)",
-                          borderRadius: 8,
-                          fontSize: 12,
-                        }}
-                      />
-                    </RadarChart>
-                  </ResponsiveContainer>
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-
-              <div className="panel p-4 sm:p-5">
-                <h2 className="mb-4 text-sm font-semibold">Skor total tertimbang per peran</h2>
-                <div className="h-[240px] sm:h-[280px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <XAxis
-                        dataKey="nama"
-                        tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
-                        axisLine={false}
-                        tickLine={false}
-                        interval={0}
-                        angle={-25}
-                        textAnchor="end"
-                        height={50}
-                      />
-                      <YAxis
-                        domain={[0, 100]}
-                        tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <Tooltip
-                        cursor={{ fill: "var(--secondary)" }}
-                        contentStyle={{
-                          background: "var(--popover)",
-                          border: "1px solid var(--border)",
-                          borderRadius: 8,
-                          fontSize: 12,
-                        }}
-                      />
-                      <Bar dataKey="skor" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="panel overflow-x-auto p-4 sm:p-5">
-            <h2 className="mb-4 text-sm font-semibold">Tabel perbandingan</h2>
-            <table className="w-full text-left text-xs">
-              <thead className="text-muted-foreground">
-                <tr className="border-b border-border">
-                  <th className="pb-2 font-medium w-[25%]">Kawasan</th>
-                  {COMPONENTS.map((c) => (
-                    <th key={c.id} className="pb-2 font-medium whitespace-nowrap px-2 w-[12%] text-center">
-                      {c.short}
-                    </th>
-                  ))}
-                  <th className="pb-2 font-medium whitespace-nowrap px-2 w-[15%] text-center">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {kawasan.map((k) => (
-                  <tr key={k.id} className="border-b border-border/60 last:border-0 hover:bg-secondary/30 transition-colors">
-                    <td className="py-2.5 font-medium pr-4">{k.nama}</td>
-                    {COMPONENTS.map((c) => (
-                      <td key={c.id} className="py-2.5 font-display px-2 text-center">
-                        {k.skor[c.id]}
-                      </td>
-                    ))}
-                    <td
-                      className="py-2.5 font-display font-semibold px-2 text-center"
-                      style={{ color: warnaSkor(hitungSkor(k, role)) }}
-                    >
-                      {hitungSkor(k, role)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              </>
+            )}
           </div>
         </AnimatedSection>
 
