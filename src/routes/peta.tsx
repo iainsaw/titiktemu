@@ -767,7 +767,7 @@ function PetaInteraktif() {
             <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
               <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Skor Vitalitas Total</span>
               <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-[16pt] font-extrabold text-[#0071E3]">{skorTerpilih}</span>
+                <span className="text-[18pt] font-extrabold" style={{ color: warnaSkor(skorTerpilih) }}>{skorTerpilih}</span>
                 <span className="text-[9.5pt] font-semibold text-slate-700">/ 100 ({kelasSkor(skorTerpilih).label})</span>
               </div>
             </div>
@@ -786,7 +786,7 @@ function PetaInteraktif() {
               <thead>
                 <tr className="bg-slate-100 text-slate-800 font-semibold border-b border-slate-300">
                   <th className="px-4 py-2 border-r border-slate-300">Indikator Komponen</th>
-                  <th className="px-4 py-2 border-r border-slate-300 text-center w-28">Skor Komponen</th>
+                  <th className="px-4 py-2 border-r border-slate-300 text-center w-36">Skor Komponen</th>
                   <th className="px-4 py-2 border-r border-slate-300 text-center w-28">Bobot Peran</th>
                   <th className="px-4 py-2 text-center w-36">Kontribusi Skor</th>
                 </tr>
@@ -799,9 +799,16 @@ function PetaInteraktif() {
                   return (
                     <tr key={c.id}>
                       <td className="px-4 py-2 border-r border-slate-200 font-medium text-slate-900">{c.label}</td>
-                      <td className="px-4 py-2 border-r border-slate-200 text-center font-bold text-slate-900">{nilai}</td>
+                      <td className="px-4 py-2 border-r border-slate-200 text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="font-bold text-[10pt]" style={{ color: warnaSkor(nilai) }}>{nilai}</span>
+                          <div className="w-12 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                            <div className="h-full rounded-full" style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }} />
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-4 py-2 border-r border-slate-200 text-center text-slate-600">{(bobot * 100).toFixed(0)}%</td>
-                      <td className="px-4 py-2 text-center font-semibold text-[#0071E3]">+{kontribusi}</td>
+                      <td className="px-4 py-2 text-center font-bold" style={{ color: warnaSkor(nilai) }}>+{kontribusi}</td>
                     </tr>
                   );
                 })}
