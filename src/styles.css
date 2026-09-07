@@ -128,6 +128,11 @@
   );
   --shadow-panel: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 32px -18px oklch(0 0 0 / 0.22);
   --grid-dot: color-mix(in oklab, var(--foreground) 8%, transparent);
+
+  /* ─── Glass surface tokens cross-browser ─── */
+  --bg-glass: rgba(251, 251, 250, 0.72);
+  --bg-glass-scrolled: rgba(251, 251, 250, 0.88);
+  --bg-card-glass: rgba(255, 255, 255, 0.82);
 }
 
 .dark {
@@ -136,6 +141,9 @@
   --accent: #0A84FF;
   --ring: #0A84FF;
   --chart-1: #0A84FF;
+  --bg-glass: rgba(20, 20, 20, 0.72);
+  --bg-glass-scrolled: rgba(20, 20, 20, 0.88);
+  --bg-card-glass: rgba(24, 24, 27, 0.82);
 }
 
 @layer base {
@@ -218,15 +226,14 @@
 
 
 @utility floating-card {
-  background-color: color-mix(in oklab, var(--background) 82%, transparent);
-  backdrop-filter: saturate(180%) blur(20px);
+  background-color: var(--bg-card-glass, rgba(255, 255, 255, 0.82));
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: var(--radius-2xl); /* 20px — Besar Apple */
   box-shadow: 0 1px 2px oklch(0 0 0 / 0.05), 0 18px 40px -20px oklch(0 0 0 / 0.28);
+  transform: translateZ(0);
 }
-
-
 
 /* Apple-style tight display headline */
 @utility headline {
@@ -241,10 +248,12 @@
 }
 
 @utility glass-nav {
-  background-color: color-mix(in oklab, var(--background) 72%, transparent);
-  backdrop-filter: saturate(180%) blur(20px);
+  background-color: var(--bg-glass, rgba(251, 251, 250, 0.72));
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 0.5px solid color-mix(in oklab, var(--border) 60%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid color-mix(in srgb, var(--border) 60%, transparent);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
   /* Materialize the glass on enter — blur + opacity together */
   transition: background-color 200ms var(--spring-gentle),
               box-shadow 200ms var(--spring-gentle);
@@ -252,8 +261,8 @@
 
 /* Scroll-driven header depth: class added by JS when page is scrolled */
 @utility glass-nav-scrolled {
-  background-color: color-mix(in oklab, var(--background) 85%, transparent);
-  box-shadow: 0 1px 0 color-mix(in oklab, var(--border) 50%, transparent),
+  background-color: var(--bg-glass-scrolled, rgba(251, 251, 250, 0.88));
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 50%, transparent),
               0 4px 24px -4px oklch(0 0 0 / 0.08);
 }
 
