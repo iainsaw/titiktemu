@@ -185,24 +185,29 @@ export async function sendAiChat(
 === ATURAN MUTLAK (WAJIB DIIKUTI, TIDAK BOLEH DILANGGAR) ===
 
 ATURAN 1 — TOPIK YANG LANGSUNG DIJAWAB (TANPA PENOLAKAN, TANPA MINTA MAAF):
-- Semua pertanyaan tentang: kawasan Kota Bandung, vitalitas transit, harga tanah, properti, UMKM, aksesibilitas, tata kota.
-- Pertanyaan budget/harga ("tanah di bawah 200 juta", "kawasan termurah", dll.) → LANGSUNG jawab menggunakan data harga tanah per m² dari 16 kawasan pilot. JANGAN menolak, JANGAN meminta maaf.
+- Semua pertanyaan tentang: kawasan Kota Bandung, vitalitas transit, harga tanah, properti, UMKM, aksesibilitas, tata kota, investasi.
+- Pertanyaan budget/modal DALAM MATA UANG APAPUN (rupiah, dolar, euro, dll.) → konversi ke IDR jika perlu, lalu LANGSUNG rekomendasikan kawasan berdasarkan data harga tanah 16 kawasan pilot. JANGAN menolak, JANGAN meminta maaf.
+- Contoh yang WAJIB dijawab: "punya 1500 dolar mau investasi", "budget 200 juta", "modal 50 ribu dolar". Ini semua pertanyaan investasi kawasan Bandung yang sah.
 - Pertanyaan umum tentang Kota Bandung → boleh dijawab secara perkotaan.
 
 ATURAN 2 — TOPIK YANG DITOLAK (1 kalimat singkat, tanpa penjelasan panjang):
-- Kode pemrograman, resep, matematika umum, hiburan, cerita fiksi, topik di luar Bandung/perkotaan/transit.
+- Kode pemrograman, resep, matematika umum, hiburan, cerita fiksi, topik yang SAMA SEKALI tidak ada hubungannya dengan Bandung/properti/transit/investasi.
 - Contoh penolakan yang benar: "Maaf, saya hanya dapat membantu terkait kawasan dan transit Kota Bandung."
 
 ATURAN 3 — FORMAT OUTPUT:
-- DILARANG KERAS: simbol $ (dollar), format LaTeX ($...$), tanda pagar # sebagai judul.
+- DILARANG KERAS: format LaTeX ($...$), tanda pagar # sebagai judul.
 - Tulis harga dalam Bahasa Indonesia: "10 juta rupiah per meter persegi" atau "Rp 10.000.000/m²".
 - Gunakan **teks tebal** untuk nama kawasan dan angka penting.
 - Maksimal 150 kata. Boleh pakai bullet points.
 - DILARANG jawaban kontradiktif: pilih satu — jawab ATAU tolak. Tidak boleh dua-duanya.
 
 === CONTOH JAWABAN YANG BENAR ===
+
 Pertanyaan: "Kawasan mana yang harga tanahnya paling terjangkau?"
-Jawaban yang BENAR: "Berdasarkan data 16 kawasan pilot, kawasan dengan indikator harga tanah terendah adalah **Stasiun Cimindi** (~0-3 jt/m²), **Terminal Cicaheum** (~3-5 jt/m²), dan **Stasiun Kiaracondong** (~4-6 jt/m²). Kawasan ini relatif lebih terjangkau dibanding Braga atau Alun-Alun yang bisa mencapai 15-25 jt/m²."
+Jawaban BENAR: "Berdasarkan data 16 kawasan pilot, kawasan dengan harga tanah terendah adalah **Stasiun Cimindi** (~0-3 jt/m²), **Terminal Cicaheum** (~3-5 jt/m²), dan **Stasiun Kiaracondong** (~4-6 jt/m²). Kawasan ini jauh lebih terjangkau dibanding Braga atau Alun-Alun yang bisa mencapai 15-25 jt/m²."
+
+Pertanyaan: "Aku punya uang 1500 dolar, enaknya investasi di kawasan mana?"
+Jawaban BENAR: "1.500 USD setara sekitar Rp 24 juta (kurs ~Rp 16.000). Dengan modal ini, kawasan yang relevan untuk dipertimbangkan adalah **Stasiun Cimindi**, **Terminal Cicaheum**, atau **Stasiun Kiaracondong** — ketiganya memiliki harga tanah per m² yang lebih terjangkau dibanding kawasan pusat. Untuk investasi jangka panjang, perhatikan juga skor aksesibilitas transit dan potensi UMKM di kawasan tersebut."
 
 Jawaban yang SALAH (JANGAN LAKUKAN): "Maaf, saya hanya dapat memproses... [lalu langsung menjawab]"
 
@@ -216,4 +221,73 @@ ${konteks}`;
   ];
 
   return callGeminiOrOpenRouter(messages);
+}
+
+/**
+ * Versi streaming dari sendAiChat.
+ * Memanggil API yang sama lalu mensimulasikan streaming
+ * dengan memecah teks per chunk dan memanggil onChunk secara bertahap.
+ *
+ * @param onChunk - callback dipanggil setiap kali ada chunk teks baru
+ * @returns full response string
+ */
+export async function sendAiChatStream(
+  konteks: string,
+  history: Pesan[],
+  input: string,
+  onChunk: (chunk: string) => void,
+  signal?: AbortSignal
+): Promise<string> {
+  // Dapatkan full response terlebih dahulu
+  const full = await sendAiChat(konteks, history, input);
+
+  if (signal?.aborted) return full;
+
+  // Simulasikan streaming: pecah per kata + batas chunk 3-5 kata
+  const words = full.split(" ");
+  let buffer = "";
+  const CHUNK_WORDS = 4;          // kirim tiap N kata
+  const DELAY_MS = 28;            // jeda antar chunk (ms)
+
+  for (let i = 0; i < words.length; i++) {
+    if (signal?.aborted) break;
+    buffer += (i === 0 ? "" : " ") + words[i];
+    if ((i + 1) % CHUNK_WORDS === 0 || i === words.length - 1) {
+      onChunk(buffer);
+      buffer = "";
+      await new Promise<void>((resolve) => setTimeout(resolve, DELAY_MS));
+    }
+  }
+
+  return full;
+}
+
+/**
+ * Generate 2-3 pertanyaan follow-up singkat berdasarkan konteks
+ * dan respons terakhir AI.
+ * Mengembalikan array string (kosong jika gagal).
+ */
+export async function generateFollowUpChips(
+  konteks: string,
+  lastReply: string
+): Promise<string[]> {
+  const prompt = `Berdasarkan percakapan ini tentang kawasan transit Kota Bandung, berikan TEPAT 3 pertanyaan follow-up singkat yang relevan. Setiap pertanyaan maksimal 10 kata. Format: hanya 3 baris teks, satu pertanyaan per baris, TANPA nomor dan TANPA penjelasan.
+
+Konteks data:
+${konteks.slice(0, 600)}
+
+Jawaban AI sebelumnya:
+${lastReply.slice(0, 400)}`;
+
+  try {
+    const raw = await callGeminiOrOpenRouter([{ role: "user", content: prompt }]);
+    const lines = raw
+      .split("\n")
+      .map((l) => l.replace(/^[\d\-\*\.\s]+/, "").trim())
+      .filter((l) => l.length > 5 && l.length < 120)
+      .slice(0, 3);
+    return lines;
+  } catch {
+    return [];
+  }
 }

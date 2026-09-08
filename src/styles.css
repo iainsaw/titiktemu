@@ -268,9 +268,14 @@
 
 /* ── Pressable — instant tactile feedback on pointer-down (Apple §1) ── */
 @utility pressable {
-  transition: transform 100ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  transition: transform 100ms ease-out, opacity 100ms ease-out;
   &:active {
     transform: scale(0.97);
+    opacity: 0.85;
+    /* Transition off is instant on press (Apple: respond on pointer-down) */
+    transition: none;
   }
 }
 
@@ -449,6 +454,42 @@
 }
 .floating-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* ── Dot-pulse: Apple iMessage-style thinking indicator ── */
+@keyframes dot-pulse {
+  0%, 60%, 100% {
+    transform: scale(0.6);
+    opacity: 0.3;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@utility animate-dot-pulse {
+  animation: dot-pulse 1.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* ── Cursor blink — streaming text caret (Apple §3: continuous feedback) ── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@utility animate-cursor-blink {
+  animation: cursor-blink 0.9s ease-in-out infinite;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dot-pulse,
+  .animate-cursor-blink {
+    animation: none;
+    opacity: 0.6;
+  }
 }
 
 @media print {
