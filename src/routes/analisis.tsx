@@ -29,7 +29,6 @@ import {
   warnaSkor,
   type RoleId,
   type Kawasan,
-
 } from "@/lib/vitality-data";
 import {
   JENIS_INTERVENSI,
@@ -67,7 +66,11 @@ export const Route = createFileRoute("/analisis")({
 
 function Analisis() {
   const [role, setRole] = useState<RoleId>("pemerintah");
-  const [dipilih, setDipilih] = useState<string[]>([STATIC_KAWASAN[0].id, STATIC_KAWASAN[2].id, STATIC_KAWASAN[4].id]);
+  const [dipilih, setDipilih] = useState<string[]>([
+    STATIC_KAWASAN[0].id,
+    STATIC_KAWASAN[2].id,
+    STATIC_KAWASAN[4].id,
+  ]);
   const { kawasans } = useKawasans();
 
   const kawasan = kawasans.filter((k) => dipilih.includes(k.id));
@@ -95,7 +98,9 @@ function Analisis() {
         <AnimatedSection>
           <h1 className="headline text-[clamp(28px,8vw,50px)]">Analisis & Perbandingan</h1>
           <p className="mt-2 max-w-2xl text-[13.5px] text-muted-foreground sm:text-[14px]">
-            Bandingkan potensi tiap kawasan secara berdampingan. Anda juga bisa menguji simulasi: lihat bagaimana skor kawasan melonjak naik saat Anda menambahkan rute angkot, halte, atau jalur pejalan kaki baru.
+            Bandingkan potensi tiap kawasan secara berdampingan. Anda juga bisa menguji simulasi:
+            lihat bagaimana skor kawasan melonjak naik saat Anda menambahkan rute angkot, halte,
+            atau jalur pejalan kaki baru.
           </p>
         </AnimatedSection>
 
@@ -119,7 +124,9 @@ function Analisis() {
         <AnimatedSection delay={200} className="mt-6 flex flex-col gap-5">
           <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
             <div className="panel p-4 flex flex-col h-[356px] min-h-0 overflow-hidden">
-              <h2 className="mb-3 text-sm font-semibold shrink-0">Pilih kawasan ({dipilih.length}/4)</h2>
+              <h2 className="mb-3 text-sm font-semibold shrink-0">
+                Pilih kawasan ({dipilih.length}/4)
+              </h2>
               <div
                 className="flex-1 min-h-0 overflow-y-auto floating-scrollbar pr-1"
                 onWheel={(e) => e.stopPropagation()}
@@ -158,12 +165,21 @@ function Analisis() {
                 <div className="mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-xs">
                   <Plus className="size-6" />
                 </div>
-                <h3 className="text-base font-semibold text-foreground">Belum ada kawasan yang dipilih</h3>
+                <h3 className="text-base font-semibold text-foreground">
+                  Belum ada kawasan yang dipilih
+                </h3>
                 <p className="mt-1 max-w-md text-[13px] leading-relaxed text-muted-foreground">
-                  Silakan pilih minimal 1 hingga 4 kawasan dari daftar di samping untuk menampilkan diagram radar, grafik total, dan tabel perbandingan.
+                  Silakan pilih minimal 1 hingga 4 kawasan dari daftar di samping untuk menampilkan
+                  diagram radar, grafik total, dan tabel perbandingan.
                 </p>
                 <button
-                  onClick={() => setDipilih([kawasans[0]?.id ?? STATIC_KAWASAN[0].id, kawasans[2]?.id ?? STATIC_KAWASAN[2].id, kawasans[4]?.id ?? STATIC_KAWASAN[4].id])}
+                  onClick={() =>
+                    setDipilih([
+                      kawasans[0]?.id ?? STATIC_KAWASAN[0].id,
+                      kawasans[2]?.id ?? STATIC_KAWASAN[2].id,
+                      kawasans[4]?.id ?? STATIC_KAWASAN[4].id,
+                    ])
+                  }
                   className="pill mt-4 bg-primary px-4 py-2 text-xs font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
                 >
                   Pilih 3 Kawasan Utama
@@ -210,7 +226,10 @@ function Analisis() {
                     <h2 className="mb-4 text-sm font-semibold">Skor total tertimbang per peran</h2>
                     <div className="h-[240px] sm:h-[280px]">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                        <BarChart
+                          data={barData}
+                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                        >
                           <XAxis
                             dataKey="nama"
                             tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
@@ -250,16 +269,24 @@ function Analisis() {
                       <tr className="border-b border-border">
                         <th className="w-[25%] pb-2 font-medium">Kawasan</th>
                         {COMPONENTS.map((c) => (
-                          <th key={c.id} className="w-[12%] whitespace-nowrap px-2 pb-2 text-center font-medium">
+                          <th
+                            key={c.id}
+                            className="w-[12%] whitespace-nowrap px-2 pb-2 text-center font-medium"
+                          >
                             {c.short}
                           </th>
                         ))}
-                        <th className="w-[15%] whitespace-nowrap px-2 pb-2 text-center font-medium">Total</th>
+                        <th className="w-[15%] whitespace-nowrap px-2 pb-2 text-center font-medium">
+                          Total
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {kawasan.map((k) => (
-                        <tr key={k.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
+                        <tr
+                          key={k.id}
+                          className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30"
+                        >
                           <td className="py-2.5 pr-4 font-medium">{k.nama}</td>
                           {COMPONENTS.map((c) => (
                             <td key={c.id} className="px-2 py-2.5 text-center font-display">
@@ -303,7 +330,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
     let list = hasil;
     if (hanyaTerdampak) {
       const filtered = hasil.filter(
-        (h) => h.kawasan.id === kawasanId || (h.sesudah.layanan - h.sebelum.layanan) > 0
+        (h) => h.kawasan.id === kawasanId || h.sesudah.layanan - h.sebelum.layanan > 0,
       );
       if (filtered.length > 0) list = filtered;
     }
@@ -370,10 +397,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
   };
 
   const tambah = () =>
-    setDaftar((p) => [
-      ...p,
-      { uid: `${Date.now()}-${p.length}`, jenis, kawasanId, intensitas },
-    ]);
+    setDaftar((p) => [...p, { uid: `${Date.now()}-${p.length}`, jenis, kawasanId, intensitas }]);
 
   return (
     <AnimatedSection animation="fade-in-up" delay={150} className="mt-12">
@@ -519,7 +543,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     "rounded-md px-2.5 py-1 font-medium transition-all",
                     !hanyaTerdampak
                       ? "bg-background text-foreground shadow-sm font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   Semua Kawasan (16)
@@ -530,7 +554,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     "rounded-md px-2.5 py-1 font-medium transition-all",
                     hanyaTerdampak
                       ? "bg-background text-foreground shadow-sm font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   Hanya Terdampak
@@ -540,10 +564,7 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
 
             <div className="h-[320px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
-                  margin={{ top: 20, right: 10, left: -15, bottom: 10 }}
-                >
+                <BarChart data={chartData} margin={{ top: 20, right: 10, left: -15, bottom: 10 }}>
                   <XAxis
                     dataKey="nama"
                     tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
@@ -560,10 +581,15 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     axisLine={false}
                     tickLine={false}
                   />
-                  <Tooltip content={<CustomTooltipSimulasi />} cursor={{ fill: "var(--secondary)" }} />
+                  <Tooltip
+                    content={<CustomTooltipSimulasi />}
+                    cursor={{ fill: "var(--secondary)" }}
+                  />
                   <Legend
                     wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
-                    formatter={(value) => (value === "Sebelum" ? "Skor Baseline (Sebelum)" : "Skor Simulasi (Sesudah)")}
+                    formatter={(value) =>
+                      value === "Sebelum" ? "Skor Baseline (Sebelum)" : "Skor Simulasi (Sesudah)"
+                    }
                   />
                   <Bar dataKey="Sebelum" radius={[4, 4, 0, 0]}>
                     {chartData.map((entry, index) => (
@@ -585,7 +611,9 @@ function SimulasiLayanan({ role, kawasans }: { role: RoleId; kawasans: Kawasan[]
                     <LabelList
                       dataKey="deltaLayanan"
                       position="top"
-                      formatter={(val: any) => (typeof val === "number" && val > 0 ? `+${val}` : "")}
+                      formatter={(val: any) =>
+                        typeof val === "number" && val > 0 ? `+${val}` : ""
+                      }
                       style={{ fill: "var(--primary)", fontSize: 10, fontWeight: "bold" }}
                     />
                   </Bar>
@@ -642,9 +670,11 @@ function Metrik({ label, value, sub }: { label: string; value: string | number; 
     <div className="panel p-4 flex flex-col justify-center h-full">
       <p className="text-[11px] text-muted-foreground whitespace-nowrap">{label}</p>
       <p className="font-display text-[22px] font-semibold tracking-tight whitespace-nowrap">
-        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+        {typeof value === "number" ? <AnimatedNumber value={value} /> : value}
       </p>
-      <p className="mt-0.5 text-[10px] leading-snug text-muted-foreground truncate" title={sub}>{sub}</p>
+      <p className="mt-0.5 text-[10px] leading-snug text-muted-foreground truncate" title={sub}>
+        {sub}
+      </p>
     </div>
   );
 }

@@ -30,7 +30,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
   try {
     const aiRes = await parseSearchQuery({ data: { query: placeName } });
     if (aiRes.error === "OUTSIDE") {
-      throw new Error(`Lokasi "${placeName}" berada di luar Kota Bandung (Coming Soon!). Saat ini kami hanya melayani area Kota Bandung.`);
+      throw new Error(`Kawasan "${placeName}" berada di luar Kota Bandung. Saat ini kami hanya memetakan wilayah di dalam kota.`);
     }
     if (aiRes.query) {
       searchQuery = aiRes.query;
@@ -67,7 +67,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
 
     // Lakukan reverse geocode
     const geo = await reverseGeocode(lat, lng);
-    
+
     // Panggil analyzeCoordinates (yang kita buat sebelumnya)
     return await analyzeCoordinates(lat, lng, geo.displayName);
   }
@@ -75,7 +75,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
   // 2. Jika bukan koordinat, Geocoding biasa
   const geo = await geocode(searchQuery);
   if (!geo) {
-    throw new Error(`Lokasi "${searchQuery}" tidak ditemukan di area Kota Bandung. Coba nama yang lebih spesifik.`);
+    throw new Error(`Wah, sepertinya lokasi "${searchQuery}" belum masuk radar kami atau berada di luar jangkauan. Silakan coba cari area lain di Bandung.`);
   }
 
   // 2. Query PostGIS via RPC
@@ -103,7 +103,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
 
   // 4. Build Kawasan object dari data riil
   const result = typeof data === "string" ? JSON.parse(data) : data;
-  
+
   const kecamatan = extractKoridor(geo.displayName);
   let hargaTanah = result.harga_tanah_m2 ?? 0;
   let skorProperti = result.skor_properti ?? 1;
@@ -111,7 +111,7 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
   // Coba cari harga tanah berdasarkan nama kecamatan
   const nameToMatch = geo.displayName.toLowerCase();
   for (const [key, rawPrice] of Object.entries(landPrices)) {
-    const kecName = key.split(',')[0].trim().toLowerCase();
+    const kecName = key.split(",")[0].trim().toLowerCase();
     if (nameToMatch.includes(kecName)) {
       hargaTanah = Math.round((rawPrice / 1000000) * 10) / 10;
       skorProperti = Math.min(100, Math.max(1, Math.round((hargaTanah / 25) * 100)));
@@ -145,7 +145,11 @@ export async function analyzeNewPlace(placeName: string): Promise<AnalysisResult
  * Menganalisis potensi TOD berdasarkan titik koordinat secara langsung.
  * (Fitur Custom Pin Drop & Coordinate Search).
  */
-export async function analyzeCoordinates(lat: number, lng: number, overrideName?: string): Promise<AnalysisResult> {
+export async function analyzeCoordinates(
+  lat: number,
+  lng: number,
+  overrideName?: string,
+): Promise<AnalysisResult> {
   // 1. Panggil RPC analyze_single_point
   const { data, error } = await supabase.rpc("analyze_single_point", {
     p_lat: lat,
@@ -169,7 +173,7 @@ export async function analyzeCoordinates(lat: number, lng: number, overrideName?
   }
 
   const result = typeof data === "string" ? JSON.parse(data) : data;
-  
+
   // Custom point doesn't have a specific name, so we use coordinate
   // Jika overrideName tersedia, gunakan itu. Jika tidak, coba reverse geocode otomatis.
   let finalName = overrideName;
@@ -177,9 +181,9 @@ export async function analyzeCoordinates(lat: number, lng: number, overrideName?
     try {
       const reverse = await reverseGeocode(lat, lng);
       if (reverse) {
-        finalName = `${reverse.name || reverse.display_name.split(',')[0]} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+        finalName = `${reverse.displayName.split(',')[0]} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
       }
-    } catch(e) {
+    } catch (e) {
       // ignore
     }
   }
@@ -214,7 +218,6 @@ export async function analyzeCoordinates(lat: number, lng: number, overrideName?
     lat,
     lng,
     displayName: placeName,
-    type: "custom",
   };
 
   return { kawasan, geo };

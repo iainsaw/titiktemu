@@ -11,12 +11,7 @@ import { AuthModal } from "@/components/AuthModal";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { FollowUpChips } from "@/components/FollowUpChips";
 import { konteksDashboard, konteksKawasan } from "@/lib/ai-konteks";
-import {
-  getAiInsight,
-  sendAiChatStream,
-  generateFollowUpChips,
-  type Pesan,
-} from "@/lib/llm";
+import { getAiInsight, sendAiChatStream, generateFollowUpChips, type Pesan } from "@/lib/llm";
 import {
   createSession,
   loadSessions,
@@ -43,9 +38,7 @@ const PERAN_VALID: RoleId[] = ["investor", "pemerintah", "umkm"];
 
 export const Route = createFileRoute("/temudata")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    peran: PERAN_VALID.includes(search.peran as RoleId)
-      ? (search.peran as RoleId)
-      : undefined,
+    peran: PERAN_VALID.includes(search.peran as RoleId) ? (search.peran as RoleId) : undefined,
     kawasan: typeof search.kawasan === "string" ? search.kawasan : undefined,
   }),
   head: () => ({
@@ -92,9 +85,7 @@ function TemuDataAi() {
 
   // ── Role & kawasan ──
   const [role, setRole] = useState<RoleId>(peranAwal ?? "investor");
-  const [selectedId, setSelectedId] = useState<string>(
-    kawasanAwal ?? STATIC_KAWASAN[0].id,
-  );
+  const [selectedId, setSelectedId] = useState<string>(kawasanAwal ?? STATIC_KAWASAN[0].id);
 
   // ── Auth modal ──
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -128,8 +119,7 @@ function TemuDataAi() {
   const abortRef = useRef<AbortController | null>(null);
 
   const userId = user?.id ?? null;
-  const displayName: string =
-    user?.user_metadata?.display_name || user?.email?.split("@")[0] || "";
+  const displayName: string = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "";
 
   const terpilih: Kawasan =
     kawasans.find((k) => k.id === selectedId) ?? kawasans[0] ?? STATIC_KAWASAN[0];
@@ -211,9 +201,7 @@ function TemuDataAi() {
   const handleRenameSession = useCallback(
     async (sessionId: string, newTitle: string) => {
       await renameSession(sessionId, userId, newTitle);
-      setSessions((prev) =>
-        prev.map((s) => (s.id === sessionId ? { ...s, title: newTitle } : s)),
-      );
+      setSessions((prev) => prev.map((s) => (s.id === sessionId ? { ...s, title: newTitle } : s)));
       if (activeSession?.id === sessionId) {
         setActiveSession((prev) => (prev ? { ...prev, title: newTitle } : null));
       }
@@ -234,12 +222,7 @@ function TemuDataAi() {
     // Buat sesi baru jika belum ada
     let sesi = activeSession;
     if (!sesi) {
-      sesi = await createSession(
-        userId,
-        role,
-        selectedId,
-        generateSessionTitle(isi),
-      );
+      sesi = await createSession(userId, role, selectedId, generateSessionTitle(isi));
       setSessions((prev) => [sesi!, ...prev]);
       setActiveSession(sesi);
     }
@@ -259,11 +242,7 @@ function TemuDataAi() {
     if (sesi.title === "Percakapan Baru" && pesan.length === 0) {
       const autoTitle = generateSessionTitle(isi);
       await renameSession(sesi.id, userId, autoTitle);
-      setSessions((prev) =>
-        prev.map((s) =>
-          s.id === sesi!.id ? { ...s, title: autoTitle } : s,
-        ),
-      );
+      setSessions((prev) => prev.map((s) => (s.id === sesi!.id ? { ...s, title: autoTitle } : s)));
       setActiveSession({ ...sesi, title: autoTitle });
       sesi = { ...sesi, title: autoTitle };
     }
@@ -309,18 +288,12 @@ function TemuDataAi() {
     generateFollowUpChips(konteks, fullReply)
       .then((chips) => {
         setPesan((prev) =>
-          prev.map((p, i) =>
-            i === prev.length - 1
-              ? { ...p, chips, chipsLoading: false }
-              : p,
-          ),
+          prev.map((p, i) => (i === prev.length - 1 ? { ...p, chips, chipsLoading: false } : p)),
         );
       })
       .catch(() => {
         setPesan((prev) =>
-          prev.map((p, i) =>
-            i === prev.length - 1 ? { ...p, chipsLoading: false } : p,
-          ),
+          prev.map((p, i) => (i === prev.length - 1 ? { ...p, chipsLoading: false } : p)),
         );
       });
 
@@ -334,12 +307,7 @@ function TemuDataAi() {
 
     let sesi = activeSession;
     if (!sesi) {
-      sesi = await createSession(
-        userId,
-        role,
-        selectedId,
-        `Skor ${terpilih.nama}`,
-      );
+      sesi = await createSession(userId, role, selectedId, `Skor ${terpilih.nama}`);
       setSessions((prev) => [sesi!, ...prev]);
       setActiveSession(sesi);
     }
@@ -355,7 +323,9 @@ function TemuDataAi() {
 
     let fullReply = "";
     try {
-      const reply = await getAiInsight(konteksKawasan(terpilih, role, kawasans.length ? kawasans : STATIC_KAWASAN));
+      const reply = await getAiInsight(
+        konteksKawasan(terpilih, role, kawasans.length ? kawasans : STATIC_KAWASAN),
+      );
       fullReply = reply;
 
       // Simulate streaming for insight too
@@ -384,16 +354,12 @@ function TemuDataAi() {
     generateFollowUpChips(konteks, fullReply)
       .then((chips) => {
         setPesan((prev) =>
-          prev.map((p, i) =>
-            i === prev.length - 1 ? { ...p, chips, chipsLoading: false } : p,
-          ),
+          prev.map((p, i) => (i === prev.length - 1 ? { ...p, chips, chipsLoading: false } : p)),
         );
       })
       .catch(() => {
         setPesan((prev) =>
-          prev.map((p, i) =>
-            i === prev.length - 1 ? { ...p, chipsLoading: false } : p,
-          ),
+          prev.map((p, i) => (i === prev.length - 1 ? { ...p, chipsLoading: false } : p)),
         );
       });
 
@@ -413,10 +379,7 @@ function TemuDataAi() {
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
 
-      <AuthModal
-        open={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-      />
+      <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} />
 
       {/* ── Sidebar ── */}
       <ChatSidebar
@@ -424,11 +387,7 @@ function TemuDataAi() {
         onToggle={() => setSidebarOpen((v) => !v)}
         sessions={sessions}
         activeSessionId={activeSession?.id ?? null}
-        user={
-          user
-            ? { displayName, email: user.email ?? "" }
-            : null
-        }
+        user={user ? { displayName, email: user.email ?? "" } : null}
         onSelectSession={handleSelectSession}
         onNewChat={handleNewChat}
         onDeleteSession={handleDeleteSession}
@@ -566,9 +525,7 @@ function TemuDataAi() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[15px] leading-relaxed text-foreground space-y-3 [&>p:last-child]:mb-0 [&>p]:mb-3 [&_ol]:ml-5 [&_ol]:space-y-1.5 [&_ol]:list-decimal [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:ml-5 [&_ul]:space-y-1.5 [&_ul]:list-disc [&_table]:my-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-[13px] [&_th]:border [&_th]:border-border/60 [&_th]:bg-muted/30 [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border/40 [&_td]:px-3 [&_td]:py-2 [&_code]:rounded [&_code]:bg-muted/50 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[13px] [&_code]:font-mono overflow-x-auto">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {p.content}
-                        </ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{p.content}</ReactMarkdown>
                       </div>
 
                       {/* Follow-up Chips */}
@@ -609,9 +566,18 @@ function TemuDataAi() {
                     <AiIcon className="size-4" />
                   </div>
                   <div className="flex items-center gap-[5px] h-7 pt-1">
-                    <span className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse" style={{ animationDelay: "0ms" }} />
-                    <span className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse" style={{ animationDelay: "160ms" }} />
-                    <span className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse" style={{ animationDelay: "320ms" }} />
+                    <span
+                      className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse"
+                      style={{ animationDelay: "0ms" }}
+                    />
+                    <span
+                      className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse"
+                      style={{ animationDelay: "160ms" }}
+                    />
+                    <span
+                      className="size-2 rounded-full bg-muted-foreground/40 animate-dot-pulse"
+                      style={{ animationDelay: "320ms" }}
+                    />
                   </div>
                 </div>
               )}
@@ -650,11 +616,7 @@ function TemuDataAi() {
                     }
                   }}
                   disabled={loading}
-                  placeholder={
-                    loading
-                      ? "Menganalisis..."
-                      : "Tanya TemuData AI tentang kawasan…"
-                  }
+                  placeholder={loading ? "Menganalisis..." : "Tanya TemuData AI tentang kawasan…"}
                   className="max-h-40 min-h-[44px] flex-1 resize-none bg-transparent px-4 py-3 text-[15px] outline-none placeholder:text-muted-foreground disabled:opacity-50"
                 />
                 {/*
@@ -704,8 +666,8 @@ function TemuDataAi() {
               </div>
             </form>
             <p className="mt-2 text-center text-[11px] text-muted-foreground">
-              Jawaban dihitung dari data dashboard Titik Temu — selalu verifikasi
-              sebelum mengambil keputusan.
+              Jawaban dihitung dari data dashboard Titik Temu — selalu verifikasi sebelum mengambil
+              keputusan.
             </p>
           </div>
         </div>

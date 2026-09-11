@@ -34,7 +34,7 @@ const NAV_H = 44;
 
 // Apple §4 drawer easing: iOS drawer curve — ease-in on open, ease-out on close
 // damping ~0.8 / response 0.3 → cubic-bezier(0.32, 0.72, 0, 1)
-const DRAWER_OPEN  = "transform 320ms cubic-bezier(0.32, 0.72, 0, 1)";
+const DRAWER_OPEN = "transform 320ms cubic-bezier(0.32, 0.72, 0, 1)";
 const DRAWER_CLOSE = "transform 260ms cubic-bezier(0.4, 0, 1, 1)";
 
 export function ChatSidebar({
@@ -188,12 +188,10 @@ export function ChatSidebar({
         {/* Session list */}
         <div className="flex-1 overflow-y-auto px-2 py-2 floating-scrollbar">
           {groups.length === 0 && (
-            <div className="flex flex-col items-center gap-2 py-12 text-center">
-              <MessageSquare className="size-8 text-muted-foreground/30" />
-              <p className="text-[13px] text-muted-foreground/50">
-                Belum ada percakapan.
-                <br />
-                Mulai dengan Chat Baru!
+            <div className="flex flex-col items-center gap-2 py-12 px-4 text-center">
+              <p className="text-[13px] leading-relaxed text-muted-foreground/60">
+                Ruang obrolan masih kosong. <br />
+                Silakan mulai percakapan baru untuk mengeksplorasi wawasan berbasis AI!
               </p>
             </div>
           )}
@@ -266,7 +264,9 @@ export function ChatSidebar({
                           </button>
                           <button
                             onClick={(e) => handleDeleteClick(session.id, e)}
-                            aria-label={isConfirmingDelete ? "Konfirmasi hapus" : "Hapus percakapan"}
+                            aria-label={
+                              isConfirmingDelete ? "Konfirmasi hapus" : "Hapus percakapan"
+                            }
                             className={cn(
                               "grid size-6 place-items-center rounded-lg transition-colors duration-100 active:scale-90 active:transition-none",
                               isConfirmingDelete
@@ -274,11 +274,18 @@ export function ChatSidebar({
                                 : "text-muted-foreground hover:bg-secondary hover:text-destructive",
                             )}
                           >
-                            {isConfirmingDelete ? <Check className="size-3" /> : <Trash2 className="size-3" />}
+                            {isConfirmingDelete ? (
+                              <Check className="size-3" />
+                            ) : (
+                              <Trash2 className="size-3" />
+                            )}
                           </button>
                           {isConfirmingDelete && (
                             <button
-                              onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setConfirmDeleteId(null);
+                              }}
                               className="grid size-6 place-items-center rounded-lg text-muted-foreground hover:bg-secondary active:scale-90 active:transition-none"
                             >
                               <X className="size-3" />
@@ -304,9 +311,7 @@ export function ChatSidebar({
             <div className="space-y-2 rounded-xl bg-primary/6 p-3 ring-1 ring-primary/12">
               <div className="flex items-center gap-2">
                 <User className="size-3.5 shrink-0 text-primary/60" />
-                <p className="text-[12px] font-medium text-foreground/75">
-                  Simpan riwayat ke akun
-                </p>
+                <p className="text-[12px] font-medium text-foreground/75">Simpan riwayat ke akun</p>
               </div>
               <p className="text-[11.5px] leading-relaxed text-muted-foreground/60">
                 Masuk agar percakapan tersimpan di semua perangkat.

@@ -59,9 +59,11 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --font-display:
-    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
+    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    ui-sans-serif, sans-serif;
   --font-sans:
-    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", ui-sans-serif, sans-serif;
+    "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    ui-sans-serif, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
@@ -82,7 +84,7 @@
   --ease-snappy: cubic-bezier(0.34, 1.2, 0.64, 1);
 
   /* Aliases used in motion comments (Apple vocabulary → guide vocabulary) */
-  --spring-gentle: var(--ease-out);    /* critically-damped → same as strong ease-out */
+  --spring-gentle: var(--ease-out); /* critically-damped → same as strong ease-out */
   --spring-snappy: var(--ease-snappy); /* faster settle → same as snappy */
   --surface: oklch(1 0 0);
   --surface-raised: oklch(0.965 0.004 85);
@@ -90,20 +92,20 @@
   --card-foreground: oklch(0.18 0.01 60);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.01 60);
-  --primary: #0071E3; /* Biru logo Titik Temu dipertahankan */
+  --primary: #0071e3; /* Biru logo Titik Temu dipertahankan */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.955 0.004 85);
   --secondary-foreground: oklch(0.24 0 0);
   --muted: oklch(0.955 0.004 85);
-  --muted-foreground: oklch(0.50 0.008 85);
+  --muted-foreground: oklch(0.5 0.008 85);
 
-  --accent: #0071E3;
+  --accent: #0071e3;
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.925 0.004 85);
   --input: oklch(0.91 0.004 85);
-  --ring: #0071E3;
+  --ring: #0071e3;
 
   /* Ink = Claude deep warm feature sections */
   --ink: oklch(0.16 0.01 60);
@@ -115,7 +117,7 @@
   --score-4: oklch(0.6 0.18 145);
   --score-5: oklch(0.5 0.22 245);
 
-  --chart-1: #0071E3;
+  --chart-1: #0071e3;
   --chart-2: oklch(0.65 0.14 200);
   --chart-3: oklch(0.65 0.14 160);
   --chart-4: oklch(0.72 0.16 78);
@@ -137,10 +139,10 @@
 
 .dark {
   color-scheme: dark;
-  --primary: #0A84FF;
-  --accent: #0A84FF;
-  --ring: #0A84FF;
-  --chart-1: #0A84FF;
+  --primary: #0a84ff;
+  --accent: #0a84ff;
+  --ring: #0a84ff;
+  --chart-1: #0a84ff;
   --bg-glass: rgba(20, 20, 20, 0.72);
   --bg-glass-scrolled: rgba(20, 20, 20, 0.88);
   --bg-card-glass: rgba(24, 24, 27, 0.82);
@@ -149,6 +151,26 @@
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--color-foreground) 15%, transparent);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--color-foreground) 25%, transparent);
   }
 
   body {
@@ -224,14 +246,15 @@
     );
 }
 
-
 @utility floating-card {
   background-color: var(--bg-card-glass, rgba(255, 255, 255, 0.82));
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: var(--radius-2xl); /* 20px — Besar Apple */
-  box-shadow: 0 1px 2px oklch(0 0 0 / 0.05), 0 18px 40px -20px oklch(0 0 0 / 0.28);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.05),
+    0 18px 40px -20px oklch(0 0 0 / 0.28);
   transform: translateZ(0);
 }
 
@@ -255,22 +278,26 @@
   transform: translateZ(0);
   will-change: backdrop-filter;
   /* Materialize the glass on enter — blur + opacity together */
-  transition: background-color 200ms var(--spring-gentle),
-              box-shadow 200ms var(--spring-gentle);
+  transition:
+    background-color 200ms var(--spring-gentle),
+    box-shadow 200ms var(--spring-gentle);
 }
 
 /* Scroll-driven header depth: class added by JS when page is scrolled */
 @utility glass-nav-scrolled {
   background-color: var(--bg-glass-scrolled, rgba(251, 251, 250, 0.88));
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 50%, transparent),
-              0 4px 24px -4px oklch(0 0 0 / 0.08);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--border) 50%, transparent),
+    0 4px 24px -4px oklch(0 0 0 / 0.08);
 }
 
 /* ── Pressable — instant tactile feedback on pointer-down (Apple §1) ── */
 @utility pressable {
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
-  transition: transform 100ms ease-out, opacity 100ms ease-out;
+  transition:
+    transform 100ms ease-out,
+    opacity 100ms ease-out;
   &:active {
     transform: scale(0.97);
     opacity: 0.85;
@@ -389,7 +416,9 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.01em;
-  text-shadow: 0 1px 3px var(--background), 0 0 2px var(--background);
+  text-shadow:
+    0 1px 3px var(--background),
+    0 0 2px var(--background);
   transition: transform 0.2s ease;
   transform-origin: center;
 }
@@ -458,7 +487,9 @@
 
 /* ── Dot-pulse: Apple iMessage-style thinking indicator ── */
 @keyframes dot-pulse {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: scale(0.6);
     opacity: 0.3;
   }
@@ -475,8 +506,13 @@
 
 /* ── Cursor blink — streaming text caret (Apple §3: continuous feedback) ── */
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 @utility animate-cursor-blink {

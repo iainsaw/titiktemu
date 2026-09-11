@@ -53,7 +53,6 @@ export const supabase: SupabaseClient = isSupabaseConfigured
   ? createClient(supabaseUrl!, supabaseKey!)
   : createStubClient();
 
-
 /**
  * Fungsi Auth Sederhana: Sign Up menggunakan Email dan Password
  */
@@ -105,8 +104,11 @@ export async function checkSupabaseConnection() {
     // Mengecek apakah client bisa melakukan query ke auth (koneksi basic)
     const { data, error } = await supabase.auth.getSession();
     if (error) throw error;
-    
-    console.log("Koneksi ke Supabase berhasil! Session saat ini:", data.session ? "Ada" : "Tidak ada");
+
+    console.log(
+      "Koneksi ke Supabase berhasil! Session saat ini:",
+      data.session ? "Ada" : "Tidak ada",
+    );
     return true;
   } catch (error) {
     console.error("Koneksi ke Supabase bermasalah:", error);
@@ -136,9 +138,12 @@ export async function fetchGeoJSON(tableName: string) {
 /**
  * Mendapatkan Signed URL sementara untuk file dari bucket 'secure-assets'.
  */
-export async function getSecureAssetUrl(filePath: string, expiresIn = 3600): Promise<string | null> {
+export async function getSecureAssetUrl(
+  filePath: string,
+  expiresIn = 3600,
+): Promise<string | null> {
   if (!isSupabaseConfigured) return filePath; // Fallback jika belum di-config
-  
+
   try {
     return await generateSecureAssetUrl({ data: { path: filePath, expiresIn } });
   } catch (err) {

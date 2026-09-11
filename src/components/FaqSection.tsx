@@ -58,14 +58,12 @@ export function FaqSection({ className }: { className?: string }) {
   return (
     <section id="faq" className={cn("py-16 sm:py-24", className)}>
       <div className="mx-auto max-w-[800px] px-4 sm:px-6">
-
         {/* Section Header */}
         <AnimatedSection className="text-center mb-12 sm:mb-16">
-          <h2 className="headline text-[clamp(28px,6vw,44px)] tracking-tight">
-            Pertanyaan Umum
-          </h2>
+          <h2 className="headline text-[clamp(28px,6vw,44px)] tracking-tight">Pertanyaan Umum</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground max-w-[540px] mx-auto">
-            Informasi lengkap seputar metrik vitalitas, fitur AI, data kawasan, dan akses platform Titik Temu.
+            Informasi lengkap seputar metrik vitalitas, fitur AI, data kawasan, dan akses platform
+            Titik Temu.
           </p>
         </AnimatedSection>
 
@@ -80,7 +78,10 @@ export function FaqSection({ className }: { className?: string }) {
          * Apple §8: The plus icon rotates 45° to hint at the collapse direction
          * before it begins, telegraphing the next state.
          */}
-        <AnimatedSection delay={100} className="divide-y divide-border/50 border-y border-border/50">
+        <AnimatedSection
+          delay={100}
+          className="divide-y divide-border/50 border-y border-border/50"
+        >
           {FAQ_LIST.map((faq) => {
             const isOpen = openId === faq.id;
 
@@ -96,7 +97,8 @@ export function FaqSection({ className }: { className?: string }) {
                   aria-expanded={isOpen}
                   aria-controls={`faq-body-${faq.id}`}
                 >
-                  <span className="font-display text-[16px] sm:text-[18px] font-semibold text-foreground group-hover:text-primary transition-colors pr-6 leading-snug"
+                  <span
+                    className="font-display text-[16px] sm:text-[18px] font-semibold text-foreground group-hover:text-primary transition-colors pr-6 leading-snug"
                     style={{ transition: "color 150ms ease" }}
                   >
                     {faq.question}
@@ -159,7 +161,6 @@ export function FaqSection({ className }: { className?: string }) {
             );
           })}
         </AnimatedSection>
-
       </div>
     </section>
   );

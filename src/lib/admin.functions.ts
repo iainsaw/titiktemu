@@ -15,27 +15,29 @@ async function requireAdmin(userId: string) {
 }
 
 export const insertOfficialStation = createServerFn({ method: "POST" })
-  .validator((data: { 
-    userId: string;
-    station: {
-      id: string;
-      nama: string;
-      koridor: string;
-      klaster: string;
-      umkm_count: number;
-      skor_properti: number;
-      skor_layanan: number;
-      skor_ekonomi: number;
-      skor_akses: number;
-      harga_tanah_m2: number;
-      lng: number;
-      lat: number;
-    }
-  }) => data)
+  .validator(
+    (data: {
+      userId: string;
+      station: {
+        id: string;
+        nama: string;
+        koridor: string;
+        klaster: string;
+        umkm_count: number;
+        skor_properti: number;
+        skor_layanan: number;
+        skor_ekonomi: number;
+        skor_akses: number;
+        harga_tanah_m2: number;
+        lng: number;
+        lat: number;
+      };
+    }) => data,
+  )
   .handler(async ({ data: { userId, station } }) => {
     await requireAdmin(userId);
 
-    const { error } = await supabaseServer.from("tod_stations").insert({
+    const { error } = await supabaseServer!.from("tod_stations").insert({
       id: station.id,
       nama: station.nama,
       koridor: station.koridor,
@@ -57,7 +59,7 @@ export const deleteOfficialStation = createServerFn({ method: "POST" })
   .validator((data: { userId: string; stationId: string }) => data)
   .handler(async ({ data: { userId, stationId } }) => {
     await requireAdmin(userId);
-    const { error } = await supabaseServer.from("tod_stations").delete().eq("id", stationId);
+    const { error } = await supabaseServer!.from("tod_stations").delete().eq("id", stationId);
     if (error) throw new Error(error.message);
     return { success: true };
   });
@@ -68,7 +70,7 @@ export const createSurvey = createServerFn({ method: "POST" })
   .validator((data: { userId: string; survey: any }) => data)
   .handler(async ({ data: { userId, survey } }) => {
     await requireAdmin(userId);
-    const { error } = await supabaseServer.from("surveys").insert(survey);
+    const { error } = await supabaseServer!.from("surveys").insert(survey);
     if (error) throw new Error(error.message);
     return { success: true };
   });
@@ -77,7 +79,7 @@ export const deleteSurvey = createServerFn({ method: "POST" })
   .validator((data: { userId: string; surveyId: string }) => data)
   .handler(async ({ data: { userId, surveyId } }) => {
     await requireAdmin(userId);
-    const { error } = await supabaseServer.from("surveys").delete().eq("id", surveyId);
+    const { error } = await supabaseServer!.from("surveys").delete().eq("id", surveyId);
     if (error) throw new Error(error.message);
     return { success: true };
   });
@@ -88,7 +90,7 @@ export const createTeamMember = createServerFn({ method: "POST" })
   .validator((data: { userId: string; member: any }) => data)
   .handler(async ({ data: { userId, member } }) => {
     await requireAdmin(userId);
-    const { error } = await supabaseServer.from("team_members").insert(member);
+    const { error } = await supabaseServer!.from("team_members").insert(member);
     if (error) throw new Error(error.message);
     return { success: true };
   });
@@ -97,7 +99,7 @@ export const updateTeamMember = createServerFn({ method: "POST" })
   .validator((data: { userId: string; id: string; member: any }) => data)
   .handler(async ({ data: { userId, id, member } }) => {
     await requireAdmin(userId);
-    const { error } = await supabaseServer.from("team_members").update(member).eq("id", id);
+    const { error } = await supabaseServer!.from("team_members").update(member).eq("id", id);
     if (error) throw new Error(error.message);
     return { success: true };
   });
@@ -110,4 +112,3 @@ export const deleteTeamMember = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { success: true };
   });
-

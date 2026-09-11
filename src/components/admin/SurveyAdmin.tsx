@@ -28,7 +28,10 @@ export function SurveyAdmin() {
 
   const loadSurveys = async () => {
     setLoading(true);
-    const { data } = await supabase.from("surveys").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("surveys")
+      .select("*")
+      .order("created_at", { ascending: false });
     setSurveys(data || []);
     setLoading(false);
   };
@@ -47,12 +50,12 @@ export function SurveyAdmin() {
   const uploadFiles = async () => {
     const uploadedUrls: any[] = [];
     for (const file of files) {
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `surveys/${fileName}`;
 
       const { error: uploadError, data } = await supabase.storage
-        .from('images')
+        .from("images")
         .upload(filePath, file);
 
       if (uploadError) {
@@ -61,11 +64,11 @@ export function SurveyAdmin() {
 
       if (data) {
         // Get public URL
-        const { data: publicUrlData } = supabase.storage.from('images').getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage.from("images").getPublicUrl(filePath);
         uploadedUrls.push({
           judul: "Foto Survei",
           keterangan: "Diunggah oleh admin",
-          src: publicUrlData.publicUrl
+          src: publicUrlData.publicUrl,
         });
       }
     }
@@ -85,7 +88,7 @@ export function SurveyAdmin() {
       }
 
       // 2. Parse temuan (split by newline)
-      const temuanArray = form.temuan.split('\n').filter(t => t.trim() !== "");
+      const temuanArray = form.temuan.split("\n").filter((t) => t.trim() !== "");
 
       // 3. Save to DB
       await createSurvey({
@@ -95,14 +98,20 @@ export function SurveyAdmin() {
             ...form,
             temuan: temuanArray,
             fotos: fotos,
-          }
-        }
+          },
+        },
       });
 
       alert("Survei berhasil ditambahkan!");
       setForm({
-        kawasan_id: "", lokasi: "", tanggal: "", surveyor: "",
-        metode: "", titik: 0, temuan: "", catatan: "",
+        kawasan_id: "",
+        lokasi: "",
+        tanggal: "",
+        surveyor: "",
+        metode: "",
+        titik: 0,
+        temuan: "",
+        catatan: "",
       });
       setFiles([]);
       loadSurveys();
@@ -135,47 +144,127 @@ export function SurveyAdmin() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">ID Kawasan</label>
-              <input required value={form.kawasan_id} onChange={e => setForm({...form, kawasan_id: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Misal: KWS-01" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                ID Kawasan
+              </label>
+              <input
+                required
+                value={form.kawasan_id}
+                onChange={(e) => setForm({ ...form, kawasan_id: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="Misal: KWS-01"
+              />
             </div>
             <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Lokasi</label>
-              <input required value={form.lokasi} onChange={e => setForm({...form, lokasi: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Nama tempat" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Lokasi
+              </label>
+              <input
+                required
+                value={form.lokasi}
+                onChange={(e) => setForm({ ...form, lokasi: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="Nama tempat"
+              />
             </div>
             <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Tanggal</label>
-              <input required value={form.tanggal} onChange={e => setForm({...form, tanggal: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="29 Agustus 2026" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Tanggal
+              </label>
+              <input
+                required
+                value={form.tanggal}
+                onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="29 Agustus 2026"
+              />
             </div>
             <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Surveyor</label>
-              <input required value={form.surveyor} onChange={e => setForm({...form, surveyor: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Nama surveyor" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Surveyor
+              </label>
+              <input
+                required
+                value={form.surveyor}
+                onChange={(e) => setForm({ ...form, surveyor: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="Nama surveyor"
+              />
             </div>
             <div className="sm:col-span-2">
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Metode</label>
-              <input required value={form.metode} onChange={e => setForm({...form, metode: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Metode survei..." />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Metode
+              </label>
+              <input
+                required
+                value={form.metode}
+                onChange={(e) => setForm({ ...form, metode: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="Metode survei..."
+              />
             </div>
             <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Jumlah Titik</label>
-              <input required type="number" value={form.titik} onChange={e => setForm({...form, titik: Number(e.target.value)})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Jumlah Titik
+              </label>
+              <input
+                required
+                type="number"
+                value={form.titik}
+                onChange={(e) => setForm({ ...form, titik: Number(e.target.value) })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+              />
             </div>
             <div className="sm:col-span-2">
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Temuan (Pisahkan dengan Enter)</label>
-              <textarea rows={3} required value={form.temuan} onChange={e => setForm({...form, temuan: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" placeholder="Temuan 1&#10;Temuan 2" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Temuan (Pisahkan dengan Enter)
+              </label>
+              <textarea
+                rows={3}
+                required
+                value={form.temuan}
+                onChange={(e) => setForm({ ...form, temuan: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+                placeholder="Temuan 1&#10;Temuan 2"
+              />
             </div>
             <div className="sm:col-span-2">
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Catatan</label>
-              <textarea rows={2} value={form.catatan} onChange={e => setForm({...form, catatan: e.target.value})} className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]" />
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Catatan
+              </label>
+              <textarea
+                rows={2}
+                value={form.catatan}
+                onChange={(e) => setForm({ ...form, catatan: e.target.value })}
+                className="w-full rounded-md border border-border/50 bg-background px-3 py-2 text-[13px]"
+              />
             </div>
             <div className="sm:col-span-2">
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">Upload Foto (Max 5)</label>
+              <label className="mb-1 block text-[11px] uppercase tracking-wider text-muted-foreground">
+                Upload Foto (Max 5)
+              </label>
               <div className="flex items-center gap-2">
                 <ImageIcon className="size-4 text-muted-foreground" />
-                <input type="file" multiple accept="image/*" onChange={handleFileChange} className="text-[13px]" />
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="text-[13px]"
+                />
               </div>
             </div>
           </div>
-          <button disabled={isSubmitting} type="submit" className="mt-4 flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
-            {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="mt-4 flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Plus className="size-4" />
+            )}
             {isSubmitting ? "Menyimpan..." : "Tambah Survei"}
           </button>
         </form>
@@ -184,28 +273,41 @@ export function SurveyAdmin() {
       {/* Tabel Survei */}
       <div className="rounded-2xl border border-border/30 bg-secondary/10 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center"><Loader2 className="size-5 animate-spin mx-auto text-muted-foreground" /></div>
+          <div className="p-8 text-center">
+            <Loader2 className="size-5 animate-spin mx-auto text-muted-foreground" />
+          </div>
         ) : surveys.length === 0 ? (
-           <div className="p-8 text-center text-[13px] text-muted-foreground">Belum ada survei.</div>
+          <div className="p-8 text-center text-[13px] text-muted-foreground">Belum ada survei.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-[13px]">
               <thead className="border-b border-border/20 bg-secondary/30">
                 <tr>
-                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">Lokasi</th>
-                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">Tanggal</th>
-                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">Surveyor</th>
-                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">Aksi</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    Lokasi
+                  </th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    Tanggal
+                  </th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    Surveyor
+                  </th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    Aksi
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/10">
-                {surveys.map(s => (
+                {surveys.map((s) => (
                   <tr key={s.id}>
                     <td className="px-4 py-3 font-medium">{s.lokasi}</td>
                     <td className="px-4 py-3">{s.tanggal}</td>
                     <td className="px-4 py-3">{s.surveyor}</td>
                     <td className="px-4 py-3">
-                      <button onClick={() => handleDelete(s.id, s.lokasi)} className="text-red-500 hover:underline flex items-center gap-1">
+                      <button
+                        onClick={() => handleDelete(s.id, s.lokasi)}
+                        className="text-red-500 hover:underline flex items-center gap-1"
+                      >
                         <Trash2 className="size-3" /> Hapus
                       </button>
                     </td>

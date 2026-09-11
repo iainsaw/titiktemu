@@ -18,7 +18,12 @@ const nav = [
 
 function getInitials(email: string, displayName?: string | null): string {
   if (displayName) {
-    return displayName.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
+    return displayName
+      .split(" ")
+      .slice(0, 2)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase();
   }
   return email.split("@")[0].slice(0, 2).toUpperCase();
 }
@@ -64,14 +69,12 @@ export function SiteHeader() {
        * Apple §7: Enter and exit along the same path — header is sticky,
        * so it never disappears and doesn't need an enter animation.
        */}
-      <header
-        className={cn(
-          "sticky top-0 z-40 glass-nav",
-          scrolled && "glass-nav-scrolled"
-        )}
-      >
+      <header className={cn("sticky top-0 z-40 glass-nav", scrolled && "glass-nav-scrolled")}>
         <div className="mx-auto flex h-11 max-w-[1180px] items-center justify-between gap-4 px-5 text-[13px] lg:grid lg:grid-cols-[auto_1fr_auto]">
-          <Link to="/" className="flex flex-1 lg:flex-none items-center gap-2 font-display text-[15px] font-semibold tracking-tight">
+          <Link
+            to="/"
+            className="flex flex-1 lg:flex-none items-center gap-2 font-display text-[15px] font-semibold tracking-tight"
+          >
             <img src={logoMark.url} alt="Logo Titik Temu" className="size-6 shrink-0" />
             <span className="hidden sm:inline">Titik Temu</span>
           </Link>
@@ -81,6 +84,8 @@ export function SiteHeader() {
               <Link
                 key={item.to}
                 to={item.to}
+                preload="intent"
+
                 activeOptions={{ exact: item.to === "/" }}
                 className="whitespace-nowrap text-foreground/55 transition-colors hover:text-foreground/90"
                 activeProps={{ className: "!text-foreground font-medium" }}
@@ -97,6 +102,7 @@ export function SiteHeader() {
              */}
             <Link
               to="/peta"
+              preload="intent"
               className="pill hidden bg-primary px-3.5 py-1.5 text-[13px] font-medium text-primary-foreground [transition:transform_100ms_ease-out,opacity_100ms_ease] supports-[selector(:hover)]:hover:opacity-90 active:scale-[0.97] active:transition-none sm:inline-block"
             >
               Jelajahi Peta
@@ -111,15 +117,17 @@ export function SiteHeader() {
                       onClick={() => setDropdownOpen(!dropdownOpen)}
                       className={cn(
                         "flex items-center gap-1.5 rounded-xl px-2 py-1 transition-colors hover:bg-secondary/60 active:scale-[0.97] active:transition-none",
-                        dropdownOpen && "bg-secondary/60"
+                        dropdownOpen && "bg-secondary/60",
                       )}
                     >
-                      <div className={cn(
-                        "flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold",
-                        isAdmin
-                          ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/40"
-                          : "bg-primary/10 text-primary ring-1 ring-primary/30"
-                      )}>
+                      <div
+                        className={cn(
+                          "flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold",
+                          isAdmin
+                            ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/40"
+                            : "bg-primary/10 text-primary ring-1 ring-primary/30",
+                        )}
+                      >
                         {initials}
                       </div>
                       {/*
@@ -142,14 +150,19 @@ export function SiteHeader() {
                      * Using CSS animate-in utilities + scale origin for spatial anchoring.
                      */}
                     {dropdownOpen && (
-                      <div className="absolute right-0 top-full mt-2 w-52 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-[200ms] origin-top-right"
+                      <div
+                        className="absolute right-0 top-full mt-2 w-52 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-[200ms] origin-top-right"
                         style={{ animationTimingFunction: "cubic-bezier(0.34, 1.2, 0.64, 1)" }}
                       >
                         <div className="rounded-2xl border border-border/30 bg-background/95 backdrop-blur-xl shadow-2xl overflow-hidden p-1.5">
                           {/* User Info */}
                           <div className="px-3 py-2 mb-1">
-                            <p className="text-[12px] font-medium truncate">{displayName || user.email?.split("@")[0]}</p>
-                            <p className="text-[11px] text-muted-foreground/60 truncate">{user.email}</p>
+                            <p className="text-[12px] font-medium truncate">
+                              {displayName || user.email?.split("@")[0]}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground/60 truncate">
+                              {user.email}
+                            </p>
                             {isAdmin && (
                               <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400">
                                 ✦ Admin
@@ -163,7 +176,9 @@ export function SiteHeader() {
                           {isAdmin && (
                             <Link
                               to="/admin"
+                              preload="intent"
                               onClick={() => setDropdownOpen(false)}
+
                               className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] font-medium text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors active:scale-[0.98] active:transition-none"
                             >
                               <LayoutDashboard className="size-3.5" />
@@ -172,7 +187,10 @@ export function SiteHeader() {
                           )}
 
                           <button
-                            onClick={async () => { await signOut(); setDropdownOpen(false); }}
+                            onClick={async () => {
+                              await signOut();
+                              setDropdownOpen(false);
+                            }}
                             className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors active:scale-[0.98] active:transition-none"
                           >
                             <LogOut className="size-3.5" />
@@ -264,7 +282,9 @@ export function SiteHeader() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
+                    preload="intent"
                     onClick={() => setMobileOpen(false)}
+
                     activeOptions={{ exact: item.to === "/" }}
                     className="block rounded-xl px-3 py-2.5 text-[15px] text-foreground/70 transition-colors hover:bg-secondary/60 active:bg-secondary/80 active:scale-[0.99]"
                     activeProps={{ className: "bg-secondary/80 !text-foreground font-medium" }}
@@ -277,6 +297,7 @@ export function SiteHeader() {
                 <li>
                   <Link
                     to="/admin"
+                    preload="intent"
                     onClick={() => setMobileOpen(false)}
                     className="block rounded-xl px-3 py-2.5 text-[15px] font-medium text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
                   >
@@ -287,7 +308,10 @@ export function SiteHeader() {
               {!user && !loading && (
                 <li className="mt-2 border-t border-border/30 pt-2">
                   <button
-                    onClick={() => { setMobileOpen(false); setAuthModalOpen(true); }}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      setAuthModalOpen(true);
+                    }}
                     className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/70 transition-colors hover:bg-secondary/60 hover:text-foreground active:scale-[0.99]"
                   >
                     <LogIn className="size-4" />

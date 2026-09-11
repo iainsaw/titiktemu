@@ -82,7 +82,6 @@ const TIM = [
   },
 ];
 
-
 const INISIAL = (nama: string) =>
   nama
     .replace(/^Dr\.\s*/, "")
@@ -120,7 +119,10 @@ function TentangTim() {
   useEffect(() => {
     async function loadTeam() {
       try {
-        const { data, error } = await supabase.from("team_members").select("*").order("order_index", { ascending: true });
+        const { data, error } = await supabase
+          .from("team_members")
+          .select("*")
+          .order("order_index", { ascending: true });
         if (!error && data && data.length > 0) {
           // If loaded from DB, we use it directly
           setTeam(data);
@@ -133,12 +135,12 @@ function TentangTim() {
       // Fallback: load secure urls for hardcoded TIM
       const updatedTim = await Promise.all(
         TIM.map(async (t) => {
-          if (t.foto && t.foto.startsWith('/')) {
+          if (t.foto && t.foto.startsWith("/")) {
             const url = await getSecureAssetUrl(t.foto);
             return { ...t, foto: url || t.foto };
           }
           return t;
-        })
+        }),
       );
       setTeam(updatedTim);
     }
@@ -150,16 +152,21 @@ function TentangTim() {
       <SiteHeader />
       <main className="mx-auto max-w-[1180px] px-4 py-10 sm:px-5 sm:py-16">
         <AnimatedSection>
-          <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px]">TIM</p>
+          <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px]">
+            TIM
+          </p>
           <h1 className="headline mt-3 text-[clamp(30px,9vw,56px)]">Urban Nadi</h1>
           <p className="mt-4 max-w-[620px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
             Tim di balik <span className="font-semibold text-foreground">Titik Temu</span> merupakan
-            kolaborasi mahasiswa dan dosen pembimbing dari Teknik Geodesi dan Geomatika, Institut Teknologi Bandung 
-            untuk WebGIS Skor Vitalitas Transit, pilot Kawasan Kota Bandung.
+            kolaborasi mahasiswa dan dosen pembimbing dari Teknik Geodesi dan Geomatika, Institut
+            Teknologi Bandung untuk WebGIS Skor Vitalitas Transit, pilot Kawasan Kota Bandung.
           </p>
         </AnimatedSection>
 
-        <AnimatedSection delay={150} className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
+        <AnimatedSection
+          delay={150}
+          className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3"
+        >
           {team.map((t) => (
             <article
               key={t.nama}
@@ -167,9 +174,9 @@ function TentangTim() {
             >
               <div className="absolute inset-0 bg-linear-to-br from-primary/35 via-ink to-ink" />
 
-              {t.foto_url || t.foto ? (
+              {(t as any).foto_url || t.foto ? (
                 <img
-                  src={t.foto_url || t.foto}
+                  src={(t as any).foto_url || t.foto}
                   alt={`Foto ${t.nama}`}
                   loading="lazy"
                   className="absolute inset-0 size-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
@@ -181,14 +188,17 @@ function TentangTim() {
               )}
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink via-ink/80 to-transparent" />
 
-
               <span className="pill absolute top-2.5 left-2.5 bg-background/90 px-2 py-0.5 text-[9px] font-semibold tracking-[0.12em] text-foreground sm:top-4 sm:left-4 sm:px-3 sm:py-1 sm:text-[10px]">
                 {t.label}
               </span>
 
               <div className="relative p-3 text-ink-foreground sm:p-5">
-                <h2 className="text-[13px] font-semibold leading-tight tracking-tight sm:text-[17px]">{t.nama}</h2>
-                <p className="mt-0.5 text-[11px] text-ink-foreground/70 sm:text-[13px]">{t.peran}</p>
+                <h2 className="text-[13px] font-semibold leading-tight tracking-tight sm:text-[17px]">
+                  {t.nama}
+                </h2>
+                <p className="mt-0.5 text-[11px] text-ink-foreground/70 sm:text-[13px]">
+                  {t.peran}
+                </p>
                 <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-ink-foreground/60 sm:mt-2 sm:line-clamp-3 sm:text-[12px]">
                   {t.teks}
                 </p>
@@ -205,7 +215,11 @@ function TentangTim() {
                     </IconBtn>
                   )}
                   {t.telp ? (
-                    <a href={`https://wa.me/${t.telp.replace(/^0/, '62')}`} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={`https://wa.me/${t.telp.replace(/^0/, "62")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <IconBtn label={`Telepon ${t.nama}`}>
                         <Phone className="size-3.5" />
                       </IconBtn>
@@ -215,8 +229,8 @@ function TentangTim() {
                       <Phone className="size-3.5" />
                     </IconBtn>
                   )}
-                  {t.linkedin && (
-                    t.linkedin_url ? (
+                  {t.linkedin &&
+                    (t.linkedin_url ? (
                       <a href={t.linkedin_url} target="_blank" rel="noopener noreferrer">
                         <IconBtn label={`LinkedIn ${t.nama}`}>
                           <Linkedin className="size-3.5" />
@@ -226,15 +240,12 @@ function TentangTim() {
                       <IconBtn label={`LinkedIn ${t.nama}`}>
                         <Linkedin className="size-3.5" />
                       </IconBtn>
-                    )
-                  )}
+                    ))}
                 </div>
               </div>
-
             </article>
           ))}
         </AnimatedSection>
-
       </main>
       <SiteFooter />
     </div>
@@ -250,6 +261,5 @@ function IconBtn({ label, children }: { label: string; children: React.ReactNode
     >
       {children}
     </span>
-
   );
 }

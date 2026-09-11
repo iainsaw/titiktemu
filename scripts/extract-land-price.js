@@ -8,7 +8,10 @@ const __dirname = path.dirname(__filename);
 const csvPath = path.join(__dirname, "../public/Harga Rumah Kota Bandung/results_cleaned.csv");
 const outputPath = path.join(__dirname, "../public/harga-tanah-ekstraksi.json");
 
-const lines = fs.readFileSync(csvPath, "utf8").split("\n").filter(l => l.trim() !== "");
+const lines = fs
+  .readFileSync(csvPath, "utf8")
+  .split("\n")
+  .filter((l) => l.trim() !== "");
 
 const locationData = {};
 const BIAYA_BANGUN = 5000000;
@@ -20,20 +23,20 @@ for (let i = 1; i < lines.length; i++) {
     const price = parseFloat(row[5]);
     const landArea = parseFloat(row[6]);
     const buildArea = parseFloat(row[7]);
-    
+
     if (isNaN(price) || isNaN(landArea) || isNaN(buildArea) || landArea <= 0) continue;
-    
+
     const buildingValue = buildArea * BIAYA_BANGUN;
     let landValue = price - buildingValue;
-    
+
     // Jika landValue negatif, artinya bangunan sangat menyusut / beban pembongkaran.
     // Anggap saja harga jual = harga tanah murni (pembeli beli lahan, bongkar bangunan)
     if (landValue <= 0) {
-      landValue = price; 
+      landValue = price;
     }
-    
+
     const pricePerM2 = landValue / landArea;
-    
+
     // Filter outlier ekstrim (misal < 500rb atau > 100jt per m2) agar rata-rata rasional
     if (pricePerM2 < 500000 || pricePerM2 > 100000000) continue;
 

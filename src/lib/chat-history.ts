@@ -17,12 +17,12 @@ import type { RoleId } from "./vitality-data";
 
 export interface ChatSession {
   id: string;
-  userId: string | null;   // null = tamu
+  userId: string | null; // null = tamu
   title: string;
   roleId: RoleId;
   kawasanId: string | null;
-  createdAt: string;       // ISO string
-  updatedAt: string;       // ISO string
+  createdAt: string; // ISO string
+  updatedAt: string; // ISO string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -93,7 +93,7 @@ export async function createSession(
   userId: string | null,
   roleId: RoleId,
   kawasanId: string | null,
-  title: string = "Percakapan Baru"
+  title: string = "Percakapan Baru",
 ): Promise<ChatSession> {
   const now = new Date().toISOString();
 
@@ -151,7 +151,7 @@ export async function loadSessions(userId: string | null): Promise<ChatSession[]
   if (!userId || !isSupabaseConfigured) {
     // Urutkan dari terbaru
     return lsGetSessions().sort(
-      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
     );
   }
 
@@ -173,10 +173,7 @@ export async function loadSessions(userId: string | null): Promise<ChatSession[]
 /**
  * Ambil semua pesan dalam sebuah sesi.
  */
-export async function loadMessages(
-  sessionId: string,
-  userId: string | null
-): Promise<Pesan[]> {
+export async function loadMessages(sessionId: string, userId: string | null): Promise<Pesan[]> {
   if (!userId || !isSupabaseConfigured) {
     return lsGetMessages(sessionId);
   }
@@ -204,7 +201,7 @@ export async function loadMessages(
 export async function appendMessage(
   sessionId: string,
   userId: string | null,
-  pesan: Pesan
+  pesan: Pesan,
 ): Promise<void> {
   if (!userId || !isSupabaseConfigured) {
     const current = lsGetMessages(sessionId);
@@ -212,7 +209,7 @@ export async function appendMessage(
 
     // Update updatedAt di LocalStorage session
     const sessions = lsGetSessions().map((s) =>
-      s.id === sessionId ? { ...s, updatedAt: new Date().toISOString() } : s
+      s.id === sessionId ? { ...s, updatedAt: new Date().toISOString() } : s,
     );
     lsSetSessions(sessions);
     return;
@@ -233,19 +230,13 @@ export async function appendMessage(
 /**
  * Hapus sebuah sesi dan semua pesannya.
  */
-export async function deleteSession(
-  sessionId: string,
-  userId: string | null
-): Promise<void> {
+export async function deleteSession(sessionId: string, userId: string | null): Promise<void> {
   if (!userId || !isSupabaseConfigured) {
     lsDeleteSession(sessionId);
     return;
   }
 
-  const { error } = await supabase
-    .from("chat_sessions")
-    .delete()
-    .eq("id", sessionId);
+  const { error } = await supabase.from("chat_sessions").delete().eq("id", sessionId);
 
   if (error) {
     console.error("[deleteSession] Supabase error:", error.message);
@@ -258,22 +249,17 @@ export async function deleteSession(
 export async function renameSession(
   sessionId: string,
   userId: string | null,
-  newTitle: string
+  newTitle: string,
 ): Promise<void> {
   const title = newTitle.trim().slice(0, 80) || "Percakapan Baru";
 
   if (!userId || !isSupabaseConfigured) {
-    const sessions = lsGetSessions().map((s) =>
-      s.id === sessionId ? { ...s, title } : s
-    );
+    const sessions = lsGetSessions().map((s) => (s.id === sessionId ? { ...s, title } : s));
     lsSetSessions(sessions);
     return;
   }
 
-  const { error } = await supabase
-    .from("chat_sessions")
-    .update({ title })
-    .eq("id", sessionId);
+  const { error } = await supabase.from("chat_sessions").update({ title }).eq("id", sessionId);
 
   if (error) {
     console.error("[renameSession] Supabase error:", error.message);

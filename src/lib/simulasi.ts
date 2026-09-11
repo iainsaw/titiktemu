@@ -1,9 +1,4 @@
-import {
-  ROLES,
-  type ComponentId,
-  type Kawasan,
-  type RoleId,
-} from "./vitality-data";
+import { ROLES, type ComponentId, type Kawasan, type RoleId } from "./vitality-data";
 
 export type JenisIntervensi = "halte" | "feeder" | "armada" | "pedestrian";
 
@@ -80,7 +75,7 @@ function bobot(role: RoleId) {
 export function simulasi(
   intervensi: Intervensi[],
   role: RoleId,
-  kawasans: Kawasan[]
+  kawasans: Kawasan[],
 ): HasilSimulasi[] {
   const w = bobot(role);
 
@@ -120,14 +115,20 @@ export function simulasi(
         sesudah.akses * w.akses,
     );
 
-    return { kawasan: k, sebelum, sesudah, skorSebelum, skorSesudah, delta: skorSesudah - skorSebelum };
+    return {
+      kawasan: k,
+      sebelum,
+      sesudah,
+      skorSebelum,
+      skorSesudah,
+      delta: skorSesudah - skorSebelum,
+    };
   });
 }
 
 export function ringkasSimulasi(hasil: HasilSimulasi[], intervensi: Intervensi[]) {
   const terdampak = hasil.filter((h) => h.delta !== 0);
-  const rataSebelum =
-    hasil.reduce((a, b) => a + b.skorSebelum, 0) / (hasil.length || 1);
+  const rataSebelum = hasil.reduce((a, b) => a + b.skorSebelum, 0) / (hasil.length || 1);
   const rataSesudah = hasil.reduce((a, b) => a + b.skorSesudah, 0) / (hasil.length || 1);
 
   const gapSebelum = kesenjangan(hasil.map((h) => h.sebelum.layanan));

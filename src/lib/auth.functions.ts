@@ -41,7 +41,11 @@ export const getAdminStats = createServerFn({ method: "POST" })
 
     // Ambil statistik dari semua tabel
     const [stationsRes, poisRes, layananRes, aksesRes, hargaTanahRes] = await Promise.all([
-      supabaseServer.from("tod_stations").select("id, nama, skor_ekonomi, skor_layanan, skor_akses, skor_properti, umkm_count, updated_at"),
+      supabaseServer
+        .from("tod_stations")
+        .select(
+          "id, nama, skor_ekonomi, skor_layanan, skor_akses, skor_properti, umkm_count, updated_at",
+        ),
       supabaseServer.from("osm_pois").select("id", { count: "exact", head: true }),
       supabaseServer.from("osm_layanan").select("id", { count: "exact", head: true }),
       supabaseServer.from("osm_akses").select("id", { count: "exact", head: true }),

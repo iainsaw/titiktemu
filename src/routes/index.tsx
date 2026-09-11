@@ -74,8 +74,6 @@ function Beranda() {
     staleTime: Infinity,
   });
 
-
-
   const rata = Math.round(
     kawasans.reduce((a, k) => a + hitungSkor(k, "investor"), 0) / kawasans.length,
   );
@@ -102,8 +100,6 @@ function Beranda() {
         <div className="absolute inset-x-0 bottom-0 h-72 bg-linear-to-t from-background via-ink/40 to-transparent" />
 
         <div className="relative mx-auto max-w-[900px] px-4 pt-24 pb-12 text-center text-ink-foreground sm:px-5 sm:pt-36 sm:pb-16">
-
-
           <h1
             className="headline hero-rise mt-5 text-[clamp(38px,12vw,76px)] text-ink-foreground sm:mt-6"
             style={{ animationDelay: "0.18s" }}
@@ -114,7 +110,8 @@ function Beranda() {
             className="hero-rise mx-auto mt-4 max-w-[640px] text-[15px] leading-relaxed text-ink-foreground/85 sm:mt-5 sm:text-[22px]"
             style={{ animationDelay: "0.3s" }}
           >
-            Peta pintar untuk melihat potensi ekonomi di sekitar stasiun dan halte. Mengubah jutaan data menjadi satu skor yang mudah dipahami oleh pemerintah, investor, dan UMKM.
+            Peta pintar untuk melihat potensi ekonomi di sekitar stasiun dan halte. Mengubah jutaan
+            data menjadi satu skor yang mudah dipahami oleh pemerintah, investor, dan UMKM.
           </p>
           <div
             className="hero-rise mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:mt-9 sm:gap-3"
@@ -139,7 +136,6 @@ function Beranda() {
             </Link>
           </div>
         </div>
-
 
         <div className="relative mx-auto grid max-w-[1100px] grid-cols-1 gap-4 px-4 pb-10 sm:grid-cols-3 sm:gap-5 sm:px-5 sm:pb-14">
           {[
@@ -171,44 +167,69 @@ function Beranda() {
                    * active:scale-[0.98] works on all devices (press feedback).
                    */
                   "hero-rise flex flex-col justify-center p-5 rounded-[20px] sm:p-6 shadow-xl shadow-black/5 [transition:transform_200ms_var(--ease-out)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 active:scale-[0.98] active:transition-none",
-                  isDark ? "bg-ink text-ink-foreground" : "bg-background border border-border/40"
+                  isDark ? "bg-ink text-ink-foreground" : "bg-background border border-border/40",
                 )}
                 style={{ animationDelay: `${0.55 + i * 0.12}s` }}
               >
-                <p className={cn(
-                  "text-[11px] font-semibold tracking-widest uppercase sm:text-[12px]",
-                  isDark ? "text-white/50" : "text-muted-foreground"
-                )}>
+                <p
+                  className={cn(
+                    "text-[11px] font-semibold tracking-widest uppercase sm:text-[12px]",
+                    isDark ? "text-white/50" : "text-muted-foreground",
+                  )}
+                >
                   {c.tag}
                 </p>
-                <p className={cn(
-                  "mt-2 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]",
-                  isDark ? "text-white" : ""
-                )}>{c.judul}</p>
-                <p className={cn(
-                  "mt-1.5 text-[13px] leading-relaxed sm:text-[15px]",
-                  isDark ? "text-white/70" : "text-muted-foreground"
-                )}>{c.teks}</p>
+                <p
+                  className={cn(
+                    "mt-2 font-display text-[18px] font-semibold tracking-tight leading-tight sm:text-[22px]",
+                    isDark ? "text-white" : "",
+                  )}
+                >
+                  {c.judul}
+                </p>
+                <p
+                  className={cn(
+                    "mt-1.5 text-[13px] leading-relaxed sm:text-[15px]",
+                    isDark ? "text-white/70" : "text-muted-foreground",
+                  )}
+                >
+                  {c.teks}
+                </p>
               </div>
             );
           })}
         </div>
       </section>
 
-
       <main className="mx-auto max-w-[1100px] px-4 py-12 sm:px-5 sm:py-16">
         {/* 1. Mengapa Titik Temu Dibangun? */}
         <AnimatedSection className="mx-auto max-w-[760px] text-center">
           <h2 className="headline text-[clamp(24px,7vw,40px)]">Mengapa Titik Temu Dibangun?</h2>
           <p className="mt-4 text-[14.5px] leading-relaxed text-muted-foreground sm:text-[16px]">
-            Seringkali, keputusan bisnis atau tata ruang dibuat berdasarkan insting karena data properti, akses transportasi, dan ekonomi warga tersebar di mana-mana. Titik Temu menggabungkan semua data tersebut ke dalam satu peta interaktif, memberikan panduan yang jelas bagi Bappeda, Dinas Perhubungan, pengembang properti, hingga pelaku UMKM.
+            Seringkali, keputusan bisnis atau tata ruang dibuat berdasarkan insting karena data
+            properti, akses transportasi, dan ekonomi warga tersebar di mana-mana. Titik Temu
+            menggabungkan semua data tersebut ke dalam satu peta interaktif, memberikan panduan yang
+            jelas bagi Bappeda, Dinas Perhubungan, pengembang properti, hingga pelaku UMKM.
           </p>
         </AnimatedSection>
 
         {/* 2. Kawasan dianalisis */}
-        <AnimatedSection delay={150} className="mt-10 grid grid-cols-2 gap-2.5 sm:gap-3 lg:mt-14 lg:grid-cols-4">
-          <Stat icon={MapPin} label="Kawasan dianalisis" value={kawasans.length} sub="radius 800m" />
-          <Stat icon={ClipboardList} label="Titik survei lapangan" value={RINGKASAN_SURVEI.totalTitik} sub={`${RINGKASAN_SURVEI.totalLokasi} lokasi`} />
+        <AnimatedSection
+          delay={150}
+          className="mt-10 grid grid-cols-2 gap-2.5 sm:gap-3 lg:mt-14 lg:grid-cols-4"
+        >
+          <Stat
+            icon={MapPin}
+            label="Kawasan dianalisis"
+            value={kawasans.length}
+            sub="radius 800m"
+          />
+          <Stat
+            icon={ClipboardList}
+            label="Titik survei lapangan"
+            value={RINGKASAN_SURVEI.totalTitik}
+            sub={`${RINGKASAN_SURVEI.totalLokasi} lokasi`}
+          />
           <Stat icon={Layers} label="Skor rata-rata pilot" value={rata} sub="peran investor" />
           <Stat
             icon={Store}
@@ -222,7 +243,9 @@ function Beranda() {
         <AnimatedSection delay={250} className="mt-10 lg:mt-14">
           <div className="panel relative flex flex-col overflow-hidden p-4 sm:p-5">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">Cuplikan peta vitalitas</h2>
+              <h2 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">
+                Cuplikan peta vitalitas
+              </h2>
               <Link
                 to="/peta"
                 className="text-[11px] font-medium text-primary hover:underline sm:text-[12px]"
@@ -230,7 +253,7 @@ function Beranda() {
                 Buka Peta Penuh ›
               </Link>
             </div>
-            
+
             {/* Map Section */}
             <div className="relative w-full overflow-hidden rounded-[20px] border border-border/40 bg-muted/30 shadow-inner">
               <VitalityMap
@@ -257,11 +280,9 @@ function Beranda() {
                   ) : (
                     insights?.map((insight: string, idx: number) => {
                       const formattedHTML = insight
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em>$1</em>');
-                      return (
-                        <p key={idx} dangerouslySetInnerHTML={{ __html: formattedHTML }} />
-                      );
+                        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                        .replace(/\*(.*?)\*/g, "<em>$1</em>");
+                      return <p key={idx} dangerouslySetInnerHTML={{ __html: formattedHTML }} />;
                     })
                   )}
                 </div>
@@ -271,34 +292,50 @@ function Beranda() {
         </AnimatedSection>
 
         {/* 4. Akses Peran */}
-        <AnimatedSection delay={150} animation="fade-in-up" className="tinted-section mt-10 grid grid-cols-1 gap-4 rounded-[24px] p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 md:grid-cols-3 lg:mt-14">
+        <AnimatedSection
+          delay={150}
+          animation="fade-in-up"
+          className="tinted-section mt-10 grid grid-cols-1 gap-4 rounded-[24px] p-4 sm:grid-cols-2 sm:gap-5 sm:p-6 md:grid-cols-3 lg:mt-14"
+        >
           {KARTU.map((k, i) => {
             const isDark = i === 1;
             const isGray = i === 2;
-            
+
             return (
-              <div 
-                key={k.judul} 
+              <div
+                key={k.judul}
                 className={cn(
                   "flex flex-col p-6 rounded-[20px] sm:p-8 shadow-xl shadow-black/5 transition-transform hover:-translate-y-1",
-                  isDark ? "bg-ink text-ink-foreground" : isGray ? "bg-secondary/50" : "bg-background border border-border/40"
+                  isDark
+                    ? "bg-ink text-ink-foreground"
+                    : isGray
+                      ? "bg-secondary/50"
+                      : "bg-background border border-border/40",
                 )}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <span className={cn(
-                    "text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]",
-                    isDark ? "text-white/50" : "text-muted-foreground"
-                  )}>
+                  <span
+                    className={cn(
+                      "text-[11px] font-semibold uppercase tracking-widest sm:text-[12px]",
+                      isDark ? "text-white/50" : "text-muted-foreground",
+                    )}
+                  >
                     Akses Peran
                   </span>
                 </div>
-                
-                <h3 className="font-display text-[22px] font-semibold tracking-tight leading-tight sm:text-[26px]">{k.judul}</h3>
-                <p className={cn(
-                  "mt-3 flex-1 text-[14px] leading-relaxed sm:text-[16px]",
-                  isDark ? "text-white/70" : "text-muted-foreground"
-                )}>{k.teks}</p>
-                
+
+                <h3 className="font-display text-[22px] font-semibold tracking-tight leading-tight sm:text-[26px]">
+                  {k.judul}
+                </h3>
+                <p
+                  className={cn(
+                    "mt-3 flex-1 text-[14px] leading-relaxed sm:text-[16px]",
+                    isDark ? "text-white/70" : "text-muted-foreground",
+                  )}
+                >
+                  {k.teks}
+                </p>
+
                 <Link
                   to="/peta"
                   search={{ peran: k.peran }}
@@ -309,7 +346,7 @@ function Beranda() {
                      * [transition:transform] — specific, not 'all'.
                      */
                     "mt-8 block w-full rounded-full py-3.5 text-center text-[14px] font-semibold [transition:transform_150ms_var(--ease-out)] [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02] active:scale-[0.97] active:transition-none sm:text-[15px]",
-                    isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground"
+                    isDark ? "bg-background text-foreground" : "bg-ink text-ink-foreground",
                   )}
                 >
                   Pilih {k.tombol}
@@ -324,7 +361,10 @@ function Beranda() {
       </main>
 
       <section className="ink-section">
-        <AnimatedSection animation="zoom-in" className="mx-auto max-w-[860px] px-4 py-16 text-center sm:px-5 sm:py-24">
+        <AnimatedSection
+          animation="zoom-in"
+          className="mx-auto max-w-[860px] px-4 py-16 text-center sm:px-5 sm:py-24"
+        >
           <h2 className="headline text-[clamp(28px,8vw,50px)]">
             Mulai dari peta.
             <br />
@@ -360,11 +400,15 @@ function Beranda() {
 function Stat({ icon: Icon, label, value, sub }: any) {
   return (
     <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40">
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
-      <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
-        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">
+        {label}
       </p>
-      <p className="mt-1.5 text-[11px] uppercase tracking-widest text-muted-foreground leading-relaxed sm:text-[12px]">{sub}</p>
+      <p className="font-display text-[32px] font-semibold tracking-tight leading-none sm:text-[42px]">
+        {typeof value === "number" ? <AnimatedNumber value={value} /> : value}
+      </p>
+      <p className="mt-1.5 text-[11px] uppercase tracking-widest text-muted-foreground leading-relaxed sm:text-[12px]">
+        {sub}
+      </p>
     </div>
   );
 }

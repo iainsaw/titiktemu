@@ -15,15 +15,16 @@ export const fetchAllMAPIDMissionsFn = createServerFn({ method: "POST" })
       fetchMAPIDMission("struckgo", polygon, apiKey),
     ]);
 
-    const tagMission = (features: any[], type: string) => features.map(f => {
-      f.properties = f.properties || {};
-      f.properties.mission = type;
-      return f;
-    });
+    const tagMission = (features: any[], type: string) =>
+      features.map((f) => {
+        f.properties = f.properties || {};
+        f.properties.mission = type;
+        return f;
+      });
 
-    return { 
-      properti: tagMission(properti, "properti"), 
-      menu: tagMission(menu, "menu"), 
-      struk: tagMission(struk, "struk") 
+    return {
+      properti: tagMission(properti, "properti"),
+      menu: tagMission(menu, "menu"),
+      struk: tagMission(struk, "struk"),
     };
   });

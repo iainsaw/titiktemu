@@ -48,7 +48,7 @@ type Props = {
 export const KOORDINAT: Record<string, [number, number]> = {
   "KWS-01": [107.6061, -6.9218], // Alun-Alun Bandung
   "KWS-02": [107.6019, -6.9137], // Stasiun Bandung
-  "KWS-03": [107.5960, -6.9458], // Terminal Leuwipanjang
+  "KWS-03": [107.596, -6.9458], // Terminal Leuwipanjang
   "KWS-04": [107.6033, -6.9328], // Tegalega
   "KWS-05": [107.6158, -6.8906], // Dipatiukur
   "KWS-06": [107.6465, -6.9248], // Stasiun Kiaracondong
@@ -57,7 +57,7 @@ export const KOORDINAT: Record<string, [number, number]> = {
   "KWS-09": [107.5794, -6.9135], // Stasiun Andir
   "KWS-10": [107.5583, -6.8986], // Stasiun Cimindi
   "KWS-11": [107.6548, -6.9038], // Terminal Cicaheum
-  "KWS-12": [107.5960, -6.8615], // Terminal Ledeng
+  "KWS-12": [107.596, -6.8615], // Terminal Ledeng
   "KWS-13": [107.6186, -6.9003], // Gasibu
   "KWS-14": [107.6095, -6.9174], // Braga
   "KWS-15": [107.6433, -6.9128], // Kiara Artha Park
@@ -135,20 +135,42 @@ export function VitalityMap({
         lng += (Math.random() - 0.5) * 0.05;
         lat += (Math.random() - 0.5) * 0.05;
       }
-      new maplibregl.Marker({ element: el, anchor: "center" })
-        .setLngLat([lng, lat])
-        .addTo(map);
+      new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([lng, lat]).addTo(map);
       markers.set(k.id, el);
     }
 
     // Add layers in correct order so beforeId references resolve correctly
-    try { await addKoridorLayer(map, kawasanRef.current, tampilkanKoridor); } catch (e) { console.error("Error loading koridor layer:", e); }
-    try { await addSensusLayer(map, tampilkanSensus); } catch (e) { console.error("Error loading sensus layer:", e); }
-    try { await addAngkotLayer(map, tampilkanAngkot); } catch (e) { console.error("Error loading angkot layer:", e); }
-    try { await addBusLayer(map, tampilkanBus); } catch (e) { console.error("Error loading bus layer:", e); }
-    try { await addPoiLayer(map); } catch (e) { console.error("Error loading poi layer:", e); }
-    try { await addPedestrianLayer(map, tampilkanPedestrian); } catch (e) { console.error("Error loading pedestrian layer:", e); }
-    
+    try {
+      await addKoridorLayer(map, kawasanRef.current, tampilkanKoridor);
+    } catch (e) {
+      console.error("Error loading koridor layer:", e);
+    }
+    try {
+      await addSensusLayer(map, tampilkanSensus);
+    } catch (e) {
+      console.error("Error loading sensus layer:", e);
+    }
+    try {
+      await addAngkotLayer(map, tampilkanAngkot);
+    } catch (e) {
+      console.error("Error loading angkot layer:", e);
+    }
+    try {
+      await addBusLayer(map, tampilkanBus);
+    } catch (e) {
+      console.error("Error loading bus layer:", e);
+    }
+    try {
+      await addPoiLayer(map);
+    } catch (e) {
+      console.error("Error loading poi layer:", e);
+    }
+    try {
+      await addPedestrianLayer(map, tampilkanPedestrian);
+    } catch (e) {
+      console.error("Error loading pedestrian layer:", e);
+    }
+
     setReady(true);
     // Render initial marker content.
     renderAllMarkers(markers, kawasanRef.current, propsRef.current);
@@ -171,11 +193,7 @@ export function VitalityMap({
     if (!ready || !mapRef.current) return;
     const map = mapRef.current;
     if (map.getLayer("koridor-line")) {
-      map.setLayoutProperty(
-        "koridor-line",
-        "visibility",
-        tampilkanKoridor ? "visible" : "none",
-      );
+      map.setLayoutProperty("koridor-line", "visibility", tampilkanKoridor ? "visible" : "none");
     }
   }, [ready, tampilkanKoridor]);
 
@@ -211,7 +229,7 @@ export function VitalityMap({
   useEffect(() => {
     if (!ready || !mapRef.current) return;
     const map = mapRef.current;
-    
+
     const visibleCats: string[] = [];
     if (poiPendidikan) visibleCats.push("Pendidikan");
     if (poiKesehatan) visibleCats.push("Kesehatan");
@@ -220,21 +238,26 @@ export function VitalityMap({
     if (poiTransit) visibleCats.push("Transit");
 
     const layers = ["poi-points", "poi-polygons"];
-    
-    layers.forEach(layerId => {
+
+    layers.forEach((layerId) => {
       if (map.getLayer(layerId)) {
         if (visibleCats.length === 0) {
           map.setLayoutProperty(layerId, "visibility", "none");
         } else {
           map.setLayoutProperty(layerId, "visibility", "visible");
-          
-          const geomFilter = layerId === "poi-points" 
-            ? ["==", ["geometry-type"], "Point"]
-            : ["any", ["==", ["geometry-type"], "Polygon"], ["==", ["geometry-type"], "MultiPolygon"]];
-            
-          const catConditions = visibleCats.map(cat => ["==", ["get", "kategori"], cat]);
+
+          const geomFilter =
+            layerId === "poi-points"
+              ? ["==", ["geometry-type"], "Point"]
+              : [
+                  "any",
+                  ["==", ["geometry-type"], "Polygon"],
+                  ["==", ["geometry-type"], "MultiPolygon"],
+                ];
+
+          const catConditions = visibleCats.map((cat) => ["==", ["get", "kategori"], cat]);
           const categoryFilter = ["any", ...catConditions];
-          
+
           map.setFilter(layerId, ["all", geomFilter, categoryFilter] as any);
         }
       }
@@ -246,7 +269,11 @@ export function VitalityMap({
     if (!ready || !mapRef.current) return;
     const map = mapRef.current;
     if (map.getLayer("pedestrian-line")) {
-      map.setLayoutProperty("pedestrian-line", "visibility", tampilkanPedestrian ? "visible" : "none");
+      map.setLayoutProperty(
+        "pedestrian-line",
+        "visibility",
+        tampilkanPedestrian ? "visible" : "none",
+      );
     }
   }, [ready, tampilkanPedestrian]);
 
@@ -257,7 +284,7 @@ export function VitalityMap({
 
     const sourceData = {
       type: "FeatureCollection",
-      features: missions || []
+      features: missions || [],
     };
 
     if (map.getSource("mapid-missions")) {
@@ -273,21 +300,24 @@ export function VitalityMap({
         type: "circle",
         source: "mapid-missions",
         layout: {
-          visibility: tampilkanMissions ? "visible" : "none"
+          visibility: tampilkanMissions ? "visible" : "none",
         },
         paint: {
           "circle-radius": 6,
           "circle-color": [
             "match",
             ["get", "mission"],
-            "properti", "#3b82f6", // blue
-            "menu", "#f59e0b", // amber
-            "struk", "#10b981", // emerald
-            "#94a3b8" // default slate
+            "properti",
+            "#3b82f6", // blue
+            "menu",
+            "#f59e0b", // amber
+            "struk",
+            "#10b981", // emerald
+            "#94a3b8", // default slate
           ],
           "circle-stroke-width": 1.5,
-          "circle-stroke-color": "#ffffff"
-        }
+          "circle-stroke-color": "#ffffff",
+        },
       });
 
       // Add popup on click
@@ -296,25 +326,25 @@ export function VitalityMap({
         const feature = e.features[0];
         const props = feature.properties;
         const coordinates = (feature.geometry as any).coordinates.slice();
-        
+
         let content = `<div style="font-family:sans-serif; padding:4px;">`;
         if (props.mission === "properti") {
-          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">Properti: ${props.jenis_properti || '-'}</strong>`;
-          content += `<p style="margin:0;font-size:12px;color:#666;">Kategori: ${props.kategori_properti || '-'}</p>`;
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">Properti: ${props.jenis_properti || "-"}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Kategori: ${props.kategori_properti || "-"}</p>`;
           if (props.foto_tampak_depan) {
-             content += `<img src="${props.foto_tampak_depan}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+            content += `<img src="${props.foto_tampak_depan}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
           }
         } else if (props.mission === "menu") {
-          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || '-'}</strong>`;
-          content += `<p style="margin:0;font-size:12px;color:#666;">Menu: ${props.menu_utama || '-'}</p>`;
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || "-"}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Menu: ${props.menu_utama || "-"}</p>`;
           if (props.foto_tempat) {
-             content += `<img src="${props.foto_tempat}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+            content += `<img src="${props.foto_tempat}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
           }
         } else if (props.mission === "struk") {
-          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || '-'}</strong>`;
-          content += `<p style="margin:0;font-size:12px;color:#666;">Tipe: ${props.kategori_tempat || '-'} (Struk)</p>`;
+          content += `<strong style="font-size:14px;display:block;margin-bottom:4px;">${props.nama_tempat || "-"}</strong>`;
+          content += `<p style="margin:0;font-size:12px;color:#666;">Tipe: ${props.kategori_tempat || "-"} (Struk)</p>`;
           if (props.foto_struk) {
-             content += `<img src="${props.foto_struk}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
+            content += `<img src="${props.foto_struk}" style="width:100%;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;"/>`;
           }
         }
         content += `</div>`;
@@ -335,11 +365,13 @@ export function VitalityMap({
     }
 
     if (map.getLayer("missions-circle")) {
-      map.setLayoutProperty("missions-circle", "visibility", tampilkanMissions ? "visible" : "none");
+      map.setLayoutProperty(
+        "missions-circle",
+        "visibility",
+        tampilkanMissions ? "visible" : "none",
+      );
     }
   }, [ready, missions, tampilkanMissions]);
-
-
 
   return (
     <MapLibreMap
@@ -352,7 +384,7 @@ export function VitalityMap({
 /** Build the koridor LineString GeoJSON layer connecting each corridor's kawasan. */
 async function addKoridorLayer(map: MLMap, kawasan: Kawasan[], visible: boolean) {
   if (map.getSource("koridor")) return;
-  
+
   const url = await getSecureAssetUrl("rute-kereta-jawa.geojson");
   if (!url) return;
 
@@ -360,7 +392,7 @@ async function addKoridorLayer(map: MLMap, kawasan: Kawasan[], visible: boolean)
     type: "geojson",
     data: url,
   });
-  
+
   map.addLayer({
     id: "koridor-line",
     type: "line",
@@ -383,39 +415,49 @@ async function addSensusLayer(map: MLMap, visible: boolean) {
     type: "geojson",
     data: url,
   });
-  
+
   // Base polygon fill layer
-  map.addLayer({
-    id: "sensus-fill",
-    type: "fill",
-    source: "sensus",
-    layout: { visibility: visible ? "visible" : "none" },
-    paint: {
-      "fill-color": [
-        "interpolate",
-        ["linear"],
-        ["get", "SKOR TOTAL"],
-        11.8, "#fef0d9",
-        12.5, "#fdcc8a",
-        13.0, "#fc8d59",
-        13.4, "#d7301f"
-      ],
-      "fill-opacity": 0.5,
+  map.addLayer(
+    {
+      id: "sensus-fill",
+      type: "fill",
+      source: "sensus",
+      layout: { visibility: visible ? "visible" : "none" },
+      paint: {
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["get", "SKOR TOTAL"],
+          11.8,
+          "#fef0d9",
+          12.5,
+          "#fdcc8a",
+          13.0,
+          "#fc8d59",
+          13.4,
+          "#d7301f",
+        ],
+        "fill-opacity": 0.5,
+      },
     },
-  }, map.getLayer("koridor-line") ? "koridor-line" : undefined); // place below koridor-line if exists
-  
+    map.getLayer("koridor-line") ? "koridor-line" : undefined,
+  ); // place below koridor-line if exists
+
   // Outline layer
-  map.addLayer({
-    id: "sensus-outline",
-    type: "line",
-    source: "sensus",
-    layout: { visibility: visible ? "visible" : "none" },
-    paint: {
-      "line-color": "#ffffff",
-      "line-width": 1,
-      "line-opacity": 0.6,
+  map.addLayer(
+    {
+      id: "sensus-outline",
+      type: "line",
+      source: "sensus",
+      layout: { visibility: visible ? "visible" : "none" },
+      paint: {
+        "line-color": "#ffffff",
+        "line-width": 1,
+        "line-opacity": 0.6,
+      },
     },
-  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
+    map.getLayer("koridor-line") ? "koridor-line" : undefined,
+  );
 }
 
 async function addAngkotLayer(map: MLMap, visible: boolean) {
@@ -427,18 +469,21 @@ async function addAngkotLayer(map: MLMap, visible: boolean) {
     type: "geojson",
     data: url,
   });
-  
-  map.addLayer({
-    id: "angkot-line",
-    type: "line",
-    source: "angkot",
-    layout: { visibility: visible ? "visible" : "none" },
-    paint: {
-      "line-color": "#f59e0b", // Amber/Orange color for local transit
-      "line-width": 1.5,
-      "line-opacity": 0.5,
+
+  map.addLayer(
+    {
+      id: "angkot-line",
+      type: "line",
+      source: "angkot",
+      layout: { visibility: visible ? "visible" : "none" },
+      paint: {
+        "line-color": "#f59e0b", // Amber/Orange color for local transit
+        "line-width": 1.5,
+        "line-opacity": 0.5,
+      },
     },
-  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
+    map.getLayer("koridor-line") ? "koridor-line" : undefined,
+  );
 }
 
 async function addBusLayer(map: MLMap, visible: boolean) {
@@ -450,18 +495,21 @@ async function addBusLayer(map: MLMap, visible: boolean) {
     type: "geojson",
     data: url,
   });
-  
-  map.addLayer({
-    id: "bus-line",
-    type: "line",
-    source: "bus",
-    layout: { visibility: visible ? "visible" : "none" },
-    paint: {
-      "line-color": "#10b981", // Emerald green for BRT/Bus
-      "line-width": 2,
-      "line-opacity": 0.7,
+
+  map.addLayer(
+    {
+      id: "bus-line",
+      type: "line",
+      source: "bus",
+      layout: { visibility: visible ? "visible" : "none" },
+      paint: {
+        "line-color": "#10b981", // Emerald green for BRT/Bus
+        "line-width": 2,
+        "line-opacity": 0.7,
+      },
     },
-  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
+    map.getLayer("koridor-line") ? "koridor-line" : undefined,
+  );
 }
 
 async function addPoiLayer(map: MLMap) {
@@ -473,16 +521,21 @@ async function addPoiLayer(map: MLMap) {
     type: "geojson",
     data: url,
   });
-  
+
   const colorMatch: any = [
     "match",
     ["get", "kategori"],
-    "Pendidikan", "#3b82f6",
-    "Kesehatan", "#ef4444",
-    "Komersial", "#eab308",
-    "Hiburan & Makanan", "#ec4899",
-    "Transit", "#8b5cf6",
-    "#9ca3af" // default
+    "Pendidikan",
+    "#3b82f6",
+    "Kesehatan",
+    "#ef4444",
+    "Komersial",
+    "#eab308",
+    "Hiburan & Makanan",
+    "#ec4899",
+    "Transit",
+    "#8b5cf6",
+    "#9ca3af", // default
   ];
 
   map.addLayer({
@@ -495,7 +548,7 @@ async function addPoiLayer(map: MLMap) {
       "circle-radius": 4,
       "circle-color": colorMatch,
       "circle-stroke-width": 1,
-      "circle-stroke-color": "#ffffff"
+      "circle-stroke-color": "#ffffff",
     },
   });
 
@@ -503,12 +556,16 @@ async function addPoiLayer(map: MLMap) {
     id: "poi-polygons",
     type: "fill",
     source: "poi",
-    filter: ["any", ["==", ["geometry-type"], "Polygon"], ["==", ["geometry-type"], "MultiPolygon"]],
+    filter: [
+      "any",
+      ["==", ["geometry-type"], "Polygon"],
+      ["==", ["geometry-type"], "MultiPolygon"],
+    ],
     layout: { visibility: "none" },
     paint: {
       "fill-color": colorMatch,
       "fill-opacity": 0.6,
-      "fill-outline-color": "#ffffff"
+      "fill-outline-color": "#ffffff",
     },
   });
 }
@@ -522,27 +579,34 @@ async function addPedestrianLayer(map: MLMap, visible: boolean) {
     type: "geojson",
     data: url,
   });
-  
-  map.addLayer({
-    id: "pedestrian-line",
-    type: "line",
-    source: "pedestrian",
-    layout: { visibility: visible ? "visible" : "none" },
-    paint: {
-      "line-color": "#06b6d4", // Cyan
-      "line-width": 1.5,
-      "line-dasharray": [2, 2]
+
+  map.addLayer(
+    {
+      id: "pedestrian-line",
+      type: "line",
+      source: "pedestrian",
+      layout: { visibility: visible ? "visible" : "none" },
+      paint: {
+        "line-color": "#06b6d4", // Cyan
+        "line-width": 1.5,
+        "line-dasharray": [2, 2],
+      },
     },
-  }, map.getLayer("koridor-line") ? "koridor-line" : undefined);
+    map.getLayer("koridor-line") ? "koridor-line" : undefined,
+  );
 }
-
-
 
 /** Update the DOM of every marker to reflect the current score/selection. */
 function renderAllMarkers(
   markers: Map<string, HTMLButtonElement>,
   kawasan: Kawasan[],
-  props: { role: RoleId; layer: ComponentId | "total"; selectedId: string | null; tampilkanAnomali: boolean; compact: boolean },
+  props: {
+    role: RoleId;
+    layer: ComponentId | "total";
+    selectedId: string | null;
+    tampilkanAnomali: boolean;
+    compact: boolean;
+  },
 ) {
   for (const k of kawasan) {
     const el = markers.get(k.id);

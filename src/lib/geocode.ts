@@ -46,7 +46,7 @@ export async function geocode(query: string): Promise<GeoResult | null> {
 
   const result = data[0];
   const displayName = result.display_name;
-  
+
   return {
     lat: parseFloat(result.lat),
     lng: parseFloat(result.lon),

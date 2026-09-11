@@ -29,8 +29,7 @@ function injectKey(style: Record<string, unknown>, key: string): void {
   };
 
   const sources = style.sources as
-    | Record<string, { tiles?: unknown[]; data?: unknown; url?: unknown }>
-    | undefined;
+    Record<string, { tiles?: unknown[]; data?: unknown; url?: unknown }> | undefined;
   if (sources) {
     for (const s of Object.values(sources)) {
       if (Array.isArray(s.tiles)) s.tiles = s.tiles.map((t) => ensure(t));

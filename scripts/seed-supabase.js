@@ -12,15 +12,15 @@ const KAWASAN_KECAMATAN_MAP = {
   "KWS-02": "Cicendo, Bandung",
   "KWS-03": "Bojongloa Kidul, Bandung",
   "KWS-04": "Regol, Bandung",
-  "KWS-05": "Coblong, Bandung"
+  "KWS-05": "Coblong, Bandung",
 };
 
 const KOORDINAT = {
   "KWS-01": [107.6061, -6.9218],
   "KWS-02": [107.6019, -6.9137],
-  "KWS-03": [107.5960, -6.9458],
+  "KWS-03": [107.596, -6.9458],
   "KWS-04": [107.6033, -6.9328],
-  "KWS-05": [107.6158, -6.8906]
+  "KWS-05": [107.6158, -6.8906],
 };
 
 async function main() {
@@ -33,15 +33,15 @@ async function main() {
 
   const getDistanceMeters = (lon1, lat1, lon2, lat2) => {
     const R = 6371e3;
-    const φ1 = lat1 * Math.PI/180;
-    const φ2 = lat2 * Math.PI/180;
-    const Δφ = (lat2-lat1) * Math.PI/180;
-    const Δλ = (lon2-lon1) * Math.PI/180;
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c; 
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
   };
 
   const { data: dbData, error } = await supabase.from("tod_stations").select("*");
@@ -49,7 +49,7 @@ async function main() {
 
   for (const station of dbData) {
     if (!KOORDINAT[station.id]) continue;
-    
+
     // 1. Harga Tanah & Skor Properti
     const kecamatan = KAWASAN_KECAMATAN_MAP[station.id];
     let hargaTanahJt = station.harga_tanah_m2;
@@ -58,7 +58,7 @@ async function main() {
     if (kecamatan && extractedPrices[kecamatan]) {
       const absolutePrice = extractedPrices[kecamatan];
       hargaTanahJt = Math.round((absolutePrice / 1000000) * 10) / 10;
-      
+
       // Kalkulasi skor properti: Max 25jt = 100
       skorProperti = Math.round((hargaTanahJt / 25) * 100);
       skorProperti = Math.min(100, Math.max(1, skorProperti));
@@ -69,21 +69,22 @@ async function main() {
     let sumPekerja = 0;
     const coord = KOORDINAT[station.id];
 
-    gridFeatures.forEach(f => {
-      if (f.geometry?.type === 'Polygon' && f.geometry.coordinates[0]) {
+    gridFeatures.forEach((f) => {
+      if (f.geometry?.type === "Polygon" && f.geometry.coordinates[0]) {
         const poly = f.geometry.coordinates[0];
-        let sumLng = 0, sumLat = 0;
-        for(let i=0; i<4; i++) {
-           sumLng += poly[i][0];
-           sumLat += poly[i][1];
+        let sumLng = 0,
+          sumLat = 0;
+        for (let i = 0; i < 4; i++) {
+          sumLng += poly[i][0];
+          sumLat += poly[i][1];
         }
         const cLng = sumLng / 4;
         const cLat = sumLat / 4;
-        
+
         const dist = getDistanceMeters(coord[0], coord[1], cLng, cLat);
         if (dist <= 800) {
-          sumFasilitas += (f.properties['Total POI in Grid'] || 0);
-          sumPekerja += (f.properties['[Raw] WIRASWASTA'] || 0); // Asumsi pelaku UMKM
+          sumFasilitas += f.properties["Total POI in Grid"] || 0;
+          sumPekerja += f.properties["[Raw] WIRASWASTA"] || 0; // Asumsi pelaku UMKM
         }
       }
     });
@@ -97,7 +98,9 @@ async function main() {
     let skorEkonomi = Math.round((umkmCount / 200) * 100);
     skorEkonomi = Math.min(100, Math.max(1, skorEkonomi));
 
-    console.log(`Updating ${station.id} (${station.nama}): Harga ${hargaTanahJt} jt/m2, Skor Prop ${skorProperti}, Layanan ${layananCount}, UMKM ${umkmCount}`);
+    console.log(
+      `Updating ${station.id} (${station.nama}): Harga ${hargaTanahJt} jt/m2, Skor Prop ${skorProperti}, Layanan ${layananCount}, UMKM ${umkmCount}`,
+    );
 
     const { error: updateError } = await supabase
       .from("tod_stations")
@@ -107,7 +110,7 @@ async function main() {
         layanan_count: layananCount,
         skor_layanan: skorLayanan,
         umkm_count: umkmCount,
-        skor_ekonomi: skorEkonomi
+        skor_ekonomi: skorEkonomi,
       })
       .eq("id", station.id);
 

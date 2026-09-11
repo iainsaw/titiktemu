@@ -1,15 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
-import path from 'path';
-import csv from 'csv-parser';
-import crypto from 'crypto';
+import { createClient } from "@supabase/supabase-js";
+import fs from "fs";
+import path from "path";
+import csv from "csv-parser";
+import crypto from "crypto";
 
 // Load Env
 function loadEnv() {
   try {
-    const envPath = path.resolve(process.cwd(), '.env');
-    const envData = fs.readFileSync(envPath, 'utf8');
-    envData.split('\n').forEach(line => {
+    const envPath = path.resolve(process.cwd(), ".env");
+    const envData = fs.readFileSync(envPath, "utf8");
+    envData.split("\n").forEach((line) => {
       const match = line.match(/^([^=]+)=(.*)$/);
       if (match) {
         process.env[match[1]] = match[2];
@@ -34,20 +34,20 @@ const CHUNK_SIZE = 500;
 const BIAYA_BANGUNAN_PER_M2 = 4000000; // Asumsi Rp 4 Juta per m2 bangunan
 
 async function uploadHargaTanah() {
-  const filePath = path.resolve(process.cwd(), 'tanah/clean_df.csv');
+  const filePath = path.resolve(process.cwd(), "tanah/clean_df.csv");
   console.log(`\n📄 Membaca dataset ${filePath}...`);
-  
+
   if (!fs.existsSync(filePath)) {
     console.error("❌ File dataset tidak ditemukan.");
     return;
   }
 
   const results = [];
-  
+
   return new Promise((resolve, reject) => {
     fs.createReadStream(filePath)
       .pipe(csv())
-      .on('data', (data) => {
+      .on("data", (data) => {
         const price = parseFloat(data.Price);
         const landArea = parseFloat(data.Land);
         const buildingArea = parseFloat(data.Building) || 0;
@@ -59,8 +59,8 @@ async function uploadHargaTanah() {
         // Building Deduction Method
         const buildingValue = buildingArea * BIAYA_BANGUNAN_PER_M2;
         let landValue = price - buildingValue;
-        
-        // Jika nilai deduksi membuat harga tanah minus (artinya harga rumah < estimasi bangunan), 
+
+        // Jika nilai deduksi membuat harga tanah minus (artinya harga rumah < estimasi bangunan),
         // fallback gunakan nilai Price asli.
         if (landValue <= 0) {
           landValue = price;
@@ -68,7 +68,7 @@ async function uploadHargaTanah() {
 
         // Harga tanah per m2
         let hargaTanahM2 = landValue / landArea;
-        
+
         // Konversi ke satuan "Juta Rupiah / m2" untuk frontend
         hargaTanahM2 = hargaTanahM2 / 1000000;
 
@@ -78,19 +78,22 @@ async function uploadHargaTanah() {
           land_area: landArea,
           building_area: buildingArea,
           harga_tanah_m2: hargaTanahM2,
-          geom: `SRID=4326;POINT(${lng} ${lat})`
+          geom: `SRID=4326;POINT(${lng} ${lat})`,
         });
       })
-      .on('end', async () => {
+      .on("end", async () => {
         console.log(`Menemukan ${results.length} data valid. Membersihkan data lama...`);
-        
+
         // Bersihkan data lama
-        await supabase.from('harga_tanah').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-        
+        await supabase
+          .from("harga_tanah")
+          .delete()
+          .neq("id", "00000000-0000-0000-0000-000000000000");
+
         console.log(`Mulai upload ke Supabase...`);
         for (let i = 0; i < results.length; i += CHUNK_SIZE) {
           const chunk = results.slice(i, i + CHUNK_SIZE);
-          const { error } = await supabase.from('harga_tanah').upsert(chunk);
+          const { error } = await supabase.from("harga_tanah").upsert(chunk);
           if (error) {
             console.error(`❌ Error upload chunk ${i} - ${i + CHUNK_SIZE}:`, error.message);
           } else {
@@ -99,7 +102,7 @@ async function uploadHargaTanah() {
         }
         resolve();
       })
-      .on('error', (err) => {
+      .on("error", (err) => {
         reject(err);
       });
   });
@@ -107,7 +110,7 @@ async function uploadHargaTanah() {
 
 async function runAnalysis() {
   console.log(`\n🧠 Menjalankan Ulang Fungsi RPC analyze_tod_clusters()...`);
-  const { error } = await supabase.rpc('analyze_tod_clusters');
+  const { error } = await supabase.rpc("analyze_tod_clusters");
   if (error) {
     console.error("❌ Gagal memanggil RPC:", error.message);
   } else {

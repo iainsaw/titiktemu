@@ -10,14 +10,18 @@ export type MissionFeature = {
   properties: Record<string, any>;
 };
 
-export function createCirclePolygon(centerLng: number, centerLat: number, radiusMeters: number = 800) {
+export function createCirclePolygon(
+  centerLng: number,
+  centerLat: number,
+  radiusMeters: number = 800,
+) {
   const points = 32;
   const coords: [number, number][] = [];
   const km = radiusMeters / 1000;
-  
+
   const distanceX = km / (111.32 * Math.cos((centerLat * Math.PI) / 180));
   const distanceY = km / 110.574;
-  
+
   for (let i = 0; i < points; i++) {
     const theta = (i / points) * (2 * Math.PI);
     const x = distanceX * Math.cos(theta);
@@ -25,7 +29,7 @@ export function createCirclePolygon(centerLng: number, centerLat: number, radius
     coords.push([centerLng + x, centerLat + y]);
   }
   coords.push(coords[0]);
-  
+
   return {
     type: "Polygon",
     coordinates: [coords],
@@ -39,7 +43,7 @@ export function createBandungBoundingBox() {
   const minLat = -6.98;
   const maxLng = 107.75;
   const maxLat = -6.85;
-  
+
   return {
     type: "Polygon",
     coordinates: [
@@ -48,16 +52,16 @@ export function createBandungBoundingBox() {
         [maxLng, minLat],
         [maxLng, maxLat],
         [minLng, maxLat],
-        [minLng, minLat]
-      ]
-    ]
+        [minLng, minLat],
+      ],
+    ],
   };
 }
 
 export async function fetchMAPIDMission(
   missionType: "propertigo" | "menugo" | "struckgo",
   polygon: any,
-  apiKey: string
+  apiKey: string,
 ): Promise<MissionFeature[]> {
   let allFeatures: MissionFeature[] = [];
   let offset = 0;
@@ -83,7 +87,7 @@ export async function fetchMAPIDMission(
       }
 
       const data = await res.json();
-      
+
       if (data.success && data.features) {
         allFeatures = allFeatures.concat(data.features);
       }

@@ -17,10 +17,13 @@ export async function callGateway(messages: Msg[]) {
   });
 
   if (res.status === 429) {
-    return new Response(JSON.stringify({ error: "Terlalu banyak permintaan. Coba lagi sebentar lagi." }), {
-      status: 429,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "Terlalu banyak permintaan. Coba lagi sebentar lagi." }),
+      {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
   if (res.status === 402) {
     return new Response(
@@ -72,7 +75,10 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         return callGateway([
-          { role: "system", content: `${SYSTEM}\n\nDATA KAWASAN SAAT INI:\n${body.konteks ?? "(tidak ada)"}` },
+          {
+            role: "system",
+            content: `${SYSTEM}\n\nDATA KAWASAN SAAT INI:\n${body.konteks ?? "(tidak ada)"}`,
+          },
           ...messages,
         ]);
       },

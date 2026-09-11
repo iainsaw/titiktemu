@@ -49,10 +49,11 @@ export function MapLibreMap({
     // VITE_MAPID_API_KEY is baked at build time — may be domain-restricted to localhost.
     // VITE_MAPID_API_KEY_PROD is the key allowed for the deployed domain.
     // Falls back to VITE_MAPID_API_KEY if no prod key is set.
-    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const isLocalhost =
+      window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     const apiKey = isLocalhost
-      ? (import.meta.env.VITE_MAPID_API_KEY || import.meta.env.VITE_MAPID_API_KEY_PROD)
-      : (import.meta.env.VITE_MAPID_API_KEY_PROD || import.meta.env.VITE_MAPID_API_KEY);
+      ? import.meta.env.VITE_MAPID_API_KEY || import.meta.env.VITE_MAPID_API_KEY_PROD
+      : import.meta.env.VITE_MAPID_API_KEY_PROD || import.meta.env.VITE_MAPID_API_KEY;
 
     if (!apiKey) {
       setState("no-key");
@@ -66,7 +67,7 @@ export function MapLibreMap({
       .then((module) => {
         if (cancelled || !containerRef.current) return;
 
-        const MLGL = module.default || module;
+        const MLGL = (module as any).default || module;
         (window as any).maplibregl = MLGL;
 
         // Fix pending worker issue in Vite production build
@@ -99,7 +100,9 @@ export function MapLibreMap({
           if (onReadyRef.current) onReadyRef.current(map!);
           // Force resize at several intervals to handle late layout reflows
           [50, 200, 500, 1000, 2000].forEach((ms) => {
-            setTimeout(() => { if (!cancelled && map) map.resize(); }, ms);
+            setTimeout(() => {
+              if (!cancelled && map) map.resize();
+            }, ms);
           });
         };
 
@@ -133,7 +136,7 @@ export function MapLibreMap({
           }
         };
         window.addEventListener("beforeprint", onBeforePrint);
-        
+
         // Clean up the event listener later
         (map as any)._onBeforePrint = onBeforePrint;
       })
@@ -156,11 +159,7 @@ export function MapLibreMap({
   }, []);
 
   return (
-    <div
-      ref={wrapperRef}
-      className={cn("relative", className)}
-      style={{ minHeight: 400 }}
-    >
+    <div ref={wrapperRef} className={cn("relative", className)} style={{ minHeight: 400 }}>
       {/* Map canvas target — fills the wrapper completely */}
       <div
         ref={containerRef}

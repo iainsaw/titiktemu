@@ -1,4 +1,5 @@
-const getApiKey = () => import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_OPENROUTER_API_KEY;
+const getApiKey = () =>
+  import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_OPENROUTER_API_KEY;
 
 export type Pesan = { role: "user" | "assistant"; content: string };
 
@@ -7,7 +8,7 @@ const OPENROUTER_MODELS = [
   "nvidia/nemotron-3.5-lightning:free",
   "minimax/minimax-m3:free",
   "z-ai/glm-5.2:free",
-  "google/gemma-4-31b-it:free"
+  "google/gemma-4-31b-it:free",
 ];
 
 function cleanAiResponse(text: string): string {
@@ -17,7 +18,12 @@ function cleanAiResponse(text: string): string {
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
 
   // 2. Remove common AI prompt/header echoes if present
-  cleaned = cleaned.replace(/^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi, "").trim();
+  cleaned = cleaned
+    .replace(
+      /^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi,
+      "",
+    )
+    .trim();
 
   // 3. Remove ALL dollar signs (math LaTeX artifacts, currency symbols mistakenly added)
   cleaned = cleaned.replace(/\$([^\$\n]+)\$/g, "$1"); // $...$ wrappers
@@ -33,7 +39,12 @@ function cleanAiResponse(text: string): string {
   return cleaned;
 }
 
-async function fetchWithRetry(url: string, options: RequestInit, retries = 3, delayMs = 500): Promise<Response> {
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  retries = 3,
+  delayMs = 500,
+): Promise<Response> {
   let lastError;
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -47,13 +58,15 @@ async function fetchWithRetry(url: string, options: RequestInit, retries = 3, de
       console.warn(`[AI Network Attempt ${attempt}/${retries} Exception]:`, e.message);
     }
     if (attempt < retries) {
-      await new Promise(resolve => setTimeout(resolve, delayMs));
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
   throw lastError;
 }
 
-async function callGeminiOrOpenRouter(messages: { role: string; content: string }[]): Promise<string> {
+async function callGeminiOrOpenRouter(
+  messages: { role: string; content: string }[],
+): Promise<string> {
   const apiKey = getApiKey();
   if (!apiKey) {
     throw new Error("API Key AI belum dikonfigurasi di file .env");
@@ -69,19 +82,19 @@ async function callGeminiOrOpenRouter(messages: { role: string; content: string 
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${apiKey}`,
+              Authorization: `Bearer ${apiKey}`,
               "HTTP-Referer": "http://localhost:8090",
               "X-Title": "Titik Temu WebGIS",
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               model: model,
               messages: messages,
               max_tokens: 2048,
-            })
+            }),
           },
           2, // retry twice per model
-          400
+          400,
         );
 
         const data = await response.json();
@@ -97,42 +110,43 @@ async function callGeminiOrOpenRouter(messages: { role: string; content: string 
   }
 
   // 2. Otherwise, treat key as Google Gemini API Key (gemini-flash-lite-latest with retry)
-  const systemMsg = messages.find(m => m.role === "system");
-  const nonSystemMsgs = messages.filter(m => m.role !== "system");
+  const systemMsg = messages.find((m) => m.role === "system");
+  const nonSystemMsgs = messages.filter((m) => m.role !== "system");
 
-  const contents = nonSystemMsgs.length > 0
-    ? nonSystemMsgs.map(m => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }]
-      }))
-    : [{ role: "user", parts: [{ text: "Halo" }] }];
+  const contents =
+    nonSystemMsgs.length > 0
+      ? nonSystemMsgs.map((m) => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: m.content }],
+        }))
+      : [{ role: "user", parts: [{ text: "Halo" }] }];
 
   const requestBody: any = {
     contents,
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 2048
-    }
+      maxOutputTokens: 2048,
+    },
   };
 
   if (systemMsg) {
     requestBody.system_instruction = {
-      parts: [{ text: systemMsg.content }]
+      parts: [{ text: systemMsg.content }],
     };
   }
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
-  
+
   try {
     const response = await fetchWithRetry(
       url,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       },
       3, // retry 3 times automatically
-      500
+      500,
     );
 
     const json = await response.json();
@@ -167,9 +181,7 @@ INSTRUKSI:
 2. Bandingkan dengan rata-rata 16 kawasan jika relevan.
 3. Jangan halusinasi data, gunakan hanya data di atas.`;
 
-  return callGeminiOrOpenRouter([
-    { role: "user", content: prompt }
-  ]);
+  return callGeminiOrOpenRouter([{ role: "user", content: prompt }]);
 }
 
 /**
@@ -178,7 +190,7 @@ INSTRUKSI:
 export async function sendAiChat(
   konteks: string,
   history: Pesan[],
-  input: string
+  input: string,
 ): Promise<string> {
   const systemInstruction = `Anda adalah AI asisten resmi "Titik Temu" — platform WebGIS Vitalitas Transit Kota Bandung.
 
@@ -217,7 +229,7 @@ ${konteks}`;
   const messages = [
     { role: "system", content: systemInstruction },
     ...history.map((msg) => ({ role: msg.role, content: msg.content })),
-    { role: "user", content: input }
+    { role: "user", content: input },
   ];
 
   return callGeminiOrOpenRouter(messages);
@@ -236,7 +248,7 @@ export async function sendAiChatStream(
   history: Pesan[],
   input: string,
   onChunk: (chunk: string) => void,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<string> {
   // Dapatkan full response terlebih dahulu
   const full = await sendAiChat(konteks, history, input);
@@ -246,8 +258,8 @@ export async function sendAiChatStream(
   // Simulasikan streaming: pecah per kata + batas chunk 3-5 kata
   const words = full.split(" ");
   let buffer = "";
-  const CHUNK_WORDS = 4;          // kirim tiap N kata
-  const DELAY_MS = 28;            // jeda antar chunk (ms)
+  const CHUNK_WORDS = 4; // kirim tiap N kata
+  const DELAY_MS = 28; // jeda antar chunk (ms)
 
   for (let i = 0; i < words.length; i++) {
     if (signal?.aborted) break;
@@ -267,10 +279,7 @@ export async function sendAiChatStream(
  * dan respons terakhir AI.
  * Mengembalikan array string (kosong jika gagal).
  */
-export async function generateFollowUpChips(
-  konteks: string,
-  lastReply: string
-): Promise<string[]> {
+export async function generateFollowUpChips(konteks: string, lastReply: string): Promise<string[]> {
   const prompt = `Berdasarkan percakapan ini tentang kawasan transit Kota Bandung, berikan TEPAT 3 pertanyaan follow-up singkat yang relevan. Setiap pertanyaan maksimal 10 kata. Format: hanya 3 baris teks, satu pertanyaan per baris, TANPA nomor dan TANPA penjelasan.
 
 Konteks data:

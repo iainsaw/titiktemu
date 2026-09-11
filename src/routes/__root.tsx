@@ -85,6 +85,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "theme-color", content: "#fbfbfa" },
+
     ],
     links: [
       {
@@ -128,7 +132,10 @@ function RootComponent() {
   useEffect(() => {
     const preventMediaDownload = (e: Event) => {
       const target = e.target as HTMLElement;
-      if (target && (target.tagName?.toLowerCase() === "img" || target.tagName?.toLowerCase() === "video")) {
+      if (
+        target &&
+        (target.tagName?.toLowerCase() === "img" || target.tagName?.toLowerCase() === "video")
+      ) {
         e.preventDefault();
       }
     };
@@ -145,7 +152,9 @@ function RootComponent() {
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <div className="animate-in fade-in duration-[400ms] fill-mode-both">
+          <Outlet />
+        </div>
       </QueryClientProvider>
     </AuthProvider>
   );

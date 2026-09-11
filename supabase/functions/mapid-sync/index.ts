@@ -29,11 +29,11 @@ serve(async (req) => {
     // Uses the automatic environment variables injected by Supabase Edge Functions
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
 
     const headers = {
-      "Authorization": `Bearer ${MAPID_API_KEY}`,
+      Authorization: `Bearer ${MAPID_API_KEY}`,
       "Content-Type": "application/json",
     };
 
@@ -63,34 +63,46 @@ serve(async (req) => {
 
     // 2. Transform & Format Data dari GeoJSON MAPID
     // Menggunakan format WKT (Well-Known Text) dengan SRID 4326
-    const formatPoint = (longitude: number, latitude: number) => 
+    const formatPoint = (longitude: number, latitude: number) =>
       `SRID=4326;POINT(${longitude} ${latitude})`;
 
-    const propertiPayload = (propData.features || []).map((feature: any) => ({
-      external_id: feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
-      name: feature.properties.nama_tempat || "Unknown Property",
-      category: feature.properties.jenis_modul || "PropertiGo",
-      price: feature.properties.nominal_struk || (feature.properties.detail_properti?.harga_per_tahun) || 0,
-      timestamp: feature.properties.waktu_input || new Date().toISOString(),
-      geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
-    })).filter((item: any) => item.geom);
+    const propertiPayload = (propData.features || [])
+      .map((feature: any) => ({
+        external_id:
+          feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
+        name: feature.properties.nama_tempat || "Unknown Property",
+        category: feature.properties.jenis_modul || "PropertiGo",
+        price:
+          feature.properties.nominal_struk ||
+          feature.properties.detail_properti?.harga_per_tahun ||
+          0,
+        timestamp: feature.properties.waktu_input || new Date().toISOString(),
+        geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
+      }))
+      .filter((item: any) => item.geom);
 
-    const menuPayload = (menuData.features || []).map((feature: any) => ({
-      external_id: feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
-      name: feature.properties.nama_tempat || "Unknown Resto",
-      category: feature.properties.jenis_modul || "MenuGo",
-      rating: feature.properties.rating || 0,
-      timestamp: feature.properties.waktu_input || new Date().toISOString(),
-      geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
-    })).filter((item: any) => item.geom);
+    const menuPayload = (menuData.features || [])
+      .map((feature: any) => ({
+        external_id:
+          feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
+        name: feature.properties.nama_tempat || "Unknown Resto",
+        category: feature.properties.jenis_modul || "MenuGo",
+        rating: feature.properties.rating || 0,
+        timestamp: feature.properties.waktu_input || new Date().toISOString(),
+        geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
+      }))
+      .filter((item: any) => item.geom);
 
-    const actPayload = (actData.features || []).map((feature: any) => ({
-      external_id: feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
-      name: feature.properties.nama_tempat || "Unknown Activity",
-      activity_type: feature.properties.jenis_modul || "Activities",
-      timestamp: feature.properties.waktu_input || new Date().toISOString(),
-      geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
-    })).filter((item: any) => item.geom);
+    const actPayload = (actData.features || [])
+      .map((feature: any) => ({
+        external_id:
+          feature.properties.id_transaksi || feature.properties._id || crypto.randomUUID(),
+        name: feature.properties.nama_tempat || "Unknown Activity",
+        activity_type: feature.properties.jenis_modul || "Activities",
+        timestamp: feature.properties.waktu_input || new Date().toISOString(),
+        geom: formatPoint(feature.geometry.coordinates[0], feature.geometry.coordinates[1]),
+      }))
+      .filter((item: any) => item.geom);
 
     // 3. Upsert into Supabase PostGIS
     // Menggunakan onConflict untuk melakukan update jika external_id sudah ada
@@ -98,19 +110,21 @@ serve(async (req) => {
 
     if (propertiPayload.length > 0) {
       upsertPromises.push(
-        supabaseClient.from("tod_grid_profiles").upsert(propertiPayload, { onConflict: "external_id" })
+        supabaseClient
+          .from("tod_grid_profiles")
+          .upsert(propertiPayload, { onConflict: "external_id" }),
       );
     }
 
     if (menuPayload.length > 0) {
       upsertPromises.push(
-        supabaseClient.from("vitality_scores").upsert(menuPayload, { onConflict: "external_id" })
+        supabaseClient.from("vitality_scores").upsert(menuPayload, { onConflict: "external_id" }),
       );
     }
 
     if (actPayload.length > 0) {
       upsertPromises.push(
-        supabaseClient.from("field_surveys").upsert(actPayload, { onConflict: "external_id" })
+        supabaseClient.from("field_surveys").upsert(actPayload, { onConflict: "external_id" }),
       );
     }
 
@@ -135,13 +149,13 @@ serve(async (req) => {
           activities: actPayload.length,
         },
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (error) {
     console.error("Edge Function Error:", error);
     return new Response(
       JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error occurred" }),
-      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });

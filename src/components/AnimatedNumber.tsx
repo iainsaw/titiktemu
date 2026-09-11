@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { useEffect, useState, useRef } from "react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 interface AnimatedNumberProps {
   value: number;
@@ -13,9 +13,9 @@ interface AnimatedNumberProps {
 export function AnimatedNumber({
   value,
   duration = 2000,
-  className = '',
-  prefix = '',
-  suffix = '',
+  className = "",
+  prefix = "",
+  suffix = "",
   formattingFn,
 }: AnimatedNumberProps) {
   const [currentValue, setCurrentValue] = useState(0);
@@ -31,13 +31,13 @@ export function AnimatedNumber({
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
-      
+
       // Easing function (easeOutExpo)
       const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
-      
+
       const percentage = Math.min(progress / duration, 1);
       const easedProgress = easeOutExpo(percentage);
-      
+
       setCurrentValue(Math.floor(easedProgress * value));
 
       if (progress < duration) {
@@ -52,11 +52,15 @@ export function AnimatedNumber({
     return () => cancelAnimationFrame(animationFrameId);
   }, [value, duration, isVisible]);
 
-  const displayValue = formattingFn ? formattingFn(currentValue) : currentValue.toLocaleString('id-ID');
+  const displayValue = formattingFn
+    ? formattingFn(currentValue)
+    : currentValue.toLocaleString("id-ID");
 
   return (
     <span ref={ref} className={className}>
-      {prefix}{displayValue}{suffix}
+      {prefix}
+      {displayValue}
+      {suffix}
     </span>
   );
 }

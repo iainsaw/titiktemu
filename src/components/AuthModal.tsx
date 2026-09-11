@@ -58,17 +58,28 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
     try {
       if (tab === "signin") {
         const { error: err } = await signIn(email, password);
-        if (err) { setError(err); return; }
+        if (err) {
+          setError(err);
+          return;
+        }
         onClose();
         resetForm();
       } else if (tab === "signup") {
         const { error: err } = await signUp(email, password, displayName);
-        if (err) { setError(err); return; }
+        if (err) {
+          setError(err);
+          return;
+        }
         setSuccess("Akun berhasil dibuat! Silakan masuk dengan email & kata sandi Anda.");
       } else if (tab === "forgot") {
         const { error: err } = await resetPassword(email);
-        if (err) { setError(err); return; }
-        setSuccess("Instruksi reset kata sandi telah dikirim ke email Anda. Silakan periksa inbox/kotak masuk Anda.");
+        if (err) {
+          setError(err);
+          return;
+        }
+        setSuccess(
+          "Instruksi reset kata sandi telah dikirim ke email Anda. Silakan periksa inbox/kotak masuk Anda.",
+        );
       }
     } finally {
       setLoading(false);
@@ -78,10 +89,11 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 sm:p-6"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div className="relative w-full max-w-4xl overflow-hidden rounded-[28px] border border-white/15 bg-background shadow-2xl animate-in fade-in zoom-in-95 duration-250">
-        
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -92,7 +104,6 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[520px]">
-          
           {/* LEFT SIDE: Hero Video Background + Overlay Branding */}
           <div className="relative hidden md:flex flex-col justify-between p-8 overflow-hidden bg-ink text-white">
             {/* Background Video */}
@@ -121,14 +132,14 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                 Optimasi Kawasan Transit Kota Bandung
               </h3>
               <p className="text-[13px] leading-relaxed text-white/80">
-                Analisis spasial berbasis data riil untuk Investor Properti, Pemerintah, dan Pelaku UMKM dalam satu peta interaktif.
+                Analisis spasial berbasis data riil untuk Investor Properti, Pemerintah, dan Pelaku
+                UMKM dalam satu peta interaktif.
               </p>
             </div>
           </div>
 
           {/* RIGHT SIDE: Clean & Modern Auth Form */}
           <div className="flex flex-col justify-between p-7 sm:p-9 bg-card text-card-foreground">
-            
             <div>
               {/* Mobile Header Logo */}
               <div className="flex items-center gap-2 mb-6 md:hidden">
@@ -141,15 +152,15 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                   {tab === "signin"
                     ? "Masuk Akun"
                     : tab === "signup"
-                    ? "Buat Akun Baru"
-                    : "Lupa Kata Sandi"}
+                      ? "Buat Akun Baru"
+                      : "Lupa Kata Sandi"}
                 </h2>
                 <p className="mt-1 text-[13px] text-muted-foreground">
                   {tab === "signin"
                     ? "Masukkan detail akun Anda untuk melanjutkan."
                     : tab === "signup"
-                    ? "Daftar gratis untuk menyimpan kawasan favorit Anda."
-                    : "Masukkan email terdaftar Anda untuk mengirim instruksi reset kata sandi."}
+                      ? "Daftar gratis untuk menyimpan kawasan favorit Anda."
+                      : "Masukkan email terdaftar Anda untuk mengirim instruksi reset kata sandi."}
                 </p>
               </div>
 
@@ -214,7 +225,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                         placeholder="Minimal 6 karakter"
                         value={password}
                         onChange={(e) => setPassword(e.target.value.slice(0, 72))}
-                        required={tab !== "forgot"}
+                        required
                         autoComplete={tab === "signin" ? "current-password" : "new-password"}
                         className="h-11 w-full rounded-2xl bg-secondary/40 pl-10 pr-10 text-[13.5px] placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/40 border border-border/40 transition-all"
                       />
@@ -254,8 +265,8 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                       {tab === "signin"
                         ? "Masuk Sekarang"
                         : tab === "signup"
-                        ? "Buat Akun"
-                        : "Kirim Instruksi Reset"}
+                          ? "Buat Akun"
+                          : "Kirim Instruksi Reset"}
                       <ArrowRight className="size-4" />
                     </>
                   )}
@@ -307,9 +318,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
                 </p>
               )}
             </div>
-
           </div>
-
         </div>
       </div>
     </div>

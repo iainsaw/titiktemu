@@ -12,12 +12,7 @@ interface FollowUpChipsProps {
  * Menampilkan 2–3 pertanyaan follow-up di bawah respons AI.
  * Tampilan minimal: plain text, tanpa pill/border/icon.
  */
-export function FollowUpChips({
-  chips,
-  onSelect,
-  loading = false,
-  className,
-}: FollowUpChipsProps) {
+export function FollowUpChips({ chips, onSelect, loading = false, className }: FollowUpChipsProps) {
   if (loading) {
     return (
       <div className={cn("mt-3 flex flex-col gap-1.5", className)}>

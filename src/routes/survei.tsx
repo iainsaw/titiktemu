@@ -23,7 +23,8 @@ export const Route = createFileRoute("/survei")({
       { property: "og:title", content: "Survei Lapangan — Titik Temu" },
       {
         property: "og:description",
-        content: "Data primer hasil observasi, traffic count, dan kuesioner UMKM di enam lokasi pilot.",
+        content:
+          "Data primer hasil observasi, traffic count, dan kuesioner UMKM di enam lokasi pilot.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -38,7 +39,10 @@ function SurveiLapangan() {
   useEffect(() => {
     async function loadSurveys() {
       try {
-        const { data, error } = await supabase.from("surveys").select("*").order("created_at", { ascending: false });
+        const { data, error } = await supabase
+          .from("surveys")
+          .select("*")
+          .order("created_at", { ascending: false });
         if (!error && data && data.length > 0) {
           setSurveys(data as Survei[]);
         }
@@ -56,18 +60,30 @@ function SurveiLapangan() {
         <AnimatedSection>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
-              <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px] uppercase mb-2">SURVEI LAPANGAN</p>
-              <h1 className="text-[clamp(28px,6vw,44px)] font-bold tracking-tight headline">Validasi Kondisi Riil</h1>
+              <p className="text-[11px] font-semibold tracking-[0.2em] text-muted-foreground sm:text-[12px] uppercase mb-2">
+                SURVEI LAPANGAN
+              </p>
+              <h1 className="text-[clamp(28px,6vw,44px)] font-bold tracking-tight headline">
+                Validasi Kondisi Riil
+              </h1>
               <p className="mt-3 max-w-[600px] text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-                Dokumentasi hasil pengamatan langsung dari lokasi stasiun dan simpul transit untuk memvalidasi skor AI dan data geospasial.
+                Dokumentasi hasil pengamatan langsung dari lokasi stasiun dan simpul transit untuk
+                memvalidasi skor AI dan data geospasial.
               </p>
             </div>
           </div>
         </AnimatedSection>
 
-        <AnimatedSection delay={150} className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-7 sm:grid-cols-4 sm:gap-3">
+        <AnimatedSection
+          delay={150}
+          className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-7 sm:grid-cols-4 sm:gap-3"
+        >
           <Ringkas icon={MapPin} label="Lokasi disurvei" value={RINGKASAN_SURVEI.totalLokasi} />
-          <Ringkas icon={ClipboardList} label="Titik pengamatan" value={RINGKASAN_SURVEI.totalTitik} />
+          <Ringkas
+            icon={ClipboardList}
+            label="Titik pengamatan"
+            value={RINGKASAN_SURVEI.totalTitik}
+          />
           <Ringkas icon={Clock} label="Jam Observasi" value={RINGKASAN_SURVEI.totalJamObservasi} />
           <Ringkas icon={Camera} label="Periode" value={RINGKASAN_SURVEI.periode} />
         </AnimatedSection>
@@ -104,8 +120,6 @@ function SurveiLapangan() {
             </AnimatedSection>
           ))}
         </div>
-
-
       </main>
       <SiteFooter />
     </div>
@@ -123,9 +137,11 @@ function Ringkas({
 }) {
   return (
     <div className="flex flex-col justify-center p-5 rounded-[20px] sm:p-6 bg-background shadow-xl shadow-black/5 border border-border/40 transition-transform hover:-translate-y-1">
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">{label}</p>
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground sm:text-[12px]">
+        {label}
+      </p>
       <p className="font-display font-semibold tracking-tight leading-none text-[24px] sm:text-[28px] whitespace-nowrap">
-        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+        {typeof value === "number" ? <AnimatedNumber value={value} /> : value}
       </p>
     </div>
   );
@@ -141,7 +157,7 @@ function PhotoCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
 
-  const images = useMemo(() => fotos && fotos.length > 0 ? fotos : [fallback], [fotos, fallback]);
+  const images = useMemo(() => (fotos && fotos.length > 0 ? fotos : [fallback]), [fotos, fallback]);
   const current = images[currentIndex];
 
   useEffect(() => {

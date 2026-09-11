@@ -35,9 +35,7 @@ export const Route = createFileRoute("/peta")({
     peran: PERAN_VALID.includes(search.peran as RoleId) ? (search.peran as RoleId) : undefined,
   }),
   head: () => ({
-    meta: [
-      { title: "Peta Interaktif — Titik Temu" },
-    ],
+    meta: [{ title: "Peta Interaktif — Titik Temu" }],
   }),
   component: PetaInteraktif,
 });
@@ -90,17 +88,21 @@ function PetaInteraktif() {
     setMissionsLoading(true);
 
     const polygon = createCirclePolygon(coord[0], coord[1], 800);
-    fetchAllMAPIDMissionsFn({ data: { polygon } }).then(data => {
-      if (isMounted) {
-        setMissions([...data.properti, ...data.menu, ...data.struk]);
-        setMissionsLoading(false);
-      }
-    }).catch(err => {
-      console.error(err);
-      if (isMounted) setMissionsLoading(false);
-    });
+    fetchAllMAPIDMissionsFn({ data: { polygon } })
+      .then((data) => {
+        if (isMounted) {
+          setMissions([...data.properti, ...data.menu, ...data.struk]);
+          setMissionsLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (isMounted) setMissionsLoading(false);
+      });
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [selectedId]);
 
   const handleAnalisis = async (e: React.FormEvent) => {
@@ -108,8 +110,10 @@ function PetaInteraktif() {
     if (!searchNewPlace.trim() || analyzing) return;
 
     // Check if it's an existing station first (so guests can still search existing pins)
-    const normalizedQuery = searchNewPlace.toLowerCase().replace(/\s+/g, '');
-    const existing = kawasans.find(k => k.nama.toLowerCase().replace(/\s+/g, '') === normalizedQuery);
+    const normalizedQuery = searchNewPlace.toLowerCase().replace(/\s+/g, "");
+    const existing = kawasans.find(
+      (k) => k.nama.toLowerCase().replace(/\s+/g, "") === normalizedQuery,
+    );
     if (existing) {
       setSelectedId(existing.id);
       setSearchNewPlace("");
@@ -118,7 +122,9 @@ function PetaInteraktif() {
 
     // It's a new place/coordinate. Check if logged in.
     if (!user) {
-      alert("Fitur Analisis Kustom Eksklusif: Silakan Login untuk mencari dan menganalisis koordinat/lokasi baru.");
+      alert(
+        "Fitur Analisis Kustom Eksklusif: Silakan Login untuk mencari dan menganalisis koordinat/lokasi baru.",
+      );
       return;
     }
 
@@ -127,7 +133,7 @@ function PetaInteraktif() {
     try {
       const { kawasan, geo } = await analyzeNewPlace(searchNewPlace);
       addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
-      setKawasans(prev => [kawasan, ...prev].slice(0, 16));
+      setKawasans((prev) => [kawasan, ...prev].slice(0, 16));
       setSelectedId(kawasan.id);
       setSearchNewPlace("");
     } catch (err) {
@@ -139,10 +145,12 @@ function PetaInteraktif() {
 
   const handleMapClick = async (lng: number, lat: number) => {
     if (!user) {
-      alert("Fitur Analisis Kustom Eksklusif: Silakan Login untuk melakukan analisis pada titik mana pun di peta.");
+      alert(
+        "Fitur Analisis Kustom Eksklusif: Silakan Login untuk melakukan analisis pada titik mana pun di peta.",
+      );
       return;
     }
-    
+
     if (analyzing) return;
     setAnalyzing(true);
     setAnalyzeError("");
@@ -150,8 +158,8 @@ function PetaInteraktif() {
       const { kawasan, geo } = await analyzeCoordinates(lat, lng);
       addDynamicKoordinat(kawasan.id, [geo.lng, geo.lat]);
       // Update customPrices so the calculated property score stays consistent
-      setCustomPrices(prev => ({ ...prev, [kawasan.id]: kawasan.hargaTanah }));
-      setKawasans(prev => [kawasan, ...prev].slice(0, 16));
+      setCustomPrices((prev) => ({ ...prev, [kawasan.id]: kawasan.hargaTanah }));
+      setKawasans((prev) => [kawasan, ...prev].slice(0, 16));
       setSelectedId(kawasan.id);
     } catch (err) {
       setAnalyzeError(err instanceof Error ? err.message : "Gagal menganalisis koordinat");
@@ -170,11 +178,14 @@ function PetaInteraktif() {
   }, [analyzeError]);
 
   const handleEditHarga = (id: string, currentVal: number) => {
-    const val = window.prompt(`Masukkan benchmark Harga Tanah pasar riil (Juta/m²) untuk ${id}:`, currentVal.toString());
+    const val = window.prompt(
+      `Masukkan benchmark Harga Tanah pasar riil (Juta/m²) untuk ${id}:`,
+      currentVal.toString(),
+    );
     if (val !== null) {
       const num = parseFloat(val);
       if (!isNaN(num) && num > 0) {
-        setCustomPrices(prev => ({ ...prev, [id]: num }));
+        setCustomPrices((prev) => ({ ...prev, [id]: num }));
       }
     }
   };
@@ -193,7 +204,7 @@ function PetaInteraktif() {
 
   const handleMakeOfficial = async () => {
     if (!isAdmin || !user || !terpilih) return;
-    
+
     setIsInserting(true);
     try {
       await insertOfficialStation({
@@ -211,11 +222,13 @@ function PetaInteraktif() {
             skor_akses: terpilih.skor.akses,
             harga_tanah_m2: terpilih.hargaTanah || 0,
             lng: KOORDINAT[terpilih.id][0],
-            lat: KOORDINAT[terpilih.id][1]
-          }
-        }
+            lat: KOORDINAT[terpilih.id][1],
+          },
+        },
       });
-      alert(`Sukses: Kawasan "${terpilih.nama}" telah didaftarkan secara permanen di server! (Silakan muat ulang halaman untuk melihatnya tanpa tanda 'Analisis Kustom')`);
+      alert(
+        `Sukses: Kawasan "${terpilih.nama}" telah didaftarkan secara permanen di server! (Silakan muat ulang halaman untuk melihatnya tanpa tanda 'Analisis Kustom')`,
+      );
     } catch (e) {
       alert("Gagal menyimpan ke server: " + (e as Error).message);
     } finally {
@@ -223,7 +236,7 @@ function PetaInteraktif() {
     }
   };
 
-  const finalKawasans = kawasans.map(k => {
+  const finalKawasans = kawasans.map((k) => {
     if (customPrices[k.id] !== undefined) {
       const newPrice = customPrices[k.id];
       return {
@@ -231,8 +244,8 @@ function PetaInteraktif() {
         hargaTanah: newPrice,
         skor: {
           ...k.skor,
-          properti: Math.min(100, Math.max(1, Math.round((newPrice / 25) * 100)))
-        }
+          properti: Math.min(100, Math.max(1, Math.round((newPrice / 25) * 100))),
+        },
       };
     }
     return k;
@@ -255,12 +268,19 @@ function PetaInteraktif() {
             type="text"
             placeholder={analyzing ? "Menganalisis..." : "Cari lokasi..."}
             value={searchNewPlace}
-            onChange={e => { setSearchNewPlace(e.target.value); setAnalyzeError(""); }}
+            onChange={(e) => {
+              setSearchNewPlace(e.target.value);
+              setAnalyzeError("");
+            }}
             disabled={analyzing}
             className="h-[36px] w-full rounded-xl bg-secondary/60 pl-9 pr-4 text-[13px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 dark:bg-white/10 disabled:opacity-50"
           />
           <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-            {analyzing ? <Loader2 className="size-4 animate-spin" /> : <SearchIcon className="size-4" />}
+            {analyzing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <SearchIcon className="size-4" />
+            )}
           </div>
         </form>
         <button
@@ -282,7 +302,7 @@ function PetaInteraktif() {
                 "rounded-full px-3 py-1 text-[12px] font-medium transition-all duration-200",
                 layer === l.id
                   ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black"
-                  : "bg-secondary/60 text-muted-foreground hover:bg-secondary/80 dark:bg-white/10"
+                  : "bg-secondary/60 text-muted-foreground hover:bg-secondary/80 dark:bg-white/10",
               )}
             >
               {l.label}
@@ -292,39 +312,84 @@ function PetaInteraktif() {
 
         <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-[12px] text-muted-foreground">
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={koridor} onChange={(e) => setKoridor(e.target.checked)} className="size-3.5 rounded accent-ink" />
+            <input
+              type="checkbox"
+              checked={koridor}
+              onChange={(e) => setKoridor(e.target.checked)}
+              className="size-3.5 rounded accent-ink"
+            />
             Koridor
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={angkot} onChange={(e) => setAngkot(e.target.checked)} className="size-3.5 rounded accent-amber-500" />
+            <input
+              type="checkbox"
+              checked={angkot}
+              onChange={(e) => setAngkot(e.target.checked)}
+              className="size-3.5 rounded accent-amber-500"
+            />
             Jalur Angkot
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={bus} onChange={(e) => setBus(e.target.checked)} className="size-3.5 rounded accent-emerald-500" />
+            <input
+              type="checkbox"
+              checked={bus}
+              onChange={(e) => setBus(e.target.checked)}
+              className="size-3.5 rounded accent-emerald-500"
+            />
             Jalur Bus (BRT)
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={poiPendidikan} onChange={(e) => setPoiPendidikan(e.target.checked)} className="size-3.5 rounded accent-blue-500" />
+            <input
+              type="checkbox"
+              checked={poiPendidikan}
+              onChange={(e) => setPoiPendidikan(e.target.checked)}
+              className="size-3.5 rounded accent-blue-500"
+            />
             Pendidikan
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={poiKesehatan} onChange={(e) => setPoiKesehatan(e.target.checked)} className="size-3.5 rounded accent-red-500" />
+            <input
+              type="checkbox"
+              checked={poiKesehatan}
+              onChange={(e) => setPoiKesehatan(e.target.checked)}
+              className="size-3.5 rounded accent-red-500"
+            />
             Kesehatan
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={poiKomersial} onChange={(e) => setPoiKomersial(e.target.checked)} className="size-3.5 rounded accent-yellow-500" />
+            <input
+              type="checkbox"
+              checked={poiKomersial}
+              onChange={(e) => setPoiKomersial(e.target.checked)}
+              className="size-3.5 rounded accent-yellow-500"
+            />
             Komersial
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={poiHiburan} onChange={(e) => setPoiHiburan(e.target.checked)} className="size-3.5 rounded accent-pink-500" />
+            <input
+              type="checkbox"
+              checked={poiHiburan}
+              onChange={(e) => setPoiHiburan(e.target.checked)}
+              className="size-3.5 rounded accent-pink-500"
+            />
             Hiburan
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={poiTransit} onChange={(e) => setPoiTransit(e.target.checked)} className="size-3.5 rounded accent-violet-500" />
+            <input
+              type="checkbox"
+              checked={poiTransit}
+              onChange={(e) => setPoiTransit(e.target.checked)}
+              className="size-3.5 rounded accent-violet-500"
+            />
             Transit
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors">
-            <input type="checkbox" checked={tampilkanMissions} onChange={(e) => setTampilkanMissions(e.target.checked)} className="size-3.5 rounded accent-sky-500" />
+            <input
+              type="checkbox"
+              checked={tampilkanMissions}
+              onChange={(e) => setTampilkanMissions(e.target.checked)}
+              className="size-3.5 rounded accent-sky-500"
+            />
             Misi MAPID
           </label>
         </div>
@@ -364,14 +429,23 @@ function PetaInteraktif() {
           <p className="font-display text-[10px] uppercase tracking-widest text-muted-foreground/50">
             {terpilih.id} · {terpilih.koridor}
           </p>
-          <h2 className="mt-1 truncate text-[18px] font-semibold tracking-tight">{terpilih.nama}</h2>
-          <p className="mt-1 text-[12px] font-medium leading-snug" style={{ color: warnaSkor(skorTerpilih) }}>
+          <h2 className="mt-1 truncate text-[18px] font-semibold tracking-tight">
+            {terpilih.nama}
+          </h2>
+          <p
+            className="mt-1 text-[12px] font-medium leading-snug"
+            style={{ color: warnaSkor(skorTerpilih) }}
+          >
             Vitalitas {kelasSkor(skorTerpilih).label} · {peran.tagline}
           </p>
         </div>
         <div
           className="flex size-[44px] shrink-0 items-center justify-center rounded-xl border-[2px] text-[18px] font-extrabold"
-          style={{ borderColor: warnaSkor(skorTerpilih), color: warnaSkor(skorTerpilih), backgroundColor: `color-mix(in srgb, ${warnaSkor(skorTerpilih)} 6%, transparent)` }}
+          style={{
+            borderColor: warnaSkor(skorTerpilih),
+            color: warnaSkor(skorTerpilih),
+            backgroundColor: `color-mix(in srgb, ${warnaSkor(skorTerpilih)} 6%, transparent)`,
+          }}
         >
           {skorTerpilih}
         </div>
@@ -410,19 +484,27 @@ function PetaInteraktif() {
         <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-secondary/30 p-3.5 dark:bg-white/5">
           <div>
             <span className="block text-[10px] text-muted-foreground mb-0.5">Penduduk (2024)</span>
-            <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.penduduk} /></span>
+            <span className="font-display text-[13px] font-semibold">
+              <AnimatedNumber value={terpilih.penduduk} />
+            </span>
           </div>
           <div>
             <span className="block text-[10px] text-muted-foreground mb-0.5">Kepadatan</span>
-            <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={Math.round(terpilih.kepadatan || 0)} suffix=" /km²" /></span>
+            <span className="font-display text-[13px] font-semibold">
+              <AnimatedNumber value={Math.round(terpilih.kepadatan || 0)} suffix=" /km²" />
+            </span>
           </div>
           <div>
             <span className="block text-[10px] text-muted-foreground mb-0.5">Pelajar & Mhs</span>
-            <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.pelajar || 0} /></span>
+            <span className="font-display text-[13px] font-semibold">
+              <AnimatedNumber value={terpilih.pelajar || 0} />
+            </span>
           </div>
           <div>
             <span className="block text-[10px] text-muted-foreground mb-0.5">Total Fasilitas</span>
-            <span className="font-display text-[13px] font-semibold"><AnimatedNumber value={terpilih.totalFasilitas || 0} suffix=" POI" /></span>
+            <span className="font-display text-[13px] font-semibold">
+              <AnimatedNumber value={terpilih.totalFasilitas || 0} suffix=" POI" />
+            </span>
           </div>
         </div>
       )}
@@ -431,7 +513,10 @@ function PetaInteraktif() {
       <dl className="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-secondary/30 p-3 text-center dark:bg-white/5">
         <Fact label="Transit" value={terpilih.jarakTransit || 0} suffix="m" fallback="N/A" />
         <Fact label="UMKM" value={terpilih.umkm || 0} fallback="N/A" />
-        <div className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50" onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}>
+        <div
+          className="group relative flex flex-col items-center justify-center cursor-pointer rounded-lg p-1.5 transition-colors hover:bg-secondary/50"
+          onClick={() => handleEditHarga(terpilih.id, terpilih.hargaTanah)}
+        >
           <dt className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-blue-500 transition-colors">
             Harga
           </dt>
@@ -462,8 +547,12 @@ function PetaInteraktif() {
             onClick={() => handleAskAI(terpilih)}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-[12px] font-medium text-ink-foreground transition-all hover:opacity-90 active:scale-95 print:hidden shadow-sm dark:bg-white dark:text-black"
           >
-            <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert dark:invert-0" /> 
-            {role === "investor" ? "Analisis Properti" : role === "pemerintah" ? "Analisis Perencanaan" : "Analisis Usaha"}
+            <img src={aiStar.url} alt="" className="size-3.5 brightness-0 invert dark:invert-0" />
+            {role === "investor"
+              ? "Analisis Properti"
+              : role === "pemerintah"
+                ? "Analisis Perencanaan"
+                : "Analisis Usaha"}
           </button>
         )}
 
@@ -476,14 +565,19 @@ function PetaInteraktif() {
         {aiRecommendation && (
           <div>
             <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ink dark:text-white mb-2">
-              <img src={aiStar.url} alt="" className="size-3" /> {role === "investor" ? "Analisis Properti" : role === "pemerintah" ? "Analisis Perencanaan" : "Analisis Usaha"}
+              <img src={aiStar.url} alt="" className="size-3" />{" "}
+              {role === "investor"
+                ? "Analisis Properti"
+                : role === "pemerintah"
+                  ? "Analisis Perencanaan"
+                  : "Analisis Usaha"}
             </div>
-            <p 
+            <p
               className="text-[12px] leading-relaxed text-foreground/85"
               dangerouslySetInnerHTML={{
                 __html: aiRecommendation
-                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                  .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                  .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                  .replace(/\*(.*?)\*/g, "<em>$1</em>"),
               }}
             />
           </div>
@@ -532,10 +626,12 @@ function PetaInteraktif() {
                   "flex w-full items-center gap-2.5 rounded-xl px-3 py-1.5 text-left text-[12px] transition-all",
                   k.id === selectedId
                     ? "bg-secondary font-medium text-foreground shadow-sm"
-                    : "text-foreground/70 hover:bg-secondary/50"
+                    : "text-foreground/70 hover:bg-secondary/50",
                 )}
               >
-                <span className="w-4 font-display text-[11px] text-muted-foreground/40">{i + 1}</span>
+                <span className="w-4 font-display text-[11px] text-muted-foreground/40">
+                  {i + 1}
+                </span>
                 <span className="flex-1 truncate">{k.nama}</span>
                 <span
                   className="rounded-md px-1.5 py-0.5 font-display text-[11px] font-semibold"
@@ -568,7 +664,7 @@ function PetaInteraktif() {
             "rounded-lg px-2 py-1.5 text-[11px] sm:text-[12px] font-medium transition-all duration-200 text-center truncate flex items-center justify-center min-w-0",
             role === r.id
               ? "bg-ink text-ink-foreground shadow-sm dark:bg-white dark:text-black font-semibold"
-              : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
           )}
         >
           <span className="sm:hidden truncate">{r.shortLabel}</span>
@@ -580,7 +676,6 @@ function PetaInteraktif() {
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground print:h-auto print:bg-white print:text-black">
-
       {/* ── GLOBAL NAV ── */}
       <div className="shrink-0 z-50 print:hidden">
         <SiteHeader />
@@ -588,7 +683,6 @@ function PetaInteraktif() {
 
       {/* ── MAIN CONTAINER ── */}
       <div className="relative flex-1 overflow-hidden flex flex-col lg:block print:hidden">
-        
         {/* Toast Error Floating */}
         {analyzeError && (
           <div className="absolute bottom-6 left-6 z-[100] max-w-sm rounded-xl border border-destructive/20 bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-xl dark:bg-black/95 dark:border-destructive/30 animate-in fade-in slide-in-from-bottom-5">
@@ -638,14 +732,20 @@ function PetaInteraktif() {
           {/* Desktop Floating: Legend */}
           <div className="hidden lg:block absolute bottom-4 right-4 z-20 rounded-xl bg-white dark:bg-zinc-900 px-3.5 py-3 shadow-xl border border-border/30 print:hidden">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">Legenda Skor</span>
+              <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80">
+                Legenda Skor
+              </span>
               <span className="text-[10px] text-muted-foreground/50 ml-3">r=800m</span>
             </div>
             <div className="flex items-center gap-1.5 w-40">
               <span className="font-display text-[10px] text-muted-foreground/60">0</span>
               <div className="flex-1 flex h-[6px] rounded-full overflow-hidden shadow-inner">
                 {[20, 48, 60, 72, 88].map((s) => (
-                  <div key={s} className="h-full flex-1" style={{ backgroundColor: warnaSkor(s) }} />
+                  <div
+                    key={s}
+                    className="h-full flex-1"
+                    style={{ backgroundColor: warnaSkor(s) }}
+                  />
                 ))}
               </div>
               <span className="font-display text-[10px] text-muted-foreground/60">100</span>
@@ -658,7 +758,7 @@ function PetaInteraktif() {
         <div
           className={cn(
             "hidden lg:flex flex-col gap-3 absolute top-4 left-4 z-30 w-[360px] max-h-[calc(100vh-96px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
-            isMapMaximized && "left-[-420px] opacity-0"
+            isMapMaximized && "left-[-420px] opacity-0",
           )}
         >
           <div
@@ -674,7 +774,7 @@ function PetaInteraktif() {
         <div
           className={cn(
             "hidden lg:flex flex-col gap-3 absolute top-4 right-4 z-30 w-[320px] max-h-[calc(100vh-124px)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] print:hidden",
-            isMapMaximized && "right-[-420px] opacity-0"
+            isMapMaximized && "right-[-420px] opacity-0",
           )}
         >
           {/* Search Card */}
@@ -703,7 +803,6 @@ function PetaInteraktif() {
 
         {/* ── MOBILE CONTENT SECTION (< lg) ── */}
         <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-zinc-950 p-3 pb-24 flex flex-col gap-3.5 lg:hidden z-10 print:hidden">
-          
           {/* Card 1: Search & Filter */}
           <div className="rounded-2xl bg-white dark:bg-zinc-900 p-4 shadow-sm border border-border/40">
             {searchFilterContent}
@@ -731,7 +830,6 @@ function PetaInteraktif() {
       {/* ── PDF REPORT TEMPLATE (Only visible in print mode) ── */}
       <div className="hidden print:block w-full h-full bg-white text-slate-900 font-sans p-4">
         <div id="pdf-report-template" className="max-w-[210mm] mx-auto">
-          
           {/* Header Branding */}
           <div className="flex items-start justify-between border-b-2 border-slate-900 pb-4 mb-5">
             <div>
@@ -747,7 +845,12 @@ function PetaInteraktif() {
             </div>
             <div className="text-right">
               <span className="inline-block rounded-md bg-slate-100 px-3 py-1 text-[8.5pt] font-medium text-slate-700 border border-slate-200">
-                Ref: TT-BDG/{new Date().getFullYear()} · {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+                Ref: TT-BDG/{new Date().getFullYear()} ·{" "}
+                {new Date().toLocaleDateString("id-ID", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </span>
             </div>
           </div>
@@ -755,20 +858,35 @@ function PetaInteraktif() {
           {/* Key Info Grid */}
           <div className="grid grid-cols-3 gap-3 mb-5 text-[10pt]">
             <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
-              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Nama Kawasan</span>
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">
+                Nama Kawasan
+              </span>
               <span className="font-bold text-[11pt] text-slate-900">{terpilih.nama}</span>
-              <span className="block text-[8.5pt] text-slate-600 mt-0.5">{terpilih.id} · Koridor {terpilih.koridor}</span>
+              <span className="block text-[8.5pt] text-slate-600 mt-0.5">
+                {terpilih.id} · Koridor {terpilih.koridor}
+              </span>
             </div>
             <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
-              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Klaster & Perspektif</span>
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">
+                Klaster & Perspektif
+              </span>
               <span className="font-bold text-[11pt] text-slate-900">{terpilih.klaster}</span>
               <span className="block text-[8.5pt] text-slate-600 mt-0.5">Peran: {peran.label}</span>
             </div>
             <div className="rounded-lg bg-slate-50 p-3 border border-slate-200">
-              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">Skor Vitalitas Total</span>
+              <span className="block text-[8.5pt] font-semibold text-slate-500 uppercase tracking-wider">
+                Skor Vitalitas Total
+              </span>
               <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-[18pt] font-extrabold" style={{ color: warnaSkor(skorTerpilih) }}>{skorTerpilih}</span>
-                <span className="text-[9.5pt] font-semibold text-slate-700">/ 100 ({kelasSkor(skorTerpilih).label})</span>
+                <span
+                  className="text-[18pt] font-extrabold"
+                  style={{ color: warnaSkor(skorTerpilih) }}
+                >
+                  {skorTerpilih}
+                </span>
+                <span className="text-[9.5pt] font-semibold text-slate-700">
+                  / 100 ({kelasSkor(skorTerpilih).label})
+                </span>
               </div>
             </div>
           </div>
@@ -779,15 +897,21 @@ function PetaInteraktif() {
               A. Rincian Komponen Skor Vitalitas
             </h2>
             <p className="text-[9.5pt] text-slate-700 mb-3 leading-relaxed">
-              Skor vitalitas dihitung berdasarkan pembobotan perspektif <strong>{peran.label}</strong> ({peran.tagline}). Berikut adalah kontribusi masing-masing komponen pembentuk:
+              Skor vitalitas dihitung berdasarkan pembobotan perspektif{" "}
+              <strong>{peran.label}</strong> ({peran.tagline}). Berikut adalah kontribusi
+              masing-masing komponen pembentuk:
             </p>
 
             <table className="w-full text-[9.5pt] border-collapse border border-slate-300 text-left mb-2">
               <thead>
                 <tr className="bg-slate-100 text-slate-800 font-semibold border-b border-slate-300">
                   <th className="px-4 py-2 border-r border-slate-300">Indikator Komponen</th>
-                  <th className="px-4 py-2 border-r border-slate-300 text-center w-36">Skor Komponen</th>
-                  <th className="px-4 py-2 border-r border-slate-300 text-center w-28">Bobot Peran</th>
+                  <th className="px-4 py-2 border-r border-slate-300 text-center w-36">
+                    Skor Komponen
+                  </th>
+                  <th className="px-4 py-2 border-r border-slate-300 text-center w-28">
+                    Bobot Peran
+                  </th>
                   <th className="px-4 py-2 text-center w-36">Kontribusi Skor</th>
                 </tr>
               </thead>
@@ -798,17 +922,34 @@ function PetaInteraktif() {
                   const kontribusi = (nilai * bobot).toFixed(1);
                   return (
                     <tr key={c.id}>
-                      <td className="px-4 py-2 border-r border-slate-200 font-medium text-slate-900">{c.label}</td>
+                      <td className="px-4 py-2 border-r border-slate-200 font-medium text-slate-900">
+                        {c.label}
+                      </td>
                       <td className="px-4 py-2 border-r border-slate-200 text-center">
                         <div className="flex items-center justify-center gap-2">
-                          <span className="font-bold text-[10pt]" style={{ color: warnaSkor(nilai) }}>{nilai}</span>
+                          <span
+                            className="font-bold text-[10pt]"
+                            style={{ color: warnaSkor(nilai) }}
+                          >
+                            {nilai}
+                          </span>
                           <div className="w-12 h-1.5 rounded-full bg-slate-200 overflow-hidden">
-                            <div className="h-full rounded-full" style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }} />
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${nilai}%`, backgroundColor: warnaSkor(nilai) }}
+                            />
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-2 border-r border-slate-200 text-center text-slate-600">{(bobot * 100).toFixed(0)}%</td>
-                      <td className="px-4 py-2 text-center font-bold" style={{ color: warnaSkor(nilai) }}>+{kontribusi}</td>
+                      <td className="px-4 py-2 border-r border-slate-200 text-center text-slate-600">
+                        {(bobot * 100).toFixed(0)}%
+                      </td>
+                      <td
+                        className="px-4 py-2 text-center font-bold"
+                        style={{ color: warnaSkor(nilai) }}
+                      >
+                        +{kontribusi}
+                      </td>
                     </tr>
                   );
                 })}
@@ -823,20 +964,36 @@ function PetaInteraktif() {
             </h2>
             <div className="grid grid-cols-4 gap-3 text-[9.5pt]">
               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Jarak ke Transit</span>
-                <span className="text-[11pt] font-bold text-slate-900">{terpilih.jarakTransit} m</span>
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">
+                  Jarak ke Transit
+                </span>
+                <span className="text-[11pt] font-bold text-slate-900">
+                  {terpilih.jarakTransit} m
+                </span>
               </div>
               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Jumlah UMKM</span>
-                <span className="text-[11pt] font-bold text-slate-900">{terpilih.umkm || "N/A"} Unit</span>
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">
+                  Jumlah UMKM
+                </span>
+                <span className="text-[11pt] font-bold text-slate-900">
+                  {terpilih.umkm || "N/A"} Unit
+                </span>
               </div>
               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Harga Tanah</span>
-                <span className="text-[11pt] font-bold text-slate-900">{terpilih.hargaTanah ? `Rp ${terpilih.hargaTanah} Jt/m²` : "N/A"}</span>
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">
+                  Harga Tanah
+                </span>
+                <span className="text-[11pt] font-bold text-slate-900">
+                  {terpilih.hargaTanah ? `Rp ${terpilih.hargaTanah} Jt/m²` : "N/A"}
+                </span>
               </div>
               <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">Kepadatan Penduduk</span>
-                <span className="text-[11pt] font-bold text-slate-900">{terpilih.kepadatan ? `${Math.round(terpilih.kepadatan)} /km²` : "N/A"}</span>
+                <span className="block text-[8pt] text-slate-500 uppercase font-semibold">
+                  Kepadatan Penduduk
+                </span>
+                <span className="text-[11pt] font-bold text-slate-900">
+                  {terpilih.kepadatan ? `${Math.round(terpilih.kepadatan)} /km²` : "N/A"}
+                </span>
               </div>
             </div>
           </div>
@@ -851,14 +1008,15 @@ function PetaInteraktif() {
                 <div
                   dangerouslySetInnerHTML={{
                     __html: aiRecommendation
-                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                      .replace(/\*(.*?)\*/g, "<em>$1</em>"),
                   }}
                 />
               </div>
             ) : (
               <p className="text-[9.5pt] italic text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                Catatan: Analisis rekomendasi spasial dapat dipicu pada panel kawasan di dashboard sebelum mengunduh laporan ini.
+                Catatan: Analisis rekomendasi spasial dapat dipicu pada panel kawasan di dashboard
+                sebelum mengunduh laporan ini.
               </p>
             )}
           </div>
@@ -866,27 +1024,53 @@ function PetaInteraktif() {
           {/* Official Endorsement Footer */}
           <div className="mt-8 pt-4 border-t border-slate-300 flex justify-between items-end text-[8.5pt] text-slate-600">
             <div>
-              <p className="font-semibold text-slate-800">Titik Temu WebGIS — Perkotaan Kota Bandung</p>
-              <p className="text-[8pt] text-slate-500">Dokumen Resmi Hasil Analisis Spasial & Vitalitas Transit</p>
+              <p className="font-semibold text-slate-800">
+                Titik Temu WebGIS — Perkotaan Kota Bandung
+              </p>
+              <p className="text-[8pt] text-slate-500">
+                Dokumen Resmi Hasil Analisis Spasial & Vitalitas Transit
+              </p>
             </div>
             <div className="text-right text-[8pt] text-slate-500">
-              <p>Dicetak pada: {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p>
+                Dicetak pada:{" "}
+                {new Date().toLocaleDateString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
               <p>Status: Laporan Terverifikasi</p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 }
 
-function Fact({ label, value, suffix, fallback }: { label: string; value: string | number; suffix?: string; fallback?: string }) {
+function Fact({
+  label,
+  value,
+  suffix,
+  fallback,
+}: {
+  label: string;
+  value: string | number;
+  suffix?: string;
+  fallback?: string;
+}) {
   return (
     <div className="flex flex-col items-center justify-center">
-      <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</dt>
+      <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </dt>
       <dd className="mt-1 font-display text-[14px] font-semibold">
-        {typeof value === 'number' && value > 0 ? <AnimatedNumber value={value} suffix={suffix} /> : fallback || value}
+        {typeof value === "number" && value > 0 ? (
+          <AnimatedNumber value={value} suffix={suffix} />
+        ) : (
+          fallback || value
+        )}
       </dd>
     </div>
   );

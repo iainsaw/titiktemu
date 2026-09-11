@@ -11,8 +11,8 @@ const tautan = [
   { to: "/survei", label: "Survei Lapangan" },
   { to: "/metodologi", label: "Metodologi & Sumber Data" },
   { to: "/tim", label: "Tentang Tim" },
-  { to: "/#faq", label: "Pertanyaan Umum (FAQ)" },
-] as const;
+  { href: "/#faq", label: "Pertanyaan Umum (FAQ)" },
+];
 
 const sumber = [
   "MAPID Apps",
@@ -60,14 +60,23 @@ export function SiteFooter() {
           <div>
             <p className="text-[13px] font-semibold">Tautan cepat</p>
             <ul className="mt-3 space-y-2">
-              {tautan.map((t) => (
-                <li key={t.to}>
-                  <Link
-                    to={t.to}
-                    className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {t.label}
-                  </Link>
+              {tautan.map((t: any) => (
+                <li key={t.to || t.href}>
+                  {t.to ? (
+                    <Link
+                      to={t.to as any}
+                      className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {t.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={t.href}
+                      className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {t.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

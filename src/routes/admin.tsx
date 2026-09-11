@@ -1,9 +1,17 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  LayoutDashboard, Database, Users, Map,
-  TrendingUp, RefreshCw, ShieldAlert, Loader2,
-  BarChart3, CheckCircle2, AlertCircle
+  LayoutDashboard,
+  Database,
+  Users,
+  Map,
+  TrendingUp,
+  RefreshCw,
+  ShieldAlert,
+  Loader2,
+  BarChart3,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAdminStats } from "@/lib/auth.functions";
@@ -26,12 +34,20 @@ export const Route = createFileRoute("/admin")({
 
 type Stats = {
   stations: Array<{
-    id: string; nama: string;
-    skor_ekonomi: number; skor_layanan: number; skor_akses: number; skor_properti: number;
-    umkm_count: number; updated_at: string;
+    id: string;
+    nama: string;
+    skor_ekonomi: number;
+    skor_layanan: number;
+    skor_akses: number;
+    skor_properti: number;
+    umkm_count: number;
+    updated_at: string;
   }>;
   counts: {
-    poi_umkm: number; layanan: number; akses: number; harga_tanah: number;
+    poi_umkm: number;
+    layanan: number;
+    akses: number;
+    harga_tanah: number;
   };
 };
 
@@ -85,25 +101,31 @@ function AdminDashboard() {
         <div className="flex flex-col items-center gap-3 text-center">
           <ShieldAlert className="size-10 text-destructive" />
           <p className="text-[15px] font-medium">Akses Ditolak</p>
-          <p className="text-[13px] text-muted-foreground">Anda tidak memiliki izin mengakses halaman ini.</p>
+          <p className="text-[13px] text-muted-foreground">
+            Anda tidak memiliki izin mengakses halaman ini.
+          </p>
         </div>
       </div>
     );
   }
 
   const avgSkor = (station: Stats["stations"][0]) =>
-    Math.round((station.skor_ekonomi + station.skor_layanan + station.skor_akses + station.skor_properti) / 4);
+    Math.round(
+      (station.skor_ekonomi + station.skor_layanan + station.skor_akses + station.skor_properti) /
+        4,
+    );
 
   const skorColor = (s: number) =>
-    s >= 70 ? "text-emerald-600 dark:text-emerald-400"
-    : s >= 50 ? "text-amber-600 dark:text-amber-400"
-    : "text-rose-600 dark:text-rose-400";
+    s >= 70
+      ? "text-emerald-600 dark:text-emerald-400"
+      : s >= 50
+        ? "text-amber-600 dark:text-amber-400"
+        : "text-rose-600 dark:text-rose-400";
 
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-[1180px] px-4 py-8 sm:px-5 sm:py-12">
-
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -115,7 +137,8 @@ function AdminDashboard() {
               Pusat Kendali Titik Temu
             </h1>
             <p className="mt-2 text-[14px] text-muted-foreground">
-              Selamat datang, <strong>{user.user_metadata?.display_name || user.email?.split("@")[0]}</strong>.
+              Selamat datang,{" "}
+              <strong>{user.user_metadata?.display_name || user.email?.split("@")[0]}</strong>.
               Statistik data dan kawasan secara real-time.
             </p>
           </div>
@@ -143,13 +166,38 @@ function AdminDashboard() {
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { label: "Titik UMKM & Komersial", value: stats?.counts.poi_umkm, icon: TrendingUp, color: "text-amber-500" },
-              { label: "Fasilitas Layanan Publik", value: stats?.counts.layanan, icon: Users, color: "text-blue-500" },
-              { label: "Titik Akses Transit", value: stats?.counts.akses, icon: Map, color: "text-emerald-500" },
-              { label: "Sampel Harga Tanah", value: stats?.counts.harga_tanah, icon: Database, color: "text-violet-500" },
+              {
+                label: "Titik UMKM & Komersial",
+                value: stats?.counts.poi_umkm,
+                icon: TrendingUp,
+                color: "text-amber-500",
+              },
+              {
+                label: "Fasilitas Layanan Publik",
+                value: stats?.counts.layanan,
+                icon: Users,
+                color: "text-blue-500",
+              },
+              {
+                label: "Titik Akses Transit",
+                value: stats?.counts.akses,
+                icon: Map,
+                color: "text-emerald-500",
+              },
+              {
+                label: "Sampel Harga Tanah",
+                value: stats?.counts.harga_tanah,
+                icon: Database,
+                color: "text-violet-500",
+              },
             ].map(({ label, value, icon: Icon, color }) => (
               <div key={label} className="rounded-2xl border border-border/30 bg-secondary/20 p-4">
-                <div className={cn("mb-2.5 flex size-9 items-center justify-center rounded-xl bg-background/60", color.replace("text-", "bg-").replace("-500", "-500/10"))}>
+                <div
+                  className={cn(
+                    "mb-2.5 flex size-9 items-center justify-center rounded-xl bg-background/60",
+                    color.replace("text-", "bg-").replace("-500", "-500/10"),
+                  )}
+                >
                   <Icon className={cn("size-4.5", color)} />
                 </div>
                 <p className="text-[22px] font-bold font-display">
@@ -207,8 +255,22 @@ function AdminDashboard() {
                   <table className="w-full text-[13px]">
                     <thead>
                       <tr className="border-b border-border/20 bg-secondary/30">
-                        {["ID", "Nama Kawasan", "UMKM", "Ekonomi", "Layanan", "Akses", "Properti", "Rata-rata", "Diperbarui", "Aksi"].map(h => (
-                          <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                        {[
+                          "ID",
+                          "Nama Kawasan",
+                          "UMKM",
+                          "Ekonomi",
+                          "Layanan",
+                          "Akses",
+                          "Properti",
+                          "Rata-rata",
+                          "Diperbarui",
+                          "Aksi",
+                        ].map((h) => (
+                          <th
+                            key={h}
+                            className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60"
+                          >
                             {h}
                           </th>
                         ))}
@@ -219,36 +281,85 @@ function AdminDashboard() {
                         const avg = avgSkor(s);
                         return (
                           <tr key={s.id} className="hover:bg-secondary/20 transition-colors">
-                            <td className="px-4 py-3 font-display text-[11px] text-muted-foreground/60">{s.id}</td>
+                            <td className="px-4 py-3 font-display text-[11px] text-muted-foreground/60">
+                              {s.id}
+                            </td>
                             <td className="px-4 py-3 font-medium">{s.nama}</td>
                             <td className="px-4 py-3 font-display">{s.umkm_count}</td>
-                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_ekonomi))}>{s.skor_ekonomi}</td>
-                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_layanan))}>{s.skor_layanan}</td>
-                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_akses))}>{s.skor_akses}</td>
-                            <td className={cn("px-4 py-3 font-display font-semibold", skorColor(s.skor_properti))}>{s.skor_properti}</td>
+                            <td
+                              className={cn(
+                                "px-4 py-3 font-display font-semibold",
+                                skorColor(s.skor_ekonomi),
+                              )}
+                            >
+                              {s.skor_ekonomi}
+                            </td>
+                            <td
+                              className={cn(
+                                "px-4 py-3 font-display font-semibold",
+                                skorColor(s.skor_layanan),
+                              )}
+                            >
+                              {s.skor_layanan}
+                            </td>
+                            <td
+                              className={cn(
+                                "px-4 py-3 font-display font-semibold",
+                                skorColor(s.skor_akses),
+                              )}
+                            >
+                              {s.skor_akses}
+                            </td>
+                            <td
+                              className={cn(
+                                "px-4 py-3 font-display font-semibold",
+                                skorColor(s.skor_properti),
+                              )}
+                            >
+                              {s.skor_properti}
+                            </td>
                             <td className="px-4 py-3">
-                              <span className={cn("inline-flex items-center gap-1 font-display font-bold", skorColor(avg))}>
+                              <span
+                                className={cn(
+                                  "inline-flex items-center gap-1 font-display font-bold",
+                                  skorColor(avg),
+                                )}
+                              >
                                 <CheckCircle2 className="size-3" />
                                 {avg}
                               </span>
                             </td>
                             <td className="px-4 py-3 text-muted-foreground/50 text-[11px]">
-                              {s.updated_at ? new Date(s.updated_at).toLocaleDateString("id-ID") : "—"}
+                              {s.updated_at
+                                ? new Date(s.updated_at).toLocaleDateString("id-ID")
+                                : "—"}
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-2">
-                                <button onClick={() => alert(`Edit ${s.nama} (Coming Soon)`)} className="text-blue-500 hover:underline text-[11px] font-medium">Edit</button>
-                                <button onClick={async () => {
-                                  if (window.confirm(`Yakin hapus kawasan resmi ${s.nama}?`)) {
-                                    try {
-                                      await deleteOfficialStation({ data: { userId: user!.id, stationId: s.id } });
-                                      alert("Sukses dihapus!");
-                                      router.invalidate();
-                                    } catch (e) {
-                                      alert("Gagal menghapus: " + (e as Error).message);
+                                <button
+                                  onClick={() => alert(`Edit ${s.nama} (Coming Soon)`)}
+                                  className="text-blue-500 hover:underline text-[11px] font-medium"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    if (window.confirm(`Yakin hapus kawasan resmi ${s.nama}?`)) {
+                                      try {
+                                        await deleteOfficialStation({
+                                          data: { userId: user!.id, stationId: s.id },
+                                        });
+                                        alert("Sukses dihapus!");
+                                        router.invalidate();
+                                      } catch (e) {
+                                        alert("Gagal menghapus: " + (e as Error).message);
+                                      }
                                     }
-                                  }
-                                }} className="text-red-500 hover:underline text-[11px] font-medium">Hapus</button>
+                                  }}
+                                  className="text-red-500 hover:underline text-[11px] font-medium"
+                                >
+                                  Hapus
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -274,10 +385,11 @@ function AdminDashboard() {
         <div className="mt-8 flex items-start gap-3 rounded-2xl border border-border/20 bg-secondary/10 p-4 text-[12px] text-muted-foreground">
           <ShieldAlert className="size-4 shrink-0 mt-0.5 text-amber-500" />
           <div>
-            <span className="font-semibold text-foreground/80">Catatan Keamanan:</span>{" "}
-            Halaman ini hanya dapat diakses oleh akun dengan role <code className="rounded bg-secondary px-1 py-0.5 text-[11px]">admin</code>.
-            Pengecekan dilakukan di sisi server menggunakan Supabase Service Role Key.
-            Untuk mengubah role pengguna, gunakan Supabase Dashboard → SQL Editor.
+            <span className="font-semibold text-foreground/80">Catatan Keamanan:</span> Halaman ini
+            hanya dapat diakses oleh akun dengan role{" "}
+            <code className="rounded bg-secondary px-1 py-0.5 text-[11px]">admin</code>. Pengecekan
+            dilakukan di sisi server menggunakan Supabase Service Role Key. Untuk mengubah role
+            pengguna, gunakan Supabase Dashboard → SQL Editor.
           </div>
         </div>
       </main>
