@@ -1,14 +1,14 @@
-const getApiKey = () =>
-  import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_OPENROUTER_API_KEY;
+const getOpenRouterKey = () => import.meta.env.VITE_OPENROUTER_API_KEY;
+const getGeminiKey = () => import.meta.env.VITE_GEMINI_API_KEY;
 
 export type Pesan = { role: "user" | "assistant"; content: string };
 
+// Model gratis terbaik di OpenRouter (Sept 2026)
+// Urutan = prioritas: model terbaik di atas, fallback di bawah
 const OPENROUTER_MODELS = [
-  "openrouter/free",
-  "nvidia/nemotron-3.5-lightning:free",
-  "minimax/minimax-m3:free",
-  "z-ai/glm-5.2:free",
   "google/gemma-4-31b-it:free",
+  "nvidia/nemotron-3-ultra:free",
+  "openrouter/free",
 ];
 
 function cleanAiResponse(text: string): string {
@@ -64,52 +64,49 @@ async function fetchWithRetry(
   throw lastError;
 }
 
-async function callGeminiOrOpenRouter(
+async function callOpenRouter(
   messages: { role: string; content: string }[],
+  apiKey: string,
 ): Promise<string> {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    throw new Error("API Key AI belum dikonfigurasi di file .env");
-  }
-
-  // 1. If key starts with sk-or-v1-, use OpenRouter with automatic retry
-  if (apiKey.startsWith("sk-or-v1-")) {
-    let lastError;
-    for (const model of OPENROUTER_MODELS) {
-      try {
-        const response = await fetchWithRetry(
-          "https://openrouter.ai/api/v1/chat/completions",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "HTTP-Referer": "http://localhost:8090",
-              "X-Title": "Titik Temu WebGIS",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: messages,
-              max_tokens: 2048,
-            }),
+  let lastError;
+  for (const model of OPENROUTER_MODELS) {
+    try {
+      const response = await fetchWithRetry(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "HTTP-Referer": "http://localhost:8090",
+            "X-Title": "Titik Temu WebGIS",
+            "Content-Type": "application/json",
           },
-          2, // retry twice per model
-          400,
-        );
+          body: JSON.stringify({
+            model: model,
+            messages: messages,
+            max_tokens: 2048,
+          }),
+        },
+        2, // retry twice per model
+        400,
+      );
 
-        const data = await response.json();
-        const rawContent = data.choices?.[0]?.message?.content || "";
-        const cleaned = cleanAiResponse(rawContent);
-        if (cleaned) return cleaned;
-      } catch (e: any) {
-        console.warn(`[OpenRouter] Exception dengan model ${model}:`, e.message);
-        lastError = e;
-      }
+      const data = await response.json();
+      const rawContent = data.choices?.[0]?.message?.content || "";
+      const cleaned = cleanAiResponse(rawContent);
+      if (cleaned) return cleaned;
+    } catch (e: any) {
+      console.warn(`[OpenRouter] Exception dengan model ${model}:`, e.message);
+      lastError = e;
     }
-    throw new Error(lastError?.message || "Gagal memproses AI via OpenRouter.");
   }
+  throw new Error(lastError?.message || "Gagal memproses AI via OpenRouter.");
+}
 
-  // 2. Otherwise, treat key as Google Gemini API Key (gemini-flash-lite-latest with retry)
+async function callGemini(
+  messages: { role: string; content: string }[],
+  apiKey: string,
+): Promise<string> {
   const systemMsg = messages.find((m) => m.role === "system");
   const nonSystemMsgs = messages.filter((m) => m.role !== "system");
 
@@ -137,29 +134,63 @@ async function callGeminiOrOpenRouter(
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
 
-  try {
-    const response = await fetchWithRetry(
-      url,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      },
-      3, // retry 3 times automatically
-      500,
-    );
+  const response = await fetchWithRetry(
+    url,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    },
+    3,
+    500,
+  );
 
-    const json = await response.json();
-    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    if (!text) {
-      throw new Error("Google Gemini tidak mengembalikan jawaban.");
-    }
-
-    return cleanAiResponse(text);
-  } catch (e: any) {
-    console.error("[Google Gemini API Error]:", e.message);
-    throw new Error(`Google Gemini Error: ${e.message}`);
+  const json = await response.json();
+  const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  if (!text) {
+    throw new Error("Google Gemini tidak mengembalikan jawaban.");
   }
+
+  return cleanAiResponse(text);
+}
+
+/**
+ * Fungsi utama untuk memanggil AI.
+ * Prioritas: OpenRouter → Gemini (fallback)
+ * Gemini sementara dinonaktifkan karena format key AQ. belum didukung
+ * oleh endpoint generativelanguage.googleapis.com.
+ */
+async function callAI(
+  messages: { role: string; content: string }[],
+): Promise<string> {
+  const openRouterKey = getOpenRouterKey();
+  const geminiKey = getGeminiKey();
+
+  if (!openRouterKey && !geminiKey) {
+    throw new Error("API Key AI belum dikonfigurasi di file .env");
+  }
+
+  // 1. Coba OpenRouter dulu (provider utama saat ini)
+  if (openRouterKey) {
+    try {
+      return await callOpenRouter(messages, openRouterKey);
+    } catch (e: any) {
+      console.warn("[OpenRouter gagal, mencoba Gemini fallback]:", e.message);
+      // Jatuh ke Gemini fallback jika ada
+    }
+  }
+
+  // 2. Fallback ke Gemini (jika key tersedia)
+  if (geminiKey) {
+    try {
+      return await callGemini(messages, geminiKey);
+    } catch (e: any) {
+      console.error("[Google Gemini API Error]:", e.message);
+      throw new Error(`AI Error: ${e.message}`);
+    }
+  }
+
+  throw new Error("Semua provider AI gagal memproses permintaan.");
 }
 
 /**
@@ -181,7 +212,7 @@ INSTRUKSI:
 2. Bandingkan dengan rata-rata 16 kawasan jika relevan.
 3. Jangan halusinasi data, gunakan hanya data di atas.`;
 
-  return callGeminiOrOpenRouter([{ role: "user", content: prompt }]);
+  return callAI([{ role: "user", content: prompt }]);
 }
 
 /**
@@ -232,7 +263,7 @@ ${konteks}`;
     { role: "user", content: input },
   ];
 
-  return callGeminiOrOpenRouter(messages);
+  return callAI(messages);
 }
 
 /**
@@ -289,7 +320,7 @@ Jawaban AI sebelumnya:
 ${lastReply.slice(0, 400)}`;
 
   try {
-    const raw = await callGeminiOrOpenRouter([{ role: "user", content: prompt }]);
+    const raw = await callAI([{ role: "user", content: prompt }]);
     const lines = raw
       .split("\n")
       .map((l) => l.replace(/^[\d\-\*\.\s]+/, "").trim())
