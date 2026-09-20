@@ -1,12 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { type Kawasan } from "./vitality-data";
 
+// Model gratis terbaik di OpenRouter (Sept 2026)
+// Urutan = prioritas: model terbaik di atas, fallback di bawah
 const OPENROUTER_MODELS = [
-  "openrouter/free",
-  "nvidia/nemotron-3.5-lightning:free",
-  "minimax/minimax-m3:free",
-  "z-ai/glm-5.2:free",
   "google/gemma-4-31b-it:free",
+  "nvidia/nemotron-3-ultra:free",
+  "openrouter/free",
 ];
 
 function cleanAiResponse(text: string): string {
@@ -66,8 +66,11 @@ async function callOpenRouterWithFallback(
   messages: any[],
   options: { temperature?: number; max_tokens?: number } = {},
 ) {
-  // 1. If key starts with sk-or-v1-, use OpenRouter with automatic retry
-  if (apiKey && apiKey.startsWith("sk-or-v1-")) {
+  const openRouterKey = getOpenRouterKey();
+  const geminiKey = getGeminiKey();
+
+  // 1. Coba OpenRouter dulu (provider utama)
+  if (openRouterKey) {
     let lastError;
     for (const model of OPENROUTER_MODELS) {
       try {
@@ -76,7 +79,7 @@ async function callOpenRouterWithFallback(
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${apiKey}`,
+              Authorization: `Bearer ${openRouterKey}`,
               "Content-Type": "application/json",
               "HTTP-Referer": "http://localhost:3000",
               "X-Title": "Titik Temu AI",
@@ -101,50 +104,59 @@ async function callOpenRouterWithFallback(
         lastError = error;
       }
     }
-    throw new Error("Gagal memproses rekomendasi AI via OpenRouter.");
+    // Jika semua model OpenRouter gagal, coba Gemini fallback
+    console.warn("[OpenRouter semua model gagal, mencoba Gemini fallback]");
   }
 
-  // 2. Otherwise, treat key as Google Gemini API Key (gemini-flash-lite-latest with 3x retry)
-  const promptText = messages.map((m) => m.content).join("\n\n");
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
+  // 2. Fallback ke Gemini (jika key tersedia)
+  if (geminiKey) {
+    const promptText = messages.map((m) => m.content).join("\n\n");
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${geminiKey}`;
 
-  try {
-    const response = await fetchWithRetry(
-      url,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: promptText }] }],
-          generationConfig: {
-            temperature: options.temperature || 0.7,
-            maxOutputTokens: options.max_tokens || 2048,
-          },
-        }),
-      },
-      3, // retry 3 times automatically
-      500,
-    );
+    try {
+      const response = await fetchWithRetry(
+        url,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }],
+            generationConfig: {
+              temperature: options.temperature || 0.7,
+              maxOutputTokens: options.max_tokens || 2048,
+            },
+          }),
+        },
+        3,
+        500,
+      );
 
-    const json = await response.json();
-    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    if (!text) {
-      throw new Error("Google Gemini tidak mengembalikan jawaban.");
+      const json = await response.json();
+      const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      if (!text) {
+        throw new Error("Google Gemini tidak mengembalikan jawaban.");
+      }
+
+      return { choices: [{ message: { content: cleanAiResponse(text) } }] };
+    } catch (e: any) {
+      console.error("[Google Gemini API Error]:", e.message);
+      throw new Error(`AI Error: ${e.message}`);
     }
-
-    return { choices: [{ message: { content: cleanAiResponse(text) } }] };
-  } catch (e: any) {
-    console.error("[Google Gemini API Error]:", e.message);
-    throw new Error(`Google Gemini Error: ${e.message}`);
   }
+
+  throw new Error("Semua provider AI gagal memproses permintaan.");
 }
 
-const getApiKey = () =>
-  process.env.VITE_GEMINI_API_KEY ||
+const getOpenRouterKey = () =>
   process.env.VITE_OPENROUTER_API_KEY ||
   process.env.OPENROUTER_API_KEY ||
-  import.meta.env.VITE_GEMINI_API_KEY ||
   import.meta.env.VITE_OPENROUTER_API_KEY;
+
+const getGeminiKey = () =>
+  process.env.VITE_GEMINI_API_KEY ||
+  import.meta.env.VITE_GEMINI_API_KEY;
+
+const getApiKey = () => getOpenRouterKey() || getGeminiKey();
 
 export const generateInsights = createServerFn({ method: "POST" })
   .validator((data: Kawasan[]) => data)
