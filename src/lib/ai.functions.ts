@@ -177,26 +177,21 @@ export const generateInsights = createServerFn({ method: "POST" })
       umkm: k.umkm,
     }));
 
-    const prompt = `
-Anda adalah seorang analis tata kota (urban planner) ahli.
-Analisis data kawasan transit berikut di Kota Bandung:
+    const prompt = `Anda analis tata kota ahli. Data kawasan transit Bandung:
 ${JSON.stringify(dataSummary, null, 2)}
 
-Tugas Anda:
-Berikan TEPAT 1 (satu) insight berupa kalimat observasi tajam berdasarkan data di atas.
-Fokus pada perbandingan, anomali, kesenjangan layanan, atau potensi ekonomi (UMKM/Properti).
-Insight harus ringkas (maksimal 180 karakter) dan ditulis dengan bahasa Indonesia baku yang mengalir, mudah dipahami investor atau pemerintah (seperti kutipan pengamat). 
-Gunakan format **tebal** untuk menyoroti nama lokasi atau angka kunci, dan *miring* untuk penekanan agar kalimat lebih dinamis.
-Jangan memakai nomor atau bullet points pada awal kalimat, langsung tulis teks kalimatnya saja.
-Contoh output:
-Kawasan sekitar **Stasiun Kiaracondong** punya keragaman usaha sangat tinggi (*78*) namun skor layanan hanya *52* — sinyal peluang tersembunyi bagi UMKM dan operator feeder.
-`;
+Tugas: Berikan TEPAT 1 kalimat insight singkat (MAKSIMAL 100 karakter).
+Fokus pada anomali, kesenjangan, atau potensi ekonomi.
+Bahasa Indonesia baku, padat, langsung ke inti.
+Gunakan **tebal** untuk nama kawasan dan angka kunci.
+JANGAN pakai nomor, bullet, atau pengantar.
+Contoh: **Gasibu** unggul properti *88* vs **Alun-Alun** *34* — gap investasi terbesar di klaster inti.`;
 
     let json;
     try {
       json = await callOpenRouterWithFallback(apiKey, [{ role: "user", content: prompt }], {
         temperature: 0.7,
-        max_tokens: 1000,
+        max_tokens: 200,
       });
     } catch (error) {
       console.error("AI API error:", error);
