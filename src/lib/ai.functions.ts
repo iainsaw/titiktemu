@@ -12,13 +12,15 @@ const OPENROUTER_MODELS = [
 function cleanAiResponse(text: string): string {
   if (!text) return "";
 
-  // 1. Remove <think>...</think> tags if any
+  // 1. Remove <think>...</think> tags and any reasoning blocks
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  // Also remove <reasoning>...</reasoning>, <analysis>...</analysis>
+  cleaned = cleaned.replace(/<(?:reasoning|analysis|thought|internal)[^>]*>[\s\S]*?<\/(?:reasoning|analysis|thought|internal)>/gi, "").trim();
 
   // 2. Remove common AI prompt/header echoes if present
   cleaned = cleaned
     .replace(
-      /^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi,
+      /^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?|Here is the insight:?|Here's my insight:?|My insight:?)\s*/gi,
       "",
     )
     .trim();
@@ -31,7 +33,7 @@ function cleanAiResponse(text: string): string {
   cleaned = cleaned.replace(/^#{1,6}\s+(.+)$/gm, "**$1**");
 
   // 5. Remove leading/trailing quotes if the whole text is wrapped in quotes
-  cleaned = cleaned.replace(/^["“']+|["”']+$/g, "").trim();
+  cleaned = cleaned.replace(/^[\"\u201C\u201D']+|[\"\u201C\u201D']+$/g, "").trim();
 
   return cleaned;
 }
@@ -200,7 +202,24 @@ Contoh: **Gasibu** unggul properti *88* vs **Alun-Alun** *34* — gap investasi 
 
     const content = json.choices?.[0]?.message?.content || "";
 
-    const insight = content.trim().replace(/^["“]+|["”]+$/g, "");
+    // Agresif: ambil hanya baris terakhir yang bermakna
+    // (model sering mengeluarkan reasoning/analisis sebelum jawaban)
+    const lines = content
+      .split("\n")
+      .map((l: string) => l.trim())
+      .filter((l: string) => {
+        if (!l || l.length < 10) return false;
+        // Filter baris yang terlihat seperti reasoning/analisis internal
+        if (/^(?:The user|Let me|I need|Let's|Data Analysis|Clusters?:|Key Observ|Option|Strongest|Sharpest|Analysis|Looking at)/i.test(l)) return false;
+        if (/^(?:\d+\.|\-|\*)\s/.test(l)) return false; // bullet/numbered lists
+        if (/^(?:Input|Output|Task|Tugas|Fokus|Contoh|JANGAN|Gunakan|Bahasa):/i.test(l)) return false;
+        return true;
+      });
+
+    // Ambil baris terakhir (biasanya jawaban akhir setelah reasoning)
+    const insight = (lines[lines.length - 1] || "")
+      .replace(/^[\"\u201C\u201D']+|[\"\u201C\u201D']+$/g, "")
+      .trim();
 
     // Fallback if the AI didn't format correctly
     if (!insight) {

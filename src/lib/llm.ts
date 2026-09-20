@@ -14,13 +14,14 @@ const OPENROUTER_MODELS = [
 function cleanAiResponse(text: string): string {
   if (!text) return "";
 
-  // 1. Remove <think>...</think> tags if any
+  // 1. Remove <think>...</think> tags and any reasoning blocks
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  cleaned = cleaned.replace(/<(?:reasoning|analysis|thought|internal)[^>]*>[\s\S]*?<\/(?:reasoning|analysis|thought|internal)>/gi, "").trim();
 
   // 2. Remove common AI prompt/header echoes if present
   cleaned = cleaned
     .replace(
-      /^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?)\s*/gi,
+      /^(?:\(Bahasa Indonesia Baku\):?|Sentence \d+[^:]*:?|Constraint:?[^\n]*|Output:?|Here is the recommendation:?|Here is the insight:?|Here's my insight:?|My insight:?)\s*/gi,
       "",
     )
     .trim();
@@ -34,7 +35,7 @@ function cleanAiResponse(text: string): string {
   cleaned = cleaned.replace(/^#{1,6}\s+(.+)$/gm, "**$1**");
 
   // 5. Remove leading/trailing quotes if the whole text is wrapped in quotes
-  cleaned = cleaned.replace(/^[""']+|[""']+$/g, "").trim();
+  cleaned = cleaned.replace(/^["\u201C\u201D']+|["\u201C\u201D']+$/g, "").trim();
 
   return cleaned;
 }
