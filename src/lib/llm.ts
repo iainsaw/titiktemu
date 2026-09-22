@@ -1,5 +1,5 @@
-const getOpenRouterKey = () => import.meta.env.VITE_OPENROUTER_API_KEY;
-const getGeminiKey = () => import.meta.env.VITE_GEMINI_API_KEY;
+const getOpenRouterKey = () => import.meta.env.VITE_OPENROUTER_API_KEY?.trim().replace(/^["']|["']$/g, "");
+const getGeminiKey = () => import.meta.env.VITE_GEMINI_API_KEY?.trim().replace(/^["']|["']$/g, "");
 
 export type Pesan = { role: "user" | "assistant"; content: string };
 
@@ -78,7 +78,7 @@ async function callOpenRouter(
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
-            "HTTP-Referer": "http://localhost:8090",
+            "HTTP-Referer": typeof window !== "undefined" ? window.location.href : "https://titiktemu.dimyati-dev.workers.dev",
             "X-Title": "Titik Temu WebGIS",
             "Content-Type": "application/json",
           },
@@ -134,13 +134,15 @@ async function callGemini(
     };
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
 
   const response = await fetchWithRetry(
     url,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(requestBody),
     },
     3,
@@ -159,8 +161,6 @@ async function callGemini(
 /**
  * Fungsi utama untuk memanggil AI.
  * Prioritas: OpenRouter → Gemini (fallback)
- * Gemini sementara dinonaktifkan karena format key AQ. belum didukung
- * oleh endpoint generativelanguage.googleapis.com.
  */
 async function callAI(
   messages: { role: string; content: string }[],
