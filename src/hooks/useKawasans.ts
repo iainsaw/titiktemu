@@ -148,8 +148,8 @@ export function useKawasans() {
                   ? {
                       ...staticKws,
                       ...dbData,
-                      jarakTransit: dbData.jarakTransit ?? 0,
-                      hargaTanah: dbData.hargaTanah ?? 0,
+                      jarakTransit: dbData.jarakTransit || staticKws.jarakTransit,
+                      hargaTanah: dbData.hargaTanah || staticKws.hargaTanah,
                       anomali: staticKws.anomali,
                     }
                   : staticKws,
