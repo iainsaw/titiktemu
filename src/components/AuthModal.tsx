@@ -62,8 +62,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
           setError(err);
           return;
         }
-        onClose();
-        resetForm();
+        window.location.href = "https://titiktemu.mapid.io";
       } else if (tab === "signup") {
         const { error: err } = await signUp(email, password, displayName);
         if (err) {
