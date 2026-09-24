@@ -6,12 +6,12 @@ import { getSecureAssetUrl, supabase } from "@/lib/supabase";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { AnimatedSection } from "@/components/AnimatedSection";
-const fotoRiantini = { url: null };
-const fotoDimyati = { url: null };
-const fotoSyahrul = { url: null };
-const fotoGilang = { url: null };
-const fotoFirza = { url: null };
-const fotoShafina = { url: null };
+const fotoRiantini = { url: "/tim-riantini.jpg" };
+const fotoDimyati = { url: "/tim-dimyati.jpg" };
+const fotoSyahrul = { url: "/tim-syahrul.jpg" };
+const fotoGilang = { url: "/tim-gilang.jpg" };
+const fotoFirza = { url: "/tim-firza.jpg" };
+const fotoShafina = { url: "/tim-shafina.jpg" };
 
 const TIM = [
   {
